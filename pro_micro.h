@@ -46,4 +46,20 @@ namespace stenosys
 #define  ARDUINO_KEY_F11             0xCC
 #define  ARDUINO_KEY_F12             0xCD
 
+class C_pro_micro
+{
+private:
+
+    C_pro_micro()
+    {
+    }
+
+    ~C_pro_micro()
+    {
+    }
+
+
+    static unsigned char keytable[];
+};
+
 }
