@@ -59,8 +59,7 @@ private:
 
     static unsigned char keytable[];
 
-    C_mutex  buffer_lock_;
-
+    C_mutex  buffer_mutex_;
 };
 
 }

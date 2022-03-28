@@ -14,6 +14,7 @@
 
 #include "log.h"
 #include "keyboard_raw.h"
+#include "pro_micro.h"
 
 #define BITS_PER_LONG (sizeof(long) * 8)
 #define NBITS( x )    ( ( ( ( x ) - 1 ) / BITS_PER_LONG ) + 1 )
@@ -103,7 +104,7 @@ C_keyboard_raw::read( __u16 & key_code )
 {
     bool got_data = false;
 
-    buffer_lock_.lock();
+    buffer_mutex_.lock();
 
     if ( buffer_count_ > 0 )
     {
@@ -121,7 +122,7 @@ C_keyboard_raw::read( __u16 & key_code )
         got_data = true;
     }
 
-    buffer_lock_.unlock();
+    buffer_mutex_.unlock();
 
     return got_data;
 }
@@ -210,11 +211,11 @@ C_keyboard_raw::buffer_put( __u16 key_event, __u16 key_code )
 {
     if ( ( key_code & 0xff ) <= 127 )
     {
-        buffer_lock_.lock();
+        buffer_mutex_.lock();
 
         if ( buffer_count_ < BUFFER_SIZE )
         {
-            buffer_[ buffer_put_index_++ ] = ( key_event << 8 ) + keytable[ key_code ];
+            buffer_[ buffer_put_index_++ ] = ( key_event << 8 ) + C_pro_micro::keytable[ key_code ];
 
             if ( buffer_put_index_ >= BUFFER_SIZE )
             {
@@ -224,7 +225,7 @@ C_keyboard_raw::buffer_put( __u16 key_event, __u16 key_code )
             buffer_count_++;
         }
 
-        buffer_lock_.unlock();
+        buffer_mutex_.unlock();
     }
 } 
 
