@@ -1,5 +1,7 @@
 #pragma once
 
+#include "serial.h"
+
 namespace stenosys
 {
 
@@ -9,8 +11,7 @@ namespace stenosys
 #define EV_KEY_RELEASE_ALL           0x03    // Pseudo-command, used to ensure there are no 'stuck' keypresses
                                              // still issuing from the Pro Micro after stenosys is shut down.
 
-#define  ARDUINO_KEYBOARD_MODIFIERS
-
+// From the Arduino runtime source
 #define  ARDUINO_KEY_LEFT_CTRL       0x80
 #define  ARDUINO_KEY_LEFT_SHIFT      0x81
 #define  ARDUINO_KEY_LEFT_ALT        0x82
@@ -62,5 +63,9 @@ public:
 
     static unsigned char keytable[];
 };
+
+private:
+
+    C_serial serial_port_;
 
 }
