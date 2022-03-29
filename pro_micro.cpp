@@ -18,12 +18,12 @@ C_pro_micro::send( uint16_t key_code )
     {
         uint8_t ch = ( key_code >> 8 );
 
-        worked = worked && serial_.write( ch );
+        worked = worked && serial_.send( ch );
     }
     {
         uint8_t ch = ( key_code & 0xff );
 
-        worked = worked && serial_.write( ch );
+        worked = worked && serial_.send( ch );
     }
 
     return worked;
