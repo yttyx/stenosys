@@ -1,9 +1,55 @@
 // pro_micro.cpp
 
+#include <stdint.h>
+
+#include "miscellaneous.h"
 #include "pro_micro.h"
+
+using namespace stenosys;
 
 namespace stenosys
 {
+
+bool
+C_pro_micro::send( uint16_t key_code )
+{
+    bool worked = true;
+    
+    {
+        uint8_t ch = ( key_code >> 8 );
+
+        worked = worked && serial_.write( ch );
+    }
+    {
+        uint8_t ch = ( key_code & 0xff );
+
+        worked = worked && serial_.write( ch );
+    }
+
+    return worked;
+}
+
+// This method is used only for sending steno output strings
+void
+C_pro_micro::send( std::string & str )
+{
+    for ( unsigned int ii = 0; ii < str.size(); ii++ )
+    {
+        send( ( uint16_t ) ( ( EV_KEY_DOWN << 8 ) + str[ ii ] ) );
+        send( ( uint16_t ) ( ( EV_KEY_UP   << 8 ) + str[ ii ] ) );
+    }
+}
+
+void
+C_pro_micro::stop()
+{
+    uint16_t command = ( EV_KEY_RELEASE_ALL << 8 ) + EV_KEY_NOOP;
+
+    send( command );
+
+    // Wait enough time for the two bytes to be sent (2mS at 9600bps)
+    delay( 5 );
+}
 
 // The first version of this table will convert from the raw keycode to ASCII
 // Ultimately the raw keycodes will be sent to the Pro Micro for conversion there

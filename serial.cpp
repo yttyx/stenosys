@@ -6,15 +6,13 @@
 #include <termios.h>
 #include <unistd.h>
 
-#include "device.h"
-#include "keyboard_raw.h"
 #include "log.h"
-#include "misc.h"
+#include "miscellaneous.h"
 #include "serial.h"
 
 #define LOG_SOURCE "SERIAL"
 
-using namespace   stenosys;
+using namespace stenosys;
 
 
 namespace stenosys
@@ -32,13 +30,14 @@ C_serial::~C_serial()
     if ( handle_ >= 0 )
     {    
         close( handle_ );
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed serial device" );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Closed device %s", device_.c_str() );
     }
 }
 
 bool
 C_serial::initialise( const std::string & device )
 {
+    device_ = device;
     handle_ = open( device.c_str(), O_RDWR | O_NOCTTY | O_SYNC );
     
     if ( handle_ >= 0 )
@@ -49,55 +48,16 @@ C_serial::initialise( const std::string & device )
     }
     else
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error opening output serial device %s: %s"
-                                                    , STENO_INPUT_DEVICE
-                                                    , strerror( errno ) );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error opening device %s: %s", device_.c_str(), strerror( errno ) );
     }
 
     return false;
 }
 
-void
-C_serial::stop()
-{
-    __u16 command = ( EV_KEY_RELEASE_ALL << 8 ) + EV_KEY_NOOP;
-
-    send( command );
-
-    // Wait enough time for the two bytes to be sent (2mS at 9600bps)
-    delay( 5 );
-}
-
-// This method is used only for sending steno output strings
-void
-C_serial::send( std::string & str )
-{
-    for ( unsigned int ii = 0; ii < str.size(); ii++ )
-    {
-        send( ( __u16 ) ( ( EV_KEY_DOWN << 8 ) + str[ ii ] ) );
-        send( ( __u16 ) ( ( EV_KEY_UP   << 8 ) + str[ ii ] ) );
-    }
-}
-
 bool
-C_serial::send( __u16 key_code )
+C_serial::send( uint8_t ch )
 {
-    bool worked = true;
-    
-    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "key_code: %04x", key_code );
-
-    {
-        __u8 ch = ( key_code >> 8 );
-
-        worked = worked && ( write( handle_, &ch, 1 ) == 1 );
-    }
-    {
-        __u8 ch = ( key_code & 0xff );
-
-        worked = worked && ( write( handle_, &ch, 1 ) == 1 );
-    }
-
-    return worked;
+    return write( handle_, &ch, 1 ) == 1;
 }
 
 bool
@@ -107,7 +67,7 @@ C_serial::set_interface_attributes( int handle, int baudrate )
 
     if ( tcgetattr( handle, &tty) < 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Error from tcgetattr: %s", strerror( errno ) );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Device %s tcgetattr error: %s", device_.c_str(), strerror( errno ) );
         return false;
     }
 
@@ -132,7 +92,7 @@ C_serial::set_interface_attributes( int handle, int baudrate )
 
     if ( tcsetattr( handle, TCSANOW, &tty ) != 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Error from tcsetattr: %s", strerror( errno ) );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Device %s tcsetattr error: %s", device_.c_str(), strerror( errno ) );
         return false;
     }
     

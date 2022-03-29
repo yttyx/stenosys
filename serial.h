@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <sys/types.h>
 
 namespace stenosys
 {
@@ -15,14 +16,8 @@ public:
     bool
     initialise( const std::string & device );
 
-    void
-    send( std::string & str );
-
     bool
-    send( __u16 key_code );
-
-    void
-    stop();
+    send( uint8_t ch );
 
 protected:
 
@@ -31,8 +26,8 @@ protected:
 
 private:
     
-   int  handle_;
-
+    int         handle_;
+    std::string device_;
 };
 
 }
