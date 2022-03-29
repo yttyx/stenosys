@@ -57,7 +57,7 @@ C_serial::initialise( const std::string & device )
 bool
 C_serial::send( uint8_t ch )
 {
-    return write( handle_, &ch, 1 ) == 1;
+    return ::write( handle_, &ch, 1 ) == 1;
 }
 
 bool
