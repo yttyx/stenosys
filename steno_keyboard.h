@@ -1,4 +1,4 @@
-// keyboard_raw.h
+// steno_keyboard.h
 #pragma once
 
 #include <linux/types.h>

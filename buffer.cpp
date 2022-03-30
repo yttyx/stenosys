@@ -1,4 +1,5 @@
-// C_buffer: implemenation of circular buffer
+// C_buffer: implementation of circular buffer
+#pragma once
 
 #include <iostream>
 
@@ -13,34 +14,28 @@ using namespace stenosys;
 namespace stenosys
 {
 
-C_buffer::C_buffer()
+template < class T >
+C_buffer< T >::C_buffer()
 {
-    handle_    = -1;
-    abort_     = false;
     put_index_ = 0;
     get_index_ = 0;
     count_     = 0;
 }
 
-C_buffer::~C_buffer()
+template < class T >
+C_buffer< T >::~C_buffer()
 {
 }
 
-
-void
-C_buffer::put()
-{
-    return thread_start();
-}
-
+template < class T >
 bool
-C_buffer::get( T & data )
+C_buffer< T >::get( T & data )
 {
     mutex_.lock();
 
     if ( count_ > 0 )
     {
-        key_code = buffer_[ get_index_ ];
+        data = buffer_[ get_index_ ];
 
         if ( ++get_index_ >= BUFFER_SIZE )
         {
@@ -54,11 +49,12 @@ C_buffer::get( T & data )
     }
 
     mutex_.unlock();
-    return got_data;
+    return false;
 }
 
+template < class T >
 bool
-C_buffer::put( const T & data )
+C_buffer< T >::put( const T & data )
 {
     mutex_.lock();
 

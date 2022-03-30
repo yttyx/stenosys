@@ -4,13 +4,9 @@
 #pragma once
 
 #include <linux/types.h>
-#include <string>
-#include <termios.h>
 
 #include "mutex.h"
 #include "thread.h"
-
-#include "pro_micro.h"
 
 #define BUFFER_SIZE 256
 
@@ -44,3 +40,5 @@ private:
 };
 
 }
+
+#include "buffer.cpp"
