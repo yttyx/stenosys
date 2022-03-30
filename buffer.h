@@ -14,19 +14,67 @@ namespace stenosys
 {
 
 template < class T > 
-class C_buffer : public C_thread
+class C_buffer
 {
 
 public:
 
-    C_buffer();
-    ~C_buffer();
+    C_buffer()
+    {
+        put_index_ = 0;
+        get_index_ = 0;
+        count_     = 0;
+    }
+
+    ~C_buffer(){}
     
     bool
-    get( T & data );
+    get( T & data )
+    {
+        mutex_.lock();
 
-    bool 
-    put( const T & data );
+        if ( count_ > 0 )
+        {
+            data = buffer_[ get_index_ ];
+
+            if ( ++get_index_ >= BUFFER_SIZE )
+            {
+                get_index_ = 0;
+            }
+
+            count_--;
+            
+            mutex_.unlock();
+            return true;
+        }
+
+        mutex_.unlock();
+        return false;
+    }
+
+    bool
+    put( const T & data )
+    {
+        mutex_.lock();
+
+        if ( count_ < BUFFER_SIZE )
+        {
+            buffer_[ put_index_ ] = data;
+
+            if ( ++put_index_ >= BUFFER_SIZE )
+            {
+                put_index_ = data;
+            }
+
+            count_++;
+
+            mutex_.unlock();
+            return false;    
+        }
+
+        mutex_.unlock();
+        return true;
+    }
 
 private:
     
@@ -40,5 +88,3 @@ private:
 };
 
 }
-
-#include "buffer.cpp"

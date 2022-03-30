@@ -15,7 +15,7 @@
 #include "device.h"
 #include "gemini_pr.h"
 #include "log.h"
-#include "misc.h"
+#include "miscellaneous.h"
 
 #define LOG_SOURCE "GEMIN"
 

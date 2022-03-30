@@ -5,6 +5,7 @@
 
 #include <linux/input.h>
 #include <linux/input-event-codes.h>
+#include <memory.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,6 +32,9 @@ C_steno_keyboard::C_steno_keyboard()
 {
     handle_           = -1;
     abort_            = false;
+
+    raw_buffer_ = std::make_unique< C_buffer< uint16_t > >();
+    steno_buffer_ = std::make_unique< C_buffer< uint8_t > >();
 }
 
 C_steno_keyboard::~C_steno_keyboard()
