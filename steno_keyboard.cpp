@@ -1,4 +1,4 @@
-// C_keyboard_raw.cpp
+// C_steno_keyboard.cpp
 // Class for inputting keypresses from the steno keyboard when on the base, non-steno layer
 
 #include <iostream>
@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 #include "log.h"
-#include "keyboard_raw.h"
+#include "steno_keyboard.h"
 #include "pro_micro.h"
 
 #define BITS_PER_LONG (sizeof(long) * 8)
@@ -27,16 +27,13 @@ namespace stenosys
 
 extern C_log log;
 
-C_keyboard_raw::C_keyboard_raw()
+C_steno_keyboard::C_steno_keyboard()
 {
     handle_           = -1;
     abort_            = false;
-    buffer_put_index_ = 0;
-    buffer_get_index_ = 0;
-    buffer_count_     = 0;
 }
 
-C_keyboard_raw::~C_keyboard_raw()
+C_steno_keyboard::~C_steno_keyboard()
 {
     if ( handle_ >= 0 )
     {
@@ -46,7 +43,7 @@ C_keyboard_raw::~C_keyboard_raw()
 }
 
 bool
-C_keyboard_raw::initialise( const std::string & device )
+C_steno_keyboard::initialise( const std::string & device )
 {
     unsigned short id[ 4 ];
     unsigned long  bit[ EV_MAX ][ NBITS( KEY_MAX ) ];
@@ -86,13 +83,13 @@ C_keyboard_raw::initialise( const std::string & device )
 }
 
 bool
-C_keyboard_raw::start()
+C_steno_keyboard::start()
 {
     return thread_start();
 }
 
 void
-C_keyboard_raw::stop()
+C_steno_keyboard::stop()
 {
     abort_ = true;
 
@@ -100,35 +97,13 @@ C_keyboard_raw::stop()
 }
 
 bool
-C_keyboard_raw::read( __u16 & key_code )
+C_steno_keyboard::read_raw( uint16_t & key_code )
 {
-    bool got_data = false;
-
-    buffer_mutex_.lock();
-
-    if ( buffer_count_ > 0 )
-    {
-        key_code = buffer_[ buffer_get_index_++ ];
-
-        if ( buffer_get_index_ >= BUFFER_SIZE )
-        {
-            buffer_get_index_ = 0;
-        }
-
-        buffer_count_--;
-        
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "read: %04x: ", key_code );
-
-        got_data = true;
-    }
-
-    buffer_mutex_.unlock();
-
-    return got_data;
+    return raw_buffer_->get( key_code );
 }
 
 void
-C_keyboard_raw::thread_handler()
+C_steno_keyboard::thread_handler()
 {
     struct input_event kbd_event[ 64 ];
 
@@ -157,7 +132,7 @@ C_keyboard_raw::thread_handler()
                         if ( allow_repeat( kbd_event[ii].code ) )
                         {
                             // Key auto-repeat
-                            buffer_put( EV_KEY_AUTO, kbd_event[ii].code );
+                            raw_buffer_->put( ( EV_KEY_AUTO << 8 ) + kbd_event[ii].code );
                         }
 
                         //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key auto kbd_event[ii].code: %u", kbd_event[ii].code );
@@ -165,16 +140,12 @@ C_keyboard_raw::thread_handler()
                     else if ( kbd_event[ ii ].value == 1 )
                     {
                         // Key down
-                        buffer_put( EV_KEY_DOWN, kbd_event[ii].code );
-
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key down kbd_event[ii].code: %u", kbd_event[ii].code );
+                        raw_buffer_->put( ( EV_KEY_DOWN << 8 ) + kbd_event[ii].code );
                     }
                     else if ( kbd_event[ ii ].value == 0 )
                     {
                         // Key up
-                        buffer_put( EV_KEY_UP, kbd_event[ii].code );
-                        
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key up kbd_event[ii].code: %u", kbd_event[ii].code );
+                        raw_buffer_->put( ( EV_KEY_UP << 8 ) + kbd_event[ii].code );
                     }
                 }
             }
@@ -187,7 +158,7 @@ C_keyboard_raw::thread_handler()
 }
 
 bool
-C_keyboard_raw::allow_repeat( __u16 key_code )
+C_steno_keyboard::allow_repeat( __u16 key_code )
 {
     switch ( key_code )
     {
@@ -205,28 +176,5 @@ C_keyboard_raw::allow_repeat( __u16 key_code )
 
     return true;
 }
-
-void
-C_keyboard_raw::buffer_put( __u16 key_event, __u16 key_code )
-{
-    if ( ( key_code & 0xff ) <= 127 )
-    {
-        buffer_mutex_.lock();
-
-        if ( buffer_count_ < BUFFER_SIZE )
-        {
-            buffer_[ buffer_put_index_++ ] = ( key_event << 8 ) + C_pro_micro::keytable[ key_code ];
-
-            if ( buffer_put_index_ >= BUFFER_SIZE )
-            {
-                buffer_put_index_ = 0;
-            }
-
-            buffer_count_++;
-        }
-
-        buffer_mutex_.unlock();
-    }
-} 
 
 }

@@ -2,9 +2,11 @@
 #pragma once
 
 #include <linux/types.h>
+#include <memory>
 #include <string>
 #include <termios.h>
 
+#include "buffer.h"
 #include "mutex.h"
 #include "thread.h"
 
@@ -15,13 +17,13 @@
 namespace stenosys
 {
 
-class C_keyboard_raw : public C_thread
+class C_steno_keyboard : public C_thread
 {
 
 public:
 
-    C_keyboard_raw();
-    ~C_keyboard_raw();
+    C_steno_keyboard();
+    ~C_steno_keyboard();
 
     bool
     initialise( const std::string & device );
@@ -29,37 +31,30 @@ public:
     bool
     start();
 
-    bool
-    read( __u16 & key_code );
-
     void
     stop();
+
+    bool
+    read_raw( uint16_t & key_code );
+    
+    bool
+    read_steno( uint16_t & key_code );
 
 private:
     
     void
     thread_handler();
 
-    bool
-    allow_repeat( __u16 key_code );
-
-    void
-    buffer_put( __u16 key_event, __u16 key_code );
+   bool
+    allow_repeat( uint16_t key_code );
 
 private:
     
     int  handle_;
     bool abort_;
 
-    __u16 buffer_[ BUFFER_SIZE ];
-
-    int  buffer_put_index_;
-    int  buffer_get_index_;
-    int  buffer_count_;
-
-    static unsigned char keytable[];
-
-    C_mutex  buffer_mutex_;
+    std::unique_ptr< C_buffer< uint16_t > > raw_buffer_;
+    std::unique_ptr< C_buffer< uint8_t  > > steno_buffer_;
 };
 
 }
