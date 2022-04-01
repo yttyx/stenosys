@@ -7,6 +7,7 @@
 #include <termios.h>
 
 #include "buffer.h"
+#include "geminipr.h"
 #include "mutex.h"
 #include "thread.h"
 
@@ -41,7 +42,7 @@ public:
     read_raw( uint16_t & key_code );
     
     bool
-    read_steno( uint16_t & key_code );
+    read_steno( S_geminipr_packet & packet );
 
 private:
     
@@ -57,6 +58,15 @@ private:
     void
     thread_handler();
 
+    void
+    raw_handler();
+
+    void
+    steno_handler();
+
+    bool
+    get_byte( unsigned char & ch );
+
    bool
     allow_repeat( uint16_t key_code );
 
@@ -65,8 +75,8 @@ private:
     int  handle_;
     bool abort_;
 
-    std::unique_ptr< C_buffer< uint16_t > > raw_buffer_;
-    std::unique_ptr< C_buffer< uint8_t  > > steno_buffer_;
+    std::unique_ptr< C_buffer< uint16_t > >          raw_buffer_;
+    std::unique_ptr< C_buffer< S_geminipr_packet > > steno_buffer_;
 };
 
 }

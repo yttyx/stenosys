@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#include "device.h"
 #include "geminipr.h"
 #include "log.h"
 #include "stenokeyboard.h"
@@ -25,7 +26,7 @@
 #define BITS_PER_LONG (sizeof(long) * 8)
 #define NBITS( x )    ( ( ( ( x ) - 1 ) / BITS_PER_LONG ) + 1 )
 
-#define LOG_SOURCE    "KBRAW"
+#define LOG_SOURCE "STKBD"
 
 using namespace stenosys;
 
@@ -39,7 +40,7 @@ C_steno_keyboard::C_steno_keyboard()
     handle_       = -1;
     abort_        = false;
     raw_buffer_   = std::make_unique< C_buffer< uint16_t > >();
-    steno_buffer_ = std::make_unique< C_buffer< uint8_t > >();
+    steno_buffer_ = std::make_unique< C_buffer< S_geminipr_packet > >();
 }
 
 C_steno_keyboard::~C_steno_keyboard()
@@ -58,7 +59,7 @@ C_steno_keyboard::~C_steno_keyboard()
 bool
 C_steno_keyboard::initialise( const std::string & device_raw, const std::string & device_steno )
 {
-    return initialise_raw( device_raw) && initialise( device_steno );
+    return initialise_raw( device_raw) && initialise_steno( device_steno );
 }
 
 bool
@@ -82,9 +83,9 @@ C_steno_keyboard::read_raw( uint16_t & key_code )
 }
 
 bool
-C_steno_keyboard::read_steno( std::string & str  )
+C_steno_keyboard::read_steno(  S_geminipr_packet & packet )
 {
-    //TBW    
+    return steno_buffer_->get( packet );
 }
 
 bool
@@ -153,7 +154,7 @@ C_steno_keyboard::initialise_steno( const std::string & device )
 // See https://stackoverflow.com/questions/20154157/termios-vmin-vtime-and-blocking-non-blocking-read-operations
 
 int
-C_gemini_pr::set_interface_attributes( int fd, int speed )
+C_steno_keyboard::set_interface_attributes( int fd, int speed )
 {
     struct termios tty;
 
@@ -193,8 +194,6 @@ C_gemini_pr::set_interface_attributes( int fd, int speed )
 void
 C_steno_keyboard::thread_handler()
 {
-    struct input_event kbd_event[ 64 ];
-
     while ( ! abort_ )
     {
         raw_handler();
@@ -205,6 +204,8 @@ C_steno_keyboard::thread_handler()
 void
 C_steno_keyboard::raw_handler()
 {
+    struct input_event kbd_event[ 64 ];
+    
     int bytes_read = ::read( handle_, kbd_event, sizeof( struct input_event ) * 64 );
 
     if ( bytes_read >= ( int ) sizeof( struct input_event ) )
@@ -252,7 +253,6 @@ C_steno_keyboard::raw_handler()
     }
 }
 
-void
 enum ePacketState
 {
     psAwaitingPacketHeader
@@ -260,14 +260,14 @@ enum ePacketState
 };
 
 // Fetch a block of data in GeminiPR format
-C_gemini_pr::steno_handler()
+void
+C_steno_keyboard::steno_handler()
 {
-    unsigned char packet[ BYTES_PER_STROKE ];
-    
     unsigned int  packet_count = 0;
     unsigned char b            = 0;
-
     ePacketState  packet_state = psAwaitingPacketHeader;
+
+    S_geminipr_packet packet;
 
     while ( ! abort_ )
     {
@@ -280,7 +280,7 @@ C_gemini_pr::steno_handler()
                     // Packet header has top bit set
                     if ( b & 0x80 )
                     {
-                        packet[ packet_count++ ] = b;
+                        packet.put( packet_count++, b );
                         packet_state = psPacketBody;
                     }
                     break;
@@ -296,16 +296,12 @@ C_gemini_pr::steno_handler()
                     }
                     else
                     {
-                        packet[ packet_count++ ] = b;
+                        packet.put( packet_count++, b );
                         
                         if ( packet_count == BYTES_PER_STROKE )
                         {
-                            // We have a complete packet; convert to string version of stroke
-                            std::string str = convert_stroke( packet );
-        
-                            buffer_lock_.lock();
-                            buffer_.push( str );
-                            buffer_lock_.unlock();
+                            // We have a complete packet, add it to buffer
+                            steno_buffer_->put( packet );
 
                             packet_count = 0;
                             packet_state = psAwaitingPacketHeader;
@@ -320,6 +316,31 @@ C_gemini_pr::steno_handler()
             }
         }
     }
+}
+
+bool
+C_steno_keyboard::get_byte( unsigned char & ch )
+{
+    unsigned char buf[ 2 ];
+
+    int res = ::read( handle_, buf, 1 );
+
+    if ( res > 0 )
+    {
+        ch = buf[ 0 ];
+        return true;
+    }
+    else if ( ( res < 0 ) &&  ( errno == EAGAIN ) )
+    {
+        // No data available
+        return false;
+    }
+    else
+    {
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Steno read error %s", strerror( errno ) );
+    }
+
+    return false;
 }
 
 bool

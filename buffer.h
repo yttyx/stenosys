@@ -63,7 +63,7 @@ public:
 
             if ( ++put_index_ >= BUFFER_SIZE )
             {
-                put_index_ = data;
+                put_index_ = 0;
             }
 
             count_++;
