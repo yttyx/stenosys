@@ -29,6 +29,9 @@ public:
     initialise( const std::string & device );
     
     bool
+    initialise( const std::string & device_raw, const std::string & device_steno );
+
+    bool
     start();
 
     void
@@ -42,6 +45,15 @@ public:
 
 private:
     
+    bool
+    initialise_raw( const std::string & device );
+    
+    bool
+    initialise_steno( const std::string & device );
+
+    int
+    set_interface_attributes( int fd, int speed );
+
     void
     thread_handler();
 
