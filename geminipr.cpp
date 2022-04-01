@@ -1,4 +1,4 @@
-// gemini_pr.cpp
+// geminipr.cpp
 
 #include <sys/ioctl.h>
 #include <sys/types.h>
@@ -13,7 +13,7 @@
 #include <stdlib.h>
 
 #include "device.h"
-#include "gemini_pr.h"
+#include "geminipr.h"
 #include "log.h"
 #include "miscellaneous.h"
 

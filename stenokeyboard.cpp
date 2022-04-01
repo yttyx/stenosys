@@ -1,6 +1,9 @@
-// C_steno_keyboard.cpp
-// Class for inputting keypresses from the steno keyboard when on the base, non-steno layer
-
+// stenokeyboard.cpp
+// Class for inputting keypresses from a keyboard, typically running the QMK firmware
+// This class supports:
+// - Keypresses direct from the keyboard (normal typing, USB HID)
+// - Steno packets in GeminiPR format (steno layer enabled on the keyboard, serial over USB)
+//
 #include <iostream>
 
 #include <linux/input.h>
@@ -13,9 +16,10 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#include "geminipr.h"
 #include "log.h"
-#include "steno_keyboard.h"
-#include "pro_micro.h"
+#include "stenokeyboard.h"
+#include "promicro.h"
 
 #define BITS_PER_LONG (sizeof(long) * 8)
 #define NBITS( x )    ( ( ( ( x ) - 1 ) / BITS_PER_LONG ) + 1 )
@@ -30,10 +34,9 @@ extern C_log log;
 
 C_steno_keyboard::C_steno_keyboard()
 {
-    handle_           = -1;
-    abort_            = false;
-
-    raw_buffer_ = std::make_unique< C_buffer< uint16_t > >();
+    handle_       = -1;
+    abort_        = false;
+    raw_buffer_   = std::make_unique< C_buffer< uint16_t > >();
     steno_buffer_ = std::make_unique< C_buffer< uint8_t > >();
 }
 

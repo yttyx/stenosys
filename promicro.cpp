@@ -1,9 +1,9 @@
-// pro_micro.cpp
+// promicro.cpp
 
 #include <stdint.h>
 
 #include "miscellaneous.h"
-#include "pro_micro.h"
+#include "promicro.h"
 
 using namespace stenosys;
 

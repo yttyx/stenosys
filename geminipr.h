@@ -1,4 +1,4 @@
-// gemini_pr.h
+// geminipr.h
 #pragma once
 
 #include <poll.h>

@@ -1,4 +1,4 @@
-// steno_keyboard.h
+// stenokeyboard.h
 #pragma once
 
 #include <linux/types.h>
@@ -10,7 +10,7 @@
 #include "mutex.h"
 #include "thread.h"
 
-#include "pro_micro.h"
+#include "promicro.h"
 
 #define BUFFER_SIZE 256
 
