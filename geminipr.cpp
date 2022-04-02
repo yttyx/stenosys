@@ -1,16 +1,9 @@
 // geminipr.cpp
 
-//#include <sys/ioctl.h>
-//#include <sys/types.h>
-//#include <sys/stat.h>
-//#include <fcntl.h>
-//#include <termios.h>
-//include <unistd.h>
-
+#include <assert.h>
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-//#include <stdlib.h>
 
 #include "geminipr.h"
 #include "log.h"
@@ -25,9 +18,22 @@ namespace stenosys
 
 extern C_log log;
 
+uint8_t & S_geminipr_packet::operator[]( std::size_t index )
+{
+    assert( ( index >= 0 ) && ( index <= BYTES_PER_STROKE ) );
+
+    return data[ index ];
+}
+
+const uint8_t & S_geminipr_packet::operator[]( std::size_t index ) const
+{
+    assert( ( index >= 0 ) && ( index <= BYTES_PER_STROKE ) );
+
+    return data[ index ];
+}
 
 void
-S_geminipr_packet::put( int index, uint8_t b )
+S_geminipr_packet::put( uint16_t index, uint8_t b )
 {
     if ( index < BYTES_PER_STROKE )
     {
@@ -35,14 +41,14 @@ S_geminipr_packet::put( int index, uint8_t b )
     }
 }
 
-S_geminipr_packet &
+S_geminipr_packet *
 S_geminipr_packet::get()
 {
-    return * data;
+    return this;
 }
 
 std::string
-C_gemini_pr::convert_stroke( S_geminipr_packet packet )
+C_gemini_pr::decode( const S_geminipr_packet & packet )
 {
     //log_writeln_fmt( C_log::LL_VERBOSE_3, LOG_SOURCE, "Stroke (binary): %02x %02x %02x %02x %02x %02x",
     //                                      packet[ 0 ], packet[ 1 ], packet[ 2 ], packet[ 3 ], packet[ 4 ], packet[ 5 ] );
@@ -68,9 +74,9 @@ C_gemini_pr::convert_stroke( S_geminipr_packet packet )
                     // LHS 'S' and '*' keys are effectively one ganged key, so suppress a second instance
                     if ( ( key == 'S' ) || ( key == '*' ) )
                     {
-                        if ( stroke.find( key ) == std::string::npos )
+                        if ( stroke_lhs.find( key ) == std::string::npos )
                         {
-                            stroke += key;
+                            stroke_lhs+= key;
                         }
                     }
                     else

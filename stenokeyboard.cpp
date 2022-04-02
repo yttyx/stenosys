@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "device.h"
+#include "geminipr.h"
 #include "kbdraw.h"
 #include "kbdsteno.h"
 #include "log.h"
@@ -45,20 +45,20 @@ C_steno_keyboard::~C_steno_keyboard()
 bool
 C_steno_keyboard::initialise( const std::string & device_raw, const std::string & device_steno )
 {
-    return raw_.initialise( device_raw) &&
-           steno_.initialise( device_steno );
+    return raw_->initialise( device_raw) &&
+           steno_->initialise( device_steno );
 }
 
 bool
 C_steno_keyboard::read( uint16_t & key_code )
 {
-    return raw_.read( key_code );
+    return raw_->read( key_code );
 }
     
 bool
-C_steno_keyboard::read( S_geminipr &_packet  )
+C_steno_keyboard::read( S_geminipr_packet & packet  )
 {
-    return steno_.read( packet );
+    return steno_->read( packet );
 }
 
 }

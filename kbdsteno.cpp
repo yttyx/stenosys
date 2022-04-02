@@ -1,4 +1,4 @@
-// stenokeyboard.cpp
+// kbdsteno.cpp
 // Class for inputting keypresses from a keyboard, typically running the QMK firmware
 // This class supports:
 // - Keypresses direct from the keyboard (normal typing, USB HID)
@@ -17,10 +17,9 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include "device.h"
 #include "geminipr.h"
+#include "kbdsteno.h"
 #include "log.h"
-#include "stenokeyboard.h"
 #include "promicro.h"
 
 #define BITS_PER_LONG (sizeof(long) * 8)
@@ -35,15 +34,14 @@ namespace stenosys
 
 extern C_log log;
 
-C_steno_keyboard::C_steno_keyboard()
+C_kbd_steno::C_kbd_steno()
 {
-    handle_       = -1;
-    abort_        = false;
-    raw_buffer_   = std::make_unique< C_buffer< uint16_t > >();
-    steno_buffer_ = std::make_unique< C_buffer< S_geminipr_packet > >();
+    handle_ = -1;
+    abort_  = false;
+    buffer_ = std::make_unique< C_buffer< S_geminipr_packet > >();
 }
 
-C_steno_keyboard::~C_steno_keyboard()
+C_kbd_steno::~C_kbd_steno()
 {
     if ( handle_ >= 0 )
     {
@@ -57,39 +55,7 @@ C_steno_keyboard::~C_steno_keyboard()
 // -----------------------------------------------------------------------------------
 
 bool
-C_steno_keyboard::initialise( const std::string & device_raw, const std::string & device_steno )
-{
-    return initialise_raw( device_raw) && initialise_steno( device_steno );
-}
-
-bool
-C_steno_keyboard::start()
-{
-    return thread_start();
-}
-
-void
-C_steno_keyboard::stop()
-{
-    abort_ = true;
-
-    thread_await_exit();
-}
-
-bool
-C_steno_keyboard::read_raw( uint16_t & key_code )
-{
-    return raw_buffer_->get( key_code );
-}
-
-bool
-C_steno_keyboard::read_steno(  S_geminipr_packet & packet )
-{
-    return steno_buffer_->get( packet );
-}
-
-bool
-C_steno_keyboard::initialise_raw( const std::string & device )
+C_kbd_steno::initialise( const std::string & device )
 {
     unsigned short id[ 4 ];
     unsigned long  bit[ EV_MAX ][ NBITS( KEY_MAX ) ];
@@ -129,32 +95,29 @@ C_steno_keyboard::initialise_raw( const std::string & device )
 }
 
 bool
-C_steno_keyboard::initialise_steno( const std::string & device )
+C_kbd_steno::start()
 {
-    bool worked = false;
-    
-    handle_ = ::open( device.c_str(), O_RDONLY | O_NONBLOCK );
+    return thread_start();
+}
 
-    if ( handle_ < 0 )
-    {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error opening steno device %s: %s - use sudo?", STENO_INPUT_DEVICE, strerror( errno ) );
-    }
-    else
-    {
-        if ( set_interface_attributes( handle_, B19200 ) > -1 )
-        {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Steno device opened" );
-            worked = true;
-        }
-    }
+void
+C_kbd_steno::stop()
+{
+    abort_ = true;
 
-    return worked;
+    thread_await_exit();
+}
+
+bool
+C_kbd_steno::read( S_geminipr_packet & packet )
+{
+    return buffer_->get( packet );
 }
 
 // See https://stackoverflow.com/questions/20154157/termios-vmin-vtime-and-blocking-non-blocking-read-operations
 
 int
-C_steno_keyboard::set_interface_attributes( int fd, int speed )
+C_kbd_steno::set_interface_attributes( int fd, int speed )
 {
     struct termios tty;
 
@@ -191,77 +154,14 @@ C_steno_keyboard::set_interface_attributes( int fd, int speed )
 // Background thread code
 // -----------------------------------------------------------------------------------
 
-void
-C_steno_keyboard::thread_handler()
-{
-    while ( ! abort_ )
-    {
-        raw_handler();
-        steno_handler();
-    }
-}
-
-void
-C_steno_keyboard::raw_handler()
-{
-    struct input_event kbd_event[ 64 ];
-    
-    int bytes_read = ::read( handle_, kbd_event, sizeof( struct input_event ) * 64 );
-
-    if ( bytes_read >= ( int ) sizeof( struct input_event ) )
-    {
-        for ( int ii = 0; ii < (int) ( bytes_read / sizeof( struct input_event ) ); ii++ )
-        {
-            // We have:
-            //   kbd_event[ii].time        timeval: 16 bytes (8 bytes for seconds, 8 bytes for microseconds)
-            //   kbd_event[ii].type        See input-event-codes.h
-            //   kbd_event[ii].code        See input-event-codes.h
-            //   kbd_event[ii].value       01 for keypress, 00 for release, 02 for autorepeat
-    
-            if ( kbd_event[ ii ].type == EV_KEY )
-            {
-                if ( kbd_event[ ii ].value == 2 )
-                {
-                    // Suppress auto-repeat for keys such as Shift, Ctrl and Meta
-                    // TODO This did not stop the sticky keys dialog popping up in Windows.
-                    //      Find out what key events are leading to that (it doesn't occur
-                    //      when holding down Shift on a directly-connected keyboard).
-                    if ( allow_repeat( kbd_event[ ii ].code ) )
-                    {
-                        // Key auto-repeat
-                        raw_buffer_->put( ( EV_KEY_AUTO << 8 ) + kbd_event[ ii ].code );
-                    }
-
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key auto kbd_event[ii].code: %u", kbd_event[ii].code );
-                }
-                else if ( kbd_event[ ii ].value == 1 )
-                {
-                    // Key down
-                    raw_buffer_->put( ( EV_KEY_DOWN << 8 ) + kbd_event[ ii ].code );
-                }
-                else if ( kbd_event[ ii ].value == 0 )
-                {
-                    // Key up
-                    raw_buffer_->put( ( EV_KEY_UP << 8 ) + kbd_event[ ii ].code );
-                }
-            }
-        }
-    }
-    else
-    {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "raw keyboard read error - closing down read thread" );
-    }
-}
-
 enum ePacketState
 {
     psAwaitingPacketHeader
 ,   psPacketBody
 };
 
-// Fetch a block of data in GeminiPR format
 void
-C_steno_keyboard::steno_handler()
+C_kbd_steno::thread_handler()
 {
     unsigned int  packet_count = 0;
     unsigned char b            = 0;
@@ -301,7 +201,7 @@ C_steno_keyboard::steno_handler()
                         if ( packet_count == BYTES_PER_STROKE )
                         {
                             // We have a complete packet, add it to buffer
-                            steno_buffer_->put( packet );
+                            buffer_->put( packet );
 
                             packet_count = 0;
                             packet_state = psAwaitingPacketHeader;
@@ -317,9 +217,11 @@ C_steno_keyboard::steno_handler()
         }
     }
 }
+    
+// Fetch a block of data in GeminiPR format
 
 bool
-C_steno_keyboard::get_byte( unsigned char & ch )
+C_kbd_steno::get_byte( unsigned char & ch )
 {
     unsigned char buf[ 2 ];
 
@@ -341,26 +243,6 @@ C_steno_keyboard::get_byte( unsigned char & ch )
     }
 
     return false;
-}
-
-bool
-C_steno_keyboard::allow_repeat( __u16 key_code )
-{
-    switch ( key_code )
-    {
-        case ARDUINO_KEY_LEFT_SHIFT:
-        case ARDUINO_KEY_RIGHT_SHIFT:
-        case ARDUINO_KEY_LEFT_CTRL:
-        case ARDUINO_KEY_RIGHT_CTRL:
-        case ARDUINO_KEY_LEFT_ALT:
-        case ARDUINO_KEY_RIGHT_ALT:
-        case ARDUINO_KEY_LEFT_GUI:
-        case ARDUINO_KEY_CAPS_LOCK:
-        case ARDUINO_KEY_INSERT:
-            return false;
-    }
-
-    return true;
 }
 
 }

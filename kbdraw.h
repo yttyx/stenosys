@@ -1,4 +1,4 @@
-// stenokeyboard.h
+//kbdraw.h
 #pragma once
 
 #include <linux/types.h>
@@ -12,8 +12,6 @@
 #include "thread.h"
 
 #include "promicro.h"
-
-#define BUFFER_SIZE 256
 
 namespace stenosys
 {
@@ -39,7 +37,6 @@ public:
     read( uint16_t & key_code );
     
 private:
-    
 
     void
     thread_handler();

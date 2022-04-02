@@ -13,12 +13,13 @@
 namespace stenosys
 {
 
-class C_steno_keyboard : public C_thread
+class C_steno_keyboard
 {
 
 public:
 
     C_steno_keyboard();
+
     ~C_steno_keyboard();
 
     bool
@@ -36,11 +37,10 @@ public:
     bool
     read( S_geminipr_packet & packet );
 
-
 private:
     
-    std::unique_ptr< C_kbd_raw   raw_;
-    std::unique_ptr< C_kbd_steno steno_;
+    std::unique_ptr< C_kbd_raw >   raw_;
+    std::unique_ptr< C_kbd_steno > steno_;
 };
 
 }

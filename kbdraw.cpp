@@ -1,4 +1,4 @@
-// stenokeyboard.cpp
+// kbdraw.cpp
 // Class for inputting keypresses from a keyboard, typically running the QMK firmware
 // This class supports:
 // - Keypresses direct from the keyboard (normal typing, USB HID)
@@ -18,7 +18,6 @@
 #include <stdio.h>
 
 #include "buffer.h"
-#include "device.h"
 #include "kbdraw.h"
 #include "log.h"
 
@@ -34,14 +33,14 @@ namespace stenosys
 
 extern C_log log;
 
-C_kbd_raw::C_steno_keyboard()
+C_kbd_raw::C_kbd_raw()
 {
-    handle_       = -1;
-    abort_        = false;
-    buffer_   = std::make_unique< C_buffer< uint16_t > >();
+    handle_ = -1;
+    abort_  = false;
+    buffer_ = std::make_unique< C_buffer< uint16_t > >();
 }
 
-C_kbd_raw::~C_steno_keyboard()
+C_kbd_raw::~C_kbd_raw()
 {
     if ( handle_ >= 0 )
     {
