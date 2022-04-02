@@ -107,6 +107,8 @@ C_stenosys::run( int argc, char *argv[] )
                 
                 if ( steno_keyboard.read( packet ) )
                 {
+                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Got steno packet" );
+
                     std::string steno_chord = C_gemini_pr::decode( packet );
 #if 0                
                     std::string translation;
@@ -119,6 +121,7 @@ C_stenosys::run( int argc, char *argv[] )
                 }
                 else if ( steno_keyboard.read( key_code ) )
                 {
+                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Got raw key press" );
                     //serial.send( key_code );
                 }
 

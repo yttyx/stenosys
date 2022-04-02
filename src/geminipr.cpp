@@ -32,15 +32,6 @@ const uint8_t & S_geminipr_packet::operator[]( std::size_t index ) const
     return data[ index ];
 }
 
-void
-S_geminipr_packet::put( uint16_t index, uint8_t b )
-{
-    if ( index < BYTES_PER_STROKE )
-    {
-        data[ index ] = b;
-    }
-}
-
 S_geminipr_packet *
 S_geminipr_packet::get()
 {

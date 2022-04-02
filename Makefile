@@ -3,7 +3,7 @@
 #
 CC	    	:= g++
 
-TARGET		:= stenosysitm
+TARGET		:= stenosys
 
 SRCDIR		:= ./src
 INCDIR		:= ./src

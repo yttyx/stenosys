@@ -16,8 +16,8 @@ struct S_geminipr_packet
     uint8_t & operator[]( std::size_t index );
     const uint8_t & operator[]( std::size_t index ) const;
 
-    void 
-    put( uint16_t index, uint8_t b );
+//    void 
+//    put( uint16_t index, uint8_t b );
 
     S_geminipr_packet *
     get();
@@ -27,14 +27,6 @@ struct S_geminipr_packet
 class C_gemini_pr
 {
 
-private:
-
-    C_gemini_pr() {}
-    ~C_gemini_pr() {}
-
-    static bool
-    suppress_hyphen( const std::string & lhs, const std::string & rhs );
-
 public:
     
     static std::string
@@ -42,6 +34,13 @@ public:
 
     static const char steno_key_chart[];
 
+private:
+
+    C_gemini_pr() {}
+    ~C_gemini_pr() {}
+
+    static bool
+    suppress_hyphen( const std::string & lhs, const std::string & rhs );
 };
 
 }

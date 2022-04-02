@@ -57,41 +57,24 @@ C_kbd_steno::~C_kbd_steno()
 bool
 C_kbd_steno::initialise( const std::string & device )
 {
-    unsigned short id[ 4 ];
-    unsigned long  bit[ EV_MAX ][ NBITS( KEY_MAX ) ];
+    bool worked = false;
+    
+    handle_ = ::open( device.c_str(), O_RDONLY | O_NONBLOCK );
 
-    int version = 0;
-
-    // Open device
-    if ( ( handle_ = ::open( device.c_str(), O_RDONLY ) ) < 0 )
+    if ( handle_ < 0 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Failed to open raw keyboard device: %s - use sudo?", device.c_str() );
-        return false;
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error opening steno device %s: %s - use sudo?", device.c_str(), strerror( errno ) );
     }
-    
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Raw keyboard device opened" );
-
-    // Get device version
-    if ( ioctl( handle_, EVIOCGVERSION, &version ) )
+    else
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Failed to get device version: %s", device.c_str() );
-        close( handle_ );
-        handle_ = -1;
-        return false;
+        if ( set_interface_attributes( handle_, B19200 ) > -1 )
+        {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Steno device opened" );
+            worked = true;
+        }
     }
-    
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Input driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
-    
-    // Get device information
-    ioctl( handle_, EVIOCGID, id );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Input device ID: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
-                                               , id[ ID_BUS ], id[ ID_VENDOR ], id[ ID_PRODUCT ], id[ ID_VERSION ] );
-
-    memset( bit, 0, sizeof( bit ) );
-    ioctl( handle_, EVIOCGBIT( 0, EV_MAX ), bit[ 0 ] );
-
-    return true;
+    return worked;
 }
 
 bool
@@ -180,7 +163,7 @@ C_kbd_steno::thread_handler()
                     // Packet header has top bit set
                     if ( b & 0x80 )
                     {
-                        packet.put( packet_count++, b );
+                        packet[ packet_count++ ]= b;
                         packet_state = psPacketBody;
                     }
                     break;
@@ -196,7 +179,7 @@ C_kbd_steno::thread_handler()
                     }
                     else
                     {
-                        packet.put( packet_count++, b );
+                        packet[ packet_count++ ]= b;
                         
                         if ( packet_count == BYTES_PER_STROKE )
                         {
