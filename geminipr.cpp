@@ -38,7 +38,7 @@ S_geminipr_packet::put( int index, uint8_t b )
 S_geminipr_packet &
 S_geminipr_packet::get()
 {
-    return data;
+    return * data;
 }
 
 std::string
@@ -68,7 +68,10 @@ C_gemini_pr::convert_stroke( S_geminipr_packet packet )
                     // LHS 'S' and '*' keys are effectively one ganged key, so suppress a second instance
                     if ( ( key == 'S' ) || ( key == '*' ) )
                     {
-                        add_if_unique( key, stroke_lhs );
+                        if ( stroke.find( key ) == std::string::npos )
+                        {
+                            stroke += key;
+                        }
                     }
                     else
                     {
@@ -94,15 +97,6 @@ C_gemini_pr::convert_stroke( S_geminipr_packet packet )
     }
 
     return stroke_lhs + stroke_rhs;
-}
-
-void
-C_gemini_pr::add_if_unique( char key, std::string & stroke )
-{
-    if ( stroke.find( key ) == std::string::npos )
-    {
-        stroke += key;
-    }
 }
 
 // "...and if they are not unique then IMPLICIT_HYPHEN_KEYS should be set to the letters that repeat?
