@@ -5,11 +5,11 @@ CC	    	:= g++
 
 TARGET		:= stenosysitm
 
-SRCDIR		:= .
-INCDIR		:= .
-BUILDDIR	:= obj
-LOGDIR	    := log
-TARGETDIR	:= bin
+SRCDIR		:= ./src
+INCDIR		:= ./src
+BUILDDIR	:= ./obj
+LOGDIR	    := ./log
+TARGETDIR	:= ./bin
 
 SRCEXT		:= cpp
 OBJEXT		:= o
