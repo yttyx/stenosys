@@ -44,7 +44,7 @@ private:
     bool
     get_byte( unsigned char & ch );
 
-   bool
+    bool
     allow_repeat( uint16_t key_code );
 
 private:

@@ -50,6 +50,18 @@ C_steno_keyboard::initialise( const std::string & device_raw, const std::string 
 }
 
 bool
+C_steno_keyboard::start()
+{
+    return raw_->start() && steno_->start();
+}
+
+void
+C_steno_keyboard::stop()
+{
+    raw_->stop();
+    steno_->stop();
+}
+bool
 C_steno_keyboard::read( uint16_t & key_code )
 {
     return raw_->read( key_code );

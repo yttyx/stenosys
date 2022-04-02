@@ -172,4 +172,24 @@ C_kbd_raw::thread_handler()
     }
 }
 
+bool
+C_kbd_raw::allow_repeat( __u16 key_code )
+{
+    switch ( key_code )
+    {
+        case ARDUINO_KEY_LEFT_SHIFT:
+        case ARDUINO_KEY_RIGHT_SHIFT:
+        case ARDUINO_KEY_LEFT_CTRL:
+        case ARDUINO_KEY_RIGHT_CTRL:
+        case ARDUINO_KEY_LEFT_ALT:
+        case ARDUINO_KEY_RIGHT_ALT:
+        case ARDUINO_KEY_LEFT_GUI:
+        case ARDUINO_KEY_CAPS_LOCK:
+        case ARDUINO_KEY_INSERT:
+            return false;
+    }
+
+    return true;
+}
+
 }
