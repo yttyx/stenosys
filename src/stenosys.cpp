@@ -87,10 +87,13 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "raw device  :%s", cfg.c().device_raw.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno device:%s", cfg.c().device_steno.c_str() );
 
-        if ( steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno ) &&
-             steno_keyboard.start() /* && */
-             /* serial.initialise( cfg.c().device_output ) && */
-             /* steno.initialise( cfg.c().device_steno ) */ )
+        bool worked = true;
+
+        worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
+        worked = worked && steno_keyboard.start();
+        //worked = worked && serial.initialise( cfg.c().device_output ); 
+
+        if ( worked )
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ready" );
         
@@ -108,11 +111,13 @@ C_stenosys::run( int argc, char *argv[] )
                 
                 S_geminipr_packet packet;
                 
-                if ( false /* steno_keyboard.read( packet ) */ )
+                if ( steno_keyboard.read( packet ) )
                 {
                     log_writeln( C_log::LL_INFO, LOG_SOURCE, "Got steno packet" );
 
                     std::string steno_chord = C_gemini_pr::decode( packet );
+
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s",steno_chord.c_str() );
 #if 0                
                     std::string translation;
 

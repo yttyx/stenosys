@@ -20,6 +20,7 @@
 #include "geminipr.h"
 #include "kbdsteno.h"
 #include "log.h"
+#include "miscellaneous.h"
 #include "promicro.h"
 
 #define BITS_PER_LONG (sizeof(long) * 8)
@@ -46,7 +47,7 @@ C_kbd_steno::~C_kbd_steno()
     if ( handle_ >= 0 )
     {
         close( handle_ );
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed raw keyboard device" );
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed steno keyboard device" );
     }
 }
 
@@ -196,6 +197,10 @@ C_kbd_steno::thread_handler()
             if ( packet_count > BYTES_PER_STROKE )
             {
                 log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Steno packet too long" );
+            }
+            else
+            {
+                delay( 10 );
             }
         }
     }

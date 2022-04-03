@@ -45,21 +45,21 @@ C_steno_keyboard::~C_steno_keyboard()
 bool
 C_steno_keyboard::initialise( const std::string & device_raw, const std::string & device_steno )
 {
-    return raw_->initialise( device_raw); // &&
-           //steno_->initialise( device_steno );
+    return raw_->initialise( device_raw) &&
+           steno_->initialise( device_steno );
 }
 
 bool
 C_steno_keyboard::start()
 {
-    return raw_->start(); // && steno_->start();
+    return raw_->start() && steno_->start();
 }
 
 void
 C_steno_keyboard::stop()
 {
     raw_->stop();
-    //steno_->stop();
+    steno_->stop();
 }
 
 bool

@@ -69,7 +69,7 @@ C_kbd_raw::initialise( const std::string & device )
         return false;
     }
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw keyboard device opened: handle_ is %d", handle_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Opened raw keyboard device %s", device.c_str() );
 
     // Get device version
     if ( ioctl( handle_, EVIOCGVERSION, &version ) )
@@ -120,8 +120,6 @@ C_kbd_raw::read( uint16_t & key_code )
 void
 C_kbd_raw::thread_handler()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_kbd_raw::thread_handler - started" );
-    
     struct input_event kbd_event[ 64 ];
     
     while ( ! abort_ )
