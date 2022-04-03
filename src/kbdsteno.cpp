@@ -198,10 +198,10 @@ C_kbd_steno::thread_handler()
             {
                 log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Steno packet too long" );
             }
-            else
-            {
-                delay( 10 );
-            }
+        }
+        else
+        {
+            delay( 10 );
         }
     }
 }
