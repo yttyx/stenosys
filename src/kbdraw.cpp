@@ -20,11 +20,12 @@
 #include "buffer.h"
 #include "kbdraw.h"
 #include "log.h"
+#include "miscellaneous.h"
 
 #define BITS_PER_LONG (sizeof(long) * 8)
 #define NBITS( x )    ( ( ( ( x ) - 1 ) / BITS_PER_LONG ) + 1 )
 
-#define LOG_SOURCE "STKBD"
+#define LOG_SOURCE "KBRAW"
 
 using namespace stenosys;
 
@@ -68,7 +69,7 @@ C_kbd_raw::initialise( const std::string & device )
         return false;
     }
     
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Raw keyboard device opened" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw keyboard device opened: handle_ is %d", handle_ );
 
     // Get device version
     if ( ioctl( handle_, EVIOCGVERSION, &version ) )
@@ -103,7 +104,6 @@ void
 C_kbd_raw::stop()
 {
     abort_ = true;
-
     thread_await_exit();
 }
 
@@ -120,11 +120,15 @@ C_kbd_raw::read( uint16_t & key_code )
 void
 C_kbd_raw::thread_handler()
 {
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_kbd_raw::thread_handler - started" );
+    
+    struct input_event kbd_event[ 64 ];
+    
     while ( ! abort_ )
     {
-        struct input_event kbd_event[ 64 ];
-        
         int bytes_read = ::read( handle_, kbd_event, sizeof( struct input_event ) * 64 );
+    
+//        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "thread_handler, bytes_read: %d", bytes_read );
 
         if ( bytes_read >= ( int ) sizeof( struct input_event ) )
         {
@@ -165,11 +169,9 @@ C_kbd_raw::thread_handler()
                 }
             }
         }
-        else
-        {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "raw keyboard read error - closing down read thread" );
-        }
     }
+
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shutting down raw keyboard thread" );
 }
 
 bool

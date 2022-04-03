@@ -83,7 +83,10 @@ C_stenosys::run( int argc, char *argv[] )
         //    // Allow time to move to a blank Notepad page before starting the steno test
         //    delay( 3000 );
         //}
-        
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "raw device  :%s", cfg.c().device_raw.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno device:%s", cfg.c().device_steno.c_str() );
+
         if ( steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno ) &&
              steno_keyboard.start() /* && */
              /* serial.initialise( cfg.c().device_output ) && */
@@ -105,7 +108,7 @@ C_stenosys::run( int argc, char *argv[] )
                 
                 S_geminipr_packet packet;
                 
-                if ( steno_keyboard.read( packet ) )
+                if ( false /* steno_keyboard.read( packet ) */ )
                 {
                     log_writeln( C_log::LL_INFO, LOG_SOURCE, "Got steno packet" );
 
@@ -121,13 +124,15 @@ C_stenosys::run( int argc, char *argv[] )
                 }
                 else if ( steno_keyboard.read( key_code ) )
                 {
-                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Got raw key press" );
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "raw input: %04u", key_code );
                     //serial.send( key_code );
                 }
 
                 delay( 1 );
             }
 
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
+            
             //serial.stop();
             steno_keyboard.stop();
 
