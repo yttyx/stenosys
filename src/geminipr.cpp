@@ -96,13 +96,6 @@ C_gemini_pr::decode( const S_geminipr_packet & packet )
     return stroke_lhs + stroke_rhs;
 }
 
-// "...and if they are not unique then IMPLICIT_HYPHEN_KEYS should be set to the letters that repeat?
-//  Benoit Pierre: no
-//  Benoit Pierre: the center group of unique letters
-//  Benoit Pierre: if one of them is present, there's no need for the hyphen"
-// nsjw: IMPLICIT_HYPHEN_KEYS is defined in Plover
-//       Review the logic below to see if an improvement can be made
-
 bool
 C_gemini_pr::suppress_hyphen( const std::string & lhs, const std::string & rhs )
 {
