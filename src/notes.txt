@@ -1,0 +1,164 @@
+
+
+## Plover commands yet to be supported
+
+                                                                // NB: need to support this: {^}ish non-orthographic-aware attach
+                                                                // NB: need to support this: in{^} non-orthographic-aware attach
+                                                                //     coding will need adding as stroke is parsed
+      
+    // Some other commands. Some are not used in the dictionary. Future development?
+    // {~|text}         or
+    // {^~|text^}       carry capitalisation where the attach operator is optional and the text can be changed.
+
+
+    // {}               cancel formatting of last word
+
+    // {*($c)}          format currency: standard English dollars
+    // {*($c CAD)}      include other text
+
+    // undoable line breaks and tabs
+    // \n or\r          for linebreaks
+    // \t               for tabs
+    // {^\n^}{-|}       create a line break without spacing then capitalise the next word
+    //                  can be removed with *
+    // {^\t^}           tab with no other spacing
+    //                  can be removed with *
+
+    // {*+}             repeat last stroke                                not in dictionary
+    // {*}              toggle asterisk key on last stroke entered        not in dictionary
+    // {*?}             retrospectively add space                         not in dictionary
+    // {*!}             retrospectively delete space                      not in dictionary
+    
+    // {#}              command operator
+    // {#a b c d}       will send "abcd"
+    // {#Shift_L s}     will send Ctrl-S
+    
+    // Escaping characters
+    // \"               "
+    // \\               \
+    // \\{              {
+    // \\}              }
+
+    // {#}              do-nothing stroke
+
+    // Modes
+    // {MODE:RESET}
+    // {MODE:CAPS}
+    // {MODE:TITLE}
+    // {MODE:LOWER}
+    // {MODE:CAMEL}
+    // {MODE:SNAKE}
+    // {MODE:SET_SPACE:}
+    // ------------     ----------------------------------
+
+
+
+
+
+
+
+
+
+Hashes
+------
+
+
+//// This is mine, and it's pretty dreadful
+//uint32_t
+//C_hash_map::generate_hash( const char * key )
+//{
+//    uint32_t hash = 0x55555555;
+//
+//    while ( * ( key++ ) )
+//    {
+//        hash += ( uint32_t ) ( * key );
+//        hash <<= 1;
+//    }
+//
+//    return hash % capacity_;
+//}
+
+//// This is better than mine, but not as good as the one below
+//uint32_t
+//C_hash_map::generate_hash( const char * key )
+//{
+//    uint32_t hash = 5381;
+//        
+//    int c;
+//
+//    while ( c = *key++ )
+//    {
+//        hash = ( (hash << 5 ) + hash ) + c;
+//    }
+//
+//    return hash % capacity_;
+//}
+
+// djb2
+//uint32_t
+//C_hash_map::generate_hash( const char * key )
+//{
+//    uint32_t hash = 5381;
+//        
+//    int c;
+//
+//    while ( c = *key++ )
+//    {
+//        // original code
+//        //hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+//        
+//        // mine - seems slightly better
+//        //hash = ( ( hash << 5 ) + ( hash * 33 ) ) + c;
+//        
+//        // theirs
+//        hash = ( ( hash << 5 ) + hash ) + c;
+//    }
+//
+//    return hash % capacity_;
+//}
+
+//// http://isthe.com/chongo/tech/comp/fnv/
+//// FNV
+//
+///*
+// * fnv_32_buf - perform a 32 bit Fowler/Noll/Vo hash on a buffer
+// *
+// * input:
+// *	buf	- start of buffer to hash
+// *	len	- length of buffer in octets
+// *	hval	- previous hash value or 0 if first call
+// *
+// * returns:
+// *	32 bit hash as a static hash type
+// *
+// * NOTE: To use the 32 bit FNV-0 historic hash, use FNV0_32_INIT as the hval
+// *	 argument on the first call to either fnv_32_buf() or fnv_32_str().
+// *
+// * NOTE: To use the recommended 32 bit FNV-1 hash, use FNV1_32_INIT as the hval
+// *	 argument on the first call to either fnv_32_buf() or fnv_32_str().
+// */
+//Fnv32_t
+//fnv_32_buf(void *buf, size_t len, Fnv32_t hval)
+//{
+//    unsigned char *bp = (unsigned char *)buf;	/* start of buffer */
+//    unsigned char *be = bp + len;		/* beyond end of buffer */
+//
+//    /*
+//     * FNV-1 hash each octet in the buffer
+//     */
+//    while (bp < be) {
+//
+//	/* multiply by the 32 bit FNV magic prime mod 2^32 */
+//#if defined(NO_FNV_GCC_OPTIMIZATION)
+//	hval *= FNV_32_PRIME;
+//#else
+//	hval += (hval<<1) + (hval<<4) + (hval<<7) + (hval<<8) + (hval<<24);
+//#endif
+//
+//	/* xor the bottom with the current octet */
+//	hval ^= (Fnv32_t)*bp++;
+//    }
+//
+//    /* return our new hash value */
+//    return hval;
+//}
