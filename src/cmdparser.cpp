@@ -2,8 +2,8 @@
 #include <string>
 #include <regex>
 
-#include "command-parser.h"
-#include "steno-flags.h"
+#include "cmdparser.h"
+#include "stenoflags.h"
 
 using namespace std::regex_constants;
 
@@ -113,7 +113,7 @@ C_command_parser::parse_command( const std::string & text_in, std::string & text
         // Mask off internal formatting flags
         flags &= ( ~ INTERNAL_FLAGS_MASK );
     }
-    catch ( std::exception ex )
+    catch ( std::exception & ex )
     {
         std::string exc = ex.what();
     }
@@ -194,7 +194,7 @@ C_command_parser::process_command( const std::string & command, std::string & te
 
         std::cout << "Command " << command.c_str() << " not supported" << std::endl;
     }
-    catch ( std::exception ex )
+    catch ( std::exception & ex )
     {
         std::string exc = ex.what();
     }

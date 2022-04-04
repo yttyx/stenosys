@@ -1,9 +1,11 @@
 #include <fcntl.h>
 #include <fstream>
 #include <iomanip>
+#include <limits.h>
 
-#include "command-parser.h"
+#include "cmdparser.h"
 #include "dictionary.h"
+#include "textfile.h"
 
 namespace stenosys
 {
@@ -12,11 +14,11 @@ const char * REGEX_DICTIONARY = "^.*\"(.*?)\": \"(.*?)\",$";  // JSON format lin
 
 C_dictionary::C_dictionary()
     : hashmap_( nullptr )
-    , hash_entry_count_( 0 )
-    , hash_duplicate_count_( 0 )
-    , hash_wrap_count_( 0 )
-    , hash_hit_capacity_count_( 0 )
     , hash_capacity_( 0 )
+    , hash_duplicate_count_( 0 )
+    , hash_entry_count_( 0 )
+    , hash_hit_capacity_count_( 0 )
+    , hash_wrap_count_( 0 )
     , initialised_( false )
 {
     // Analyse hash map collision distribution across 50 buckets
@@ -42,12 +44,15 @@ C_dictionary::build( const std::string & dictionary_path, const std::string & ou
     return  worked;
 }
 
+// Read in JSON-format dictionary (Plover format) into an array of dictionary entries
 bool
 C_dictionary::read( const std::string & path )
 {
     try
     {
-        if ( C_text_file::read( path ) )
+        std::unique_ptr< C_text_file > text_file = std::make_unique< C_text_file >();
+
+        if ( text_file->read( path ) )
         {
             std::string line;
             std::string steno;
@@ -57,6 +62,8 @@ C_dictionary::read( const std::string & path )
 
             uint32_t entry_count    = 0;
             uint32_t non_data_count = 0;
+            
+            std::stringstream text_stream_;
 
             while ( std::getline( text_stream_, line, '\n' ) )
             {
@@ -65,7 +72,8 @@ C_dictionary::read( const std::string & path )
                     std::cout << "\r  Lines: " << entry_count;
                 }
 
-                if ( parse_line( line, REGEX_DICTIONARY, steno, text ) )
+                // Check for valid JSON entry
+                if ( text_file->parse_line( line, REGEX_DICTIONARY, steno, text ) )
                 {
                     STENO_ENTRY steno_entry;
 
@@ -93,7 +101,7 @@ C_dictionary::read( const std::string & path )
             return true;
         }
     }
-    catch ( std::exception ex )
+    catch ( std::exception & ex )
     {
         error_message_ = ex.what();
     }
@@ -339,7 +347,7 @@ C_dictionary::generate_hash( const char * key )
         
     int c;
 
-    while ( c = *key++ )
+    while ( ( c = *key++ ) != 0 )
     {
         hash = c + ( hash << 6 ) + ( hash << 16 ) - hash;
     }
@@ -354,7 +362,8 @@ C_dictionary::write( const std::string & output_path )
 
     FILE * output_stream = nullptr;
 
-    fopen_s( &output_stream, output_path.c_str(), "w" );
+    //TBW
+    //fopen( &output_stream, output_path.c_str(), "w" );
 
     if ( output_stream != nullptr )
     {
@@ -545,6 +554,7 @@ C_dictionary::escape_characters( std::string & str )
 std::string
 C_dictionary::get_filename( const std::string & path )
 {
+#if 0 //TBW
     char filename[ _MAX_FNAME ];
     char fileext[ _MAX_EXT ];
 
@@ -554,6 +564,7 @@ C_dictionary::get_filename( const std::string & path )
     out += fileext;
 
     return out;
+#endif
 }
 
 }

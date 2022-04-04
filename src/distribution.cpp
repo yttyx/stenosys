@@ -67,7 +67,8 @@ C_distribution::report()
 
     char buffer[ 400 ];
     
-    sprintf_s( buffer, sizeof( buffer), "%-11.11s[Count][%%      ][Cum%%   ]\n", title_.c_str()  );
+    // TBW safe form of sprintf
+    sprintf( buffer, "%-11.11s[Count][%%      ][Cum%%   ]\n", title_.c_str()  );
     report += buffer;
     
     double cumulative_fraction = 0.0;
@@ -88,21 +89,22 @@ C_distribution::report()
 
         if ( bucket_from == bucket_to )                                      
         {
-            sprintf_s( bucket_desc, sizeof( bucket_desc ), "%7u", bucket_from );
+            sprintf( bucket_desc, "%7u", bucket_from );
         }
         else
         {
-            sprintf_s( bucket_desc, sizeof( bucket_desc ), "%3u-%3u", bucket_from, bucket_to );
+            sprintf( bucket_desc, "%3u-%3u", bucket_from, bucket_to );
         }
 
         if ( bucket <= max_bucket_ )
         {
-            sprintf_s( buffer, sizeof( buffer ), "%-7s   %s[%5u][%6s%%][%6s%%]| "
-                                                , bucket_desc
-                                                , marker
-                                                , score
-                                                , format_percentage( fraction_of_total ).c_str()
-                                                , format_percentage( cumulative_fraction ).c_str() );
+            sprintf( buffer, "%-7s   %s[%5u][%6s%%][%6s%%]| "
+                           , bucket_desc
+                           , marker
+                           , score
+                           , format_percentage( fraction_of_total ).c_str()
+                           , format_percentage( cumulative_fraction ).c_str() );
+
             report += buffer;
 
             uint32_t bar_length = ( score * BAR_WIDTH ) / max_score;
@@ -112,12 +114,12 @@ C_distribution::report()
                 bar_length = 1;
             }
 
-            sprintf_s( buffer, sizeof( buffer), "%s\n", std::string( bar_length, '-' ).c_str() );
+            sprintf( buffer, "%s\n", std::string( bar_length, '-' ).c_str() );
             report += buffer;
         }
         else
         {
-            sprintf_s( buffer, sizeof( buffer), "%3.3s       %s[%5u][%6s%%][%6s%%]| ", ">"
+            sprintf( buffer, "%3.3s       %s[%5u][%6s%%][%6s%%]| ", ">"
                                                 , marker
                                                 , score
                                                 , format_percentage( fraction_of_total ).c_str()
@@ -126,10 +128,10 @@ C_distribution::report()
         }
     }
  
-    sprintf_s( buffer, sizeof( buffer), "\n" );
+    sprintf( buffer, "\n" );
     report += buffer;
     
-    sprintf_s( buffer, sizeof( buffer), "Total:     [%5u]| \n", total_score );
+    sprintf( buffer, "Total:     [%5u]| \n", total_score );
     report += buffer;
 
     return report;
@@ -139,7 +141,7 @@ std::string
 C_distribution::format_percentage( double percentage )
 {
     char buffer[ 50 ];
-    sprintf_s( buffer, sizeof( buffer ), "%3.2f", percentage );
+    sprintf( buffer, "%3.2f", percentage );
 
     return std::string( buffer );
 }

@@ -5,7 +5,7 @@
 #include <regex>
 #include <stdio.h>
 
-#include "text-file.h"
+#include "textfile.h"
 
 
 using namespace stenosys;
@@ -44,7 +44,7 @@ C_text_file::read( const std::string & path )
             error_message_ = "**Error reading file";
         }
     }
-    catch ( std::exception ex )
+    catch ( std::exception & ex )
     {
         error_message_ = ex.what();
     }

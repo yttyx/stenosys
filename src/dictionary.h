@@ -5,9 +5,8 @@
 #include <memory>
 #include <vector>
 
-#include "dictparse.h"
+#include "dictionary.h"
 #include "distribution.h"
-#include "text-file.h"
 
 namespace stenosys
 {
@@ -19,7 +18,7 @@ typedef struct {
     std::string text;
 } STENO_ENTRY;
 
-class C_dictionary : public C_text_file
+class C_dictionary
 {
 public:
 
@@ -39,7 +38,6 @@ private:
     
     bool
     hash_map_build();
-
 
     bool
     hash_insert( const std::string & key, uint32_t dictionary_entry, uint32_t & collisions );
@@ -79,20 +77,18 @@ private:
 
 private:
 
-    bool initialised_;
-    
     uint32_t * hashmap_;
 
+    bool     initialised_;
     uint32_t hash_capacity_;
-    uint32_t hash_entry_count_;
-
-    uint32_t hash_wrap_count_;
     uint32_t hash_duplicate_count_;
+    uint32_t hash_entry_count_;
     uint32_t hash_hit_capacity_count_;
+    uint32_t hash_wrap_count_;
 
     std::string error_message_;
     
-    std::vector< STENO_ENTRY > dictionary_array_;
+    std::vector< STENO_ENTRY >        dictionary_array_;
 
     std::unique_ptr< C_distribution > hash_collision_distribution_;
 
