@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "command-parser.h"
+#include "dictparse.h"
 #include "distribution.h"
 #include "text-file.h"
 
