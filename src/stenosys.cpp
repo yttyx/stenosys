@@ -70,22 +70,17 @@ C_stenosys::run( int argc, char *argv[] )
     {
         // space_type sm = cfg.c().space_after ? SP_AFTER : SP_BEFORE;
 
-        //TEMP test dictionary building
-        C_dictionary dictionary;
 
 
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "cfg.c().file_dict: %s", cfg.c().file_dict.c_str() );
 
-
-        dictionary.build( cfg.c().file_dict, "./dict-output.txt" );
-
-        //TEMP:END
 
 
         C_steno_keyboard steno_keyboard;                        // Steno/raw x input from the steno ;keyboard
         // C_steno_translator  translator( sm, FM_ARDUINO );    // Steno to English convertor
         // C_serial            serial;                          // Serial output to the Pro Micro
         // C_stroke_feed       stroke_feed;                     // Steno stroke feed for regression testing
+        C_dictionary dictionary;
 
         //log.initialise( cfg.c().display_verbosity, cfg.c().display_datetime );
  
@@ -101,10 +96,13 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno device:%s", cfg.c().device_steno.c_str() );
 
         bool worked = true;
+        
+        worked = worked && dictionary.read( cfg.c().file_dict );
 
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
         worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
+
 
         if ( worked )
         {
