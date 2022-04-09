@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <iostream>
 #include <memory>
-#include <vector>
+#include <unordered_map>
 
 #include "cmdparser.h"
 #include "dictionary.h"
@@ -16,7 +16,6 @@ namespace stenosys
 #define EMPTY 0xffffffff
 
 typedef struct {
-    std::string chord;
     std::string text;
     uint16_t    flags;
 } STENO_ENTRY;
@@ -31,11 +30,10 @@ public:
     bool
     read( const std::string & path );
 
-private:
-
-
     bool
-    lookup( uint32_t entry, std::string & steno, std::string & text, uint16_t flags );
+    lookup( const std::string & steno, std::string & text, uint16_t & flags );
+
+private:
 
     void
     escape_characters( std::string & str );
@@ -46,8 +44,7 @@ private:
 
     std::string error_message_;
     
-    std::vector< STENO_ENTRY >          dictionary_array_;
-
+    std::unique_ptr< std::unordered_map< std::string, STENO_ENTRY > >  dictionary_;
     std::unique_ptr< C_command_parser > parser_;
 };
 

@@ -3,6 +3,9 @@
 #include <fstream>
 #include <iomanip>
 #include <limits.h>
+#include <memory>
+#include <unordered_map>
+#include <utility>
 
 #include "cmdparser.h"
 #include "dictionary.h"
@@ -22,7 +25,8 @@ const char * REGEX_DICTIONARY = "^.*\"(.*?)\": \"(.*?)\",$";  // JSON format lin
 C_dictionary::C_dictionary()
     : initialised_( false )
 {
-    parser_ = std::make_unique< C_command_parser >();
+    parser_     = std::make_unique< C_command_parser >();
+    dictionary_ = std::make_unique< std::unordered_map< std::string, STENO_ENTRY > >();
 }
 
 C_dictionary::~C_dictionary()
@@ -35,14 +39,8 @@ C_dictionary::read( const std::string & path )
 {
     try
     {
-        //temp
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_dictionary::read()" );
-    
         if ( C_text_file::read( path ) )
         {
-            //temp
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_dictionary::read(): 1" );
-
             uint32_t entry_count    = 0;
             uint32_t non_data_count = 0;
             
@@ -50,11 +48,6 @@ C_dictionary::read( const std::string & path )
     
             while ( get_line( line ) )
             {
-                if ( ( ++entry_count % 2000 ) == 0 )
-                {
-                    std::cout << "\r  Lines: " << entry_count;
-                }
-
                 std::string steno;
                 std::string text;
 
@@ -63,16 +56,17 @@ C_dictionary::read( const std::string & path )
                 // Check for valid JSON entry
                 if ( parse_line( line, REGEX_DICTIONARY, steno, text ) )
                 {
-                    // Parse the dictionary text for Plover commands and set steno flags
-                    parser_->parse( steno, text, flags );
-                    
-                    STENO_ENTRY steno_entry;
-                    
-                    steno_entry.chord = steno;
-                    steno_entry.text  = text;
-                    steno_entry.flags = flags;
+                    std::string parsed_text;
 
-                    dictionary_array_.push_back( steno_entry );
+                    // Parse the dictionary text for Plover commands and set steno flags
+                    parser_->parse( text, parsed_text, flags );
+
+                    STENO_ENTRY * steno_entry = new STENO_ENTRY();
+                    
+                    steno_entry->text  = parsed_text;
+                    steno_entry->flags = flags;
+                    
+                    dictionary_->insert( std::make_pair( steno, * steno_entry ) );
                 }
                 else
                 {
@@ -80,7 +74,9 @@ C_dictionary::read( const std::string & path )
                 }
             }
 
-            std::cout << "\n";
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u entries loaded", entry_count );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u non-data", non_data_count );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u dictionary_ count", dictionary_->size() );
         }
 
         return true;
@@ -97,20 +93,25 @@ C_dictionary::read( const std::string & path )
 }
 
 bool
-C_dictionary::lookup( uint32_t entry, std::string & steno, std::string & text, uint16_t flags )
+C_dictionary::lookup( const std::string & steno, std::string & text, uint16_t & flags )
 {
-    if ( entry < dictionary_array_.size() )
+    auto result = dictionary_->find( steno );
+    // std::unordered_map< std::string, STENO_ENTRY >::iterator it = dictionary_->find( steno );
+
+    if ( result == dictionary_->end() )
     {
-        STENO_ENTRY steno_entry = dictionary_array_[ entry ];
-
-        steno = steno_entry.chord;
-        text  = steno_entry.text;
-        flags = steno_entry.flags;
-
-        return true;
+        text  = steno;
+        flags = 0;
+        
+        return false;
+    }
+    else
+    {
+        text  = result->second.text;
+        flags = result->second.flags;
     }
 
-    return false;
+    return true;
 }
 
 /*

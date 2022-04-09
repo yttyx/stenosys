@@ -96,13 +96,11 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno device:%s", cfg.c().device_steno.c_str() );
 
         bool worked = true;
-        
-        worked = worked && dictionary.read( cfg.c().file_dict );
 
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
         worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
-
+        worked = worked && dictionary.read( cfg.c().file_dict );
 
         if ( worked )
         {
@@ -118,17 +116,20 @@ C_stenosys::run( int argc, char *argv[] )
                 // once all steno test file strokes have been consumed, .
                 //if ( stroke_feed.read( stroke ) || steno.read( stroke ) )
                 
-                // Get steno input from the C_keyboard
-                
                 S_geminipr_packet packet;
                 
                 if ( steno_keyboard.read( packet ) )
                 {
-                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Got steno packet" );
+                    // log_writeln( C_log::LL_INFO, LOG_SOURCE, "Got steno packet" );
 
                     std::string steno_chord = C_gemini_pr::decode( packet );
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s",steno_chord.c_str() );
+                    std::string text;
+                    uint16_t    flags = 0;
+
+                    dictionary.lookup( steno_chord, text, flags);
+
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, text: %s, flags: %u", steno_chord.c_str(), text.c_str(), flags );
 #if 0                
                     std::string translation;
 
@@ -140,7 +141,7 @@ C_stenosys::run( int argc, char *argv[] )
                 }
                 else if ( steno_keyboard.read( key_code ) )
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "raw input: %04u", key_code );
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %04x", key_code );
                     //serial.send( key_code );
                 }
 
