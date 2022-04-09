@@ -16,6 +16,9 @@ public:
     bool
     read( const std::string & path );
 
+    bool
+    get_line( std::string & line );
+
     std::string
     get_error_message() { return error_message_; }
 

@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "config.h"
 #include "device.h"
+#include "dictionary.h"
 #include "geminipr.h"
 #include "keyboard.h"
 #include "log.h"
@@ -68,6 +69,18 @@ C_stenosys::run( int argc, char *argv[] )
     if ( cfg.read( argc, argv ) )
     {
         // space_type sm = cfg.c().space_after ? SP_AFTER : SP_BEFORE;
+
+        //TEMP test dictionary building
+        C_dictionary dictionary;
+
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "cfg.c().file_dict: %s", cfg.c().file_dict.c_str() );
+
+
+        dictionary.build( cfg.c().file_dict, "./dict-output.txt" );
+
+        //TEMP:END
+
 
         C_steno_keyboard steno_keyboard;                        // Steno/raw x input from the steno ;keyboard
         // C_steno_translator  translator( sm, FM_ARDUINO );    // Steno to English convertor

@@ -5,8 +5,10 @@
 #include <memory>
 #include <vector>
 
+#include "cmdparser.h"
 #include "dictionary.h"
 #include "distribution.h"
+#include "textfile.h"
 
 namespace stenosys
 {
@@ -18,7 +20,7 @@ typedef struct {
     std::string text;
 } STENO_ENTRY;
 
-class C_dictionary
+class C_dictionary : C_text_file
 {
 public:
 

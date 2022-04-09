@@ -6,10 +6,16 @@
 
 #include "cmdparser.h"
 #include "dictionary.h"
+#include "log.h"
 #include "textfile.h"
+
+#define LOG_SOURCE "DICT "
 
 namespace stenosys
 {
+
+extern C_log log;
+
 
 const char * REGEX_DICTIONARY = "^.*\"(.*?)\": \"(.*?)\",$";  // JSON format line
 
@@ -36,6 +42,9 @@ C_dictionary::build( const std::string & dictionary_path, const std::string & ou
 {
     bool worked = true;
 
+    //temp
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_dictionary::build()" );
+    
     worked = worked && read( dictionary_path );
     worked = worked && hash_map_build();
     worked = worked && hash_map_test();
@@ -51,22 +60,22 @@ C_dictionary::read( const std::string & path )
 {
     try
     {
-        std::unique_ptr< C_text_file > text_file = std::make_unique< C_text_file >();
-
-        if ( text_file->read( path ) )
+        //temp
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_dictionary::read()" );
+    
+        if ( C_text_file::read( path ) )
         {
             std::string line;
             std::string steno;
             std::string text;
 
-            std::cout << "Reading from " << get_filename( path ) << std::endl;
+            //temp
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_dictionary::read(): 1" );
 
             uint32_t entry_count    = 0;
             uint32_t non_data_count = 0;
             
-            std::stringstream text_stream_;
-
-            while ( std::getline( text_stream_, line, '\n' ) )
+            while ( get_line( line ) )
             {
                 if ( ( ++entry_count % 2000 ) == 0 )
                 {
@@ -74,7 +83,7 @@ C_dictionary::read( const std::string & path )
                 }
 
                 // Check for valid JSON entry
-                if ( text_file->parse_line( line, REGEX_DICTIONARY, steno, text ) )
+                if ( parse_line( line, REGEX_DICTIONARY, steno, text ) )
                 {
                     STENO_ENTRY steno_entry;
 

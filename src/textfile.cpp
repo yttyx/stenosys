@@ -56,6 +56,19 @@ C_text_file::read( const std::string & path )
 }
 
 bool
+C_text_file::get_line( std::string & line )
+{
+    if ( text_stream_.eof() )
+    {
+        return false;
+    }
+
+    std::getline( text_stream_, line, '\n' );
+
+    return true;
+}
+
+bool
 C_text_file::parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 )
 {
     std::regex  regex_entry( regex );
