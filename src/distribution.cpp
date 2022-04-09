@@ -7,10 +7,11 @@ namespace stenosys
 static const uint32_t BAR_WIDTH = 126;
 
 C_distribution::C_distribution( const char * title, uint32_t max_bucket, uint64_t bucket_width )
-    : title_( title )
-    , max_bucket_( max_bucket )
+    : buckets_ ( nullptr )
     , bucket_width_( bucket_width )
+    , max_bucket_( max_bucket )
     , max_used_bucket_( 0 )
+    , title_( title )
 {
     buckets_ = new uint32_t[ max_bucket_ + 2 ];   // +1 for the 'greater than max' bucket
 

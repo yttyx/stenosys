@@ -64,7 +64,7 @@ private:
     top( FILE * output_stream );
 
     void
-    write( FILE * output_stream );
+    serialise( FILE * output_stream );
 
     void
     tail( FILE * output_stream );

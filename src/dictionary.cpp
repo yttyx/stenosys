@@ -1,4 +1,5 @@
 #include <fcntl.h>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <limits.h>
@@ -14,12 +15,12 @@ const char * REGEX_DICTIONARY = "^.*\"(.*?)\": \"(.*?)\",$";  // JSON format lin
 
 C_dictionary::C_dictionary()
     : hashmap_( nullptr )
+    , initialised_( false )
     , hash_capacity_( 0 )
     , hash_duplicate_count_( 0 )
     , hash_entry_count_( 0 )
     , hash_hit_capacity_count_( 0 )
     , hash_wrap_count_( 0 )
-    , initialised_( false )
 {
     // Analyse hash map collision distribution across 50 buckets
     hash_collision_distribution_ = std::make_unique< C_distribution >( "Collisions", 50, 1 );
@@ -360,15 +361,12 @@ C_dictionary::write( const std::string & output_path )
 {
     std::cout << "Writing out hashed dictionary to " << get_filename( output_path ) << std::endl;
 
-    FILE * output_stream = nullptr;
-
-    //TBW
-    //fopen( &output_stream, output_path.c_str(), "w" );
+    FILE * output_stream = fopen( output_path.c_str(), "wt" );
 
     if ( output_stream != nullptr )
     {
         top( output_stream );
-        write( output_stream );
+        serialise( output_stream );
         tail( output_stream );
 
         fclose ( output_stream );
@@ -383,7 +381,7 @@ C_dictionary::write( const std::string & output_path )
 }
 
 void
-C_dictionary::write( FILE * output_stream )
+C_dictionary::serialise( FILE * output_stream )
 {
     // Write the dictionary out in hash table order. This means that the dictionary is effectively
     // its own index and no separate hash table is required.
@@ -514,12 +512,14 @@ C_dictionary::tail( FILE * output_stream )
     }
 }
 
+/*
 // Reading from an array of strings will cause escaped characters to appear as the character itself
 // e.g. \\ becomes \
 //      \"         "
 // When writing these characters into new C string, they must be 're-escaped'
 // i.e. \ becomes \\
 //      " becomes \"
+*/
 void
 C_dictionary::escape_characters( std::string & str )
 {
@@ -558,6 +558,10 @@ C_dictionary::get_filename( const std::string & path )
     char filename[ _MAX_FNAME ];
     char fileext[ _MAX_EXT ];
 
+
+std::filesystem::path path 
+
+
     _splitpath_s( path.c_str(), nullptr, 0, nullptr, 0, filename, sizeof( filename ), fileext, sizeof( fileext ) );
 
     std::string out = filename;
@@ -565,6 +569,8 @@ C_dictionary::get_filename( const std::string & path )
 
     return out;
 #endif
+
+    return std::string( "" );
 }
 
 }

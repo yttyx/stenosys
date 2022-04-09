@@ -24,7 +24,8 @@ public:
 
 protected:
 
-    std::string       error_message_;
+    std::stringstream  text_stream_;
+    std::string        error_message_;
 };
 
 }

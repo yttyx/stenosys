@@ -29,9 +29,9 @@ private:
 public:
 
     uint32_t * buckets_;
+    uint64_t   bucket_width_;
     uint32_t   max_bucket_;
     uint32_t   max_used_bucket_;
-    uint64_t   bucket_width_;
 
     std::string title_;
 };
