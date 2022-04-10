@@ -7,7 +7,6 @@
 
 #include "cmdparser.h"
 #include "dictionary.h"
-#include "distribution.h"
 #include "textfile.h"
 
 namespace stenosys
@@ -45,7 +44,7 @@ private:
     std::string error_message_;
     
     std::unique_ptr< std::unordered_map< std::string, STENO_ENTRY > >  dictionary_;
-    std::unique_ptr< C_command_parser > parser_;
+    std::unique_ptr< C_command_parser >                                parser_;
 };
 
 }
