@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <memory>
 
 //#include <common.h>
 #include "log.h"
@@ -60,10 +61,17 @@ extern C_log log;
 C_translator::C_translator( space_type space_mode )
     : space_mode_( space_mode )
 {
+
 }
 
 C_translator::~C_translator()
 {
+}
+
+bool
+C_translator::initialise( const std::string & dictionary_path )
+{
+    return dictionary_->read( dictionary_path );
 }
 
 // Returns true if a translation was made
@@ -88,10 +96,13 @@ C_translator::translate( const std::string & steno, std::string & output )
 
     if ( steno == "*" )
     {
-        output = undo();
+//        output = undo();
     }
     else
     {
+        uint16_t flags = 0;
+
+        return dictionary_->lookup(steno, output, flags );
 /*
         stroke_curr_ = stroke_curr_->next;
 
@@ -105,7 +116,7 @@ C_translator::translate( const std::string & steno, std::string & output )
 */
     }    
 
-    return true;
+    return false;
 }
 
 /*
@@ -203,6 +214,7 @@ C_translator::undo()
 }
 */
 
+#if 0
 // backspaces: Number of backspaces required to delete text already output
 //             to get to the start point of outputting the current translation
 std::string
@@ -317,6 +329,7 @@ C_translator::format_output( C_stroke * previous_stroke_best_match
 
     return output;
 }
+#endif
 
 void
 C_translator::toggle_space_mode()

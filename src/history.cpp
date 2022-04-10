@@ -4,15 +4,15 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <memory>
 
-#include <common.h>
-#include <log.h>
-#include "steno-flags.h"
-#include "steno-translator.h"
+#include "common.h"
+#include "dictionary.h"
+#include "history.h"
+#include "log.h"
+#include "stenoflags.h"
 
-#define LOG_SOURCE "TRAN "
-
-extern bool dictionary_lookup(  const char * key, const char * & value, const uint16_t * & flags  );
+#define LOG_SOURCE "HIST "
 
 using namespace stenosys;
 
@@ -28,26 +28,57 @@ C_stroke::clear()
     found_         = false;
     best_match_    = false;
     best_match_    = false;
-    translation_   = NO_TRANSLATION;
-    flags_         = &NO_FLAGS;
+    translation_   = "";
+    flags_         = 0;
     stroke_seqnum_ = 0;
     superceded_    = false;
-    st_            = SP_NONE;
+}
+
+void
+C_stroke::set_next( C_stroke * next )
+{
+    next_ = next;
+}
+
+void
+C_stroke::set_prev( C_stroke * prev )
+{
+    prev_ = prev;
+}
+
+void
+C_stroke_history::C_stroke_history()
+{
+    // Turn the stroke array into a double-linked circular buffer
+    for ( std::size_t ii = 0; ii < NUMBEROF( strokes_ ); ii++ )
+    {
+        C_stroke * stroke = &strokes_[ ii ];
+
+        stroke->set_prev( &strokes_[ ( ii == 0 ) ? NUMBEROF( strokes_ ) - 1 : ii - 1 ] );
+        stroke->set_next( &strokes_[ ( ii == NUMBEROF( strokes_ ) - 1 ) ? 0 : ii + 1 ] );
+    }
+
+    //clear_all_strokes();
+
+    dictionary_ = std::make_unique< C_dictionary >();
+}
+
+bool
+C_stroke_history::initialise( const std::string dictionary_path )
+{
+    return dictionary_->read( dictionary_path );
 }
 
 // Assumes the most recent stroke is pointed to by stroke_curr_.
 // That stroke entry needs to be populated with the information required to render or undo it.
-C_stroke *
-C_stroke::find_best_match( const std::string & steno, const std::string & steno_key, std::string & translation )
+void
+C_stroke_history::find_best_match( const std::string & steno, const std::string & steno_key, std::string & translation )
 {
-    const char     * translation = NO_TRANSLATION;
-    const uint16_t * flags       = nullptr;
-
     //TBW End of find best match call sequence check
 
-    clear();
+    //clear();
 
-    steno_ = steno;
+//    steno_ = steno;
 
     std::string new_steno_key;
 
@@ -63,17 +94,16 @@ C_stroke::find_best_match( const std::string & steno, const std::string & steno_
     }
 
     // Look up the stroke
-    if ( dictionary_lookup( steno_key.c_str(), translation, flags ) )
+    std::string text;
+    uint16_t    flags = 0;
+
+    if ( dictionary_->lookup( steno, text, flags) )
     {
-        found_       = true;
-        translation_ = translation;
-        flags_       = flags;
+//        found_       = true;
+//        translation_ = translation;
+//        flags_       = flags;
     }
-
     //TBW to be continued...
-
-
-
 
     //    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation: |%s|", stroke_curr_->translation );
 
@@ -109,54 +139,33 @@ C_stroke::find_best_match( const std::string & steno, const std::string & steno_
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stroke_curr_->flag: %04x",        *stroke_curr_->flags );
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stroke_curr_->stroke_seqnum: %u", stroke_curr_->stroke_seqnum );
 
-    return format_output( best_match_stroke->prev, backspaces, stroke_curr_ );
+    // format_output( best_match_stroke->prev, backspaces, stroke_curr_ );
 }
 
 // ------------------
 
-C_steno_translator::C_steno_translator( space_type space_mode, formatter_mode format_mode )
-    : space_mode_( space_mode )
-    , stroke_curr_( &strokes_[ 0 ] )
-{
-    formatter_ = std::make_unique< C_formatter >( format_mode );
-
-    // Turn the stroke array into a double-linked circular buffer
-    for ( std::size_t ii = 0; ii < NUMBEROF( strokes_ ); ii++ )
-    {
-        C_stroke * stroke = &strokes_[ ii ];
-
-        stroke->prev = &strokes_[ ( ii == 0 ) ? NUMBEROF( strokes_ ) - 1 : ii - 1 ];
-        stroke->next = &strokes_[ ( ii == NUMBEROF( strokes_ ) - 1 ) ? 0 : ii + 1 ];
-    }
-
-    clear_all_strokes();
-}
-
-C_steno_translator::~C_steno_translator()
-{
-}
 
 // Returns true if a translation was made
 bool
-C_steno_translator::translate( const std::string & steno, std::string & output )
+C_stroke_history::lookup( const std::string & steno, std::string & output )
 {
     // debug
     if ( steno == "#S" )
     {
-        toggle_space_mode();
+//        toggle_space_mode();
         return false;
     }
 
     // debug
     if ( steno == "#-D" )
     {
-        output = dump_stroke_buffer();
+ //       output = dump_stroke_buffer();
         return true;
     }
 
     if ( steno == "*" )
     {
-        output = undo();
+//        output = undo();
     }
     else
     {
@@ -175,7 +184,7 @@ C_steno_translator::translate( const std::string & steno, std::string & output )
 }
 
 std::string
-C_steno_translator::undo()
+C_stroke_history::undo()
 {
     if ( stroke_curr_->steno.length() == 0 )
     {
@@ -270,7 +279,7 @@ C_steno_translator::undo()
 // backspaces: Number of backspaces required to delete text already output
 //             to get to the start point of outputting the current translation
 std::string
-C_steno_translator::format_output( C_stroke * previous_stroke_best_match
+C_stroke_history::format_output( C_stroke * previous_stroke_best_match
                                  , uint8_t    backspaces
                                  , C_stroke * current_stroke )
 {
@@ -384,7 +393,7 @@ C_steno_translator::format_output( C_stroke * previous_stroke_best_match
 
 // Format contents of stroke buffer into a string
 std::string
-C_steno_translator::dump_stroke_buffer()
+C_stroke_history::dump_stroke_buffer()
 {
     std::string output;
 
@@ -432,7 +441,7 @@ C_steno_translator::dump_stroke_buffer()
 }
 
 void
-C_steno_translator::toggle_space_mode()
+C_stroke_history::toggle_space_mode()
 {
     space_mode_ = ( space_mode_ == SP_BEFORE ) ? SP_AFTER : SP_BEFORE;
 
@@ -442,7 +451,7 @@ C_steno_translator::toggle_space_mode()
 }
 
 void
-C_steno_translator::clear_all_strokes()
+C_stroke_history::clear_all_strokes()
 {
     for ( std::size_t ii = 0; ii < NUMBEROF( strokes_ ); ii++ )
     {
@@ -458,7 +467,7 @@ C_steno_translator::clear_all_strokes()
 // Convert control characters in a string to text
 // For example, "\n" becomes [0a]"
 std::string
-C_steno_translator::ctrl_to_text( const std::string & text )
+C_stroke_history::ctrl_to_text( const std::string & text )
 {
     std::string output;
 
@@ -480,8 +489,8 @@ C_steno_translator::ctrl_to_text( const std::string & text )
     return output;
 }
 
-const char *   C_steno_translator::NO_TRANSLATION = "";
-const uint16_t C_steno_translator::NO_FLAGS       = 0x0000;
-const uint16_t C_steno_translator::DUMMY_ATTACH   = ATTACH_TO_NEXT;
+const char *   C_stroke_history::NO_TRANSLATION = "";
+const uint16_t C_stroke_history::NO_FLAGS       = 0x0000;
+const uint16_t C_stroke_history::DUMMY_ATTACH   = ATTACH_TO_NEXT;
 
 }

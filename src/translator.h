@@ -53,7 +53,6 @@ private:
 
     //std::unique_ptr< C_formatter > formatter_;
 
-    std::unique_ptr< C_dictionary > dictionary_;
     
     static const char   * NO_TRANSLATION;
     static const uint16_t NO_FLAGS;
