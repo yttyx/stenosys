@@ -5,15 +5,18 @@
 #include <memory>
 
 #include "dictionary.h"
-#include "formatter.h"
 
 using namespace stenosys;
 
 namespace stenosys
 {
 
+enum space_type { SP_NONE, SP_BEFORE, SP_AFTER };
+
 const uint8_t STROKE_BUFFER_MAX = 10U;
 
+
+// TODO Move C_stroke to stroke.cpp
 class C_stroke
 {
 
@@ -28,8 +31,20 @@ public:
     void
     set_prev( C_stroke * prev );
 
+    C_stroke * 
+    next();
+
     void
     clear();
+
+    void
+    find_best_match( std::unique_ptr< C_dictionary > dictionary
+                   , const std::string &             steno
+                   , const std::string &             steno_key
+                   , std::string &                   translation );
+
+    std::string 
+    undo( C_stroke ** stroke, space_type space_mode );
 
 private:
 
@@ -40,8 +55,8 @@ private:
     std::string      steno_;                // Steno
     bool             found_;                // Steno entry was found in dictionary
     
-    const char *     translation_;          // Steno translation
-    const uint16_t * flags_;                // Formatting flags
+    std::string      translation_;          // Steno translation
+    const uint16_t   flags_;                // Formatting flags
 
     uint16_t         stroke_seqnum_;        // The position of this stroke in a multi-stoke word
     
@@ -64,14 +79,21 @@ public:
     bool
     lookup( const std::string & steno, std::string & output );
 
-    void 
-    find_best_match( const std::string & steno, const std::string & steno_key, std::string & translation );
-
 private:
+
+    std::string
+    undo();
+
+    std::string
+    dump_stroke_buffer();
+
+    void
+    clear_all_strokes();
 
 private:
 
     C_stroke strokes_[ STROKE_BUFFER_MAX ];
+    C_stroke * stroke_curr_;
 
     std::unique_ptr< C_dictionary > dictionary_;
 

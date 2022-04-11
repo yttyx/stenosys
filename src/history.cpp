@@ -21,17 +21,11 @@ namespace stenosys
 
 extern C_log log;
 
-void
-C_stroke::clear()
+
+C_stroke *
+C_stroke::next()
 {
-    steno_         = "";
-    found_         = false;
-    best_match_    = false;
-    best_match_    = false;
-    translation_   = "";
-    flags_         = 0;
-    stroke_seqnum_ = 0;
-    superceded_    = false;
+    return this->next_;
 }
 
 void
@@ -47,32 +41,27 @@ C_stroke::set_prev( C_stroke * prev )
 }
 
 void
-C_stroke_history::C_stroke_history()
+C_stroke::clear()
 {
-    // Turn the stroke array into a double-linked circular buffer
-    for ( std::size_t ii = 0; ii < NUMBEROF( strokes_ ); ii++ )
-    {
-        C_stroke * stroke = &strokes_[ ii ];
-
-        stroke->set_prev( &strokes_[ ( ii == 0 ) ? NUMBEROF( strokes_ ) - 1 : ii - 1 ] );
-        stroke->set_next( &strokes_[ ( ii == NUMBEROF( strokes_ ) - 1 ) ? 0 : ii + 1 ] );
-    }
-
-    //clear_all_strokes();
-
-    dictionary_ = std::make_unique< C_dictionary >();
+    steno_         = "";
+    found_         = false;
+    best_match_    = false;
+    best_match_    = false;
+    translation_   = "";
+    flags_         = 0;
+    stroke_seqnum_ = 0;
+    superceded_    = false;
 }
 
-bool
-C_stroke_history::initialise( const std::string dictionary_path )
-{
-    return dictionary_->read( dictionary_path );
-}
+
 
 // Assumes the most recent stroke is pointed to by stroke_curr_.
 // That stroke entry needs to be populated with the information required to render or undo it.
 void
-C_stroke_history::find_best_match( const std::string & steno, const std::string & steno_key, std::string & translation )
+C_stroke::find_best_match( std::unique_ptr< C_dictionary > dictionary
+                         , const std::string & steno
+                         , const std::string & steno_key
+                         , std::string &       translation )
 {
     //TBW End of find best match call sequence check
 
@@ -97,7 +86,7 @@ C_stroke_history::find_best_match( const std::string & steno, const std::string 
     std::string text;
     uint16_t    flags = 0;
 
-    if ( dictionary_->lookup( steno, text, flags) )
+    if ( dictionary->lookup( steno, text, flags) )
     {
 //        found_       = true;
 //        translation_ = translation;
@@ -142,51 +131,10 @@ C_stroke_history::find_best_match( const std::string & steno, const std::string 
     // format_output( best_match_stroke->prev, backspaces, stroke_curr_ );
 }
 
-// ------------------
-
-
-// Returns true if a translation was made
-bool
-C_stroke_history::lookup( const std::string & steno, std::string & output )
-{
-    // debug
-    if ( steno == "#S" )
-    {
-//        toggle_space_mode();
-        return false;
-    }
-
-    // debug
-    if ( steno == "#-D" )
-    {
- //       output = dump_stroke_buffer();
-        return true;
-    }
-
-    if ( steno == "*" )
-    {
-//        output = undo();
-    }
-    else
-    {
-        stroke_curr_ = stroke_curr_->next;
-
-        stroke_curr_.find_best_match( steno, "", translation );
-
-        stroke_curr_->steno         = steno;
-        stroke_curr_->stroke_seqnum = 1;
-       
-        output = lookup();
-        output = formatter_->format( output );
-    }    
-
-    return true;
-}
-
 std::string
-C_stroke_history::undo()
+C_stroke::undo( C_stroke ** stroke, space_type space_mode )
 {
-    if ( stroke_curr_->steno.length() == 0 )
+    if ( ( *stroke )->steno_.length() == 0 )
     {
         // Nothing to undo
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "Nothing to undo" );
@@ -196,26 +144,26 @@ C_stroke_history::undo()
     std::string output;
 
     uint16_t backspaces = 0;
-    bool     got_translation = ( strlen( stroke_curr_->translation ) > 0 );
+    bool     got_translation = ( ( *stroke )->translation_.length() > 0 );
 
     if ( got_translation )
     {
-        backspaces = ( uint8_t ) ( strlen( stroke_curr_->translation ) + ( ( stroke_curr_->st != SP_NONE ) ? 1 : 0 ) );
+        backspaces = ( uint8_t ) ( ( *stroke )->translation_.length() ) + ( ( space_mode != SP_NONE ) ? 1 : 0 ) );
     }
     else
     {
-        backspaces = ( uint8_t ) stroke_curr_->steno.length();
+        backspaces = ( uint8_t ) ( *stroke )->steno_.length();
     }
 
     output += std::string( backspaces, '\b' );
 
     if ( got_translation )
     {
-        C_stroke * stroke_prev = stroke_curr_->prev;
+        C_stroke * stroke_prev = ( *stroke )->prev_;
 
-        if ( stroke_prev->st == SP_AFTER )
+        if ( space_mode == SP_AFTER )
         {
-            const uint16_t current_stroke_flags = *stroke_curr_->flags;
+            const uint16_t current_stroke_flags = ( *stroke )->flags_;
 
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: current_stroke_flags : %04x", current_stroke_flags );
 
@@ -229,47 +177,47 @@ C_stroke_history::undo()
         }
     }
 
-    C_stroke * stroke_lookback  = stroke_curr_;
+    C_stroke * stroke_lookback = *stroke;
 
     // Position to the first stroke in the stroke sequence
-    while ( stroke_lookback->stroke_seqnum > 1 )
+    while ( stroke_lookback->stroke_seqnum_ > 1 )
     {
-        stroke_lookback = stroke_lookback->prev;
+        stroke_lookback = stroke_lookback.prev_;
     }
 
     // Replay any previous strokes in the sequence
-    while ( stroke_lookback != stroke_curr_ )
+    while ( stroke_lookback != *stroke )
     {
-        if ( stroke_lookback->superceded )
+        if ( stroke_lookback->superceded_ )
         {
-            if ( stroke_lookback->st == SP_BEFORE )
+            if ( space_mode == SP_BEFORE )
             {
                 output += " ";
             }
 
-            if ( stroke_lookback->translation != nullptr )
+            if ( stroke_lookback->translation_.length() != 0 )
             {
-                output += stroke_lookback->translation;
+                output += stroke_lookback->translation_;
             }
             else
             {
-                output += stroke_lookback ->steno;
+                output += stroke_lookback ->steno_;
             }
 
-            if ( stroke_lookback->st == SP_AFTER )
+            if ( space_mode == SP_AFTER )
             {
                 output += " ";
             }
 
-            stroke_lookback->superceded = false;
+            stroke_lookback->superceded_ = false;
         }
 
-        stroke_lookback = stroke_lookback->next;
+        stroke_lookback = stroke_lookback->next_;
     }
 
-    clear( stroke_curr_ );
+    clear( *stroke );
 
-    stroke_curr_ = stroke_curr_->prev;
+    stroke = ( *stroke)->prev_;
 
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: output: |%s|", ctrl_to_text( output ).c_str() );
 
@@ -392,6 +340,7 @@ C_stroke_history::format_output( C_stroke * previous_stroke_best_match
 }
 
 // Format contents of stroke buffer into a string
+// TODO Move method to C_stroke class
 std::string
 C_stroke_history::dump_stroke_buffer()
 {
@@ -455,7 +404,7 @@ C_stroke_history::clear_all_strokes()
 {
     for ( std::size_t ii = 0; ii < NUMBEROF( strokes_ ); ii++ )
     {
-        &strokes_[ ii ].clear();
+        strokes_[ ii ]->clear();
     }
 
     // Create a dummy entry for an attached stroke so the very first user
@@ -465,6 +414,74 @@ C_stroke_history::clear_all_strokes()
 }
 
 // Convert control characters in a string to text
+C_stroke_history::C_stroke_history()
+{
+    // Turn the stroke array into a double-linked circular buffer
+    for ( std::size_t ii = 0; ii < NUMBEROF( strokes_ ); ii++ )
+    {
+        C_stroke * stroke = &strokes_[ ii ];
+
+        if ( ii == 0 )
+        {
+            stroke_curr_ = stroke;
+        }
+    
+        stroke->set_prev( &strokes_[ ( ii == 0 ) ? NUMBEROF( strokes_ ) - 1 : ii - 1 ] );
+        stroke->set_next( &strokes_[ ( ii == NUMBEROF( strokes_ ) - 1 ) ? 0 : ii + 1 ] );
+    }
+
+
+    clear_all_strokes();
+
+    dictionary_ = std::make_unique< C_dictionary >();
+}
+
+bool
+C_stroke_history::initialise( const std::string dictionary_path )
+{
+    return dictionary_->read( dictionary_path );
+}
+
+}
+
+// ------------------
+
+
+// Returns true if a translation was made
+bool
+C_stroke_history::lookup( const std::string & steno, std::string & output )
+{
+    // debug
+    if ( steno == "#S" )
+    {
+//        toggle_space_mode();
+        return false;
+    }
+
+    // debug
+    if ( steno == "#-D" )
+    {
+        output = dump_stroke_buffer();
+        return true;
+    }
+
+    if ( steno == "*" )
+    {
+        output = undo();
+    }
+    else
+    {
+        stroke_curr_ = stroke_curr_->next();
+
+        stroke_curr_->find_best_match( dictionary_, steno, "", output );
+
+//        stroke_curr_->steno         = steno;
+//        stroke_curr_->stroke_seqnum = 1;
+    }
+
+    return true;
+}
+
 // For example, "\n" becomes [0a]"
 std::string
 C_stroke_history::ctrl_to_text( const std::string & text )

@@ -13,16 +13,12 @@ using namespace stenosys;
 namespace stenosys
 {
 
-enum space_type { SP_NONE, SP_BEFORE, SP_AFTER };
-
-const uint8_t STROKE_BUFFER_MAX = 10U;
-
 class C_translator
 {
 
 public:
 
-    C_translator( space_type trans_mode );
+    C_translator( space_type space_mode );
     ~C_translator();
 
     bool
@@ -35,8 +31,6 @@ private:
     
     C_translator(){}
 
-    std::string 
-    undo();
 
 //    std::string
 //    format_output( C_stroke * stroke_previous_to_best_match, uint8_t backspaces, C_stroke * current_stroke );
