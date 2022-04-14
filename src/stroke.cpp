@@ -77,8 +77,23 @@ C_stroke::clear( C_stroke * stroke )
     stroke->superceded_    = false;
 }
 
-// Assumes the most recent stroke is pointed to by curr_.
-// That stroke entry needs to be populated with the information required to render or undo it.
+// Find the match dictionary match, given a new steno chord and with reference to
+// previous steno entries. The calling code can format the output text, using the
+// flags from the current and previous stroke as required.
+void
+C_stroke::find_best_match( std::unique_ptr< C_dictionary > dictionary
+                         , const std::string &             steno
+                         , std::string &                   text 
+                         , uint16_t                        flags
+                         , uint16_t                        flags_prev )
+{
+    
+}
+
+
+
+
+
 void
 C_stroke::find_best_match( std::unique_ptr< C_dictionary > dictionary
                          , const std::string & steno

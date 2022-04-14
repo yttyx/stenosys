@@ -25,14 +25,15 @@ public:
     C_stroke() {}
     ~C_stroke(){}
 
-    static 
-    bool initialise();
+    static bool
+    initialise();
 
-    void
+    static void
     find_best_match( std::unique_ptr< C_dictionary > dictionary
                    , const std::string &             steno
-                   , const std::string &             steno_key
-                   , std::string &                   translation );
+                   , std::string &                   text 
+                   , uint16_t                        flags
+                   , uint16_t                        flags_prev );
 
     static void
     clear_all();
@@ -56,6 +57,11 @@ private:
 
 #endif
 
+    void
+    find_best_match( std::unique_ptr< C_dictionary > dictionary
+                   , const std::string &             steno
+                   , const std::string &             steno_key
+                   , std::string &                   translation );
     void
     clear( C_stroke * stroke );
 
