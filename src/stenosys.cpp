@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "miscellaneous.h"
 #include "stenokeyboard.h"
 #include "stenosys.h"
-#include "translator.h"
+//#include "translator.h"
 
 #define LOG_SOURCE "SITM "
 
@@ -75,7 +75,7 @@ C_stenosys::run( int argc, char *argv[] )
         // C_serial            serial;                          // Serial output to the Pro Micro
         // C_stroke_feed       stroke_feed;                     // Steno stroke feed for regression testing
         // space_type sm = cfg.c().space_after ? SP_AFTER : SP_BEFORE;
-        C_translator translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
+        //C_translator translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
 
         //log.initialise( cfg.c().display_verbosity, cfg.c().display_datetime );
  
@@ -95,7 +95,7 @@ C_stenosys::run( int argc, char *argv[] )
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
         worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
-        worked = worked && translator.initialise( cfg.c().file_dict );
+        //worked = worked && translator.initialise( cfg.c().file_dict );
 
         if ( worked )
         {
@@ -120,12 +120,13 @@ C_stenosys::run( int argc, char *argv[] )
                     std::string steno_chord = C_gemini_pr::decode( packet );
 
                     std::string translation;
-
+#if 0
                     if ( translator.translate( steno_chord, translation ) )
                     {
                         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, text: %s", steno_chord.c_str(), text.c_str() );
 //                      serial.send( translation );
                     }
+#endif
                 }
                 else if ( steno_keyboard.read( key_code ) )
                 {

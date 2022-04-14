@@ -21,42 +21,37 @@ namespace stenosys
 
 extern C_log log;
 
-
-C_stroke *
-C_stroke::next()
+bool
+C_stroke::initialise()
 {
-    return this->next_;
-}
+    // Create a doubly-linked list of C_stroke objects
+    C_stroke * stroke_prev = nullptr;
 
-void
-C_stroke::set_curr( C_stroke * curr )
-{
-    curr_ = curr;
-}
+    for ( std::size_t ii = 0; ii < STROKE_BUFFER_MAX; ii++ )
+    {
+        if ( ii == 0 )
+        {
+            curr_ = new C_stroke();
 
-void
-C_stroke::set_next( C_stroke * next )
-{
-    next_ = next;
-}
+            stroke_prev = curr_;
+        }
+        else if ( ii == ( STROKE_BUFFER_MAX - 1 ) )
+        {
+            C_stroke * stroke_new = new C_stroke();
 
-void
-C_stroke::set_prev( C_stroke * prev )
-{
-    prev_ = prev;
-}
+            stroke_new->next_ = curr_;
+            curr_->prev_      = stroke_new;
+        }
+        else
+        {
+            C_stroke * stroke_new = new C_stroke();
 
-void
-C_stroke::clear( C_stroke * stroke )
-{
-    stroke->steno_         = "";
-    stroke->found_         = false;
-    stroke->best_match_    = false;
-    stroke->best_match_    = false;
-    stroke->translation_   = "";
-    stroke->flags_         = 0;
-    stroke->stroke_seqnum_ = 0;
-    stroke->superceded_    = false;
+            stroke_prev->next_ = stroke_new;
+            stroke_new->prev_  = stroke_prev;
+        }
+    }
+
+    return true;
 }
 
 void
@@ -70,10 +65,16 @@ C_stroke::clear_all()
 }
 
 void
-C_stroke::add( const std::string & steno )
+C_stroke::clear( C_stroke * stroke )
 {
-    curr_ = curr_->next_; 
-    curr_->steno_ = steno;
+    stroke->steno_         = "";
+    stroke->found_         = false;
+    stroke->best_match_    = false;
+    stroke->best_match_    = false;
+    stroke->translation_   = "";
+    stroke->flags_         = 0;
+    stroke->stroke_seqnum_ = 0;
+    stroke->superceded_    = false;
 }
 
 // Assumes the most recent stroke is pointed to by curr_.
@@ -155,6 +156,8 @@ C_stroke::find_best_match( std::unique_ptr< C_dictionary > dictionary
 std::string
 C_stroke::undo( C_stroke ** stroke, space_type space_mode )
 {
+    std::string output;
+#if 0
     if ( ( *stroke )->steno_.length() == 0 )
     {
         // Nothing to undo
@@ -162,7 +165,6 @@ C_stroke::undo( C_stroke ** stroke, space_type space_mode )
         return "";
     }
     
-    std::string output;
 
     uint16_t backspaces = 0;
     bool     got_translation = ( ( *stroke )->translation_.length() > 0 );
@@ -241,7 +243,7 @@ C_stroke::undo( C_stroke ** stroke, space_type space_mode )
     *stroke = ( *stroke)->prev_;
 
 //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: output: |%s|", ctrl_to_text( output ).c_str() );
-
+#endif
     return output;
 }
 
@@ -251,6 +253,7 @@ C_stroke::dump()
 {
     std::string output;
 
+#if 0
     output = "\n\n";
     output += "  steno         translation       flag  sq  s'ceded  space\n";
     output += "  ------------  ----------------  ----  --  -------  ------\n";
@@ -289,18 +292,9 @@ C_stroke::dump()
     }
 
     //log_writeln( C_log::LL_INFO, LOG_SOURCE, "dump_stroke_buffer(): 4" );
-
+#endif
     return output;
 }
-
-
-
-// ------------------
-
-
-// Returns true if a translation was made
-bool
-
 
 C_stroke * C_stroke::curr_ = nullptr;
 

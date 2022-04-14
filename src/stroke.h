@@ -12,6 +12,9 @@ using namespace stenosys;
 namespace stenosys
 {
 
+#define STROKE_BUFFER_MAX 12
+
+
 enum space_type { SP_NONE, SP_BEFORE, SP_AFTER };
 
 class C_stroke
@@ -21,10 +24,27 @@ public:
 
     C_stroke() {}
     ~C_stroke(){}
-    
+
+    static 
+    bool initialise();
+
+    void
+    find_best_match( std::unique_ptr< C_dictionary > dictionary
+                   , const std::string &             steno
+                   , const std::string &             steno_key
+                   , std::string &                   translation );
+
     static void
-    set_curr( C_stroke * next );
+    clear_all();
+
+    static std::string
+    dump();
     
+//    static void
+//    set_curr( C_stroke * next );
+private:
+
+#if 0
     void
     set_next( C_stroke * next );
     
@@ -34,26 +54,13 @@ public:
     C_stroke * 
     next();
 
+#endif
+
     void
     clear( C_stroke * stroke );
 
-    static void
-    clear_all();
-
-    static void
-    add( const std::string & steno );
-
-    void
-    find_best_match( std::unique_ptr< C_dictionary > dictionary
-                   , const std::string &             steno
-                   , const std::string &             steno_key
-                   , std::string &                   translation );
-
     std::string 
     undo( C_stroke ** stroke, space_type space_mode );
-
-    std::string
-    dump();
 
 private:
 
