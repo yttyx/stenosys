@@ -1,17 +1,19 @@
 // translator.h
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <memory>
 
 #include "dictionary.h"
-//#include "history.h"
-#include "formatter.h"
+#include "history.h"
 
 using namespace stenosys;
 
 namespace stenosys
 {
+
+enum space_type { SP_NONE, SP_BEFORE, SP_AFTER };
 
 class C_translator
 {
@@ -45,8 +47,10 @@ private:
     
     space_type space_mode_;
 
-    //std::unique_ptr< C_formatter > formatter_;
+    std::unique_ptr< C_dictionary >     dictionary_;
+    std::unique_ptr< C_stroke_history > stroke_history_;
 
+    //std::unique_ptr< C_formatter > formatter_;
     
     static const char   * NO_TRANSLATION;
     static const uint16_t NO_FLAGS;

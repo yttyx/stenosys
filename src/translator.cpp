@@ -7,6 +7,8 @@
 #include <memory>
 
 //#include <common.h>
+#include "dictionary.h"
+#include "history.h"
 #include "log.h"
 #include "stenoflags.h"
 #include "translator.h"
@@ -20,48 +22,16 @@ namespace stenosys
 
 extern C_log log;
 
-    //    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation: |%s|", stroke_curr_->translation );
+namespace stenosys
+{
 
-    //    lookback_stroke = lookback_stroke->prev;
-    //}    
-
-    //uint8_t stroke_seqnum = 1;
-    //uint8_t backspaces    = 0;
-
-    //lookback_stroke = best_match_stroke;
-
-    //// Fix up the stroke sequence number working forward from the best match stroke,
-    //// calculating the number of backspaces required to remove the output from an
-    //// earlier best match stroke as we go.
-    //// The earlier best stroke output will be replaced by the output from the current
-    //// stroke.
-    //while ( lookback_stroke != stroke_curr_ )
-    //{
-    //    lookback_stroke->stroke_seqnum = stroke_seqnum++;
-
-    //    if ( ! lookback_stroke->superceded )
-    //    {
-    //        backspaces += ( uint8_t ) ( strlen( lookback_stroke->translation ) + ( ( lookback_stroke->st == SP_NONE ) ? 1 : 0 ) );
-    //        lookback_stroke->superceded = true;
-    //    }
-
-    //    lookback_stroke = lookback_stroke->next;
-    //}
-
-    //stroke_curr_->stroke_seqnum = stroke_seqnum;
-
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stroke_curr_->translation: %s",   stroke_curr_->translation );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stroke_curr_->flag: %04x",        *stroke_curr_->flags );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stroke_curr_->stroke_seqnum: %u", stroke_curr_->stroke_seqnum );
-
-//    return format_output( best_match_stroke->prev, backspaces, stroke_curr_ );
-
-// ------------------
+extern C_log log;
 
 C_translator::C_translator( space_type space_mode )
     : space_mode_( space_mode )
 {
-
+    dictionary_     = std::make_unique< C_dictionary >();
+    stroke_history_ = std::make_unique< C_stroke_history>();
 }
 
 C_translator::~C_translator()
@@ -102,7 +72,9 @@ C_translator::translate( const std::string & steno, std::string & output )
     {
         uint16_t flags = 0;
 
-        return dictionary_->lookup(steno, output, flags );
+        //TODO call into stroke history object for stroke lookup
+        //
+//        return dictionary_->lookup(steno, output, flags );
 /*
         stroke_curr_ = stroke_curr_->next;
 
@@ -119,102 +91,6 @@ C_translator::translate( const std::string & steno, std::string & output )
     return false;
 }
 
-/*
-std::string
-C_translator::undo()
-{
-    if ( stroke_curr_->steno.length() == 0 )
-    {
-        // Nothing to undo
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Nothing to undo" );
-        return "";
-    }
-    
-    std::string output;
-
-    uint16_t backspaces = 0;
-    bool     got_translation = ( strlen( stroke_curr_->translation ) > 0 );
-
-    if ( got_translation )
-    {
-        backspaces = ( uint8_t ) ( strlen( stroke_curr_->translation ) + ( ( stroke_curr_->st != SP_NONE ) ? 1 : 0 ) );
-    }
-    else
-    {
-        backspaces = ( uint8_t ) stroke_curr_->steno.length();
-    }
-
-    output += std::string( backspaces, '\b' );
-
-    if ( got_translation )
-    {
-        C_stroke * stroke_prev = stroke_curr_->prev;
-
-        if ( stroke_prev->st == SP_AFTER )
-        {
-            const uint16_t current_stroke_flags = *stroke_curr_->flags;
-
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: current_stroke_flags : %04x", current_stroke_flags );
-
-            if ( current_stroke_flags & ATTACH_TO_PREVIOUS )
-            {
-                // Restore the space that would previously have been removed when attaching the current stroke's output
-                output += " ";
-
-                log_writeln( C_log::LL_INFO, LOG_SOURCE, "UNDO: Restored space" );
-            }
-        }
-    }
-
-    C_stroke * stroke_lookback  = stroke_curr_;
-
-    // Position to the first stroke in the stroke sequence
-    while ( stroke_lookback->stroke_seqnum > 1 )
-    {
-        stroke_lookback = stroke_lookback->prev;
-    }
-
-    // Replay any previous strokes in the sequence
-    while ( stroke_lookback != stroke_curr_ )
-    {
-        if ( stroke_lookback->superceded )
-        {
-            if ( stroke_lookback->st == SP_BEFORE )
-            {
-                output += " ";
-            }
-
-            if ( stroke_lookback->translation != nullptr )
-            {
-                output += stroke_lookback->translation;
-            }
-            else
-            {
-                output += stroke_lookback ->steno;
-            }
-
-            if ( stroke_lookback->st == SP_AFTER )
-            {
-                output += " ";
-            }
-
-            stroke_lookback->superceded = false;
-        }
-
-        stroke_lookback = stroke_lookback->next;
-    }
-
-    clear( stroke_curr_ );
-
-    stroke_curr_ = stroke_curr_->prev;
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: output: |%s|", ctrl_to_text( output ).c_str() );
-
-    return output;
-}
-*/
-
-#if 0
 // backspaces: Number of backspaces required to delete text already output
 //             to get to the start point of outputting the current translation
 std::string
@@ -222,6 +98,9 @@ C_translator::format_output( C_stroke * previous_stroke_best_match
                                  , uint8_t    backspaces
                                  , C_stroke * current_stroke )
 {
+    std::string output;
+
+#if 0
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces: %u", ( uint16_t ) backspaces );
 
     bool config_space_before = ( space_mode_ == SP_BEFORE );
@@ -326,10 +205,104 @@ C_translator::format_output( C_stroke * previous_stroke_best_match
         // If stroke was not found output the raw steno
         output = current_stroke->steno;
     }
+#endif
+    return output;
+}
+
+/*
+std::string
+C_translator::undo()
+{
+    if ( stroke_curr_->steno.length() == 0 )
+    {
+        // Nothing to undo
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Nothing to undo" );
+        return "";
+    }
+    
+    std::string output;
+
+    uint16_t backspaces = 0;
+    bool     got_translation = ( strlen( stroke_curr_->translation ) > 0 );
+
+    if ( got_translation )
+    {
+        backspaces = ( uint8_t ) ( strlen( stroke_curr_->translation ) + ( ( stroke_curr_->st != SP_NONE ) ? 1 : 0 ) );
+    }
+    else
+    {
+        backspaces = ( uint8_t ) stroke_curr_->steno.length();
+    }
+
+    output += std::string( backspaces, '\b' );
+
+    if ( got_translation )
+    {
+        C_stroke * stroke_prev = stroke_curr_->prev;
+
+        if ( stroke_prev->st == SP_AFTER )
+        {
+            const uint16_t current_stroke_flags = *stroke_curr_->flags;
+
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: current_stroke_flags : %04x", current_stroke_flags );
+
+            if ( current_stroke_flags & ATTACH_TO_PREVIOUS )
+            {
+                // Restore the space that would previously have been removed when attaching the current stroke's output
+                output += " ";
+
+                log_writeln( C_log::LL_INFO, LOG_SOURCE, "UNDO: Restored space" );
+            }
+        }
+    }
+
+    C_stroke * stroke_lookback  = stroke_curr_;
+
+    // Position to the first stroke in the stroke sequence
+    while ( stroke_lookback->stroke_seqnum > 1 )
+    {
+        stroke_lookback = stroke_lookback->prev;
+    }
+
+    // Replay any previous strokes in the sequence
+    while ( stroke_lookback != stroke_curr_ )
+    {
+        if ( stroke_lookback->superceded )
+        {
+            if ( stroke_lookback->st == SP_BEFORE )
+            {
+                output += " ";
+            }
+
+            if ( stroke_lookback->translation != nullptr )
+            {
+                output += stroke_lookback->translation;
+            }
+            else
+            {
+                output += stroke_lookback ->steno;
+            }
+
+            if ( stroke_lookback->st == SP_AFTER )
+            {
+                output += " ";
+            }
+
+            stroke_lookback->superceded = false;
+        }
+
+        stroke_lookback = stroke_lookback->next;
+    }
+
+    clear( stroke_curr_ );
+
+    stroke_curr_ = stroke_curr_->prev;
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: output: |%s|", ctrl_to_text( output ).c_str() );
 
     return output;
 }
-#endif
+*/
 
 void
 C_translator::toggle_space_mode()
