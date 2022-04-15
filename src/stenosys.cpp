@@ -33,10 +33,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "miscellaneous.h"
 #include "stenokeyboard.h"
 #include "stenosys.h"
-#include "stroke.h" //TEMP
-#include "dictionary.h" //TEMP
-
-//#include "translator.h"
+#include "dictionary.h"
+#include "translator.h"
 
 #define LOG_SOURCE "SITM "
 
@@ -73,10 +71,10 @@ C_stenosys::run( int argc, char *argv[] )
     {
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "cfg.c().file_dict: %s", cfg.c().file_dict.c_str() );
 
-        C_steno_keyboard steno_keyboard;                        // Steno/raw x input from the steno ;keyboard
-        // C_steno_translator  translator( sm, FM_ARDUINO );    // Steno to English convertor
-        // C_serial            serial;                          // Serial output to the Pro Micro
-        // C_stroke_feed       stroke_feed;                     // Steno stroke feed for regression testing
+        C_steno_keyboard steno_keyboard;                    // Steno/raw x input from the steno ;keyboard
+        C_translator     translator( SP_AFTER );            // Steno to English convertor
+        // C_serial            serial;                      // Serial output to the Pro Micro
+        // C_stroke_feed       stroke_feed;                 // Steno stroke feed for regression testing
         // space_type sm = cfg.c().space_after ? SP_AFTER : SP_BEFORE;
         //C_translator translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
 
@@ -98,13 +96,12 @@ C_stenosys::run( int argc, char *argv[] )
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
         worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
-        //worked = worked && translator.initialise( cfg.c().file_dict );
+        worked = worked && translator.initialise( cfg.c().file_dict );
 
         //TEMP test C_stroke
-        std::unique_ptr< C_dictionary > dictionary = std::make_unique< C_dictionary >();
-        C_stroke::initialise();
-
-        worked = worked && dictionary->read( cfg.c().file_dict );
+        //std::unique_ptr< C_dictionary > dictionary = std::make_unique< C_dictionary >();
+        //C_stroke::initialise();
+        //worked = worked && dictionary->read( cfg.c().file_dict );
 
         if ( worked )
         {
@@ -128,8 +125,7 @@ C_stenosys::run( int argc, char *argv[] )
 
                     std::string steno_chord = C_gemini_pr::decode( packet );
 
-                    std::string translation;
-
+#if 0
                     //TEMP test C_stroke
                     uint16_t flags      = 0x0000;
                     uint16_t flags_prev = 0x0000;
@@ -138,14 +134,15 @@ C_stenosys::run( int argc, char *argv[] )
 
                     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno lookup of %s gives %s",
                                                                  steno_chord.c_str(), translation.c_str() );
+#endif
 
-#if 0
+                    std::string translation;
+
                     if ( translator.translate( steno_chord, translation ) )
                     {
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, text: %s", steno_chord.c_str(), text.c_str() );
+                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, translation: %s", steno_chord.c_str(), translation.c_str() );
 //                      serial.send( translation );
                     }
-#endif
                 }
                 else if ( steno_keyboard.read( key_code ) )
                 {
