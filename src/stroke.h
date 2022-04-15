@@ -13,6 +13,7 @@ namespace stenosys
 {
 
 #define STROKE_BUFFER_MAX 12
+#define LOOKBACK_MAX      6
 
 
 enum space_type { SP_NONE, SP_BEFORE, SP_AFTER };
@@ -29,7 +30,7 @@ public:
     initialise();
 
     static void
-    find_best_match( std::unique_ptr< C_dictionary > dictionary
+    find_best_match( std::unique_ptr< C_dictionary > & dictionary
                    , const std::string &             steno
                    , std::string &                   text 
                    , uint16_t                        flags
@@ -57,12 +58,15 @@ private:
 
 #endif
 
-    void
-    find_best_match( std::unique_ptr< C_dictionary > dictionary
-                   , const std::string &             steno
-                   , const std::string &             steno_key
-                   , std::string &                   translation );
-    void
+static void
+find_best_match( std::unique_ptr< C_dictionary > & dictionary
+                         , uint16_t                        level
+                         , C_stroke *                      stroke
+                         , const std::string &             steno_key
+                         , std::string &                   text
+                         , C_stroke *                      best_match );
+
+static    void
     clear( C_stroke * stroke );
 
     std::string 

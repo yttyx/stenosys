@@ -81,54 +81,66 @@ C_stroke::clear( C_stroke * stroke )
 // previous steno entries. The calling code can format the output text, using the
 // flags from the current and previous stroke as required.
 void
-C_stroke::find_best_match( std::unique_ptr< C_dictionary > dictionary
+C_stroke::find_best_match( std::unique_ptr< C_dictionary > & dictionary
                          , const std::string &             steno
                          , std::string &                   text 
                          , uint16_t                        flags
                          , uint16_t                        flags_prev )
 {
-    
+    // Move onto next stroke and initialise it
+    C_stroke::curr_ = C_stroke::curr_->next_;
+    clear( C_stroke::curr_ );
+
+    C_stroke::curr_->steno_ = steno;
+
+    uint16_t level = 0;
+
+    C_stroke * best_match = nullptr;
+
+    find_best_match( dictionary, level, C_stroke::curr_, steno, text, best_match );
 }
 
-
-
-
-
 void
-C_stroke::find_best_match( std::unique_ptr< C_dictionary > dictionary
-                         , const std::string & steno
-                         , const std::string & steno_key
-                         , std::string &       translation )
+C_stroke::find_best_match( std::unique_ptr< C_dictionary > & dictionary
+                         , uint16_t                        level
+                         , C_stroke *                      stroke
+                         , const std::string &             steno_key
+                         , std::string &                   text
+                         , C_stroke *                      best_match )
 {
-    //TBW End of find best match call sequence check
+    if ( level >= LOOKBACK_MAX )
+    {
+        return;
+    }
 
-    //clear();
+    std::string key;
 
-//    steno_ = steno;
-
-    std::string new_steno_key;
-
-    if ( steno_key.length() == 0 )
+    if ( level == 0 )
     {
         // Initial key
-        new_steno_key = steno_key;
-    }
+        key = steno_key;
+    } 
     else
     {
-        // Form a compound key
-        new_steno_key = steno  + std::string( "/" ) + steno_key;
+        // Compound key
+        key = stroke->steno_ + std::string( "/" ) + steno_key;
     }
 
     // Look up the stroke
-    std::string text;
-    uint16_t    flags = 0;
+    uint16_t flags = 0;
 
-    if ( dictionary->lookup( steno, text, flags) )
+    if ( dictionary->lookup( key, text, flags) )
     {
-//        found_       = true;
-//        translation_ = translation;
-//        flags_       = flags;
+        best_match = stroke;
     }
+
+    find_best_match( dictionary, level + 1, stroke->prev_, key, text, best_match );
+
+
+
+
+
+
     //TBW to be continued...
 
     //    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation: |%s|", stroke_curr_->translation );
