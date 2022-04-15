@@ -25,31 +25,22 @@ bool
 C_stroke::initialise()
 {
     // Create a doubly-linked list of C_stroke objects
-    C_stroke * stroke_prev = nullptr;
+    C_stroke::curr_        = new C_stroke();
+    C_stroke * stroke_prev = C_stroke::curr_;
 
-    for ( std::size_t ii = 0; ii < STROKE_BUFFER_MAX; ii++ )
+    for ( std::size_t ii = 1; ii < STROKE_BUFFER_MAX; ii++ )
     {
-        if ( ii == 0 )
-        {
-            curr_ = new C_stroke();
+        C_stroke * stroke_new = new C_stroke();
 
-            stroke_prev = curr_;
-        }
-        else if ( ii == ( STROKE_BUFFER_MAX - 1 ) )
-        {
-            C_stroke * stroke_new = new C_stroke();
-
-            stroke_new->next_ = curr_;
-            curr_->prev_      = stroke_new;
-        }
-        else
-        {
-            C_stroke * stroke_new = new C_stroke();
-
-            stroke_prev->next_ = stroke_new;
-            stroke_new->prev_  = stroke_prev;
-        }
+        stroke_prev->next_ = stroke_new;
+        stroke_new->prev_  = stroke_prev;
+        
+        stroke_prev = stroke_new;
     }
+    
+    // Complete the circular buffer
+    stroke_prev->next_     = C_stroke::curr_;
+    C_stroke::curr_->prev_ = stroke_prev;
 
     return true;
 }
@@ -59,8 +50,8 @@ C_stroke::clear_all()
 {
     for ( size_t ii = 0; ii < STROKE_BUFFER_MAX; ii++ )
     {
-        curr_->clear( curr_ );
-        curr_= curr_->next_;
+        C_stroke::curr_->clear( curr_ );
+        C_stroke::curr_= curr_->next_;
     }
 }
 
@@ -69,7 +60,6 @@ C_stroke::clear( C_stroke * stroke )
 {
     stroke->steno_         = "";
     stroke->found_         = false;
-    stroke->best_match_    = false;
     stroke->best_match_    = false;
     stroke->translation_   = "";
     stroke->flags_         = 0;
@@ -91,13 +81,21 @@ C_stroke::find_best_match( std::unique_ptr< C_dictionary > & dictionary
     C_stroke::curr_ = C_stroke::curr_->next_;
     clear( C_stroke::curr_ );
 
-    C_stroke::curr_->steno_ = steno;
+    C_stroke::curr_->steno_       = steno;
+    C_stroke::curr_->translation_ = steno; // Default to raw steno in case steno entry not found
 
     uint16_t level = 0;
 
     C_stroke * best_match = nullptr;
 
-    find_best_match( dictionary, level, C_stroke::curr_, steno, text, best_match );
+    find_best_match( dictionary, level, C_stroke::curr_, steno, text, &best_match );
+
+    if ( best_match != nullptr )
+    {
+        C_stroke::curr_->translation_ = text;
+        flags = best_match->flags_;
+        flags_prev = best_match->prev_->flags_;
+    }
 }
 
 void
@@ -106,38 +104,34 @@ C_stroke::find_best_match( std::unique_ptr< C_dictionary > & dictionary
                          , C_stroke *                      stroke
                          , const std::string &             steno_key
                          , std::string &                   text
-                         , C_stroke *                      best_match )
+                         , C_stroke **                     best_match )
 {
-    if ( level >= LOOKBACK_MAX )
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, steno_key: %s", level, steno_key.c_str()  );
+    
+    if ( ( stroke->steno_.length() == 0 ) || ( level >= LOOKBACK_MAX ) )
     {
         return;
     }
 
-    std::string key;
+    std::string key = ( level == 0 ) ? steno_key : stroke->steno_ + std::string( "/" ) + steno_key;
 
-    if ( level == 0 )
-    {
-        // Initial key
-        key = steno_key;
-    } 
-    else
-    {
-        // Compound key
-        key = stroke->steno_ + std::string( "/" ) + steno_key;
-    }
-
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key: %s", key.c_str()  );
+    
     // Look up the stroke
     uint16_t flags = 0;
 
     if ( dictionary->lookup( key, text, flags) )
     {
-        best_match = stroke;
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text is %s", key.c_str(), text.c_str() );
+        *best_match = stroke;
+    }
+    else
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s NOT found, text is %s", key.c_str(), text.c_str() );
     }
 
     find_best_match( dictionary, level + 1, stroke->prev_, key, text, best_match );
-
-
-
 
 
 

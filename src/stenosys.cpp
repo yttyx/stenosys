@@ -33,6 +33,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "miscellaneous.h"
 #include "stenokeyboard.h"
 #include "stenosys.h"
+#include "stroke.h" //TEMP
+#include "dictionary.h" //TEMP
+
 //#include "translator.h"
 
 #define LOG_SOURCE "SITM "
@@ -97,6 +100,12 @@ C_stenosys::run( int argc, char *argv[] )
         //worked = worked && serial.initialise( cfg.c().device_output ); 
         //worked = worked && translator.initialise( cfg.c().file_dict );
 
+        //TEMP test C_stroke
+        std::unique_ptr< C_dictionary > dictionary = std::make_unique< C_dictionary >();
+        C_stroke::initialise();
+
+        worked = worked && dictionary->read( cfg.c().file_dict );
+
         if ( worked )
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ready" );
@@ -120,6 +129,16 @@ C_stenosys::run( int argc, char *argv[] )
                     std::string steno_chord = C_gemini_pr::decode( packet );
 
                     std::string translation;
+
+                    //TEMP test C_stroke
+                    uint16_t flags      = 0x0000;
+                    uint16_t flags_prev = 0x0000;
+
+                    C_stroke::find_best_match( dictionary, steno_chord, translation, flags, flags_prev );
+
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno lookup of %s gives %s",
+                                                                 steno_chord.c_str(), translation.c_str() );
+
 #if 0
                     if ( translator.translate( steno_chord, translation ) )
                     {

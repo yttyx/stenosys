@@ -92,6 +92,8 @@ C_dictionary::read( const std::string & path )
     return false;
 }
 
+
+// Output: text and flags are only set if the dictionary entry is found
 bool
 C_dictionary::lookup( const std::string & steno, std::string & text, uint16_t & flags )
 {
@@ -100,9 +102,6 @@ C_dictionary::lookup( const std::string & steno, std::string & text, uint16_t & 
 
     if ( result == dictionary_->end() )
     {
-        text  = steno;
-        flags = 0;
-        
         return false;
     }
     else

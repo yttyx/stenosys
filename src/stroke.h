@@ -64,7 +64,7 @@ find_best_match( std::unique_ptr< C_dictionary > & dictionary
                          , C_stroke *                      stroke
                          , const std::string &             steno_key
                          , std::string &                   text
-                         , C_stroke *                      best_match );
+                         , C_stroke **                     best_match );
 
 static    void
     clear( C_stroke * stroke );
