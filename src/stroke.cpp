@@ -74,8 +74,8 @@ void
 C_stroke::find_best_match( std::unique_ptr< C_dictionary > & dictionary
                          , const std::string &             steno
                          , std::string &                   text 
-                         , uint16_t                        flags
-                         , uint16_t                        flags_prev )
+                         , uint16_t &                      flags
+                         , uint16_t &                      flags_prev )
 {
     // Move onto next stroke and initialise it
     C_stroke::curr_ = C_stroke::curr_->next_;
@@ -107,7 +107,7 @@ C_stroke::find_best_match( std::unique_ptr< C_dictionary > & dictionary
                          , C_stroke **                     best_match )
 {
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, steno_key: %s", level, steno_key.c_str()  );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, steno_key: %s", level, steno_key.c_str() );
     
     if ( ( stroke->steno_.length() == 0 ) || ( level >= LOOKBACK_MAX ) )
     {
@@ -116,7 +116,7 @@ C_stroke::find_best_match( std::unique_ptr< C_dictionary > & dictionary
 
     std::string key = ( level == 0 ) ? steno_key : stroke->steno_ + std::string( "/" ) + steno_key;
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key: %s", key.c_str()  );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key: %s", key.c_str() );
     
     // Look up the stroke
     uint16_t flags = 0;
@@ -132,50 +132,10 @@ C_stroke::find_best_match( std::unique_ptr< C_dictionary > & dictionary
     }
 
     find_best_match( dictionary, level + 1, stroke->prev_, key, text, best_match );
-
-
-
-    //TBW to be continued...
-
-    //    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation: |%s|", stroke_curr_->translation );
-
-    //    lookback_stroke = lookback_stroke->prev;
-    //}    
-
-    //uint8_t stroke_seqnum = 1;
-    //uint8_t backspaces    = 0;
-
-    //lookback_stroke = best_match_stroke;
-
-    //// Fix up the stroke sequence number working forward from the best match stroke,
-    //// calculating the number of backspaces required to remove the output from an
-    //// earlier best match stroke as we go.
-    //// The earlier best stroke output will be replaced by the output from the current
-    //// stroke.
-    //while ( lookback_stroke != stroke_curr_ )
-    //{
-    //    lookback_stroke->stroke_seqnum = stroke_seqnum++;
-
-    //    if ( ! lookback_stroke->superceded )
-    //    {
-    //        backspaces += ( uint8_t ) ( strlen( lookback_stroke->translation ) + ( ( lookback_stroke->st == SP_NONE ) ? 1 : 0 ) );
-    //        lookback_stroke->superceded = true;
-    //    }
-
-    //    lookback_stroke = lookback_stroke->next;
-    //}
-
-    //stroke_curr_->stroke_seqnum = stroke_seqnum;
-
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stroke_curr_->translation: %s",   stroke_curr_->translation );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stroke_curr_->flag: %04x",        *stroke_curr_->flags );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stroke_curr_->stroke_seqnum: %u", stroke_curr_->stroke_seqnum );
-
-    // format_output( best_match_stroke->prev, backspaces, stroke_curr_ );
 }
 
 std::string
-C_stroke::undo( C_stroke ** stroke, space_type space_mode )
+C_stroke::undo()
 {
     std::string output;
 #if 0
@@ -268,52 +228,67 @@ C_stroke::undo( C_stroke ** stroke, space_type space_mode )
     return output;
 }
 
-
 std::string
 C_stroke::dump()
 {
     std::string output;
 
-#if 0
     output = "\n\n";
-    output += "  steno         translation       flag  sq  s'ceded  space\n";
-    output += "  ------------  ----------------  ----  --  -------  ------\n";
+    output += "  steno         translation       flgs  sq  s'ceded  \n";
+    output += "  ------------  ----------------  ----  --  -------  \n";
 
     //log_writeln( C_log::LL_INFO, LOG_SOURCE, "dump_stroke_buffer(): 1" );
 
-    C_stroke * stroke = curr_;
+    C_stroke * stroke = C_stroke::curr_;
 
     for ( std::size_t ii = 0; ii < STROKE_BUFFER_MAX; ii++ )
     {
         output += ( ii == 0 ) ? "* " : "  ";
 
-        std::string dmp_translation;
+        std::string translation;
 
-        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "dump_stroke_buffer(): 2" );
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  stroke->translation: %p", stroke->translation );s
-
-        if ( strlen( stroke->translation_ ) > 0 )
+        if ( stroke->translation_.length() > 0 )
         {
-            dmp_translation = std::string( "|" ) + ctrl_to_text( stroke->translation_ ) + std::string( "|" );
+            translation = std::string( "|" ) + ctrl_to_text( stroke->translation_ ) + std::string( "|" );
         }
 
         char line[ 2048 ];
 
-        snprintf( line, sizeof( line ), "%-12.12s  %-16.16s  %04x  %2d  %-7.7s  %-6.6s\n"
+        snprintf( line, sizeof( line ), "%-12.12s  %-16.16s  %04x  %2d  %-7.7s\n"
                                       , stroke->steno_.c_str()
-                                      , dmp_translation.c_str()
-                                      , *stroke->flags_
+                                      , translation.c_str()
+                                      , stroke->flags_
                                       , stroke->stroke_seqnum_
                                       , stroke->superceded_ ? "true" : "false" );
-        
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "dump_stroke_buffer(): 3" );
-        
         output += line;
-        stroke = stroke->prev;
+        stroke = stroke->prev_;
     }
 
-    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "dump_stroke_buffer(): 4" );
-#endif
+    return output;
+}
+
+// Convert control characters in a string to text
+// For example, "\n" becomes [0a]"
+std::string
+C_stroke::ctrl_to_text( const std::string & text )
+{
+    std::string output;
+
+    for ( size_t ii = 0; ii < text.length(); ii++ )
+    {
+        if ( iscntrl( text[ ii ] ) )
+        {
+            char buffer[ 10 ];
+
+            snprintf( buffer, sizeof( buffer ), "[%02x]", text[ ii ] );
+            output += buffer;
+        }
+        else
+        {
+            output += text[ ii ];
+        }
+    }
+
     return output;
 }
 
