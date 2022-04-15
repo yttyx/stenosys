@@ -72,22 +72,13 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "cfg.c().file_dict: %s", cfg.c().file_dict.c_str() );
 
         C_steno_keyboard steno_keyboard;                    // Steno/raw x input from the steno ;keyboard
-        C_translator     translator( SP_AFTER );            // Steno to English convertor
-        // C_serial            serial;                      // Serial output to the Pro Micro
-        // C_stroke_feed       stroke_feed;                 // Steno stroke feed for regression testing
-        // space_type sm = cfg.c().space_after ? SP_AFTER : SP_BEFORE;
-        //C_translator translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
+        C_translator     translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
 
-        //log.initialise( cfg.c().display_verbosity, cfg.c().display_datetime );
+        // C_serial       serial;    // Serial output to the Pro Micro
+
+        log.initialise( cfg.c().display_verbosity, cfg.c().display_datetime );
  
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stenosys version %s, date %s", VERSION, __DATE__ );
-
-        //if ( stroke_feed.initialise( cfg.c().file_steno ) )
-        //{
-        //    // Allow time to move to a blank Notepad page before starting the steno test
-        //    delay( 3000 );
-        //}
-
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "raw device  :%s", cfg.c().device_raw.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno device:%s", cfg.c().device_steno.c_str() );
 
@@ -97,11 +88,6 @@ C_stenosys::run( int argc, char *argv[] )
         worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
         worked = worked && translator.initialise( cfg.c().file_dict );
-
-        //TEMP test C_stroke
-        //std::unique_ptr< C_dictionary > dictionary = std::make_unique< C_dictionary >();
-        //C_stroke::initialise();
-        //worked = worked && dictionary->read( cfg.c().file_dict );
 
         if ( worked )
         {
@@ -121,20 +107,7 @@ C_stenosys::run( int argc, char *argv[] )
                 
                 if ( steno_keyboard.read( packet ) )
                 {
-                    // log_writeln( C_log::LL_INFO, LOG_SOURCE, "Got steno packet" );
-
                     std::string steno_chord = C_gemini_pr::decode( packet );
-
-#if 0
-                    //TEMP test C_stroke
-                    uint16_t flags      = 0x0000;
-                    uint16_t flags_prev = 0x0000;
-
-                    C_stroke::find_best_match( dictionary, steno_chord, translation, flags, flags_prev );
-
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno lookup of %s gives %s",
-                                                                 steno_chord.c_str(), translation.c_str() );
-#endif
 
                     std::string translation;
 
