@@ -118,9 +118,9 @@ C_config::read_profile( const std::string & profile )
     read_option_table( profile_settings, options, &config_ );
 
     // Set logging parameters
-    log.initialise( cfg.c().display_verbosity, cfg.c().display_datetime );
+    log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Applied profile: %s", profile.c_str() );
+//    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Applied profile: %s", profile.c_str() );
 
     return true;
 }

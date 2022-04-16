@@ -31,9 +31,9 @@ C_log::~C_log()
 }
 
 void
-C_log::initialise( int level, bool datetime )
+C_log::initialise( eLogLevel level, bool datetime )
 {
-    level_    = ( eLogLevel ) level;
+    level_    = level;
     datetime_ = datetime;
 
     if ( level_ >= LL_VERBOSE_3 )

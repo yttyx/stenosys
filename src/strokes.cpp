@@ -69,7 +69,6 @@ C_stroke::get_translation()
     return translation_;
 }
 
-
 uint16_t
 C_stroke::get_flags()
 {
@@ -123,6 +122,8 @@ C_strokes::initialise()
 
     stroke_curr_ = stroke_first;
 
+    clear();
+
     return true;
 }
 
@@ -159,14 +160,14 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
 
 void
 C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
-                         , uint16_t                        level
-                         , C_stroke *                      stroke
-                         , const std::string &             steno_key
-                         , std::string &                   text
-                         , C_stroke **                     best_match )
+                          , uint16_t                          level
+                          , C_stroke *                        stroke
+                          , const std::string &               steno_key
+                          , std::string &                     text
+                          , C_stroke **                       best_match )
 {
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, steno_key: %s", level, steno_key.c_str() );
+//    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, steno_key: %s", level, steno_key.c_str() );
     
     if ( ( stroke->get_steno().length() == 0 ) || ( level >= LOOKBACK_MAX ) )
     {
@@ -180,12 +181,12 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
 
     if ( dictionary->lookup( key, text, flags) )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text is %s", key.c_str(), text.c_str() );
+//        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text is %s", key.c_str(), text.c_str() );
         *best_match = stroke;
     }
     else
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s NOT found, text is %s", key.c_str(), text.c_str() );
+//        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s NOT found, text is %s", key.c_str(), text.c_str() );
     }
 
     find_best_match( dictionary, level + 1, stroke->get_prev(), key, text, best_match );
@@ -302,11 +303,9 @@ C_strokes::dump()
 {
     std::string output;
 
-    output = "\n\n";
-    output += "  steno         translation       flgs  sq  s'ceded  \n";
-    output += "  ------------  ----------------  ----  --  -------  \n";
-
-    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "dump_stroke_buffer(): 1" );
+    output = "\n";
+    output += "  steno         translation       flgs  sq  s'ceded\n";
+    output += "  ------------  ----------------  ----  --  -------\n";
 
     C_stroke * stroke = stroke_curr_;
 

@@ -33,7 +33,7 @@ public:
     ~C_log();
 
     void
-    initialise( int level, bool datetime );
+    initialise( eLogLevel level, bool datetime );
 
     void
     write_line( eLogLevel level, const char * file, int line, const char * source, bool newline, const char * format, ... );

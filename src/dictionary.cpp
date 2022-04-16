@@ -74,9 +74,10 @@ C_dictionary::read( const std::string & path )
                 }
             }
 
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u entries loaded", entry_count );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u non-data", non_data_count );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u dictionary_ count", dictionary_->size() );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "%u entries loaded", entry_count );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "%u non-data", non_data_count );
+
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u dictionary entries", dictionary_->size() );
         }
 
         return true;

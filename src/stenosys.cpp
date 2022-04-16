@@ -36,7 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "dictionary.h"
 #include "translator.h"
 
-#define LOG_SOURCE "SITM "
+#define LOG_SOURCE "STSYS"
 
 using namespace stenosys;
 
@@ -69,19 +69,18 @@ C_stenosys::run( int argc, char *argv[] )
 {
     if ( cfg.read( argc, argv ) )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "cfg.c().file_dict: %s", cfg.c().file_dict.c_str() );
-
-        C_steno_keyboard steno_keyboard;                    // Steno/raw x input from the steno ;keyboard
-        C_translator     translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
-
-        // C_serial       serial;    // Serial output to the Pro Micro
-
-        log.initialise( cfg.c().display_verbosity, cfg.c().display_datetime );
+        log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
  
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stenosys version %s, date %s", VERSION, __DATE__ );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "raw device  :%s", cfg.c().device_raw.c_str() );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno device:%s", cfg.c().device_steno.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys version: %s", VERSION );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys date   : %s", __DATE__ );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Dictionary path : %s", cfg.c().file_dict.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", cfg.c().device_raw.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
 
+        C_steno_keyboard steno_keyboard; // Steno/raw input from the steno keyboard
+        C_translator     translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
+        // C_serial       serial;    // Serial output to the Pro Micro
+        
         bool worked = true;
 
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
@@ -98,11 +97,6 @@ C_stenosys::run( int argc, char *argv[] )
                 __u16       key_code;
                 std::string stroke;
 
-                // Get steno input from either a steno test file or from the keyboard.
-                // The steno test file has precedence. Input will be from the keyboard only
-                // once all steno test file strokes have been consumed, .
-                //if ( stroke_feed.read( stroke ) || steno.read( stroke ) )
-                
                 S_geminipr_packet packet;
                 
                 if ( steno_keyboard.read( packet ) )
@@ -113,29 +107,30 @@ C_stenosys::run( int argc, char *argv[] )
 
                     if ( translator.translate( steno_chord, translation ) )
                     {
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, translation: %s", steno_chord.c_str(), translation.c_str() );
+                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, translation:", steno_chord.c_str() );
+                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", translation.c_str() );
 //                      serial.send( translation );
                     }
                 }
                 else if ( steno_keyboard.read( key_code ) )
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %04x", key_code );
+                    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "key event: %04x", key_code );
                     //serial.send( key_code );
                 }
 
                 delay( 1 );
             }
 
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
+            log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Closing down" );
             
             //serial.stop();
             steno_keyboard.stop();
 
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Devices closed down" );
+            log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Devices closed down" );
         }
         else
         {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Initialisation error" );
+            log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Initialisation error" );
         }
     }
 }

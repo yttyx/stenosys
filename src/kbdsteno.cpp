@@ -47,7 +47,7 @@ C_kbd_steno::~C_kbd_steno()
     if ( handle_ >= 0 )
     {
         close( handle_ );
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed steno keyboard device" );
+        log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Closed steno keyboard device" );
     }
 }
 
@@ -70,7 +70,7 @@ C_kbd_steno::initialise( const std::string & device )
     {
         if ( set_interface_attributes( handle_, B19200 ) > -1 )
         {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Steno device opened" );
+            log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Steno device opened" );
             worked = true;
         }
     }

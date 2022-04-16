@@ -46,7 +46,7 @@ C_kbd_raw::~C_kbd_raw()
     if ( handle_ >= 0 )
     {
         close( handle_ );
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed raw keyboard device" );
+        log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Closed raw keyboard device" );
     }
 }
 
@@ -65,28 +65,28 @@ C_kbd_raw::initialise( const std::string & device )
     // Open device
     if ( ( handle_ = ::open( device.c_str(), O_RDONLY ) ) < 0 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Failed to open raw keyboard device: %s - use sudo?", device.c_str() );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device: %s - use sudo?", device.c_str() );
         return false;
     }
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Opened raw keyboard device %s", device.c_str() );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Opened raw keyboard device %s", device.c_str() );
 
     // Get device version
     if ( ioctl( handle_, EVIOCGVERSION, &version ) )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Failed to get device version: %s", device.c_str() );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device.c_str() );
         close( handle_ );
         handle_ = -1;
         return false;
     }
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Input driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Input driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
     
     // Get device information
     ioctl( handle_, EVIOCGID, id );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Input device ID: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
-                                               , id[ ID_BUS ], id[ ID_VENDOR ], id[ ID_PRODUCT ], id[ ID_VERSION ] );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Input device ID: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
+                                        , id[ ID_BUS ], id[ ID_VENDOR ], id[ ID_PRODUCT ], id[ ID_VERSION ] );
 
     memset( bit, 0, sizeof( bit ) );
     ioctl( handle_, EVIOCGBIT( 0, EV_MAX ), bit[ 0 ] );
@@ -126,7 +126,7 @@ C_kbd_raw::thread_handler()
     {
         int bytes_read = ::read( handle_, kbd_event, sizeof( struct input_event ) * 64 );
     
-//        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "thread_handler, bytes_read: %d", bytes_read );
+//        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "thread_handler, bytes_read: %d", bytes_read );
 
         if ( bytes_read >= ( int ) sizeof( struct input_event ) )
         {
@@ -169,7 +169,7 @@ C_kbd_raw::thread_handler()
         }
     }
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shutting down raw keyboard thread" );
+    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Shutting down raw keyboard thread" );
 }
 
 bool
