@@ -12,7 +12,7 @@
 #include "stenoflags.h"
 #include "strokes.h"
 
-#define LOG_SOURCE "STROK"
+#define LOG_SOURCE "STRKS"
 
 using namespace stenosys;
 
@@ -20,84 +20,6 @@ namespace stenosys
 {
 
 extern C_log log;
-
-void
-C_stroke::set_next( C_stroke * stroke )
-{
-    next_ = stroke;
-}
-
-C_stroke *
-C_stroke::get_next()
-{
-    return next_;
-}
-
-void
-C_stroke::set_prev( C_stroke * stroke )
-{
-    prev_ = stroke;
-}
-
-C_stroke *
-C_stroke::get_prev()
-{
-    return prev_;
-}
-
-void
-C_stroke::set_steno( const std::string & steno )
-{
-    steno_ = steno;
-}
-
-const std::string &
-C_stroke::get_steno()
-{
-    return steno_;
-}
-
-void
-C_stroke::set_translation( const std::string & translation )
-{
-    translation_ = translation;
-}
-
-const std::string &
-C_stroke::get_translation()
-{
-    return translation_;
-}
-
-uint16_t
-C_stroke::get_flags()
-{
-    return flags_;
-}
-
-uint16_t
-C_stroke::get_seqnum()
-{
-    return seqnum_;
-}
-
-bool
-C_stroke::get_superceded()
-{
-    return superceded_;
-}
-
-void
-C_stroke::clear()
-{
-    steno_         = "";
-    found_         = false;
-    best_match_    = false;
-    translation_   = "";
-    flags_         = 0;
-    seqnum_        = 0;
-    superceded_    = false;
-}
 
 bool
 C_strokes::initialise()
@@ -153,7 +75,7 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
     if ( best_match != nullptr )
     {
         stroke_curr_->set_translation( text );
-        flags = best_match->get_flags();
+        flags = stroke_curr_->get_flags();
         flags_prev = best_match->get_prev()->get_flags();
     }
 }
