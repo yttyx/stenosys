@@ -39,36 +39,35 @@ C_translator::initialise( const std::string & dictionary_path )
 }
 
 // Returns true if a translation was made
-bool
+void
 C_translator::translate( const std::string & steno, std::string & output )
 {
     // debug
     if ( steno == "#S" )
     {
         toggle_space_mode();
-        return false;
+        return;
     }
 
     // debug
     if ( steno == "#-D" )
     {
         output = strokes_->dump();
-        return true;
+        return;
     }
 
+#if 0
     if ( steno == "*" )
     {
-//        output = undo();
+        output = undo();
+        return;
     }
-    else
-    {
-        uint16_t flags      = 0;
-        uint16_t flags_prev = 0;
+#endif  
 
-        strokes_->find_best_match( dictionary_, steno, output, flags, flags_prev );
-    }    
+    uint16_t flags      = 0;
+    uint16_t flags_prev = 0;
 
-    return true;
+    strokes_->find_best_match( dictionary_, steno, output, flags, flags_prev );
 }
 
 // backspaces: Number of backspaces required to delete text already output

@@ -26,7 +26,7 @@ public:
     bool
     initialise( const std::string & dictionary_path );
 
-    bool
+    void 
     translate( const std::string & steno, std::string & output );
     
 private:

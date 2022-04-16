@@ -50,7 +50,7 @@ private:
                    , C_stroke *                        stroke
                    , const std::string &               steno_key
                    , std::string &                     text
-                   , C_stroke **                       best_match );
+                   , C_stroke * &                      best_match );
 
     static std::string
     ctrl_to_text( const std::string & text );

@@ -105,12 +105,11 @@ C_stenosys::run( int argc, char *argv[] )
 
                     std::string translation;
 
-                    if ( translator.translate( steno_chord, translation ) )
-                    {
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, translation:", steno_chord.c_str() );
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", translation.c_str() );
-//                      serial.send( translation );
-                    }
+                    translator.translate( steno_chord, translation );
+
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, translation:", steno_chord.c_str() );
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", translation.c_str() );
+//                  serial.send( translation );
                 }
                 else if ( steno_keyboard.read( key_code ) )
                 {

@@ -70,13 +70,19 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
 
     C_stroke * best_match = nullptr;
 
-    find_best_match( dictionary, level, stroke_curr_, steno, text, &best_match );
+    find_best_match( dictionary, level, stroke_curr_, steno, text, best_match );
 
     if ( best_match != nullptr )
     {
         stroke_curr_->set_translation( text );
         flags = stroke_curr_->get_flags();
         flags_prev = best_match->get_prev()->get_flags();
+    }
+    else
+    {
+        text       = stroke_curr_->get_translation();
+        flags      = 0x0000;
+        flags_prev = 0x0000;
     }
 }
 
@@ -86,7 +92,7 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
                           , C_stroke *                        stroke
                           , const std::string &               steno_key
                           , std::string &                     text
-                          , C_stroke **                       best_match )
+                          , C_stroke * &                      best_match )
 {
 
 //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, steno_key: %s", level, steno_key.c_str() );
@@ -104,7 +110,7 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
     if ( dictionary->lookup( key, text, flags) )
     {
 //        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text is %s", key.c_str(), text.c_str() );
-        *best_match = stroke;
+        best_match = stroke;
     }
     else
     {
