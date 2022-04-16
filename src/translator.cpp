@@ -10,7 +10,6 @@
 #include "dictionary.h"
 #include "log.h"
 #include "stenoflags.h"
-#include "stroke.h"
 #include "translator.h"
 
 #define LOG_SOURCE "TRAN "
@@ -25,8 +24,8 @@ extern C_log log;
 C_translator::C_translator( space_type space_mode )
     : space_mode_( space_mode )
 {
-    stroke_     = std::make_unique< C_stroke >();
-    dictionary_ = std::make_unique< C_dictionary >();
+    strokes_     = std::make_unique< C_strokes >();
+    dictionary_  = std::make_unique< C_dictionary >();
 }
 
 C_translator::~C_translator()
@@ -36,7 +35,7 @@ C_translator::~C_translator()
 bool
 C_translator::initialise( const std::string & dictionary_path )
 {
-    return C_stroke::initialise() && dictionary_->read( dictionary_path );
+    return strokes_->initialise() && dictionary_->read( dictionary_path );
 }
 
 // Returns true if a translation was made
@@ -53,7 +52,7 @@ C_translator::translate( const std::string & steno, std::string & output )
     // debug
     if ( steno == "#-D" )
     {
-        output = C_stroke::dump();
+        output = strokes_->dump();
         return true;
     }
 
@@ -66,7 +65,7 @@ C_translator::translate( const std::string & steno, std::string & output )
         uint16_t flags      = 0;
         uint16_t flags_prev = 0;
 
-        C_stroke::find_best_match( dictionary_, steno, output, flags, flags_prev );
+        strokes_->find_best_match( dictionary_, steno, output, flags, flags_prev );
     }    
 
     return true;

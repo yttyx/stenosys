@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "dictionary.h"
-#include "stroke.h"
+#include "strokes.h"
 
 using namespace stenosys;
 
@@ -44,7 +44,7 @@ private:
     space_type                      space_mode_;
 
     std::unique_ptr< C_dictionary > dictionary_;
-    std::unique_ptr< C_stroke >     stroke_;
+    std::unique_ptr< C_strokes >    strokes_;
 
 };
 
