@@ -50,6 +50,9 @@ public:
     uint16_t
     get_flags();
 
+    void
+    set_seqnum( uint16_t seqnum );
+    
     uint16_t
     get_seqnum();
 

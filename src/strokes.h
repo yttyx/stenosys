@@ -21,8 +21,8 @@ class C_strokes
 
 public:
 
-    C_strokes() {}
-    ~C_strokes(){}
+    C_strokes();
+    ~C_strokes();
 
     bool
     initialise();
@@ -58,6 +58,8 @@ private:
 private:
 
     C_stroke * stroke_curr_;
+
+    uint16_t   best_match_level_;
 };
 
 }

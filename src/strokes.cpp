@@ -21,6 +21,17 @@ namespace stenosys
 
 extern C_log log;
 
+C_strokes::C_strokes()
+    : stroke_curr_( nullptr )
+    , best_match_level_( 0 )
+{
+}
+
+C_strokes::~C_strokes()
+{
+    //TODO Release C_stroke list storage
+}
+
 bool
 C_strokes::initialise()
 {
@@ -66,8 +77,9 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
     // Default to raw steno in case no matching steno entry found
     stroke_curr_->set_translation( steno );
 
-    uint16_t level = 0;
+    best_match_level_ = 0;
 
+    uint16_t   level      = 0;
     C_stroke * best_match = nullptr;
 
     find_best_match( dictionary, level, stroke_curr_, steno, text, best_match );
@@ -110,7 +122,10 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
     if ( dictionary->lookup( key, text, flags) )
     {
 //        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text is %s", key.c_str(), text.c_str() );
-        best_match = stroke;
+        best_match        = stroke;
+        best_match_level_ = level;
+        
+        stroke->set_seqnum( 0 );
     }
     else
     {
@@ -118,6 +133,13 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
     }
 
     find_best_match( dictionary, level + 1, stroke->get_prev(), key, text, best_match );
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, best_match_level_: %u", level, best_match_level_ );
+
+    if ( level < best_match_level_ )
+    {
+        stroke->set_seqnum( stroke->get_prev()->get_seqnum() + 1 );
+    }
 }
 
 #if 0
