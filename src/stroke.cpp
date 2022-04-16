@@ -21,53 +21,110 @@ namespace stenosys
 
 extern C_log log;
 
+void
+C_stroke::set_next( C_stroke * stroke )
+{
+    next_ = stroke;
+}
+
+void
+C_stroke::set_prev( C_stroke * stroke )
+{
+    prev_ = stroke;
+}
+    
+C_stroke *
+C_stroke::get_next()
+{
+    return next_;
+}
+
+C_stroke *
+C_stroke::get_prev()
+{
+    return next_;
+}
+
+const std::string &
+C_stroke::get_steno()
+{
+    return steno_;
+}
+
+const std::string &
+C_stroke::get_translation()
+{
+    return translation_;
+}
+
+
+uint16_t
+C_stroke::get_flags()
+{
+    return flags_;
+}
+
+uint16_t
+C_stroke::get_seqnum()
+{
+    return seqnum_;
+}
+
 bool
-C_stroke::initialise()
+C_stroke::get_superceded()
+{
+    return superceded_;
+}
+
+void
+C_stroke::clear()
+{
+    steno_         = "";
+    found_         = false;
+    best_match_    = false;
+    translation_   = "";
+    flags_         = 0;
+    seqnum_        = 0;
+    superceded_    = false;
+}
+
+bool
+C_strokes::initialise()
 {
     // Create a doubly-linked list of C_stroke objects
-    C_stroke::curr_        = new C_stroke();
-    C_stroke * stroke_prev = C_stroke::curr_;
+    C_stroke * stroke_first = new C_stroke();
+    C_stroke * stroke_prev = stroke_first;
 
     for ( std::size_t ii = 1; ii < STROKE_BUFFER_MAX; ii++ )
     {
         C_stroke * stroke_new = new C_stroke();
 
-        stroke_prev->next_ = stroke_new;
-        stroke_new->prev_  = stroke_prev;
+        stroke_prev->set_next( stroke_new );
+        stroke_new->set_prev( stroke_prev );
         
         stroke_prev = stroke_new;
     }
     
     // Complete the circular buffer
-    stroke_prev->next_     = C_stroke::curr_;
-    C_stroke::curr_->prev_ = stroke_prev;
+    stroke_prev->set_next( stroke_first );
+    stroke_first->set_prev( stroke_prev );
+
+    curr_ = stroke_first;
 
     return true;
 }
 
 void
-C_stroke::clear_all()
+C_strokes::clear_all()
 {
     for ( size_t ii = 0; ii < STROKE_BUFFER_MAX; ii++ )
     {
-        C_stroke::curr_->clear( curr_ );
-        C_stroke::curr_= curr_->next_;
+        curr_->clear();
+        curr_ = curr_->get_next();
     }
 }
 
-void
-C_stroke::clear( C_stroke * stroke )
-{
-    stroke->steno_         = "";
-    stroke->found_         = false;
-    stroke->best_match_    = false;
-    stroke->translation_   = "";
-    stroke->flags_         = 0;
-    stroke->stroke_seqnum_ = 0;
-    stroke->superceded_    = false;
-}
-
-// Find the match dictionary match, given a new steno chord and with reference to
+#if 0
 // previous steno entries. The calling code can format the output text, using the
 // flags from the current and previous stroke as required.
 void
@@ -138,7 +195,7 @@ std::string
 C_stroke::undo()
 {
     std::string output;
-#if 0
+    
     if ( ( *stroke )->steno_.length() == 0 )
     {
         // Nothing to undo
@@ -224,12 +281,13 @@ C_stroke::undo()
     *stroke = ( *stroke)->prev_;
 
 //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: output: |%s|", ctrl_to_text( output ).c_str() );
-#endif
     return output;
 }
 
+#endif
+
 std::string
-C_stroke::dump()
+C_strokes::dump()
 {
     std::string output;
 
@@ -239,29 +297,31 @@ C_stroke::dump()
 
     //log_writeln( C_log::LL_INFO, LOG_SOURCE, "dump_stroke_buffer(): 1" );
 
-    C_stroke * stroke = C_stroke::curr_;
+    C_stroke * stroke = curr_;
 
     for ( std::size_t ii = 0; ii < STROKE_BUFFER_MAX; ii++ )
     {
         output += ( ii == 0 ) ? "* " : "  ";
 
-        std::string translation;
+        std::string translation = stroke->get_translation();
 
-        if ( stroke->translation_.length() > 0 )
+        std::string trans_field;
+
+        if ( translation.length() > 0 )
         {
-            translation = std::string( "|" ) + ctrl_to_text( stroke->translation_ ) + std::string( "|" );
+            trans_field = std::string( "|" ) + ctrl_to_text( translation ) + std::string( "|" );
         }
 
         char line[ 2048 ];
 
         snprintf( line, sizeof( line ), "%-12.12s  %-16.16s  %04x  %2d  %-7.7s\n"
-                                      , stroke->steno_.c_str()
-                                      , translation.c_str()
-                                      , stroke->flags_
-                                      , stroke->stroke_seqnum_
-                                      , stroke->superceded_ ? "true" : "false" );
+                                      , stroke->get_steno().c_str()
+                                      , trans_field.c_str()
+                                      , stroke->get_flags()
+                                      , stroke->get_seqnum()
+                                      , stroke->get_superceded() ? "true" : "false" );
         output += line;
-        stroke = stroke->prev_;
+        stroke = stroke->get_prev();
     }
 
     return output;
@@ -270,7 +330,7 @@ C_stroke::dump()
 // Convert control characters in a string to text
 // For example, "\n" becomes [0a]"
 std::string
-C_stroke::ctrl_to_text( const std::string & text )
+C_strokes::ctrl_to_text( const std::string & text )
 {
     std::string output;
 
@@ -291,7 +351,5 @@ C_stroke::ctrl_to_text( const std::string & text )
 
     return output;
 }
-
-C_stroke * C_stroke::curr_ = nullptr;
 
 }

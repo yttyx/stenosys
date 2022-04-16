@@ -1,6 +1,7 @@
 // stroke.h
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <memory>
 
@@ -23,40 +24,38 @@ public:
     C_stroke() {}
     ~C_stroke(){}
 
-    static bool
-    initialise();
-
-    static void
-    find_best_match( std::unique_ptr< C_dictionary > & dictionary
-                   , const std::string &               steno
-                   , std::string &                     text 
-                   , uint16_t &                        flags
-                   , uint16_t &                        flags_prev );
-
-    static void
-    clear_all();
-
-    static std::string
-    dump();
+    void
+    set_next( C_stroke * );
     
+    void
+    set_prev( C_stroke * );
+
+    C_stroke *
+    get_next();
+
+    C_stroke *
+    get_prev();
+
+    const std::string &
+    get_steno();
+    
+    const std::string &
+    get_translation();
+
+    uint16_t
+    get_flags();
+
+    uint16_t
+    get_seqnum();
+
+    bool
+    get_superceded();
+
+    void
+    clear();
+
 private:
 
-    static void
-    find_best_match( std::unique_ptr< C_dictionary > & dictionary
-                   , uint16_t                          level
-                   , C_stroke *                        stroke
-                   , const std::string &               steno_key
-                   , std::string &                     text
-                   , C_stroke **                       best_match );
-
-    static void
-    clear( C_stroke * stroke );
-
-    std::string 
-    undo();
-
-    static std::string
-    ctrl_to_text( const std::string & text );
 
 private:
 
@@ -69,14 +68,38 @@ private:
     std::string      translation_;          // Steno translation
     uint16_t         flags_;                // Formatting flags
 
-    uint16_t         stroke_seqnum_;        // The position of this stroke in a multi-stroke word
+    uint16_t         seqnum_;               // The position of this stroke in a multi-stroke word
     
     bool             best_match_;           // True if the stroke represents the best match
     bool             superceded_;           // The output from this stroke has been superceded by a later stroke
                                             // with a longer steno match    
+};
 
-    static C_stroke * curr_;
+class C_strokes
+{
 
+public:
+
+    C_strokes() {}
+    ~C_strokes(){}
+
+    bool
+    initialise();
+
+    void
+    clear_all();
+
+    std::string
+    dump();
+    
+private:
+
+    static std::string
+    ctrl_to_text( const std::string & text );
+
+private:
+
+    C_stroke * curr_;
 };
 
 }
