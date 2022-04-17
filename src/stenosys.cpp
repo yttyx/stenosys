@@ -68,13 +68,6 @@ C_stenosys::~C_stenosys()
 void
 C_stenosys::run( int argc, char *argv[] )
 {
-    C_x11_output x11_output;
-
-    x11_output.initialise();
-    x11_output.test();
-    return;
-
-
     if ( cfg.read( argc, argv ) )
     {
         log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
@@ -85,12 +78,14 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", cfg.c().device_raw.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
 
+        C_x11_output     x11_output;
         C_steno_keyboard steno_keyboard; // Steno/raw input from the steno keyboard
         C_translator     translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
         // C_serial       serial;    // Serial output to the Pro Micro
         
         bool worked = true;
-
+    
+        worked = worked && x11_output.initialise();
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
         worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
@@ -117,7 +112,12 @@ C_stenosys::run( int argc, char *argv[] )
 
                     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, translation:", steno_chord.c_str() );
                     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", translation.c_str() );
-//                  serial.send( translation );
+
+                    // x11_output.test();
+                    //x11_output.send( "Hi world " /* translation */ );
+                    translation += ' ';
+                    x11_output.send( translation );
+                    // serial.send( translation );
                 }
                 else if ( steno_keyboard.read( key_code ) )
                 {

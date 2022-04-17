@@ -2,6 +2,7 @@
 #pragma once
 
 #include "stdarg.h"
+#include <X11/X.h>
 #include <string>
 
 #include <X11/Xlib.h>
@@ -24,6 +25,9 @@ public:
     initialise();
 
     void
+    send( const std::string & str );
+
+    void
     test();
 
 private:
@@ -34,6 +38,9 @@ private:
 private:
 
     Display * display_;
+
+
+    static KeySym ascii_to_keysym[];
 
 };
 
