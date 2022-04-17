@@ -19,7 +19,7 @@ INC			:= -I/usr/include
 # -O0       No optimisation
 # -Wall		All warnings
 CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe
-LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lconfig++ -lm
+LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lconfig++ -lm -lX11 -lXtst
 
 SOURCES 	:= $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
 OBJECTS 	:= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))

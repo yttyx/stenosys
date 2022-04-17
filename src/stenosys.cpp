@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "stenosys.h"
 #include "dictionary.h"
 #include "translator.h"
+#include "x11output.h"
 
 #define LOG_SOURCE "STSYS"
 
@@ -67,6 +68,13 @@ C_stenosys::~C_stenosys()
 void
 C_stenosys::run( int argc, char *argv[] )
 {
+    C_x11_output x11_output;
+
+    x11_output.initialise();
+    x11_output.test();
+    return;
+
+
     if ( cfg.read( argc, argv ) )
     {
         log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
