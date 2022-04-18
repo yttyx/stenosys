@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <regex>
 #include <stdio.h>
 
 #include "textfile.h"
@@ -66,27 +65,6 @@ C_text_file::get_line( std::string & line )
     std::getline( text_stream_, line, '\n' );
 
     return true;
-}
-
-bool
-C_text_file::parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 )
-{
-    std::regex  regex_entry( regex );
-
-    std::smatch match;
-
-    if ( std::regex_search( line, match, regex_entry ) )
-    {
-        std::ssub_match match1 = match[ 1 ];
-        std::ssub_match match2 = match[ 2 ];
-
-        param1 = match1.str();
-        param2 = match2.str();
-
-        return true;
-    }
-
-    return false;
 }
 
 }

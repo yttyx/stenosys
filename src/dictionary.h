@@ -37,7 +37,10 @@ private:
     void
     escape_characters( std::string & str );
 
-private:
+    bool
+    parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 );
+
+    private:
 
     bool        initialised_;
 

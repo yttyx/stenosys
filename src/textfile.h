@@ -22,9 +22,6 @@ public:
     std::string
     get_error_message() { return error_message_; }
 
-    bool
-    parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 );
-
 protected:
 
     std::stringstream  text_stream_;

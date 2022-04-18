@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <limits.h>
 #include <memory>
+#include <regex>
 #include <unordered_map>
 #include <utility>
 
@@ -112,6 +113,27 @@ C_dictionary::lookup( const std::string & steno, std::string & text, uint16_t & 
     }
 
     return true;
+}
+
+bool
+C_dictionary::parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 )
+{
+    std::regex regex_entry( regex );
+
+    std::smatch match;
+
+    if ( std::regex_search( line, match, regex_entry ) )
+    {
+        std::ssub_match match1 = match[ 1 ];
+        std::ssub_match match2 = match[ 2 ];
+
+        param1 = match1.str();
+        param2 = match2.str();
+
+        return true;
+    }
+
+    return false;
 }
 
 /*
