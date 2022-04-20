@@ -120,12 +120,12 @@ C_dictionary::parse_line( const std::string & line, const char * regex, std::str
 {
     std::regex regex_entry( regex );
 
-    std::smatch match;
+    std::smatch matches;
 
-    if ( std::regex_search( line, match, regex_entry ) )
+    if ( std::regex_search( line, matches, regex_entry ) )
     {
-        std::ssub_match match1 = match[ 1 ];
-        std::ssub_match match2 = match[ 2 ];
+        std::ssub_match match1 = matches[ 1 ];
+        std::ssub_match match2 = matches[ 2 ];
 
         param1 = match1.str();
         param2 = match2.str();
