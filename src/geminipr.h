@@ -31,6 +31,9 @@ public:
     
     static std::string
     decode( const S_geminipr_packet & packet );
+    
+    static S_geminipr_packet * 
+    encode( const std::string & stroke );
 
     static const char steno_key_chart[];
 

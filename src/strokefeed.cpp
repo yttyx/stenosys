@@ -2,9 +2,11 @@
 
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <regex>
 #include <stdio.h>
 
+#include "geminipr.h"
 #include "log.h"
 #include "strokefeed.h"
 
@@ -24,6 +26,7 @@ const char * REGEX_STROKE = "^\\s*(\\S+?)\\s*$";
 
 C_stroke_feed::C_stroke_feed()
 {
+    packets_ = std::make_unique< std::vector< S_geminipr_packet > >(); 
 }
 
 C_stroke_feed::~C_stroke_feed()
@@ -46,7 +49,7 @@ C_stroke_feed::initialise( const std::string & filepath )
         {
             if ( steno.find_first_not_of( "#STKPWHRAO*EUFRPBLGTSDZ-" ) == std::string::npos )
             {
-                strokes_->push_back( steno );
+                packets_->push_back( *C_gemini_pr::encode( steno ) );
             }
             else
             {

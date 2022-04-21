@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "geminipr.h"
 #include "textfile.h"
 
 namespace stenosys
@@ -28,9 +29,12 @@ private:
     bool
     check_file();
 
+    bool
+    convert();
+
 private:
 
-    std::unique_ptr< std::vector< std::string > > strokes_; 
+    std::unique_ptr< std::vector< S_geminipr_packet > > packets_; 
 };
 
 }

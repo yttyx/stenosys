@@ -38,6 +38,13 @@ S_geminipr_packet::get()
     return this;
 }
 
+S_geminipr_packet *
+C_gemini_pr::encode( const std::string & stroke )
+{
+    //TODO
+    return new S_geminipr_packet();
+}
+
 std::string
 C_gemini_pr::decode( const S_geminipr_packet & packet )
 {
