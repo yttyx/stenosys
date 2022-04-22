@@ -114,8 +114,10 @@ C_stenosys::run( int argc, char *argv[] )
                 S_geminipr_packet packet;
                 __u16             key_code;
 
-                if ( stroke_feed.read( steno ) )
+                if ( stroke_feed.get_steno( steno ) )
                 {
+                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Stenosys: 3" );
+                    
                     translator.translate( steno, translation );
                 }
                 

@@ -1,6 +1,7 @@
 //strokefeed.h
 #pragma once
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <vector>
@@ -22,7 +23,7 @@ public:
     initialise( const std::string & filepath );
 
     bool
-    read( std::string & steno );
+    get_steno( std::string & steno );
 
 private:
 
@@ -41,6 +42,8 @@ private:
 
     std::unique_ptr< std::vector< std::string > > strokes_; 
     std::vector< std::string >::iterator          strokes_it_;
-};
+    //size_t strokes_size_;
+
+    };
 
 }
