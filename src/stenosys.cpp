@@ -92,15 +92,8 @@ C_stenosys::run( int argc, char *argv[] )
         //worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
         
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys: 0, %d", worked );
-
-//        worked = worked && translator.initialise( cfg.c().file_dict );
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys: 1, %d", worked );
-
+        worked = worked && translator.initialise( cfg.c().file_dict );
         worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys: 2 %d", worked );
 
         if ( worked )
         {
@@ -116,8 +109,6 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( stroke_feed.get_steno( steno ) )
                 {
-                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Stenosys: 3" );
-                    
                     translator.translate( steno, translation );
                 }
                 
@@ -130,8 +121,7 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( translation.length() > 0 )
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, translation:", steno.c_str() );
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", translation.c_str() );
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s : %s", steno.c_str(), translation.c_str() );
 
                     //translation += ' ';
                     //x11_output.send( translation );

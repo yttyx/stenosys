@@ -77,19 +77,9 @@ C_stroke_feed::initialise( const std::string & filepath )
     // Free up memory from the vector container now we know how much we need
     strokes_->shrink_to_fit();
     
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "got here"  );
-
-    //strokes_size_ = strokes_->size();
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "strokes_size_: %u", strokes_->size() );
 
     strokes_it_ = strokes_->begin();
-
-
-
-    //std::string temp = ( *strokes_)[ 0 ];
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "first steno: %s ", ( *strokes_)[ 0 ].c_str() );
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "first steno: %s ", ( *strokes_it_).c_str() );
 
     return worked;
 }
@@ -97,13 +87,9 @@ C_stroke_feed::initialise( const std::string & filepath )
 bool
 C_stroke_feed::get_steno( std::string & steno )
 {
-    //if ( strokes_size_ < strokes_->size() )
     if ( strokes_it_ != strokes_->end() )
     {
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s ", steno.c_str() );
-
-        //strokes_size_++;
+        steno = *strokes_it_;
         strokes_it_++;
 
         return true;
@@ -118,8 +104,6 @@ C_stroke_feed::parse_line( const std::string & line, const char * regex, std::st
     std::regex regex_entry( regex );
 
     std::smatch matches;
-
-    //const char * REGEX_STROKE = "^\\s*(\\S+?)\\s*$";
 
     if ( std::regex_search( line, matches, regex_entry ) )
     {

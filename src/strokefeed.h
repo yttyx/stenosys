@@ -42,8 +42,6 @@ private:
 
     std::unique_ptr< std::vector< std::string > > strokes_; 
     std::vector< std::string >::iterator          strokes_it_;
-    //size_t strokes_size_;
-
-    };
+};
 
 }

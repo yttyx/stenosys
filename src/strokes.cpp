@@ -134,7 +134,7 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
 
     find_best_match( dictionary, level + 1, stroke->get_prev(), key, text, best_match );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, best_match_level_: %u", level, best_match_level_ );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "level: %u, best_match_level_: %u", level, best_match_level_ );
 
     if ( level < best_match_level_ )
     {

@@ -1,9 +1,7 @@
-NO-S            // <suppress space>
 AL              // Alice
 EUS             //
 WAS             // was
 TKPWEUPB        // beginning
-end
 -G              //
 TO              // to
 TKPWET          // get
@@ -17,6 +15,7 @@ ST-R            // sister
 OPB             // on
 -T              // the
 PWA*PBG         // bank
+end
 KW-BG           // ,
 SKP             // and
 -F              // of
