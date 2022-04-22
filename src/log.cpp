@@ -24,6 +24,7 @@ C_log::C_log()
     level_    = LL_INFO;
     datetime_ = false;
     fileline_ = false;
+    source_   = false;
 }
 
 C_log::~C_log()
@@ -36,9 +37,14 @@ C_log::initialise( eLogLevel level, bool datetime )
     level_    = level;
     datetime_ = datetime;
 
-    if ( level_ >= LL_VERBOSE_3 )
+    if ( level_ > LL_VERBOSE_1 )
     {
         fileline_ = true;
+    }
+    
+    if ( level_ > LL_INFO )
+    {
+        source_ = true;
     }
 }
 
@@ -55,9 +61,15 @@ C_log::write_line( eLogLevel level, const char * file, int line, const char * so
     
         if ( fileline_ )
         {
-            str = format_string( "%s %d ", file, line );
+            str = format_string( "%s %d", file, line );
         }
     
+        if ( source_ )
+        {
+            str += source;
+            str += " ";
+        }
+
         va_list arg_ptr;
         va_start( arg_ptr, format );
 
@@ -66,8 +78,6 @@ C_log::write_line( eLogLevel level, const char * file, int line, const char * so
         vsnprintf( buf, sizeof( buf ) - 1, format, arg_ptr );
         va_end( arg_ptr );
 
-        str += source;
-        str += " ";
         str += std::string( buf );
 
         if ( newline )

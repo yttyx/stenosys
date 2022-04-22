@@ -66,127 +66,81 @@ C_translator::translate( const std::string & steno, std::string & output )
 
     uint16_t flags      = 0;
     uint16_t flags_prev = 0;
+    bool     extends    = false;
 
-    strokes_->find_best_match( dictionary_, steno, output, flags, flags_prev );
+    strokes_->find_best_match( dictionary_, steno, output, flags, flags_prev, extends );
+
+    std::string translation = format( output, flags, flags_prev, extends );
+
+    strokes_->set_translation( translation );
+    
+    output = translation;
 }
 
 // backspaces: Number of backspaces required to delete text already output
 //             to get to the start point of outputting the current translation
-#if 0
 std::string
-C_translator::format_output( C_stroke * previous_stroke_best_match
-                           , uint8_t    backspaces
-                           , C_stroke * current_stroke )
+C_translator::format( const std::string text
+                    , uint16_t          flags
+                    , uint16_t          flags_prev 
+                    , bool              extends )
 {
     std::string output;
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces: %u", ( uint16_t ) backspaces );
+    /* log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces: %u", ( uint16_t ) backspaces ); */
 
     bool config_space_before = ( space_mode_ == SP_BEFORE );
     bool config_space_after  = ! config_space_before;
 
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "config_space_before: %s", config_space_before ? "true" : "false" );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "config_space_after : %s", config_space_after  ? "true" : "false" );
-   
-    // Locate the flags for the stroke preceding the first stroke of the current best match
-    // so they can be used to help format the output; for example, to suppress the space between
-    // the previous stroke and the current stroke.
-    
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "previous_stroke_best_match              : %p", previous_stroke_best_match );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "previous_stroke_best_match->translation : %p", previous_stroke_best_match->translation );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "current_stroke->translation             : %p", current_stroke->translation );
-
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "previous_stroke_best_match->flags       : %p", previous_stroke_best_match->flags );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "current_stroke->flags                   : %p", current_stroke->flags );
-
-    const uint16_t previous_stroke_flags = *previous_stroke_best_match->flags;    
-    const uint16_t current_stroke_flags  = *current_stroke->flags;
-
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "previous_stroke_flags: %04x", previous_stroke_flags );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "current_stroke_flags : %04x", current_stroke_flags );
-
     // Attach to the previous stroke's output?
-    bool attach_to_previous = ( ( previous_stroke_flags   & ATTACH_TO_NEXT )     ||
-                                ( current_stroke_flags    & ATTACH_TO_PREVIOUS ) ||
-                                ( ( previous_stroke_flags & GLUE ) && ( current_stroke_flags & GLUE ) ) );
+    bool attach_to_previous = ( ( flags_prev   & ATTACH_TO_NEXT )     ||
+                                ( flags        & ATTACH_TO_PREVIOUS ) ||
+                                ( ( flags_prev & GLUE ) && ( flags & GLUE ) ) );
 
     // Attach to the next stroke's output?
-    bool attach_to_next = ( ( current_stroke_flags & ATTACH_TO_NEXT ) || ( current_stroke_flags & GLUE ) ); 
+    bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
 
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous : %s", attach_to_previous  ? "true" : "false" );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_next     : %s", attach_to_next      ? "true" : "false" );
-
-    std::string output;
-
-    if ( current_stroke->found )
+    std::string formatted = text;
+    
+    if ( formatted.length() > 0 )
     {
-        std::string translation = current_stroke->translation;
-
-        if ( previous_stroke_flags & CAPITALISE_NEXT )
+        if ( flags_prev & CAPITALISE_NEXT )
         {
-            translation[ 0 ] = toupper( translation[ 0 ] );
+            formatted[ 0 ] = toupper( formatted[ 0 ] );
         }
-        else if ( previous_stroke_flags & LOWERCASE_NEXT )
+        else if ( flags_prev & LOWERCASE_NEXT )
         {
-            translation[ 0 ] = tolower( translation[ 0 ] );
+            formatted[ 0 ] = tolower( formatted[ 0 ] );
         }
-        else if ( previous_stroke_flags & LOWERCASE_NEXT_WORD )
+        else if ( flags_prev & LOWERCASE_NEXT_WORD )
         {
-            std::transform( translation.begin(), translation.end(), translation.begin(), ::tolower );
+            std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::tolower );
         }
-        else if ( previous_stroke_flags & UPPERCASE_NEXT_WORD )
+        else if ( flags_prev & UPPERCASE_NEXT_WORD )
         {
-            std::transform( translation.begin(), translation.end(), translation.begin(), ::toupper );
-        }
-
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "config_space_after                        : %s", config_space_after  ? "true" : "false" );
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous                        : %s", attach_to_previous  ? "true" : "false" );
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "previous_stroke_best_match->st == SP_AFTER: %s", ( previous_stroke_best_match->st == SP_AFTER ) ? "true" : "false" );
-
-        if ( backspaces > 0 )
-        {
-            output += std::string( backspaces, '\b' );
-        }
-        else
-        {
-            // If we need to attach to the output from the previous stroke, and we're configured for space-after,
-            // and the previous stroke did output a trailing space, then emit a backspace to remove that space.
-            if ( config_space_after && attach_to_previous && ( previous_stroke_best_match->st == SP_AFTER ) )
-            {
-                output += '\b';
-            }
+            std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::toupper );
         }
 
         // Only output a leading space if the stroke generated some text
-        if ( config_space_before && ( ! attach_to_previous ) && ( translation.length() > 0 ) )
+        if ( config_space_before && ( ! attach_to_previous ) && ( formatted.length() > 0 ) )
         {
-            output += ' ';
-            current_stroke->st = SP_BEFORE;
+            /* output += ' '; */
+            /* current_stroke->st = SP_BEFORE; */
 
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Added leading space" );
         }
 
-        output += translation;
+        output += formatted;
 
         // Only output a trailing space if the stroke generated some text
-        if ( config_space_after && ( ! attach_to_next ) && ( translation.length() > 0 ) )
+        if ( config_space_after && ( ! attach_to_next ) && ( formatted.length() > 0 ) )
         {
             output += ' ';
-            current_stroke->st = SP_AFTER;
-
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Added trailing space" );
         }
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "output: |%s|", ctrl_to_text( output ).c_str() );
     }
-    else
-    {
-        // If stroke was not found output the raw steno
-        output = current_stroke->steno;
-    }
-    return output;
+    
+    return formatted;
 }
-#endif
 
 /*
 std::string
@@ -221,11 +175,11 @@ C_translator::undo()
 
         if ( stroke_prev->st == SP_AFTER )
         {
-            const uint16_t current_stroke_flags = *stroke_curr_->flags;
+            const uint16_t flags = *stroke_curr_->flags;
 
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: current_stroke_flags : %04x", current_stroke_flags );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "UNDO: flags : %04x", current_stroke_flags );
 
-            if ( current_stroke_flags & ATTACH_TO_PREVIOUS )
+            if ( flags & ATTACH_TO_PREVIOUS )
             {
                 // Restore the space that would previously have been removed when attaching the current stroke's output
                 output += " ";

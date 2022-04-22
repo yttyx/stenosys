@@ -57,6 +57,9 @@ public:
     get_seqnum();
 
     bool
+    get_extends();
+
+    bool
     get_superceded();
 
     void

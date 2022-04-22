@@ -33,8 +33,8 @@ private:
     
     C_translator(){}
 
-//    std::string
-//    format_output( C_stroke * stroke_previous_to_best_match, uint8_t backspaces, C_stroke * current_stroke );
+    std::string
+    format( const std::string translation, uint16_t flags, uint16_t flags_prev, bool extends );
 
     void
     toggle_space_mode();

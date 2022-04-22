@@ -45,6 +45,7 @@ private:
 
     bool              datetime_;
     bool              fileline_;
+    bool              source_;
     eLogLevel         level_;
                      
     C_mutex           log_lock_;

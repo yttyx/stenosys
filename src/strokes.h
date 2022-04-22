@@ -35,7 +35,15 @@ public:
                    , const std::string &               steno
                    , std::string &                     text 
                    , uint16_t &                        flags
-                   , uint16_t &                        flags_prev );
+                   , uint16_t &                        flags_prev 
+                   , bool &                            extends );
+
+    void
+    set_translation( const std::string translation );
+
+    std::string
+    get_previous_translation();
+
     void
     clear();
 

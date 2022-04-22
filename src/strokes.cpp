@@ -76,7 +76,8 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
                           , const std::string &               steno
                           , std::string &                     text 
                           , uint16_t &                        flags
-                          , uint16_t &                        flags_prev )
+                          , uint16_t &                        flags_prev
+                          , bool &                            extends )
 {
     // Move to new stroke and initialise it
     stroke_curr_ = stroke_curr_->get_next();
@@ -97,14 +98,16 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
     if ( best_match != nullptr )
     {
         stroke_curr_->set_translation( text );
-        flags = stroke_curr_->get_flags();
+        flags      = stroke_curr_->get_flags();
         flags_prev = best_match->get_prev()->get_flags();
+        extends    = stroke_curr_->get_extends(); 
     }
     else
     {
         text       = stroke_curr_->get_translation();
         flags      = 0x0000;
         flags_prev = 0x0000;
+        extends    = false;
     }
 }
 
@@ -151,6 +154,19 @@ C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
         stroke->set_seqnum( stroke->get_prev()->get_seqnum() + 1 );
     }
 }
+
+void
+C_strokes::set_translation( const std::string translation )
+{
+    stroke_curr_->set_translation( translation );    
+}
+    
+std::string
+C_strokes::get_previous_translation()
+{
+    return stroke_curr_->get_prev()->get_translation();
+}
+
 
 #if 0
 std::string

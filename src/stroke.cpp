@@ -88,6 +88,12 @@ C_stroke::get_seqnum()
 }
 
 bool
+C_stroke::get_extends()
+{
+    return seqnum_ != 0;
+}
+
+bool
 C_stroke::get_superceded()
 {
     return superceded_;
