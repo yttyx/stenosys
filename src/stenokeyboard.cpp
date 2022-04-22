@@ -36,6 +36,7 @@ C_steno_keyboard::C_steno_keyboard()
 
 C_steno_keyboard::~C_steno_keyboard()
 {
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_steno_keyboard destructor" );
 }
 
 // -----------------------------------------------------------------------------------

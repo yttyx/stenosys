@@ -29,7 +29,17 @@ C_strokes::C_strokes()
 
 C_strokes::~C_strokes()
 {
-    //TODO Release C_stroke list storage
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_strokes destructor entry" );
+    
+    for ( std::size_t ii = 0; ii < STROKE_BUFFER_MAX; ii++ )
+    {
+        C_stroke * stroke = stroke_curr_->get_next();
+
+        delete stroke_curr_;
+        stroke_curr_ = stroke;
+    }
+    
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_strokes destructor exit" );
 }
 
 bool

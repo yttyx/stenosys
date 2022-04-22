@@ -33,6 +33,7 @@ C_stroke_feed::C_stroke_feed()
 
 C_stroke_feed::~C_stroke_feed()
 {
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_stroke_feed destructor" );
 }
 
 bool
