@@ -26,7 +26,8 @@ const char * REGEX_STROKE = "^\\s*(\\S+?)\\s*$";
 
 C_stroke_feed::C_stroke_feed()
 {
-    packets_ = std::make_unique< std::vector< S_geminipr_packet > >(); 
+//    packets_ = std::make_unique< std::vector< S_geminipr_packet > >(); 
+    strokes_ = std::make_unique< std::vector< std::string > >(); 
 }
 
 C_stroke_feed::~C_stroke_feed()
@@ -38,32 +39,60 @@ C_stroke_feed::initialise( const std::string & filepath )
 {
     bool worked = true;
 
-    text_stream_.seekg( std::ios_base::beg );
-
-    std::string line;
-    std::string steno;
-
-    while ( read( line ) )
+    if ( C_text_file::read( filepath ) )
     {
-        if ( parse_line( line, REGEX_STROKE, steno ) )
+        text_stream_.seekg( std::ios_base::beg );
+
+        std::string line;
+        std::string steno;
+
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "initialise(): 1" );
+
+        while ( C_text_file::get_line( line ) && ( line != "end" ) )
         {
-            if ( steno.find_first_not_of( "#STKPWHRAO*EUFRPBLGTSDZ-" ) == std::string::npos )
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "line: %s", line.c_str() );
+
+            if ( parse_line( line, REGEX_STROKE, steno ) )
             {
-                packets_->push_back( *C_gemini_pr::encode( steno ) );
+                if ( steno.find_first_not_of( "#STKPWHRAO*EUFRPBLGTSDZ-" ) == std::string::npos )
+                {
+                    strokes_->push_back( steno );
+                    //packets_->push_back( *C_gemini_pr::encode( steno ) );
+                }
+                else
+                {
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Non-steno text in stroke file: %s ", line.c_str() );
+                    worked = false;
+                }
             }
             else
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Non-steno text in stroke file: %s ", line.c_str() );
                 worked = false;
             }
         }
-        else
-        {
-            worked = false;
-        }
     }
 
+    // Free up memory from the vector container now we know how much we need
+    strokes_->shrink_to_fit();
+
+    
+    strokes_it_ = strokes_->begin();
+
     return worked;
+}
+    
+bool
+C_stroke_feed::read( std::string & steno )
+{
+    if ( strokes_it_ != strokes_->end() )
+    {
+        steno = ( *strokes_it_ );
+        strokes_it_++;
+
+        return true;
+    }
+
+    return false;
 }
 
 bool

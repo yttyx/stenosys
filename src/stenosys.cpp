@@ -34,6 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "stenokeyboard.h"
 #include "stenosys.h"
 #include "dictionary.h"
+#include "strokefeed.h"
 #include "translator.h"
 #include "x11output.h"
 
@@ -81,15 +82,25 @@ C_stenosys::run( int argc, char *argv[] )
         C_x11_output     x11_output;
         C_steno_keyboard steno_keyboard; // Steno/raw input from the steno keyboard
         C_translator     translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
+        C_stroke_feed    stroke_feed;
         // C_serial       serial;    // Serial output to the Pro Micro
         
         bool worked = true;
     
-        worked = worked && x11_output.initialise();
-        worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
-        worked = worked && steno_keyboard.start();
+        //worked = worked && x11_output.initialise();
+        //worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
+        //worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
-        worked = worked && translator.initialise( cfg.c().file_dict );
+        
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys: 0, %d", worked );
+
+//        worked = worked && translator.initialise( cfg.c().file_dict );
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys: 1, %d", worked );
+
+        worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys: 2 %d", worked );
 
         if ( worked )
         {
@@ -97,29 +108,34 @@ C_stenosys::run( int argc, char *argv[] )
         
             while ( ! kbd.abort() )
             {
-                __u16       key_code;
-                std::string stroke;
-
+                std::string       stroke;
+                std::string       steno;
+                std::string       translation;
                 S_geminipr_packet packet;
+                __u16             key_code;
+
+                if ( stroke_feed.read( steno ) )
+                {
+                    translator.translate( steno, translation );
+                }
                 
                 if ( steno_keyboard.read( packet ) )
                 {
-                    std::string steno_chord = C_gemini_pr::decode( packet );
+                    steno = C_gemini_pr::decode( packet );
+                    
+                    translator.translate( steno, translation );
+                }
 
-                    std::string translation;
-
-                    translator.translate( steno_chord, translation );
-
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, translation:", steno_chord.c_str() );
+                if ( translation.length() > 0 )
+                {
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s, translation:", steno.c_str() );
                     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", translation.c_str() );
 
-                    // x11_output.test();
-                    //x11_output.send( "Hi world " /* translation */ );
-                    translation += ' ';
-                    x11_output.send( translation );
-                    // serial.send( translation );
+                    //translation += ' ';
+                    //x11_output.send( translation );
                 }
-                else if ( steno_keyboard.read( key_code ) )
+
+                if ( steno_keyboard.read( key_code ) )
                 {
                     log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "key event: %04x", key_code );
                     //serial.send( key_code );

@@ -22,7 +22,7 @@ public:
     initialise( const std::string & filepath );
 
     bool
-    parse_line( const std::string & line, const char * regex, std::string & param );
+    read( std::string & steno );
 
 private:
 
@@ -30,11 +30,17 @@ private:
     check_file();
 
     bool
+    parse_line( const std::string & line, const char * regex, std::string & param );
+    
+    bool
     convert();
 
 private:
 
     std::unique_ptr< std::vector< S_geminipr_packet > > packets_; 
+
+    std::unique_ptr< std::vector< std::string > > strokes_; 
+    std::vector< std::string >::iterator          strokes_it_;
 };
 
 }
