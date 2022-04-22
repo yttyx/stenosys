@@ -22,7 +22,7 @@ extern C_log log;
 // Sample line:
 //   SR-R     // very
 //   TAOEURD  // tired
-const char * REGEX_STROKE = "\\s*([\\w+\\-]+)";
+const char * REGEX_STROKE = "\\s*([\\w+\\-\\*]+)";
 
 
 C_stroke_feed::C_stroke_feed()
@@ -47,15 +47,12 @@ C_stroke_feed::initialise( const std::string & filepath )
         std::string line;
         std::string steno;
 
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "initialise(): 1" );
-
         while ( C_text_file::get_line( line ) && ( line != "end" ) )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "line: %s", line.c_str() );
-
             if ( parse_line( line, REGEX_STROKE, steno ) )
             {
-                if ( steno.find_first_not_of( "#STKPWHRAO*EUFRPBLGTSDZ-" ) == std::string::npos )
+                //if ( steno.find_first_not_of( "#STKPWHRAO*EUFRPBLGTSDZ-" ) == std::string::npos )
+                if ( steno.find_first_not_of( "#STKPWHRAO*EUFBLGDZ-" ) == std::string::npos )
                 {
                     strokes_->push_back( steno );
                     //packets_->push_back( *C_gemini_pr::encode( steno ) );
@@ -77,8 +74,6 @@ C_stroke_feed::initialise( const std::string & filepath )
     // Free up memory from the vector container now we know how much we need
     strokes_->shrink_to_fit();
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "strokes_size_: %u", strokes_->size() );
-
     strokes_it_ = strokes_->begin();
 
     return worked;

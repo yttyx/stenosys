@@ -45,6 +45,8 @@ C_dictionary::read( const std::string & path )
             uint32_t entry_count    = 0;
             uint32_t non_data_count = 0;
             
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Reading dictionary" );
+            
             std::string line;
     
             while ( get_line( line ) )

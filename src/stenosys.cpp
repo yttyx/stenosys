@@ -121,7 +121,7 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( translation.length() > 0 )
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s : %s", steno.c_str(), translation.c_str() );
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%20.20s : %s", steno.c_str(), translation.c_str() );
 
                     //translation += ' ';
                     //x11_output.send( translation );
@@ -139,7 +139,7 @@ C_stenosys::run( int argc, char *argv[] )
             log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Closing down" );
             
             //serial.stop();
-            steno_keyboard.stop();
+            //steno_keyboard.stop();
 
             log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Devices closed down" );
         }
