@@ -274,21 +274,16 @@ C_strokes::clear()
     }
 }
 
-std::string
+void
 C_strokes::dump()
 {
-    std::string output;
-
-    output = "\n";
-    output += "  steno         translation       flgs  sq  s'ceded\n";
-    output += "  ------------  ----------------  ----  --  -------\n";
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "  steno         translation       flgs  sq  s'ceded" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "  ------------  ----------------  ----  --  -------" );
 
     C_stroke * stroke = stroke_curr_;
 
     for ( std::size_t ii = 0; ii < STROKE_BUFFER_MAX; ii++ )
     {
-        output += ( ii == 0 ) ? "* " : "  ";
-
         std::string translation = stroke->get_translation();
 
         std::string trans_field;
@@ -300,17 +295,18 @@ C_strokes::dump()
 
         char line[ 2048 ];
 
-        snprintf( line, sizeof( line ), "%-12.12s  %-16.16s  %04x  %2d  %-7.7s\n"
+        snprintf( line, sizeof( line ), "%s%-12.12s  %-16.16s  %04x  %2d  %-7.7s"
+                                      , ( ii == 0 ) ? "* " : "  "
                                       , stroke->get_steno().c_str()
                                       , trans_field.c_str()
                                       , stroke->get_flags()
                                       , stroke->get_seqnum()
                                       , stroke->get_superceded() ? "true" : "false" );
-        output += line;
+   
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", line );
+
         stroke = stroke->get_prev();
     }
-
-    return output;
 }
 
 // Convert control characters in a string to text

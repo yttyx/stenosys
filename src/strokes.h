@@ -47,7 +47,7 @@ public:
     void
     clear();
 
-    std::string
+    void 
     dump();
     
 private:

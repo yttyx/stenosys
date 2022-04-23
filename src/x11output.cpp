@@ -65,13 +65,11 @@ C_x11_output::test()
 void
 C_x11_output::send( const std::string & str )
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::send" );
-    
     for ( char ch : str )
     {
         if ( ( ( int ) ch >= 0x20 ) && ( ( int ) ch <= 0x7f ) )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ch: %c, %02x, keysym: %08lx", ch, ch, ascii_to_keysym[ ( ( int ) ch ) - 0x20 ] );
+        //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ch: %c, %02x, keysym: %08lx", ch, ch, ascii_to_keysym[ ( ( int ) ch ) - 0x20 ] );
             
             send_key( ascii_to_keysym[ ( ( int ) ch ) - 0x20 ], 0 );
         }

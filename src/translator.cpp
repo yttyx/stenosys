@@ -52,7 +52,7 @@ C_translator::translate( const std::string & steno, std::string & output )
     // debug
     if ( steno == "#-D" )
     {
-        output = strokes_->dump();
+        strokes_->dump();
         return;
     }
 
