@@ -8,6 +8,7 @@
 
 //#include <common.h>
 #include "dictionary.h"
+#include "history.h"
 #include "log.h"
 #include "stenoflags.h"
 #include "translator.h"
@@ -26,6 +27,9 @@ C_translator::C_translator( space_type space_mode )
 {
     strokes_     = std::make_unique< C_strokes >();
     dictionary_  = std::make_unique< C_dictionary >();
+
+    //TEMP while writing history.h
+    C_history< C_stroke, 10 > history;
 }
 
 C_translator::~C_translator()

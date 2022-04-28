@@ -1,6 +1,7 @@
 // geminipr.cpp
 
 #include <assert.h>
+#include <cstdint>
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -57,7 +58,7 @@ C_gemini_pr::decode( const S_geminipr_packet & packet )
 
     for ( unsigned int byte = 0; byte < BYTES_PER_STROKE; byte++ )
     {
-        unsigned char b = packet[ byte ];
+        uint8_t b = packet[ byte ];
         
         for ( unsigned int bit = 1; bit <= 7; bit++ )
         {
