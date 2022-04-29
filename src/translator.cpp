@@ -8,7 +8,6 @@
 
 //#include <common.h>
 #include "dictionary.h"
-#include "history.h"
 #include "log.h"
 #include "stenoflags.h"
 #include "translator.h"
@@ -25,11 +24,7 @@ extern C_log log;
 C_translator::C_translator( space_type space_mode )
     : space_mode_( space_mode )
 {
-    strokes_     = std::make_unique< C_strokes >();
     dictionary_  = std::make_unique< C_dictionary >();
-
-    //TEMP while writing history.h
-    C_history< C_stroke, 10 > history;
 }
 
 C_translator::~C_translator()
@@ -39,7 +34,7 @@ C_translator::~C_translator()
 bool
 C_translator::initialise( const std::string & dictionary_path )
 {
-    return strokes_->initialise() && dictionary_->read( dictionary_path );
+    return dictionary_->read( dictionary_path );
 }
 
 // Returns true if a translation was made
@@ -56,7 +51,7 @@ C_translator::translate( const std::string & steno, std::string & output )
     // debug
     if ( steno == "#-D" )
     {
-        strokes_->dump();
+        //strokes_->dump();
         return;
     }
 
@@ -72,11 +67,11 @@ C_translator::translate( const std::string & steno, std::string & output )
     uint16_t flags_prev = 0;
     bool     extends    = false;
 
-    strokes_->find_best_match( dictionary_, steno, output, flags, flags_prev, extends );
+    // strokes_->find_best_match( dictionary_, steno, output, flags, flags_prev, extends );
 
     std::string translation = format( output, flags, flags_prev, extends );
 
-    strokes_->set_translation( translation );
+    // strokes_->set_translation( translation );
     
     output = translation;
 }
@@ -146,6 +141,90 @@ C_translator::format( const std::string text
     return formatted;
 }
 
+// Add a steno stroke and find the best match
+void
+C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
+                          , const std::string &               steno
+                          , std::string &                     text 
+                          , uint16_t &                        flags
+                          , uint16_t &                        flags_prev
+                          , bool &                            extends )
+{
+    // Move to new stroke and initialise it
+    stroke_curr_ = stroke_curr_->get_next();
+    
+    stroke_curr_->clear();
+    stroke_curr_->set_steno( steno );
+
+    // Default to raw steno in case no matching steno entry found
+    stroke_curr_->set_translation( steno );
+
+    best_match_level_ = 0;
+
+    uint16_t   level      = 0;
+    C_stroke * best_match = nullptr;
+
+    find_best_match( dictionary, level, stroke_curr_, steno, text, best_match );
+
+    if ( best_match != nullptr )
+    {
+        stroke_curr_->set_translation( text );
+        flags      = stroke_curr_->get_flags();
+        flags_prev = best_match->get_prev()->get_flags();
+        extends    = stroke_curr_->get_extends(); 
+    }
+    else
+    {
+        text       = stroke_curr_->get_translation();
+        flags      = 0x0000;
+        flags_prev = 0x0000;
+        extends    = false;
+    }
+}
+
+void
+C_strokes::find_best_match( std::unique_ptr< C_dictionary > & dictionary
+                          , uint16_t                          level
+                          , C_stroke *                        stroke
+                          , const std::string &               steno_key
+                          , std::string &                     text
+                          , C_stroke * &                      best_match )
+{
+
+//    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, steno_key: %s", level, steno_key.c_str() );
+    
+    if ( ( stroke->get_steno().length() == 0 ) || ( level >= LOOKBACK_MAX ) )
+    {
+        return;
+    }
+
+    std::string key = ( level == 0 ) ? steno_key : stroke->get_steno() + std::string( "/" ) + steno_key;
+
+    // Look up the stroke
+    uint16_t flags = 0;
+
+    if ( dictionary->lookup( key, text, flags) )
+    {
+//        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text is %s", key.c_str(), text.c_str() );
+        best_match        = stroke;
+        best_match_level_ = level;
+        
+        stroke->set_seqnum( 0 );
+    }
+    else
+    {
+//        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s NOT found, text is %s", key.c_str(), text.c_str() );
+    }
+
+    find_best_match( dictionary, level + 1, stroke->get_prev(), key, text, best_match );
+
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "level: %u, best_match_level_: %u", level, best_match_level_ );
+
+    if ( level < best_match_level_ )
+    {
+        stroke->set_seqnum( stroke->get_prev()->get_seqnum() + 1 );
+    }
+}
 /*
 std::string
 C_translator::undo()

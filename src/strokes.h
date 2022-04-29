@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 
-#include "dictionary.h"
+#include "history.h"
 #include "stroke.h"
 
 using namespace stenosys;
@@ -30,44 +30,20 @@ public:
     void
     add( const std::string & steno );
 
-    void
-    find_best_match( std::unique_ptr< C_dictionary > & dictionary
-                   , const std::string &               steno
-                   , std::string &                     text 
-                   , uint16_t &                        flags
-                   , uint16_t &                        flags_prev 
-                   , bool &                            extends );
-
-    void
-    set_translation( const std::string translation );
-
-    std::string
-    get_previous_translation();
-
-    void
-    clear();
+    bool
+    get_current( std::string & steno );
+    
+    bool 
+    get_previous( std::string & steno );
 
     void 
-    dump();
+    clear();
     
 private:
 
-    void
-    find_best_match( std::unique_ptr< C_dictionary > & dictionary
-                   , uint16_t                          level
-                   , C_stroke *                        stroke
-                   , const std::string &               steno_key
-                   , std::string &                     text
-                   , C_stroke * &                      best_match );
+    std::string steno_curr_;
 
-    static std::string
-    ctrl_to_text( const std::string & text );
-
-private:
-
-    C_stroke * stroke_curr_;
-
-    uint16_t   best_match_level_;
+    std::unique_ptr< C_history< std::string, 10 > > stroke_history_;
 };
 
 }
