@@ -22,30 +22,6 @@ namespace stenosys
 extern C_log log;
 
 void
-C_stroke::set_next( C_stroke * stroke )
-{
-    next_ = stroke;
-}
-
-C_stroke *
-C_stroke::get_next()
-{
-    return next_;
-}
-
-void
-C_stroke::set_prev( C_stroke * stroke )
-{
-    prev_ = stroke;
-}
-
-C_stroke *
-C_stroke::get_prev()
-{
-    return prev_;
-}
-
-void
 C_stroke::set_steno( const std::string & steno )
 {
     steno_ = steno;
@@ -67,6 +43,12 @@ const std::string &
 C_stroke::get_translation()
 {
     return translation_;
+}
+
+void
+C_stroke::set_flags( uint16_t flags )
+{
+    flags_ = flags;
 }
 
 uint16_t
