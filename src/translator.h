@@ -44,8 +44,8 @@ private:
     
     space_type space_mode_;
 
-    std::unique_ptr< C_dictionary >              dictionary_;
-    std::unique_ptr< C_history< C_stroke, 10 > > strokes_;
+    std::unique_ptr< C_dictionary > dictionary_;
+    std::unique_ptr< C_strokes >    strokes_;
 
 };
 

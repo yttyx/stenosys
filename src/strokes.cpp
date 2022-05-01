@@ -46,6 +46,11 @@ C_strokes::find_best_match( const std::string & steno
                           , uint16_t &          flags_prev
                           , bool &              extends )
 {
+    C_stroke * stroke = new C_stroke();
+
+    stroke->set_steno( steno );
+
+    history_->add( *stroke );
 
     //// Move to new stroke and initialise it
     //stroke_curr_ = stroke_curr_->get_next();
