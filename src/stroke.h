@@ -22,7 +22,7 @@ public:
 
     C_stroke() {}
 
-    C_stroke( const std::string & steno ) { steno_ = steno; }
+    C_stroke( const std::string & steno );
 
     ~C_stroke(){}
 

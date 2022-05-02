@@ -27,7 +27,7 @@ C_strokes::C_strokes( C_dictionary & dictionary )
 {
     history_ = std::make_unique< C_history< C_stroke, 10 > >();
 }
-
+    
 C_strokes::~C_strokes()
 {
 }

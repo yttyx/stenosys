@@ -21,6 +21,12 @@ namespace stenosys
 
 extern C_log log;
 
+C_stroke::C_stroke( const std::string & steno )
+{
+    steno_       = steno;
+    translation_ = steno;
+}
+
 void
 C_stroke::steno( const std::string & steno )
 {

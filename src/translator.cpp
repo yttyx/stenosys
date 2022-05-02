@@ -69,13 +69,15 @@ C_translator::translate( const std::string & steno, std::string & output )
     uint16_t flags_prev = 0;
     bool     extends    = false;
 
-    strokes_->find_best_match( steno, output, flags, flags_prev, extends );
+    std::string text;
 
-    std::string translation = format( output, flags, flags_prev, extends );
+    strokes_->find_best_match( steno, text, flags, flags_prev, extends );
 
-    // strokes_->set_translation( translation );
+    std::string formatted_text = format( text, flags, flags_prev, extends );
+
+    strokes_->set_translation( formatted_text );
     
-    output = translation;
+    output = formatted_text;
 }
 
 // backspaces: Number of backspaces required to delete text already output
