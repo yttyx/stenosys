@@ -44,6 +44,12 @@ public:
     std::string
     get_previous_translation();
 
+    C_stroke *
+    curr();
+
+    C_stroke *
+    prev();
+
     void
     clear();
 
@@ -56,7 +62,7 @@ private:
     find_best_match( uint16_t            level
                    , const std::string & steno_key
                    , std::string &       text
-                   , C_stroke &          best_match );
+                   , C_stroke & *        best_match );
 
     static std::string
     ctrl_to_text( const std::string & text );

@@ -37,32 +37,30 @@ public:
         }
     }
 
-    bool
-    get_current( T & obj )
+    T *
+    get_current()
     {
         index_ = 0;
         
         if ( deque_.size() > 0 )
         {
-            obj = deque_[ index_ ];
-            return true;
+            return &deque_[ index_ ];
         }
 
-        return false;
+        return nullptr;
     }
 
-    bool
-    get_previous( T & obj )
+    T * 
+    get_previous()
     {
         index_++;
         
         if ( deque_.size() > index_ )
         {
-            obj = deque_[ index_ ];
-            return true;
+            return &deque_[ index_ ];
         }
 
-        return false;
+        return nullptr;
     }
 
     void

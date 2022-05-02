@@ -52,44 +52,34 @@ C_strokes::find_best_match( const std::string & steno
 
     history_->add( *stroke );
 
-    //// Move to new stroke and initialise it
-    //stroke_curr_ = stroke_curr_->get_next();
-    
-    //stroke_curr_->clear();
-    //stroke_curr_->set_steno( steno );
-
-    //// Default to raw steno in case no matching steno entry found
-    //stroke_curr_->set_translation( steno );
-
     best_match_level_ = 0;
 
-    C_stroke best_match;
-    
     uint16_t level = 0;
+
+    C_stroke * best_match = nullptr;
 
     find_best_match( level, steno, text, best_match );
 
-    //if ( best_match != nullptr )
-    //{
-        //stroke_curr_->set_translation( text );
-        //flags      = stroke_curr_->get_flags();
-        //flags_prev = best_match->get_prev()->get_flags();
-        //extends    = stroke_curr_->get_extends(); 
-    //}
-    //else
-    //{
-        //text       = stroke_curr_->get_translation();
-        //flags      = 0x0000;
-        //flags_prev = 0x0000;
-        //extends    = false;
-    //}
+    if ( best_match != nullptr )
+    {
+        flags      = curr()->get_flags();
+        flags_prev = best_match->get_prev()->get_flags();
+        extends    = stroke_curr_->get_extends(); 
+    }
+    else
+    {
+        text       = stroke_curr_->get_translation();
+        flags      = 0x0000;
+        flags_prev = 0x0000;
+        extends    = false;
+    }
 }
 
 void
 C_strokes::find_best_match( uint16_t            level
                           , const std::string & steno_key
                           , std::string &       text
-                          , C_stroke &          best_match )
+                          , C_stroke & *        best_match )
 {
 
 //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "level: %u, steno_key: %s", level, steno_key.c_str() );
@@ -139,6 +129,20 @@ C_strokes::get_previous_translation()
 {
     //return stroke_curr_->get_prev()->get_translation();
     return std::string( "" );
+}
+
+// Return nullptr if no current stroke
+C_stroke *
+C_strokes::curr()
+{
+    return history_->get_current();
+}
+
+// Return nullptr if no current stroke
+C_stroke *
+C_strokes::prev()
+{
+    return history_->get_previous();
 }
 
 
