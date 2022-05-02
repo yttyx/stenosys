@@ -23,7 +23,6 @@ extern C_log log;
 
 C_strokes::C_strokes( C_dictionary & dictionary )
     : dictionary_( dictionary )
-    , best_match_level_( 0 )
 {
     history_ = std::make_unique< C_history< C_stroke, 10 > >();
 }
@@ -53,6 +52,8 @@ C_strokes::find_best_match( const std::string &               steno
 
     std::string key;
 
+    text = steno;  // Default to the raw steno
+
     C_stroke * stroke = nullptr;
 
     do
@@ -66,8 +67,12 @@ C_strokes::find_best_match( const std::string &               steno
             history_->set_bookmark();
         }
         
-    } while ( history_->look_back( stroke ) );
+    } while ( history_->go_back( stroke ) );
 
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bookmark: steno: %s, seqnum %u"
+                                               , history_->bookmark()->steno().c_str()
+                                               , history_->bookmark()->seqnum() );
+    
     history_->goto_bookmark();
 
     // Work forward from the history bookmark (best match) and fix up the stroke sequence numbers
@@ -76,9 +81,16 @@ C_strokes::find_best_match( const std::string &               steno
 
     uint16_t seqnum = 1;
 
-    while ( history_->look_forward( stroke ) )
+    history_->bookmark()->seqnum( seqnum );
+    
+
+    while ( history_->go_forward( stroke ) )
     {
-        stroke->seqnum( seqnum++ );
+        stroke->seqnum( ++seqnum );
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "go_forward: steno: %s, seqnum %u"
+                                                   , history_->lookback()->steno().c_str()
+                                                   , history_->lookback()->seqnum() );
     }
 
     extends = ( seqnum > 1 );
@@ -196,16 +208,18 @@ C_stroke::undo()
 void
 C_strokes::dump()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "  steno         translation       flgs  sq  s'ceded" );
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "  ------------  ----------------  ----  --  -------" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "steno         translation       flgs  sq  s'ceded" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "------------  ----------------  ----  --  -------" );
+
+
+    history_->reset_lookback();
 
     C_stroke * stroke = history_->curr();
 
-    for ( std::size_t ii = 0; ii < STROKE_BUFFER_MAX; ii++ )
+    do
     {
-        std::string translation = stroke->translation();
-
         std::string trans_field;
+        std::string translation = stroke->translation();
 
         if ( translation.length() > 0 )
         {
@@ -214,18 +228,15 @@ C_strokes::dump()
 
         char line[ 2048 ];
 
-        snprintf( line, sizeof( line ), "%s%-12.12s  %-16.16s  %04x  %2d  %-7.7s"
-                                      , ( ii == 0 ) ? "* " : "  "
+        snprintf( line, sizeof( line ), "%-12.12s  %-16.16s  %04x  %2d"
                                       , stroke->steno().c_str()
                                       , trans_field.c_str()
                                       , stroke->flags()
-                                      , stroke->seqnum()
-                                      , stroke->superceded() ? "true" : "false" );
+                                      , stroke->seqnum() );
    
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", line );
-
-       //  TBW how to iterate backwards through C_history ?  stroke = stroke->get_prev();
-    }
+    
+    } while ( history_->go_back( stroke ) );
 }
 
 // Convert control characters in a string to text

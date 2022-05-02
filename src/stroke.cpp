@@ -21,10 +21,19 @@ namespace stenosys
 
 extern C_log log;
 
+C_stroke::C_stroke()
+{
+    flags_       = 0;
+    seqnum_      = 0;
+}
+
 C_stroke::C_stroke( const std::string & steno )
 {
     steno_       = steno;
     translation_ = steno;
+
+    flags_       = 0;
+    seqnum_      = 0;
 }
 
 void
@@ -44,11 +53,9 @@ C_stroke::operator=( const C_stroke & rhs )
 {
     steno_         = rhs.steno_;
     found_         = rhs.found_;
-    best_match_    = rhs.best_match_;
     translation_   = rhs.translation_;
     flags_         = rhs.flags_;
     seqnum_        = rhs.seqnum_;
-    superceded_    = rhs.superceded_;
 
     return *this;
 }
@@ -89,22 +96,20 @@ C_stroke::extends()
     return seqnum_ != 0;
 }
 
-bool
-C_stroke::superceded()
-{
-    return superceded_;
-}
+//bool
+//C_stroke::superceded()
+//{
+    //return superceded_;
+//}
 
 void
 C_stroke::clear()
 {
     steno_         = "";
     found_         = false;
-    best_match_    = false;
     translation_   = "";
     flags_         = 0;
     seqnum_        = 0;
-    superceded_    = false;
 }
 
 }

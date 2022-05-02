@@ -53,7 +53,7 @@ C_translator::translate( const std::string & steno, std::string & output )
     // debug
     if ( steno == "#-D" )
     {
-        //strokes_->dump();
+        strokes_->dump();
         return;
     }
 
@@ -88,8 +88,6 @@ C_translator::format( const std::string text
                     , uint16_t          flags_prev 
                     , bool              extends )
 {
-    std::string output;
-
     /* log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces: %u", ( uint16_t ) backspaces ); */
 
     bool config_space_before = ( space_mode_ == SP_BEFORE );
@@ -104,6 +102,8 @@ C_translator::format( const std::string text
     bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
 
     std::string formatted = text;
+    
+    std::string output;
     
     if ( formatted.length() > 0 )
     {
@@ -127,8 +127,8 @@ C_translator::format( const std::string text
         // Only output a leading space if the stroke generated some text
         if ( config_space_before && ( ! attach_to_previous ) && ( formatted.length() > 0 ) )
         {
-            /* output += ' '; */
-            /* current_stroke->st = SP_BEFORE; */
+            output += ' '; 
+            //current_stroke->st = SP_BEFORE; 
 
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Added leading space" );
         }
@@ -142,7 +142,7 @@ C_translator::format( const std::string text
         }
     }
     
-    return formatted;
+    return output;
 }
 
 void

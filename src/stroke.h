@@ -12,16 +12,13 @@ using namespace stenosys;
 namespace stenosys
 {
 
-#define STROKE_BUFFER_MAX 12
-#define LOOKBACK_MAX      6
-
 class C_stroke
 {
 
 public:
 
-    C_stroke() {}
-
+    C_stroke();
+    
     C_stroke( const std::string & steno );
 
     ~C_stroke(){}
@@ -71,10 +68,6 @@ private:
     uint16_t         flags_;                // Formatting flags
 
     uint16_t         seqnum_;               // The position of this stroke in a multi-stroke word
-    
-    bool             best_match_;           // True if the stroke represents the best match
-    bool             superceded_;           // The output from this stroke has been superceded by a later stroke
-                                            // with a longer steno match    
 };
 
 }

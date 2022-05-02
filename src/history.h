@@ -87,9 +87,16 @@ public:
         return bookmark_->o;
     }
 
-    bool 
-    look_back( T * & o )
+    T * 
+    lookback()
     {
+        return lookback_->o;
+    }
+
+    bool 
+    go_back( T * & o )
+    {
+        // Back to but not including curr_
         if ( lookback_->prev != curr_ )
         {
             lookback_ = lookback_->prev;
@@ -101,9 +108,10 @@ public:
     }
     
     bool 
-    look_forward( T * & o )
+    go_forward( T * & o )
     {
-        if ( lookback_ != curr_ )
+        // Up to and including curr_
+        if ( lookback_->prev != curr_ )
         {
             lookback_ = lookback_->next;
             o = lookback_->o;

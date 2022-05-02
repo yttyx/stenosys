@@ -66,8 +66,6 @@ private:
     C_dictionary & dictionary_;
 
     std::unique_ptr< C_history< C_stroke, 10 > > history_;
-
-    uint16_t   best_match_level_;
 };
 
 }
