@@ -3,14 +3,23 @@
 
 #pragma once
 
-#include <algorithm>
 #include <linux/types.h>
-#include <deque>
-#include <memory>
+
+#include <cstddef>
+#include <cstdint>
 
 
 namespace stenosys
 {
+
+template < class T > 
+class C_node
+{
+public:
+    C_node * next;   // should this be C_node< T > *    ?
+    C_node * prev;
+    T *      o;
+};
 
 template < class T, int N > 
 class C_history
@@ -20,61 +29,81 @@ public:
 
     C_history()
     {
-        size_  = N;
-        index_ = 0;
+        size_ = N;
+
+        // Create a doubly-linked list of T objects
+        C_node< T > * first = new_node();
+        C_node< T > * prev = first;
+
+        for ( std::size_t ii = 1; ii < N; ii++ )
+        {
+            C_node< T > * node = new_node();
+
+            prev->next = node;
+            node->prev = prev;
+            
+            prev = node;
+        }
+        
+        // Complete the circular buffer
+        prev->next = first;
+        first->prev = prev;
+
+        curr_ = first;
+
+        //clear();
     }
 
-    ~C_history(){}
+    ~C_history()
+    {
+        for ( std::size_t ii = 0; ii < N; ii++ )
+        {
+            C_node< T > * node = curr_->next;
+
+            delete curr_;
+            curr_ = node;
+        }
+    }
 
     void
     add( const T & obj )
     {
-        deque_.push_front( obj );
+        curr_ = curr_->next;
 
-        if ( deque_.size() > N )
-        {
-            deque_.pop_back();
-        }
+        curr_->o.clear();
     }
 
     T *
-    get_current()
+    curr()
     {
-        index_ = 0;
-        
-        if ( deque_.size() > 0 )
-        {
-            return &deque_[ index_ ];
-        }
-
-        return nullptr;
+        return curr_->o;
     }
 
     T * 
-    get_previous()
+    prev()
     {
-        index_++;
-        
-        if ( deque_.size() > index_ )
-        {
-            return &deque_[ index_ ];
-        }
-
-        return nullptr;
-    }
-
-    void
-    clear()
-    {
-        deque_.clear();
-        index_ = 0;
+        return curr_->prev->o;
     }
 
 private:
+
+    C_node< T > *
+    new_node()
+    {
+        C_node< T > * node = new C_node< T >();
+
+        node->o = new T();
+        return node;
+    }
+
+public:
+
+
+private:
     
-    std::deque< T > deque_;
-    uint16_t        size_;
-    uint16_t        index_;
+    C_node< T > * curr_;
+    
+    uint16_t size_;
 
 };
 

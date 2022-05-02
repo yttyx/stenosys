@@ -35,9 +35,6 @@ public:
     const std::string &
     get_translation();
 
-    void
-    set_flags( uint16_t flags );
-
     uint16_t
     get_flags();
 
@@ -60,9 +57,6 @@ private:
 
 
 private:
-
-    C_stroke *       prev_;                 // Links to previous and next strokes
-    C_stroke *       next_;                 //
 
     std::string      steno_;                // Steno
     bool             found_;                // Steno entry was found in dictionary

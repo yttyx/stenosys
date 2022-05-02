@@ -45,12 +45,6 @@ C_stroke::get_translation()
     return translation_;
 }
 
-void
-C_stroke::set_flags( uint16_t flags )
-{
-    flags_ = flags;
-}
-
 uint16_t
 C_stroke::get_flags()
 {
