@@ -54,7 +54,6 @@ private:
 
     void
     find_best_match( uint16_t                          level
-                   , C_stroke *                        stroke
                    , const std::string &               steno_key
                    , std::string &                     text
                    , C_stroke * &                      best_match );

@@ -21,34 +21,40 @@ class C_stroke
 public:
 
     C_stroke() {}
+
+    C_stroke( const std::string & steno ) { steno_ = steno; }
+
     ~C_stroke(){}
 
+    C_stroke &
+    operator=( const C_stroke & stroke );
+
     void
-    set_steno( const std::string & steno );
+    steno( const std::string & steno );
 
     const std::string &
-    get_steno();
+    steno();
     
     void
-    set_translation( const std::string & translation );
+    translation( const std::string & translation );
 
     const std::string &
-    get_translation();
+    translation();
 
     uint16_t
-    get_flags();
+    flags();
 
     void
-    set_seqnum( uint16_t seqnum );
+    seqnum( uint16_t seqnum );
     
     uint16_t
-    get_seqnum();
+    seqnum();
 
     bool
-    get_extends();
+    extends();
 
     bool
-    get_superceded();
+    superceded();
 
     void
     clear();

@@ -29,8 +29,6 @@ public:
 
     C_history()
     {
-        size_ = N;
-
         // Create a doubly-linked list of T objects
         C_node< T > * first = new_node();
         C_node< T > * prev = first;
@@ -50,8 +48,6 @@ public:
         first->prev = prev;
 
         curr_ = first;
-
-        //clear();
     }
 
     ~C_history()
@@ -70,7 +66,7 @@ public:
     {
         curr_ = curr_->next;
 
-        curr_->o.clear();
+        *curr_->o = obj;
     }
 
     T *
@@ -83,6 +79,55 @@ public:
     prev()
     {
         return curr_->prev->o;
+    }
+
+    T * 
+    bookmark()
+    {
+        return bookmark_->o;
+    }
+
+    bool 
+    look_back( T * & o )
+    {
+        if ( lookback_->prev != curr_ )
+        {
+            lookback_ = lookback_->prev;
+            o = lookback_->o;
+            return true;
+        }
+
+        return false;
+    }
+    
+    bool 
+    look_forward( T * & o )
+    {
+        if ( lookback_ != curr_ )
+        {
+            lookback_ = lookback_->next;
+            o = lookback_->o;
+            return true;
+        }
+
+        return false;
+    }
+
+    void
+    reset_lookback()
+    {
+        lookback_ = curr_;
+    }
+
+    void
+    set_bookmark()
+    {
+        bookmark_ = lookback_;
+    }
+
+    void goto_bookmark()
+    {
+        lookback_ = bookmark_;
     }
 
 private:
@@ -102,9 +147,8 @@ public:
 private:
     
     C_node< T > * curr_;
-    
-    uint16_t size_;
-
+    C_node< T > * lookback_;
+    C_node< T > * bookmark_;
 };
 
 }
