@@ -88,6 +88,17 @@ C_stenosys::run( int argc, char *argv[] )
         bool worked = true;
     
         worked = worked && x11_output.initialise();
+
+        //TEMP
+        if ( worked )
+        {
+            x11_output.test();
+        }
+
+        exit( 0 );
+        //TEMP:END
+
+
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
         worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 

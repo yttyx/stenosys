@@ -13,6 +13,13 @@
 namespace stenosys
 {
 
+struct keysym_entry
+{
+    KeySym base;
+    KeySym modifier;
+};
+
+
 class C_x11_output
 {
 
@@ -40,7 +47,7 @@ private:
     Display * display_;
 
 
-    static KeySym ascii_to_keysym[];
+    static keysym_entry ascii_to_keysym[];
 
 };
 
