@@ -61,7 +61,11 @@ C_strokes::find_best_match( const std::string &               steno
         
         if ( dictionary_.lookup( key, text, flags) )
         {
-            // log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text is %s", key.c_str(), text.c_str() );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, flags: %u", key.c_str(), text.c_str(), flags );
+
+            history_->curr()->translation( text );
+            history_->curr()->flags( flags );
+
             // Set best match so far
             history_->set_bookmark();
         }
@@ -76,6 +80,7 @@ C_strokes::find_best_match( const std::string &               steno
   
     history_->goto_bookmark();
    
+    //flags      = history_->curr()->flags();
     flags_prev = history_->bookmark_prev()->flags();
 
     uint16_t seqnum = 1;

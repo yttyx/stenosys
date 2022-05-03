@@ -38,6 +38,9 @@ public:
     const std::string &
     translation();
 
+    void 
+    flags( uint16_t flags );
+    
     uint16_t
     flags();
 

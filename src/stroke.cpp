@@ -79,6 +79,12 @@ C_stroke::flags()
 }
 
 void
+C_stroke::flags( uint16_t flags )
+{
+    flags_ = flags;
+}
+
+void
 C_stroke::seqnum( uint16_t seqnum )
 {
     seqnum_ = seqnum;
