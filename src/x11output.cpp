@@ -71,7 +71,8 @@ C_x11_output::send( const std::string & str )
         {
         //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ch: %c, %02x, keysym: %08lx", ch, ch, ascii_to_keysym[ ( ( int ) ch ) - 0x20 ] );
             
-            send_key( ascii_to_keysym[ ( ( int ) ch ) - 0x20 ], XK_Shift_L );
+            send_key( ascii_to_keysym[ ( ( int ) ch ) - 0x20 ], 0 );
+            //send_key( ascii_to_keysym[ ( ( int ) ch ) - 0x20 ], XK_Shift_L );
         }
     }
 }
