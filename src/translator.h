@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "dictionary.h"
+#include "formatter.h"
 #include "history.h"
 #include "strokes.h"
 
@@ -13,8 +14,6 @@ using namespace stenosys;
 
 namespace stenosys
 {
-
-enum space_type { SP_NONE, SP_BEFORE, SP_AFTER };
 
 class C_translator
 {
@@ -46,6 +45,7 @@ private:
 
     std::unique_ptr< C_dictionary > dictionary_;
     std::unique_ptr< C_strokes >    strokes_;
+    std::unique_ptr< C_formatter >  formatter_;
 
 };
 

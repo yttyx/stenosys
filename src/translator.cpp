@@ -8,6 +8,7 @@
 
 //#include <common.h>
 #include "dictionary.h"
+#include "formatter.h"
 #include "log.h"
 #include "stenoflags.h"
 #include "strokes.h"
@@ -27,6 +28,7 @@ C_translator::C_translator( space_type space_mode )
 {
     dictionary_ = std::make_unique< C_dictionary >();
     strokes_    = std::make_unique< C_strokes >( *dictionary_.get() );
+    formatter_  = std::make_unique< C_formatter >( space_mode );
 }
 
 C_translator::~C_translator()

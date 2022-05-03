@@ -71,10 +71,29 @@ C_x11_output::send( const std::string & str )
         {
         //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ch: %c, %02x, keysym: %08lx", ch, ch, ascii_to_keysym[ ( ( int ) ch ) - 0x20 ] );
             
-            send_key( ascii_to_keysym[ ( ( int ) ch ) - 0x20 ], 0 );
+            send_key( ascii_to_keysym[ ( ( int ) ch ) - 0x20 ], XK_Shift_L );
         }
     }
 }
+
+#if 0
+// Looks like we can supply these modifiers as the second param to send_key()
+#define XK_Shift_L                       0xffe1  /* Left shift */
+#define XK_Shift_R                       0xffe2  /* Right shift */
+#define XK_Control_L                     0xffe3  /* Left control */
+#define XK_Control_R                     0xffe4  /* Right control */
+#define XK_Caps_Lock                     0xffe5  /* Caps lock */
+#define XK_Shift_Lock                    0xffe6  /* Shift lock */
+
+#define XK_Meta_L                        0xffe7  /* Left meta */
+#define XK_Meta_R                        0xffe8  /* Right meta */
+#define XK_Alt_L                         0xffe9  /* Left alt */
+#define XK_Alt_R                         0xffea  /* Right alt */
+#define XK_Super_L                       0xffeb  /* Left super */
+#define XK_Super_R                       0xffec  /* Right super */
+#define XK_Hyper_L                       0xffed  /* Left hyper */
+#define XK_Hyper_R                       0xffee  /* Right hyper */
+#endif
 
 void
 C_x11_output::send_key( KeySym keysym, KeySym modsym )

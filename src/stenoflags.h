@@ -27,4 +27,6 @@ const uint16_t UNUSED_3                 = 0x8000;
 
 const uint16_t INTERNAL_FLAGS_MASK      = 0xf800;
 
+enum space_type { SP_NONE, SP_BEFORE, SP_AFTER };
+
 }
