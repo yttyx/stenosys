@@ -16,7 +16,7 @@ template < class T >
 class C_node
 {
 public:
-    C_node * next;   // should this be C_node< T > *    ?
+    C_node * next;
     C_node * prev;
     T *      o;
 };
@@ -66,6 +66,9 @@ public:
     {
         curr_ = curr_->next;
 
+        bookmark_ = curr_;
+        lookback_ = curr_;
+
         *curr_->o = obj;
     }
 
@@ -85,6 +88,12 @@ public:
     bookmark()
     {
         return bookmark_->o;
+    }
+    
+    T * 
+    bookmark_prev()
+    {
+        return bookmark_->prev->o;
     }
 
     T * 
@@ -110,8 +119,7 @@ public:
     bool 
     go_forward( T * & o )
     {
-        // Up to and including curr_
-        if ( lookback_->prev != curr_ )
+        if ( lookback_ != curr_ )
         {
             lookback_ = lookback_->next;
             o = lookback_->o;

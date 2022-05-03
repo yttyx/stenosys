@@ -48,7 +48,6 @@ C_strokes::find_best_match( const std::string &               steno
     C_stroke new_stroke( steno );
 
     history_->add( new_stroke );
-    history_->reset_lookback();
 
     std::string key;
 
@@ -69,28 +68,27 @@ C_strokes::find_best_match( const std::string &               steno
         
     } while ( history_->go_back( stroke ) );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bookmark: steno: %s, seqnum %u"
-                                               , history_->bookmark()->steno().c_str()
-                                               , history_->bookmark()->seqnum() );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bookmark: steno: %s, seqnum %u"
+                                               //, history_->bookmark()->steno().c_str()
+                                               //, history_->bookmark()->seqnum() );
     
-    history_->goto_bookmark();
-
     // Work forward from the history bookmark (best match) and fix up the stroke sequence numbers
+  
+    history_->goto_bookmark();
    
-    flags_prev = history_->bookmark()->flags();
+    flags_prev = history_->bookmark_prev()->flags();
 
     uint16_t seqnum = 1;
 
     history_->bookmark()->seqnum( seqnum );
     
-
     while ( history_->go_forward( stroke ) )
     {
         stroke->seqnum( ++seqnum );
 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "go_forward: steno: %s, seqnum %u"
-                                                   , history_->lookback()->steno().c_str()
-                                                   , history_->lookback()->seqnum() );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "go_forward: steno: %s, seqnum %u"
+                                                   //, history_->lookback()->steno().c_str()
+                                                   //, history_->lookback()->seqnum() );
     }
 
     extends = ( seqnum > 1 );
