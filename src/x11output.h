@@ -10,6 +10,8 @@
 #include <X11/extensions/XTest.h>
 #include <unistd.h>
 
+#include "outputter.h"
+
 namespace stenosys
 {
 
@@ -20,7 +22,7 @@ struct keysym_entry
 };
 
 
-class C_x11_output
+class C_x11_output : public C_outputter
 {
 
 public:
@@ -28,24 +30,26 @@ public:
     C_x11_output();
     ~C_x11_output();
 
-    bool    
+    virtual bool    
     initialise();
 
-    void
+    virtual void
     send( const std::string & str );
 
-    void
+    virtual void
     test();
 
 private:
 
+    virtual std::string
+    format( const std::string & text );
+    
     void 
     send_key( KeySym keysym, KeySym modsym );
 
 private:
 
     Display * display_;
-
 
     static keysym_entry ascii_to_keysym[];
 

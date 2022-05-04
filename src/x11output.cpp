@@ -43,6 +43,20 @@ C_x11_output::initialise()
 }
 
 void
+C_x11_output::send( const std::string & str )
+{
+    for ( char ch : str )
+    {
+        if ( ( ( int ) ch >= 0x20 ) && ( ( int ) ch <= 0x7f ) )
+        {
+        //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ch: %c, %02x, keysym: %08lx", ch, ch, ascii_to_keysym[ ( ( int ) ch ) - 0x20 ] );
+            keysym_entry * entry = &ascii_to_keysym[ ( ( int ) ch ) - 0x20 ];            
+            send_key( entry->base, entry->modifier );
+        }
+    }
+}
+
+void
 C_x11_output::test()
 {
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
@@ -70,18 +84,29 @@ C_x11_output::test()
     send_key( XK_Return, 0 );
 }
 
-void
-C_x11_output::send( const std::string & str )
+std::string
+C_x11_output::format( const std::string & text )
 {
-    for ( char ch : str )
+	std::string from  = "\b";
+	std::string to;
+
+    //switch( mode_ )
+    //{
+        //case FM_ARDUINO: to = "\xB2";  break;       // \xB2 is ARDUINO_KEY_BACKSPACE (arduino_keyboard_modifiers.h)
+        //case FM_CONSOLE: to = "\b \b"; break;
+        //case FM_NONE:                  break;       // Won't get here but suppress compiler warning on not handling FM_NONE
+    //}
+
+    std::string output         = text;
+    std::string::size_type pos = 0;
+
+    while ( ( pos = output.find( from, pos ) ) != std::string::npos )
     {
-        if ( ( ( int ) ch >= 0x20 ) && ( ( int ) ch <= 0x7f ) )
-        {
-        //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ch: %c, %02x, keysym: %08lx", ch, ch, ascii_to_keysym[ ( ( int ) ch ) - 0x20 ] );
-            keysym_entry * entry = &ascii_to_keysym[ ( ( int ) ch ) - 0x20 ];            
-            send_key( entry->base, entry->modifier );
-        }
+        output.replace( pos, from.size(), to );
+        pos += to.size();
     }
+
+    return output;
 }
 
 #if 0

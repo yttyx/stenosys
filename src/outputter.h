@@ -12,15 +12,22 @@ class C_outputter
 
 public:
 
-    C_outputter( formatter_mode mode ) { mode_ = mode; }
-    ~C_outputter(){}
+    C_outputter(){}
+    virtual ~C_outputter(){}
 
-    std::string
-    format( const std::string & text );
+    virtual bool
+    initialise() = 0;
+
+    virtual void
+    send( const std::string & text ) = 0;
+
+    virtual void
+    test() = 0;
 
 private:
 
-    C_outputter(){}
+    virtual std::string
+    format( const std::string & text ) = 0;
 
 private:
 

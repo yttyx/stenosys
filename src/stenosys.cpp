@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 #include <linux/types.h>
 
+#include <memory>
 #include <string>
 #include <unistd.h>
 
@@ -79,7 +80,8 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", cfg.c().device_raw.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
 
-        C_x11_output     x11_output;
+        std::unique_ptr< C_outputter > x11_output = std::make_unique< C_x11_output>();
+
         C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard */
         // C_serial       serial;               // Serial output to the Pro Micro
         C_stroke_feed    stroke_feed;
@@ -87,7 +89,7 @@ C_stenosys::run( int argc, char *argv[] )
         
         bool worked = true;
     
-        worked = worked && x11_output.initialise();
+        worked = worked && x11_output->initialise();
 
         ////TEMP
         //if ( worked )
@@ -97,7 +99,6 @@ C_stenosys::run( int argc, char *argv[] )
 
         //exit( 0 );
         //TEMP:END
-
 
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
         worked = worked && steno_keyboard.start();
@@ -134,7 +135,7 @@ C_stenosys::run( int argc, char *argv[] )
                 {
 //                    log_write_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", translation.c_str() );
 
-                    x11_output.send( translation );
+                      x11_output->send( translation );
                 }
 
                 if ( steno_keyboard.read( key_code ) )
