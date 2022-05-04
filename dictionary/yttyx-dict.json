@@ -4896,7 +4896,7 @@
 "AS/KAPBS": "askance",
 "AS/KAR": "ascar",
 "AS/KEU": "ASCII",
-"AS/KEU/TAB": " !\"#$%&'()*+'-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+"AS/KEU/TAB": " !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
 "AS/KOT": "ascot",
 "AS/KWRAG/TKPWOE": "asiago",
 "AS/PAOEUR": "aspire",

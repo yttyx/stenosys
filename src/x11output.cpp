@@ -197,7 +197,7 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_H,            XK_Shift_L }     // 0048  /* U+0048 LATIN CAPITAL LETTER H */
 ,   { XK_I,            XK_Shift_L }     // 0049  /* U+0049 LATIN CAPITAL LETTER I */
 ,   { XK_J,            XK_Shift_L }     // 004a  /* U+004A LATIN CAPITAL LETTER J */
-,   { XK_K,            XK_Shift_L }    // 004b  /* U+004B LATIN CAPITAL LETTER K */
+,   { XK_K,            XK_Shift_L }     // 004b  /* U+004B LATIN CAPITAL LETTER K */
 ,   { XK_L,            XK_Shift_L }     // 004c  /* U+004C LATIN CAPITAL LETTER L */
 ,   { XK_M,            XK_Shift_L }     // 004d  /* U+004D LATIN CAPITAL LETTER M */
 ,   { XK_N,            XK_Shift_L }     // 004e  /* U+004E LATIN CAPITAL LETTER N */
@@ -214,7 +214,7 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_Y,            XK_Shift_L }     // 0059  /* U+0059 LATIN CAPITAL LETTER Y */
 ,   { XK_Z,            XK_Shift_L }     // 005a  /* U+005A LATIN CAPITAL LETTER Z */
 ,   { XK_bracketleft,  0          }     // 005b  /* U+005B LEFT SQUARE BRACKET */
-,   { XK_backslash,    XK_Shift_L }     // 005c  /* U+005C REVERSE SOLIDUS */
+,   { XK_backslash,    0          }     // 005c  /* U+005C REVERSE SOLIDUS */
 ,   { XK_bracketright, 0          }     // 005d  /* U+005D RIGHT SQUARE BRACKET */
 ,   { XK_asciicircum,  XK_Shift_L }     // 005e  /* U+005E CIRCUMFLEX ACCENT */
 ,   { XK_underscore,   XK_Shift_L }     // 005f  /* U+005F LOW LINE */
@@ -245,9 +245,9 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_x,            0          }     // 0078  /* U+0078 LATIN SMALL LETTER X */
 ,   { XK_y,            0          }     // 0079  /* U+0079 LATIN SMALL LETTER Y */
 ,   { XK_z,            0          }     // 007a  /* U+007A LATIN SMALL LETTER Z */
-,   { XK_braceleft,    XK_Shift_L }     // 007b  /* U+007B LEFT CURLY BRACKET */
+,   { XK_braceleft,    0          }     // 007b  /* U+007B LEFT CURLY BRACKET */
 ,   { XK_bar,          XK_Shift_L }     // 007c  /* U+007C VERTICAL LINE */
-,   { XK_braceright,   XK_Shift_L }     // 007d  /* U+007D RIGHT CURLY BRACKET */
+,   { XK_braceright,   0          }     // 007d  /* U+007D RIGHT CURLY BRACKET */
 ,   { XK_asciitilde,   XK_Shift_L }     // 007e  /* U+007E TILDE */
 };
 
