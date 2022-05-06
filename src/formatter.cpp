@@ -1,4 +1,5 @@
 
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -86,5 +87,75 @@ C_formatter::format( const std::string text
     
     return output;
 }
+
+std::string
+C_formatter::extend( const std::string & prev, const std::string & curr )
+{
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "extend --  prev: %s curr: %s"
+                                               , prev.c_str()
+                                               , curr.c_str() );
+
+    // Minimise the number of characters required to move from the previous
+    // translation to the current translation. Check for text common to both
+    // the current and previous translations. Add backspaces to bring the
+    // previous translation back to the point of divergence, then add the
+    // part of the current translation after that point.
+    
+    std::string output;
+    std::string backspaces;
+    std::string extra;
+
+    int idx = find_point_of_difference( prev, curr );
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %u", idx );
+    
+    if ( idx >= 0 )
+    {
+        backspaces.assign( prev.length() - idx, '\b' );
+
+        extra = curr.substr( idx );
+    }
+    else {
+    
+        backspaces.assign( prev.length(), '\b' );
+        extra = curr;
+    }
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces.length(): %u", backspaces.length() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "extra              : %s", extra.c_str() );
+
+    output = backspaces;
+    output += extra;
+
+    return output;  
+}
+
+uint16_t
+C_formatter::find_point_of_difference( const std::string & s1, const std::string & s2 )
+{
+    if ( s1 == s2 )
+    {
+        return -1;
+    }
+
+    uint16_t ii = 0;
+    
+    for ( ; ( ii < s1.length() ) && ( ii < s2.length() ); ii++ )
+    {
+        if ( s1[ ii ] != s2[ ii ] )
+        {
+            break;
+        }
+    }
+
+    if ( ( ii < s1.length() ) && ( ii < s2.length() ) )
+    {
+        return ii;
+    }
+
+    return -1;
+}
+
+
 
 }

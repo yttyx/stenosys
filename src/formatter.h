@@ -2,6 +2,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cstdint>
 #include <string>
 #include <memory>
 
@@ -25,10 +26,16 @@ public:
 
     std::string
     format( const std::string translation, uint16_t flags, uint16_t flags_prev, bool extends );
-    
+
+    std::string
+    extend( const std::string & prev, const std::string & curr );
+
 private:
     
     C_formatter(){}
+
+    uint16_t 
+    find_point_of_difference( const std::string & s1, const std::string & s2 );
 
 private:
     

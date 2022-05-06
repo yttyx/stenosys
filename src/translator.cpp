@@ -75,11 +75,20 @@ C_translator::translate( const std::string & steno, std::string & output )
 
     strokes_->find_best_match( steno, text, flags, flags_prev, extends );
 
-    std::string formatted_text = formatter_->format( text, flags, flags_prev, extends );
+    std::string formatted_curr = formatter_->format( text, flags, flags_prev, extends );
 
-    strokes_->set_translation( formatted_text );
+    strokes_->set_translation( formatted_curr );
     
-    output = formatted_text;
+    if ( extends )
+    {
+        std::string formatted_prev = strokes_->get_previous_translation();
+
+        output = formatter_->extend( formatted_prev, formatted_curr );
+    }
+    else
+    {
+        output = formatted_curr;
+    }
 }
 
 void
