@@ -33,9 +33,6 @@ private:
     
     C_translator(){}
 
-    std::string
-    format( const std::string translation, uint16_t flags, uint16_t flags_prev, bool extends );
-
     void
     toggle_space_mode();
 

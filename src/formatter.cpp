@@ -29,9 +29,9 @@ C_formatter::~C_formatter()
 
 std::string
 C_formatter::format( const std::string text
-                    , uint16_t          flags
-                    , uint16_t          flags_prev 
-                    , bool              extends )
+                    , uint16_t         flags
+                    , uint16_t         flags_prev 
+                    , bool             extends )
 {
     /* log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces: %u", ( uint16_t ) backspaces ); */
 
@@ -69,19 +69,16 @@ C_formatter::format( const std::string text
             std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::toupper );
         }
 
-        // Only output a leading space if the stroke generated some text
-        if ( config_space_before && ( ! attach_to_previous ) && ( formatted.length() > 0 ) )
+        if ( config_space_before && ( ! attach_to_previous ) )
         {
             output += ' '; 
-            //current_stroke->st = SP_BEFORE; 
 
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Added leading space" );
         }
 
         output += formatted;
 
-        // Only output a trailing space if the stroke generated some text
-        if ( config_space_after && ( ! attach_to_next ) && ( formatted.length() > 0 ) )
+        if ( config_space_after && ( ! attach_to_next ) )
         {
             output += ' ';
         }
