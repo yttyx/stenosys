@@ -53,6 +53,10 @@ C_x11_output::send( const std::string & str )
             keysym_entry * entry = &ascii_to_keysym[ ( ( int ) ch ) - 0x20 ];            
             send_key( entry->base, entry->modifier );
         }
+        else if ( ch == '\b' )
+        {
+            send_key( XK_BackSpace, 0 ); 
+        }
     }
 }
 
@@ -84,30 +88,30 @@ C_x11_output::test()
     send_key( XK_Return, 0 );
 }
 
-std::string
-C_x11_output::format( const std::string & text )
-{
-	std::string from  = "\b";
-	std::string to;
+//std::string
+//C_x11_output::format( const std::string & text )
+//{
+	//std::string from  = "\b";
+	//std::string to;
 
-    //switch( mode_ )
+    ////switch( mode_ )
+    ////{
+        ////case FM_ARDUINO: to = "\xB2";  break;       // \xB2 is ARDUINO_KEY_BACKSPACE (arduino_keyboard_modifiers.h)
+        ////case FM_CONSOLE: to = "\b \b"; break;
+        ////case FM_NONE:                  break;       // Won't get here but suppress compiler warning on not handling FM_NONE
+    ////}
+
+    //std::string output         = text;
+    //std::string::size_type pos = 0;
+
+    //while ( ( pos = output.find( from, pos ) ) != std::string::npos )
     //{
-        //case FM_ARDUINO: to = "\xB2";  break;       // \xB2 is ARDUINO_KEY_BACKSPACE (arduino_keyboard_modifiers.h)
-        //case FM_CONSOLE: to = "\b \b"; break;
-        //case FM_NONE:                  break;       // Won't get here but suppress compiler warning on not handling FM_NONE
+        //output.replace( pos, from.size(), to );
+        //pos += to.size();
     //}
 
-    std::string output         = text;
-    std::string::size_type pos = 0;
-
-    while ( ( pos = output.find( from, pos ) ) != std::string::npos )
-    {
-        output.replace( pos, from.size(), to );
-        pos += to.size();
-    }
-
-    return output;
-}
+    //return output;
+//}
 
 #if 0
 //TEMP, for reference

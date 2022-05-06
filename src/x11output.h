@@ -41,8 +41,8 @@ public:
 
 private:
 
-    virtual std::string
-    format( const std::string & text );
+    //virtual std::string
+    //format( const std::string & text );
     
     void 
     send_key( KeySym keysym, KeySym modsym );
