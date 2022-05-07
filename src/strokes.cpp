@@ -100,6 +100,16 @@ C_strokes::find_best_match( const std::string &               steno
 }
 
 void
+C_strokes::undo()
+{
+    if ( ( history_->curr()->steno().length() > 0 ) )
+    {
+        history_->curr()->clear();
+        history_->remove();
+    }
+}
+
+void
 C_strokes::translation( const std::string translation )
 {
     history_->curr()->translation( translation );    
@@ -115,12 +125,6 @@ std::string
 C_strokes::previous_translation()
 {
     return history_->prev()->translation();
-}
-
-void
-C_strokes::undo()
-{
-
 }
 
 void

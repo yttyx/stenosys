@@ -65,7 +65,6 @@ private:
 private:
 
     std::string      steno_;                // Steno
-    bool             found_;                // Steno entry was found in dictionary
     
     std::string      translation_;          // Steno translation
     uint16_t         flags_;                // Formatting flags

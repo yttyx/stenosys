@@ -52,7 +52,6 @@ C_stroke &
 C_stroke::operator=( const C_stroke & rhs )
 {
     steno_         = rhs.steno_;
-    found_         = rhs.found_;
     translation_   = rhs.translation_;
     flags_         = rhs.flags_;
     seqnum_        = rhs.seqnum_;
@@ -112,7 +111,6 @@ void
 C_stroke::clear()
 {
     steno_         = "";
-    found_         = false;
     translation_   = "";
     flags_         = 0;
     seqnum_        = 0;

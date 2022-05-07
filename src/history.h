@@ -72,6 +72,15 @@ public:
         *curr_->o = obj;
     }
 
+    void
+    remove()
+    {
+        curr_ = curr_->prev;
+
+        bookmark_ = curr_;
+        lookback_ = curr_;
+    }
+
     T *
     curr()
     {
