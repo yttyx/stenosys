@@ -37,7 +37,7 @@ private:
     
     C_formatter(){}
 
-    uint16_t 
+    int 
     find_point_of_difference( const std::string & s1, const std::string & s2 );
 
 private:

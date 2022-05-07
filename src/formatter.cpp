@@ -146,7 +146,7 @@ C_formatter::undo( const std::string & prev, const std::string & curr )
 
     int idx = find_point_of_difference( curr, prev );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %u", idx );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
     
     if ( idx >= 0 )
     {
@@ -169,25 +169,29 @@ C_formatter::undo( const std::string & prev, const std::string & curr )
     return output;  
 }
 
-uint16_t
-C_formatter::find_point_of_difference( const std::string & prev, const std::string & curr )
+int
+C_formatter::find_point_of_difference( const std::string & from, const std::string & to )
 {
-    if ( ( curr.length() < prev.length() ) || ( prev == curr ) )
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "find pod  --  from: >>%s<<  to: >>%s<<"
+                                               , from.c_str()
+                                               , to.c_str() );
+
+    if ( ( to.length() < from.length() ) || ( from == to ) )
     {
         return -1;
     }
 
     uint16_t ii = 0;
     
-    for ( ; ( ii < prev.length() ) && ( ii < curr.length() ); ii++ )
+    for ( ; ( ii < from.length() ) && ( ii < to.length() ); ii++ )
     {
-        if ( prev[ ii ] != curr[ ii ] )
+        if ( from[ ii ] != to[ ii ] )
         {
             break;
         }
     }
 
-    if ( ( ii < prev.length() ) && ( ii < curr.length() ) )
+    if ( ( ii < from.length() ) && ( ii < to.length() ) )
     {
         return ii;
     }
