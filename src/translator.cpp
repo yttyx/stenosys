@@ -89,11 +89,15 @@ void
 C_translator::undo_stroke( std::string & output )
 {
     std::string curr = strokes_->translation();
-    std::string prev = strokes_->previous_translation();
 
-    bool extends = strokes_->extends();
+    if ( curr.length() > 0 )
+    {
+        std::string prev = strokes_->previous_translation();
 
-    output = formatter_->transition_to( prev, curr, extends, true );
+        bool extends = strokes_->extends();
+
+        output = formatter_->transition_to( prev, curr, extends, true );
+    }
 
     strokes_->undo();
 }
