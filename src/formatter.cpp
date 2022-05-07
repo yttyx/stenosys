@@ -89,82 +89,72 @@ C_formatter::format( const std::string text
 }
 
 std::string
-C_formatter::extend( const std::string & prev, const std::string & curr )
+C_formatter::transition_to( const std::string & prev, const std::string & curr, bool extends, bool undo )
 {
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "extend --  prev: %s curr: %s"
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "transition_to -- prev: %s, curr: %s, extends: %d, undo:%d"
                                                , prev.c_str()
-                                               , curr.c_str() );
-
-    // Minimise the number of characters required to move from the previous
-    // translation to the current translation. Check for text common to both
-    // the current and previous translations. Add backspaces to bring the
-    // previous translation back to the point of divergence, then add the
-    // part of the current translation after that point.
-    
-    std::string output;
-    std::string backspaces;
-    std::string extra;
-
-    int idx = find_point_of_difference( prev, curr );
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %u", idx );
-    
-    if ( idx >= 0 )
-    {
-        backspaces.assign( prev.length() - idx, '\b' );
-
-        extra = curr.substr( idx );
-    }
-    else {
-    
-        backspaces.assign( prev.length(), '\b' );
-        extra = curr;
-    }
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces.length(): %u", backspaces.length() );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "extra              : %s", extra.c_str() );
-
-    output = backspaces;
-    output += extra;
-
-    return output;  
-}
-
-std::string
-C_formatter::undo( const std::string & prev, const std::string & curr )
-{
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "undo --  curr: %s prev: %s"
                                                , curr.c_str()
-                                               , prev.c_str() );
-
-    // Minimise the number of characters required to move from the current
-    // translation to the previous translation.
-    
+                                               , extends
+                                               , undo );
     std::string output;
     std::string backspaces;
-    std::string extra;
-
-    int idx = find_point_of_difference( curr, prev );
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
+    std::string difference;
     
-    if ( idx >= 0 )
+    if ( extends )
     {
-        backspaces.assign( prev.length() - idx, '\b' );
+        // Minimise the number of characters required to move from one translation
+        // to the next. Check for text common to both.
 
-        extra = curr.substr( idx );
-    }
-    else {
-    
-        backspaces.assign( prev.length(), '\b' );
-        extra = curr;
-    }
+        int idx = find_point_of_difference( curr, prev );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces.length(): %u", backspaces.length() );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "extra              : %s", extra.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
+        
+        if ( idx >= 0 )
+        {
+            if ( undo )
+            {
+                backspaces.assign( curr.length() - idx, '\b' );
+                difference = prev.substr( idx );
+            }
+            else
+            {
+                backspaces.assign( prev.length() - idx, '\b' );
+                difference = curr.substr( idx );
+            }
+        }
+        else {
+
+            if ( undo )
+            {
+                backspaces.assign( curr.length(), '\b' );
+                difference = prev;
+            }
+            else
+            {
+                backspaces.assign( prev.length(), '\b' );
+                difference = curr;
+            }
+        }
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces.length(): %u", backspaces.length() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "difference         : %s", difference.c_str() );
+    }
+    else // Not extending the previous chord
+    {
+        if ( undo )
+        {
+            // Erase the current translation
+            backspaces.assign( curr.length(), '\b' );
+        }
+        else
+        {
+            // Send the current translation
+            difference = curr;
+        }
+    }
 
     output = backspaces;
-    output += extra;
+    output += difference;
 
     return output;  
 }
@@ -175,11 +165,6 @@ C_formatter::find_point_of_difference( const std::string & from, const std::stri
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "find pod  --  from: >>%s<<  to: >>%s<<"
                                                , from.c_str()
                                                , to.c_str() );
-
-    if ( ( to.length() < from.length() ) || ( from == to ) )
-    {
-        return -1;
-    }
 
     uint16_t ii = 0;
     
@@ -193,7 +178,7 @@ C_formatter::find_point_of_difference( const std::string & from, const std::stri
 
     if ( ( ii < from.length() ) && ( ii < to.length() ) )
     {
-        return ii;
+        return ( int ) ii;
     }
 
     return -1;

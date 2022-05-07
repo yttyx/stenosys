@@ -127,6 +127,12 @@ C_strokes::previous_translation()
     return history_->prev()->translation();
 }
 
+bool
+C_strokes::extends()
+{
+    return history_->curr()->extends();
+}
+
 void
 C_strokes::dump()
 {

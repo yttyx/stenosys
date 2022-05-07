@@ -80,16 +80,9 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
 
     strokes_->translation( curr );
     
-    if ( extends )
-    {
-        std::string prev = strokes_->previous_translation();
+    std::string prev = strokes_->previous_translation();
 
-        output = formatter_->extend( prev, curr );
-    }
-    else
-    {
-        output = curr;
-    }
+    output = formatter_->transition_to( prev, curr, extends, false );
 }
 
 void
@@ -98,7 +91,9 @@ C_translator::undo_stroke( std::string & output )
     std::string curr = strokes_->translation();
     std::string prev = strokes_->previous_translation();
 
-    output = formatter_->undo( curr, prev );
+    bool extends = strokes_->extends();
+
+    output = formatter_->transition_to( prev, curr, extends, true );
 
     strokes_->undo();
 }

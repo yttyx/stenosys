@@ -47,6 +47,9 @@ public:
     std::string
     previous_translation();
 
+    bool
+    extends();
+
     void
     clear();
 

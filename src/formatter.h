@@ -28,11 +28,8 @@ public:
     format( const std::string translation, uint16_t flags, uint16_t flags_prev, bool extends );
     
     std::string
-    extend( const std::string & prev, const std::string & curr );
+    transition_to( const std::string & prev, const std::string & curr, bool extends, bool undo );
     
-    std::string
-    undo( const std::string & curr,  const std::string & prev );
-
 private:
     
     C_formatter(){}
