@@ -96,7 +96,10 @@ C_strokes::find_best_match( const std::string &               steno
                                                    //, history_->lookback()->seqnum() );
     }
 
-    extends = ( seqnum > 1 );
+    extends = history_->curr()->extends();
+    
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "history_->curr()->extends(): %d"
+                                               , history_->curr()->extends() );
 }
 
 void

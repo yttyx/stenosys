@@ -98,7 +98,7 @@ C_stroke::seqnum()
 bool
 C_stroke::extends()
 {
-    return seqnum_ != 0;
+    return seqnum_ > 1;
 }
 
 //bool
