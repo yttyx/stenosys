@@ -29,9 +29,6 @@ public:
     initialise();
 
     void
-    add( const std::string & steno );
-
-    void
     find_best_match( const std::string &               steno
                    , std::string &                     text 
                    , uint16_t &                        flags
@@ -39,10 +36,16 @@ public:
                    , bool &                            extends );
 
     void
-    set_translation( const std::string translation );
+    undo();
+
+    void
+    translation( const std::string translation );
+    
+    std::string &
+    translation();
 
     std::string
-    get_previous_translation();
+    previous_translation();
 
     void
     clear();

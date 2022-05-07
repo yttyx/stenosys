@@ -34,6 +34,12 @@ private:
     C_translator(){}
 
     void
+    add_stroke( const std::string & steno, std::string & output );
+
+    void
+    undo_stroke( std::string & output );
+
+    void
     toggle_space_mode();
 
 private:

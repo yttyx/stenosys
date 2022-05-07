@@ -66,7 +66,7 @@ C_stroke::translation( const std::string & translation )
     translation_ = translation;
 }
 
-const std::string &
+std::string &
 C_stroke::translation()
 {
     return translation_;

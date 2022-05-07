@@ -131,24 +131,24 @@ C_formatter::extend( const std::string & prev, const std::string & curr )
 }
 
 uint16_t
-C_formatter::find_point_of_difference( const std::string & s1, const std::string & s2 )
+C_formatter::find_point_of_difference( const std::string & prev, const std::string & curr )
 {
-    if ( s1 == s2 )
+    if ( ( curr.length() < prev.length() ) || ( prev == curr ) )
     {
         return -1;
     }
 
     uint16_t ii = 0;
     
-    for ( ; ( ii < s1.length() ) && ( ii < s2.length() ); ii++ )
+    for ( ; ( ii < prev.length() ) && ( ii < curr.length() ); ii++ )
     {
-        if ( s1[ ii ] != s2[ ii ] )
+        if ( prev[ ii ] != curr[ ii ] )
         {
             break;
         }
     }
 
-    if ( ( ii < s1.length() ) && ( ii < s2.length() ) )
+    if ( ( ii < prev.length() ) && ( ii < curr.length() ) )
     {
         return ii;
     }

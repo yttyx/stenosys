@@ -49,24 +49,25 @@ C_translator::translate( const std::string & steno, std::string & output )
     if ( steno == "#S" )
     {
         toggle_space_mode();
-        return;
     }
-
-    // debug
-    if ( steno == "#-D" )
+    else if ( steno == "#-D" )
     {
+        // Debug
         strokes_->dump();
-        return;
     }
-
-#if 0
-    if ( steno == "*" )
+    else if ( steno == "*" )
     {
-        output = undo();
-        return;
+        undo_stroke( output );
     }
-#endif  
+    else
+    {
+        add_stroke( steno, output );
+    }
+}
 
+void
+C_translator::add_stroke( const std::string & steno, std::string & output )
+{
     uint16_t flags      = 0;
     uint16_t flags_prev = 0;
     bool     extends    = false;
@@ -75,20 +76,30 @@ C_translator::translate( const std::string & steno, std::string & output )
 
     strokes_->find_best_match( steno, text, flags, flags_prev, extends );
 
-    std::string formatted_curr = formatter_->format( text, flags, flags_prev, extends );
+    std::string curr = formatter_->format( text, flags, flags_prev, extends );
 
-    strokes_->set_translation( formatted_curr );
+    strokes_->translation( curr );
     
     if ( extends )
     {
-        std::string formatted_prev = strokes_->get_previous_translation();
+        std::string prev = strokes_->previous_translation();
 
-        output = formatter_->extend( formatted_prev, formatted_curr );
+        output = formatter_->extend( prev, curr );
     }
     else
     {
-        output = formatted_curr;
+        output = curr;
     }
+}
+
+void
+C_translator::undo_stroke( std::string & output )
+{
+    std::string curr = strokes_->translation();
+    std::string prev = strokes_->previous_translation();
+
+    output = formatter_->extend( prev, curr );
+    //TBW undo stroke
 }
 
 void

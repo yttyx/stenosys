@@ -26,8 +26,8 @@ public:
 
 private:
 
-    virtual std::string
-    format( const std::string & text ) = 0;
+    //virtual std::string
+    //format( const std::string & text ) = 0;
 
 private:
 

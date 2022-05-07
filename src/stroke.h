@@ -35,7 +35,7 @@ public:
     void
     translation( const std::string & translation );
 
-    const std::string &
+    std::string &
     translation();
 
     void 
