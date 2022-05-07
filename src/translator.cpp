@@ -98,8 +98,9 @@ C_translator::undo_stroke( std::string & output )
     std::string curr = strokes_->translation();
     std::string prev = strokes_->previous_translation();
 
-    output = formatter_->extend( prev, curr );
-    //TBW undo stroke
+    output = formatter_->undo( curr, prev );
+
+    strokes_->undo();
 }
 
 void

@@ -26,9 +26,12 @@ public:
 
     std::string
     format( const std::string translation, uint16_t flags, uint16_t flags_prev, bool extends );
-
+    
     std::string
     extend( const std::string & prev, const std::string & curr );
+    
+    std::string
+    undo( const std::string & curr,  const std::string & prev );
 
 private:
     

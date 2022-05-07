@@ -130,6 +130,45 @@ C_formatter::extend( const std::string & prev, const std::string & curr )
     return output;  
 }
 
+std::string
+C_formatter::undo( const std::string & prev, const std::string & curr )
+{
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "undo --  curr: %s prev: %s"
+                                               , curr.c_str()
+                                               , prev.c_str() );
+
+    // Minimise the number of characters required to move from the current
+    // translation to the previous translation.
+    
+    std::string output;
+    std::string backspaces;
+    std::string extra;
+
+    int idx = find_point_of_difference( curr, prev );
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %u", idx );
+    
+    if ( idx >= 0 )
+    {
+        backspaces.assign( prev.length() - idx, '\b' );
+
+        extra = curr.substr( idx );
+    }
+    else {
+    
+        backspaces.assign( prev.length(), '\b' );
+        extra = curr;
+    }
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces.length(): %u", backspaces.length() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "extra              : %s", extra.c_str() );
+
+    output = backspaces;
+    output += extra;
+
+    return output;  
+}
+
 uint16_t
 C_formatter::find_point_of_difference( const std::string & prev, const std::string & curr )
 {
