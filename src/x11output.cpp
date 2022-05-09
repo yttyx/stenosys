@@ -1,6 +1,7 @@
 // x11output.cpp
 //
 
+#include <X11/X.h>
 #include <X11/Xlib.h>
 #include <assert.h>
 
@@ -39,7 +40,55 @@ C_x11_output::initialise()
 {
     display_ = XOpenDisplay( NULL );
 
-    return display_ != NULL;
+    if ( display_ != NULL )
+    {
+        int keycodes_min = 0;
+        int keycodes_max = 0;
+        
+        int result = XDisplayKeycodes( display_, &keycodes_min, &keycodes_max );
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "result: %d, keycodes_min: %d, keycodes_max: %d", result, keycodes_min, keycodes_max );
+        
+        int      keysyms_per_keycode = 0;
+        KeySym * keysyms             = nullptr;
+
+        int      keycode_count = keycodes_max - keycodes_min;
+
+        keysyms = XGetKeyboardMapping( display_, keycodes_min, keycode_count, &keysyms_per_keycode );
+
+        int loop_count = keycode_count * keysyms_per_keycode;
+
+        for ( int ii = 0; ii < loop_count; ii++ )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysyms[%d]: %lx", ii, keysyms[ ii ] );
+        }
+
+
+
+        //keysyms[ 0 ] = 0x10450;
+
+        //result = XChangeKeyboardMapping( display_, 9, 1, keysyms, 1 );
+
+        //delete [] keysyms;
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "result: %d", result );
+
+
+      //Display *display;
+      //int first_keycode;
+      //int keysyms_per_keycode;
+      //KeySym *keysyms;
+      //int num_codes;
+
+
+
+
+
+
+        return true;
+    }
+
+    return false;
 }
 
 void
@@ -65,7 +114,7 @@ C_x11_output::test()
 {
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
    
-    send_key( XK_quotedbl, XK_Shift_L);
+//    send_key( XK_quotedbl, XK_Shift_L);
     send_key( XK_H, XK_Shift_L );
     send_key( XK_E, 0 );
     send_key( XK_L, 0 );
@@ -73,19 +122,29 @@ C_x11_output::test()
     send_key( XK_O, 0 );
     send_key( XK_space, 0 );
 
-    send_key( XK_W, XK_Shift_L );
-    send_key( XK_O, 0 );
-    send_key( XK_R, 0 );
-    send_key( XK_L, 0 );
-    send_key( XK_D, 0 );
+    send_key( 0x10450, 0 );
+    
+    //send_key( XK_W, XK_Shift_L );
+    //send_key( XK_O, 0 );
+    //send_key( XK_R, 0 );
+    //send_key( XK_L, 0 );
+    //send_key( XK_D, 0 );
     //send_key( XK_exclam, XK_Shift_L );    // gives '!'
-    send_key( XK_exclam, XK_Shift_L );      // gives '1'
-    send_key( XK_quotedbl, XK_Shift_L );
-    send_key( XK_BackSpace, 0 );
-    send_key( XK_BackSpace, 0 );
-    send_key( XK_BackSpace, 0 );
-    send_key( XK_BackSpace, 0 );
-    send_key( XK_Return, 0 );
+    //send_key( XK_exclam, XK_Shift_L );      // gives '1'
+    //send_key( XK_quotedbl, XK_Shift_L );
+    //send_key( XK_BackSpace, 0 );
+    //send_key( XK_BackSpace, 0 );
+    //send_key( XK_BackSpace, 0 );
+    //send_key( XK_BackSpace, 0 );
+    //send_key( XK_Return, 0 );
+
+
+    //send_key( 0x10450, 0 );
+    //send_key( XK_H, XK_Shift_L );
+    //send_key( XK_E, 0 );
+    //send_key( XK_L, 0 );
+    //send_key( XK_L, 0 );
+    //send_key( XK_O, 0 );
 }
 
 
@@ -197,6 +256,7 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_equal,        0          }     // 003d  /* U+003D EQUALS SIGN */
 ,   { XK_greater,      XK_Shift_L }     // 003e  /* U+003E GREATER-THAN SIGN */
 ,   { XK_question,     0          }     // 003f  /* U+003F QUESTION MARK */
+//,   { XK_at,           0          }     // 0040  /* U+0040 COMMERCIAL AT */
 ,   { XK_at,           0          }     // 0040  /* U+0040 COMMERCIAL AT */
 ,   { XK_A,            XK_Shift_L }     // 0041  /* U+0041 LATIN CAPITAL LETTER A */
 ,   { XK_B,            XK_Shift_L }     // 0042  /* U+0042 LATIN CAPITAL LETTER B */
