@@ -91,13 +91,13 @@ C_stenosys::run( int argc, char *argv[] )
     
         worked = worked && x11_output->initialise();
 
-        ////TEMP
-        //if ( worked )
-        //{
-            //x11_output.test();
-        //}
+        //TEMP
+        if ( worked )
+        {
+            x11_output->test();
+        }
 
-        //exit( 0 );
+        exit( 0 );
         //TEMP:END
 
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );

@@ -39,7 +39,71 @@ C_x11_output::initialise()
 {
     display_ = XOpenDisplay( NULL );
 
+    if ( display_ != NULL )
+    {
+        find_unused_keycodes();
+
+        log_write( C_log::LL_INFO, LOG_SOURCE, "Free keycodes: " );
+        for ( int keycode : free_keycodes_ )
+        {
+            log_write_raw( C_log::LL_INFO, "%d ", keycode );
+        }
+
+        log_write_raw( C_log::LL_INFO, "%s", "\n" );
+    }
+
     return display_ != NULL;
+}
+
+void
+C_x11_output::find_unused_keycodes()
+{
+    int keysyms_per_keycode = 0;
+    //int scratch_keycode = 0; // Scratch space for temporary keycode bindings
+    int keycode_low, keycode_high;
+    
+    KeySym * keysyms = NULL;
+    
+    // Get the range of keycodes (it's usually from 8 - 255)
+    XDisplayKeycodes( display_, &keycode_low, &keycode_high );
+
+    // Get all of the available mapped keysyms
+    keysyms = XGetKeyboardMapping( display_, keycode_low, keycode_high - keycode_low, &keysyms_per_keycode);
+
+    // Find every keycode that has no associated keysyms. These keycodes will be used later
+    // to map the Shavian keysyms and make them available for stenosys output.
+    int ii;
+
+    for ( ii = keycode_low; ii <= keycode_high; ii++)
+    {
+        int  jj = 0;
+        bool keycode_available = true;
+
+        for ( jj = 0; jj < keysyms_per_keycode; jj++ )
+        {
+            int sym_index = ( ii - keycode_low) * keysyms_per_keycode + jj;
+            // Can display the keysyms here
+            // KeySym sym_at_index = keysyms[ sym_index ];
+            // char * symname = XKeysymToString( keysyms[ symindex ] );
+
+            if ( keysyms[ sym_index ] != 0 )
+            {
+                keycode_available = false;
+            }
+            else
+            {
+                break;
+            }
+        }
+        
+        if ( keycode_available )
+        {
+            free_keycodes_.push_back( ii );
+        }
+    }
+    
+    XFree( keysyms );
+    XFlush( display_ );
 }
 
 void
@@ -64,7 +128,11 @@ void
 C_x11_output::test()
 {
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
-   
+
+
+
+
+
     send_key( XK_quotedbl, XK_Shift_L);
     send_key( XK_H, XK_Shift_L );
     send_key( XK_E, 0 );
@@ -81,10 +149,6 @@ C_x11_output::test()
     //send_key( XK_exclam, XK_Shift_L );    // gives '!'
     send_key( XK_exclam, XK_Shift_L );      // gives '1'
     send_key( XK_quotedbl, XK_Shift_L );
-    send_key( XK_BackSpace, 0 );
-    send_key( XK_BackSpace, 0 );
-    send_key( XK_BackSpace, 0 );
-    send_key( XK_BackSpace, 0 );
     send_key( XK_Return, 0 );
 }
 

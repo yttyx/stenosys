@@ -49,7 +49,14 @@ C_log::initialise( eLogLevel level, bool datetime )
 }
 
 void
-C_log::write_line( eLogLevel level, const char * file, int line, const char * source, bool newline, const char * format, ... )
+C_log::write_line( eLogLevel    level
+                 , bool         prefix_text
+                 , bool         newline
+                 , const char * file
+                 , int          line
+                 , const char * source
+                 , const char * format
+                 , ... )
 {
     assert( format );
 
@@ -58,16 +65,19 @@ C_log::write_line( eLogLevel level, const char * file, int line, const char * so
         log_lock_.lock();
 
         std::string str;
-    
-        if ( fileline_ )
+   
+        if ( prefix_text )
         {
-            str = format_string( "%s %d", file, line );
-        }
-    
-        if ( source_ )
-        {
-            str += source;
-            str += " ";
+            if ( fileline_ )
+            {
+                str = format_string( "%s %d", file, line );
+            }
+        
+            if ( source_ )
+            {
+                str += source;
+                str += " ";
+            }
         }
 
         va_list arg_ptr;

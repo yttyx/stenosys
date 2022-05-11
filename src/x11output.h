@@ -9,6 +9,7 @@
 #include <X11/Intrinsic.h>
 #include <X11/extensions/XTest.h>
 #include <unistd.h>
+#include <vector>
 
 #include "outputter.h"
 
@@ -41,6 +42,9 @@ public:
 
 private:
 
+    void
+    find_unused_keycodes();
+
     //virtual std::string
     //format( const std::string & text );
     
@@ -49,10 +53,11 @@ private:
 
 private:
 
+    static keysym_entry ascii_to_keysym[];
+    
     Display * display_;
 
-    static keysym_entry ascii_to_keysym[];
-
+    std::vector< int > free_keycodes_;
 };
 
 }
