@@ -94,7 +94,7 @@ C_stenosys::run( int argc, char *argv[] )
         //TEMP
         if ( worked )
         {
-            x11_output->test();
+            //x11_output->test();
         }
 
         exit( 0 );

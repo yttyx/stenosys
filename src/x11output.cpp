@@ -46,7 +46,7 @@ C_x11_output::initialise()
         log_write( C_log::LL_INFO, LOG_SOURCE, "Free keycodes: " );
         for ( int keycode : free_keycodes_ )
         {
-            log_write_raw( C_log::LL_INFO, "%d ", keycode );
+            log_write_raw( C_log::LL_INFO, "[%02x] ", keycode );
         }
 
         log_write_raw( C_log::LL_INFO, "%s", "\n" );
@@ -70,22 +70,29 @@ C_x11_output::find_unused_keycodes()
     // Get all of the available mapped keysyms
     keysyms = XGetKeyboardMapping( display_, keycode_low, keycode_high - keycode_low, &keysyms_per_keycode);
 
+    log_write_raw( C_log::LL_INFO, "keycode_low        : %d\n", keycode_low );
+    log_write_raw( C_log::LL_INFO, "keycode_high       : %d\n", keycode_high );
+    log_write_raw( C_log::LL_INFO, "keysyms_per_keycode: %d\n", keysyms_per_keycode );
+    log_write_raw( C_log::LL_INFO, "%s", "" );
+
     // Find every keycode that has no associated keysyms. These keycodes will be used later
     // to map the Shavian keysyms and make them available for stenosys output.
-    int ii;
+    int ii = 0;
 
     for ( ii = keycode_low; ii <= keycode_high; ii++)
     {
-        int  jj = 0;
         bool keycode_available = true;
 
-        for ( jj = 0; jj < keysyms_per_keycode; jj++ )
+        log_write_raw( C_log::LL_INFO, "[%02x]  ", ii );
+
+        for ( int jj = 0; jj < keysyms_per_keycode; jj++ )
         {
             int sym_index = ( ii - keycode_low) * keysyms_per_keycode + jj;
-            // Can display the keysyms here
-            // KeySym sym_at_index = keysyms[ sym_index ];
-            // char * symname = XKeysymToString( keysyms[ symindex ] );
 
+            KeySym keysym= keysyms[ sym_index ];
+
+            log_write_raw( C_log::LL_INFO, "%s ", XKeysymToString( keysym ) );
+            
             if ( keysyms[ sym_index ] != 0 )
             {
                 keycode_available = false;
@@ -95,6 +102,8 @@ C_x11_output::find_unused_keycodes()
                 break;
             }
         }
+        
+        log_write_raw( C_log::LL_INFO, "%s", "\n" );
         
         if ( keycode_available )
         {
