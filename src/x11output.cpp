@@ -22,7 +22,7 @@ namespace stenosys
 
 extern C_log log;
 
-// Array of symkey strings which whose references to keycodes in the keyboard
+// Array of symkey strings whose references to keycodes in the keyboard
 // will have Shavian code point substituted in their stead.
 const char * XF86_symstrings[] =
 {
@@ -116,10 +116,16 @@ C_x11_output::initialise()
 void
 C_x11_output::set_up_data()
 {
-    for ( const char * entry = XF86_symstrings[ 0 ]; *entry; entry++ )
+    for ( const char ** entry = XF86_symstrings; *entry; entry++ )
     {
-        symstrings_.push_back( std::string( entry ) );
+        symstrings_.push_back( std::string( *entry ) );
     }
+
+    //for ( std::string str : symstrings_ )
+    //{
+
+        //log_write_raw( C_log::LL_INFO, "%s\n", str.c_str() );
+    //}
 }
 
 void
@@ -176,6 +182,8 @@ C_x11_output::find_unused_keycodes()
                     {
                         // Found an entry we can repurpose for Shavian
                         log_write_raw( C_log::LL_INFO, "%s", "REPURPOSE" );
+                        repurpose_count++;
+                        break;
                     }
                 }
             }
