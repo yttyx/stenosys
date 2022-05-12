@@ -1,13 +1,14 @@
 // x11output.cpp
 //
 
-#include <X11/Xlib.h>
+#include <algorithm>
 #include <assert.h>
 
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <X11/Xlib.h>
 
 #include "log.h"
 #include "x11output.h"
@@ -21,6 +22,62 @@ namespace stenosys
 
 extern C_log log;
 
+// Array of symkey strings which whose references to keycodes in the keyboard
+// will have Shavian code point substituted in their stead.
+const char * XF86_symstrings[] =
+{
+    "XF86AudioMicMute" 
+,   "XF86AudioPause" 
+,   "XF86AudioPlay" 
+,   "XF86AudioPreset" 
+,   "XF86Battery" 
+,   "XF86Bluetooth" 
+,   "XF86BrightnessAuto" 
+,   "XF86DOS" 
+,   "XF86DisplayOff" 
+,   "XF86Documents" 
+,   "XF86Favorites" 
+,   "XF86Finance" 
+,   "XF86Game" 
+,   "XF86Go" 
+,   "XF86HomePage" 
+,   "XF86HomePage" 
+,   "XF86Launch1"
+,   "XF86Launch2"
+,   "XF86Launch3"
+,   "XF86Launch4"
+,   "XF86Launch5"
+,   "XF86Launch6"
+,   "XF86Launch7"
+,   "XF86Launch8"
+,   "XF86Launch9"
+,   "XF86LaunchA"
+,   "XF86LaunchB"
+,   "XF86Mail" 
+,   "XF86Mail" 
+,   "XF86MailForward" 
+,   "XF86Messenger" 
+,   "XF86MonBrightnessCycle" 
+,   "XF86MyComputer" 
+,   "XF86New" 
+,   "XF86Next_VMode" 
+,   "XF86Prev_VMode" 
+,   "XF86Reply" 
+,   "XF86Save" 
+,   "XF86ScreenSaver" 
+,   "XF86Search" 
+,   "XF86Send" 
+,   "XF86Shop" 
+,   "XF86Tools" 
+,   "XF86TouchpadOff" 
+,   "XF86TouchpadOn" 
+,   "XF86TouchpadToggle" 
+,   "XF86WLAN" 
+,   "XF86WWW" 
+,   "XF86WebCam" 
+,   "XF86Xfer" 
+,   nullptr
+};
 
 C_x11_output::C_x11_output()
 {
@@ -41,6 +98,7 @@ C_x11_output::initialise()
 
     if ( display_ != NULL )
     {
+        set_up_data();
         find_unused_keycodes();
 
         log_write( C_log::LL_INFO, LOG_SOURCE, "Free keycodes: " );
@@ -56,15 +114,24 @@ C_x11_output::initialise()
 }
 
 void
+C_x11_output::set_up_data()
+{
+    for ( const char * entry = XF86_symstrings[ 0 ]; *entry; entry++ )
+    {
+        symstrings_.push_back( std::string( entry ) );
+    }
+}
+
+void
 C_x11_output::find_unused_keycodes()
 {
     int keysyms_per_keycode = 0;
-    //int scratch_keycode = 0; // Scratch space for temporary keycode bindings
-    int keycode_low, keycode_high;
+    int keycode_low         = 0;
+    int keycode_high        = 0;
     
     KeySym * keysyms = NULL;
     
-    // Get the range of keycodes (it's usually from 8 - 255)
+    // Get the range of keycodes (it's usually the range 8 - 255)
     XDisplayKeycodes( display_, &keycode_low, &keycode_high );
 
     // Get all of the available mapped keysyms
@@ -77,12 +144,11 @@ C_x11_output::find_unused_keycodes()
 
     // Find every keycode that has no associated keysyms. These keycodes will be used later
     // to map the Shavian keysyms and make them available for stenosys output.
-    int ii = 0;
+    int ii              = 0;
+    int repurpose_count = 0;
 
     for ( ii = keycode_low; ii <= keycode_high; ii++)
     {
-        bool keycode_available = true;
-
         log_write_raw( C_log::LL_INFO, "[%02x]  ", ii );
 
         for ( int jj = 0; jj < keysyms_per_keycode; jj++ )
@@ -91,25 +157,41 @@ C_x11_output::find_unused_keycodes()
 
             KeySym keysym= keysyms[ sym_index ];
 
-            log_write_raw( C_log::LL_INFO, "%s ", XKeysymToString( keysym ) );
+            const char * keysymstring = XKeysymToString( keysym ); 
+
+            if ( jj == 0 )
+            {
+                if ( keysymstring == nullptr )
+                {
+                    // Found an entry we can repurpose for Shavian
+                    log_write_raw( C_log::LL_INFO, "%s", "REPURPOSE" );
+                    repurpose_count++;
+                    break;
+                }
+                else
+                {
+                    std::string entry( keysymstring );
+
+                    if ( std::find( symstrings_.begin(), symstrings_.end(), entry ) != symstrings_.end() )
+                    {
+                        // Found an entry we can repurpose for Shavian
+                        log_write_raw( C_log::LL_INFO, "%s", "REPURPOSE" );
+                    }
+                }
+            }
             
-            if ( keysyms[ sym_index ] != 0 )
-            {
-                keycode_available = false;
-            }
-            else
-            {
-                break;
-            }
+            log_write_raw( C_log::LL_INFO, "%s ", keysymstring );
         }
         
         log_write_raw( C_log::LL_INFO, "%s", "\n" );
         
-        if ( keycode_available )
-        {
-            free_keycodes_.push_back( ii );
-        }
+        //if ( keycode_available )
+        //{
+            //free_keycodes_.push_back( ii );
+        //}
     }
+    
+    log_write_raw( C_log::LL_INFO, "%d repurposeable entries\n", repurpose_count );
     
     XFree( keysyms );
     XFlush( display_ );

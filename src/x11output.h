@@ -43,6 +43,9 @@ public:
 private:
 
     void
+    set_up_data();
+    
+    void
     find_unused_keycodes();
 
     //virtual std::string
@@ -57,7 +60,8 @@ private:
     
     Display * display_;
 
-    std::vector< int > free_keycodes_;
+    std::vector< std::string > symstrings_;
+    std::vector< int >         free_keycodes_;
 };
 
 }

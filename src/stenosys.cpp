@@ -96,6 +96,11 @@ C_stenosys::run( int argc, char *argv[] )
         {
             //x11_output->test();
         }
+        else
+        {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "X initialisation failed (running locally?)" );
+            log_write_raw( C_log::LL_INFO, "%s", "\n" );
+        }
 
         exit( 0 );
         //TEMP:END
