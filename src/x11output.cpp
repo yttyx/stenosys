@@ -1,6 +1,7 @@
 // x11output.cpp
 //
 
+#include <X11/X.h>
 #include <algorithm>
 #include <assert.h>
 
@@ -81,10 +82,6 @@ const char * XF86_symstrings[] =
 ,   nullptr
 };
 
-const uint32_t SHAVIAN_10450 = 0x10450;
-const uint32_t SHAVIAN_1047f = 0x1047f;
-const uint32_t SHAVIAN_MDOT  = 0x00B7;
-
 
 C_x11_output::C_x11_output()
 {
@@ -108,8 +105,8 @@ C_x11_output::initialise()
         set_up_data();
         find_unused_keycodes();
 
-        log_write( C_log::LL_INFO, LOG_SOURCE, "Free keycodes: " );
-        for ( int keycode : free_keycodes_ )
+        log_write( C_log::LL_INFO, LOG_SOURCE, "Shavian keycodes: " );
+        for ( int keycode : shavian_keycodes_ )
         {
             log_write_raw( C_log::LL_INFO, "[%02x] ", keycode );
         }
@@ -128,11 +125,10 @@ C_x11_output::set_up_data()
         symstrings_.push_back( std::string( *entry ) );
     }
 
-    //for ( std::string str : symstrings_ )
-    //{
-
-        //log_write_raw( C_log::LL_INFO, "%s\n", str.c_str() );
-    //}
+    for ( int ii = 0; ii < SHAVIAN_TABLE_SIZE; ii++ )
+    {
+        shavian_keycodes_[ ii ] = 0;
+    }
 }
 
 void
@@ -205,12 +201,15 @@ C_x11_output::find_unused_keycodes()
                                                , shavian_sym
                                                , shavian_sym };
 
+                        //TODO Save original keymap so we can restore it on program exit
                         XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
 
                         log_write_raw( C_log::LL_INFO, "keysyms %s set for keycode 0x%02x\n"
                                                      , XKeysymToString( shavian_sym )
                                                      , keycode );
                         
+                        shavian_keycodes_[ shavian_table_index( shavian_sym ) ] = keycode;
+
                         if ( shavian == SHAVIAN_MDOT )
                         {
                             // We're done
@@ -366,6 +365,31 @@ C_x11_output::send_key( KeySym keysym, KeySym modsym )
  
     XSync( display_, False );
     XTestGrabControl( display_, False );
+}
+
+
+// Returns -1 if invalid table index
+int
+C_x11_output::shavian_table_index( KeySym keysym )
+{
+    // Mask top byte. For example KeySym for U+10460 as a KeySym is 0x1010450
+    uint32_t code = keysym & 0x00ffffff;
+
+    log_write_raw( C_log::LL_INFO, "code: %05x\n", code );
+
+
+    int result = -1;
+   
+    if ( code == SHAVIAN_MDOT )
+    {
+        result = SHAVIAN_TABLE_SIZE - 1;
+    }
+    else if ( ( SHAVIAN_10450 <= code ) && ( code <= SHAVIAN_1047f ) )
+    {
+        result = ( int ) ( code - SHAVIAN_10450 );
+    }
+    
+    return result;
 }
 
 keysym_entry
