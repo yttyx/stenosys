@@ -21,7 +21,8 @@ const uint32_t SHAVIAN_10450 = 0x10450;
 const uint32_t SHAVIAN_1047f = 0x1047f;
 const uint32_t SHAVIAN_MDOT  = 0x00B7;
 
-const int SHAVIAN_TABLE_SIZE = ( int ) ( SHAVIAN_1047f - SHAVIAN_10450 + 1 );
+// + 1 (making + 2) to include SHAVIAN_MDOT
+const int SHAVIAN_TABLE_SIZE = ( int ) ( SHAVIAN_1047f - SHAVIAN_10450 + 2 );
 
 
 
@@ -63,6 +64,9 @@ private:
     void 
     send_key( KeySym keysym, KeySym modsym );
 
+    void
+    send_key( KeyCode keycode );
+
     int shavian_table_index( KeySym code );
 
 private:
@@ -73,7 +77,7 @@ private:
 
     std::vector< std::string > symstrings_;
 
-    int shavian_keycodes_[ SHAVIAN_TABLE_SIZE ];
+    KeyCode shavian_keycodes_[ SHAVIAN_TABLE_SIZE ];
 };
 
 }

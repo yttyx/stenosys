@@ -118,6 +118,40 @@ C_x11_output::initialise()
 }
 
 void
+C_x11_output::test()
+{
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
+
+    // Test Shavian output
+    for ( int idx  = 0; idx < SHAVIAN_TABLE_SIZE; idx++ )
+    {
+        send_key( shavian_keycodes_[ idx ] );
+    }
+
+    send_key( XK_space, 0 );
+    send_key( XK_space, 0 );
+    send_key( XK_space, 0 );
+    
+    send_key( XK_quotedbl, XK_Shift_L);
+    send_key( XK_H, XK_Shift_L );
+    send_key( XK_E, 0 );
+    send_key( XK_L, 0 );
+    send_key( XK_L, 0 );
+    send_key( XK_O, 0 );
+    send_key( XK_space, 0 );
+
+    send_key( XK_W, XK_Shift_L );
+    send_key( XK_O, 0 );
+    send_key( XK_R, 0 );
+    send_key( XK_L, 0 );
+    send_key( XK_D, 0 );
+    //send_key( XK_exclam, XK_Shift_L );    // gives '!'
+    send_key( XK_exclam, XK_Shift_L );      // gives '1'
+    send_key( XK_quotedbl, XK_Shift_L );
+    send_key( XK_Return, 0 );
+}
+
+void
 C_x11_output::set_up_data()
 {
     for ( const char ** entry = XF86_symstrings; *entry; entry++ )
@@ -208,7 +242,7 @@ C_x11_output::find_unused_keycodes()
                                                      , XKeysymToString( shavian_sym )
                                                      , keycode );
                         
-                        shavian_keycodes_[ shavian_table_index( shavian_sym ) ] = keycode;
+                        shavian_keycodes_[ shavian_table_index( shavian_sym ) ] = ( KeyCode ) keycode;
 
                         if ( shavian == SHAVIAN_MDOT )
                         {
@@ -265,33 +299,6 @@ C_x11_output::send( const std::string & str )
     }
 }
 
-void
-C_x11_output::test()
-{
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
-
-
-
-
-
-    send_key( XK_quotedbl, XK_Shift_L);
-    send_key( XK_H, XK_Shift_L );
-    send_key( XK_E, 0 );
-    send_key( XK_L, 0 );
-    send_key( XK_L, 0 );
-    send_key( XK_O, 0 );
-    send_key( XK_space, 0 );
-
-    send_key( XK_W, XK_Shift_L );
-    send_key( XK_O, 0 );
-    send_key( XK_R, 0 );
-    send_key( XK_L, 0 );
-    send_key( XK_D, 0 );
-    //send_key( XK_exclam, XK_Shift_L );    // gives '!'
-    send_key( XK_exclam, XK_Shift_L );      // gives '1'
-    send_key( XK_quotedbl, XK_Shift_L );
-    send_key( XK_Return, 0 );
-}
 
 
 //TODO Retained as a reminder for when C_promicro_output and C_console_output are added
@@ -367,6 +374,23 @@ C_x11_output::send_key( KeySym keysym, KeySym modsym )
     XTestGrabControl( display_, False );
 }
 
+void
+C_x11_output::send_key( KeyCode keycode )
+{
+    if ( keycode == 0 )
+    {
+        return;
+    }
+
+    XTestGrabControl( display_, True );
+
+    // Generate regular key press and release
+    XTestFakeKeyEvent( display_, keycode, True, 0 );
+    XTestFakeKeyEvent( display_, keycode, False, 0 ); 
+ 
+    XSync( display_, False );
+    XTestGrabControl( display_, False );
+}
 
 // Returns -1 if invalid table index
 int

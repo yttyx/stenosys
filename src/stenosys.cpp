@@ -94,7 +94,8 @@ C_stenosys::run( int argc, char *argv[] )
         //TEMP
         if ( worked )
         {
-            //x11_output->test();
+            delay( 3000 );
+            x11_output->test();
         }
         else
         {
