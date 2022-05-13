@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <assert.h>
 
+#include <cstdint>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +12,7 @@
 #include <X11/Xlib.h>
 
 #include "log.h"
+#include "miscellaneous.h"
 #include "x11output.h"
 
 #define LOG_SOURCE "X11OP"
@@ -78,6 +80,11 @@ const char * XF86_symstrings[] =
 ,   "XF86Xfer" 
 ,   nullptr
 };
+
+const uint32_t SHAVIAN_10450 = 0x10450;
+const uint32_t SHAVIAN_1047f = 0x1047f;
+const uint32_t SHAVIAN_MDOT  = 0x00B7;
+
 
 C_x11_output::C_x11_output()
 {
@@ -150,29 +157,30 @@ C_x11_output::find_unused_keycodes()
 
     // Find every keycode that has no associated keysyms. These keycodes will be used later
     // to map the Shavian keysyms and make them available for stenosys output.
-    int ii              = 0;
     int repurpose_count = 0;
 
-    for ( ii = keycode_low; ii <= keycode_high; ii++)
-    {
-        log_write_raw( C_log::LL_INFO, "[%02x]  ", ii );
+    uint32_t shavian = SHAVIAN_10450;
 
-        for ( int jj = 0; jj < keysyms_per_keycode; jj++ )
+    for ( int keycode = keycode_low; keycode <= keycode_high; keycode++)
+    {
+        log_write_raw( C_log::LL_INFO, "[%02x]  ", keycode );
+
+        for ( int sym_count = 0; sym_count < keysyms_per_keycode; sym_count++ )
         {
-            int sym_index = ( ii - keycode_low) * keysyms_per_keycode + jj;
+            int sym_index = ( keycode - keycode_low) * keysyms_per_keycode + sym_count;
 
             KeySym keysym= keysyms[ sym_index ];
 
             const char * keysymstring = XKeysymToString( keysym ); 
 
-            if ( jj == 0 )
+            if ( sym_count == 0 )
             {
                 if ( keysymstring == nullptr )
                 {
                     // Found an entry we can repurpose for Shavian
-                    log_write_raw( C_log::LL_INFO, "%s", "REPURPOSE" );
-                    repurpose_count++;
-                    break;
+                    //log_write_raw( C_log::LL_INFO, "%s", "REPURPOSE" );
+                    //repurpose_count++;
+                    //break;
                 }
                 else
                 {
@@ -181,8 +189,24 @@ C_x11_output::find_unused_keycodes()
                     if ( std::find( symstrings_.begin(), symstrings_.end(), entry ) != symstrings_.end() )
                     {
                         // Found an entry we can repurpose for Shavian
-                        log_write_raw( C_log::LL_INFO, "%s", "REPURPOSE" );
-                        repurpose_count++;
+                        std::string shavian_xstring = format_string("U%05x", shavian );
+
+                        KeySym shavian_sym   = XStringToKeysym( shavian_xstring.c_str() );
+                        KeySym keysym_list[] = { shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym };
+
+                        XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
+
+                        shavian++;
+
+                        log_write_raw( C_log::LL_INFO, "keysyms %s set for keycode 0x%02x\n"
+                                                     , XKeysymToString( shavian_sym )
+                                                     , keycode );
                         break;
                     }
                 }
