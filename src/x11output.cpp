@@ -155,13 +155,16 @@ C_x11_output::find_unused_keycodes()
     log_write_raw( C_log::LL_INFO, "keysyms_per_keycode: %d\n", keysyms_per_keycode );
     log_write_raw( C_log::LL_INFO, "%s", "" );
 
-    // Find every keycode that has no associated keysyms. These keycodes will be used later
-    // to map the Shavian keysyms and make them available for stenosys output.
-    int repurpose_count = 0;
-
     uint32_t shavian = SHAVIAN_10450;
 
-    for ( int keycode = keycode_low; keycode <= keycode_high; keycode++)
+    // Loop through the keycodes and look for keysyms associated with each keycode
+    // that can be set to use Shavian keysyms instead.
+    // XF86_symstrings contains a list of keysym strings which seem like good candidates
+    // for re-use.
+
+    bool done = false;
+
+    for ( int keycode = keycode_low; ( keycode <= keycode_high ) && ( ! done ); keycode++)
     {
         log_write_raw( C_log::LL_INFO, "[%02x]  ", keycode );
 
@@ -192,6 +195,8 @@ C_x11_output::find_unused_keycodes()
                         std::string shavian_xstring = format_string("U%05x", shavian );
 
                         KeySym shavian_sym   = XStringToKeysym( shavian_xstring.c_str() );
+
+                        //TODO Dynamically set size of keysym_list using keysyms_per_keycode
                         KeySym keysym_list[] = { shavian_sym
                                                , shavian_sym
                                                , shavian_sym
@@ -202,11 +207,27 @@ C_x11_output::find_unused_keycodes()
 
                         XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
 
-                        shavian++;
-
                         log_write_raw( C_log::LL_INFO, "keysyms %s set for keycode 0x%02x\n"
                                                      , XKeysymToString( shavian_sym )
                                                      , keycode );
+                        
+                        if ( shavian == SHAVIAN_MDOT )
+                        {
+                            // We're done
+                            done = true;
+                        }
+                        else {
+
+                            shavian++;
+
+                            if ( shavian > SHAVIAN_1047f )
+                            {
+                                // Shavian alphabet is done, just need to set the middle dot
+                                // in the next available slot.
+                                shavian = SHAVIAN_MDOT;
+                            }
+                        }
+
                         break;
                     }
                 }
@@ -222,8 +243,6 @@ C_x11_output::find_unused_keycodes()
             //free_keycodes_.push_back( ii );
         //}
     }
-    
-    log_write_raw( C_log::LL_INFO, "%d repurposeable entries\n", repurpose_count );
     
     XFree( keysyms );
     XFlush( display_ );
