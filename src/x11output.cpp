@@ -58,7 +58,7 @@ C_x11_output::test()
 {
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
 
-    C_utf8 shav_test ( "·𐑢𐑣𐑩𐑤𐑴   ·𐑢𐑻𐑤𐑛" );
+    C_utf8 shav_test ( "·𐑢𐑣𐑩𐑤𐑴 ·𐑢𐑻𐑤𐑛" );
 
     uint32_t code;
 
@@ -78,7 +78,6 @@ C_x11_output::test()
                 code += 0x1000000;
             }
 
-            fprintf( stdout, "code: %08x\n", code );
             send_key( code, 0 );
 
         } while ( shav_test.get_next( code ) );
@@ -119,6 +118,15 @@ C_x11_output::set_up_data()
 void
 C_x11_output::find_unused_keycodes()
 {
+    // Check whether a Shavian KeySym has already been setup
+    int keycode = XKeysymToKeycode( display_, SHAVIAN_10450_KEYSYM );
+ 
+    if ( keycode != 0 )
+    {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shavian codes already set" );
+        return;
+    }
+
     int keysyms_per_keycode = 0;
     int keycode_low         = 0;
     int keycode_high        = 0;
@@ -131,10 +139,10 @@ C_x11_output::find_unused_keycodes()
     // Get all of the available mapped keysyms
     keysyms = XGetKeyboardMapping( display_, keycode_low, keycode_high - keycode_low, &keysyms_per_keycode);
 
-    log_write_raw( C_log::LL_INFO, "keycode_low        : %d\n", keycode_low );
-    log_write_raw( C_log::LL_INFO, "keycode_high       : %d\n", keycode_high );
-    log_write_raw( C_log::LL_INFO, "keysyms_per_keycode: %d\n", keysyms_per_keycode );
-    log_write_raw( C_log::LL_INFO, "%s", "" );
+    //log_write_raw( C_log::LL_INFO, "keycode_low        : %d\n", keycode_low );
+    //log_write_raw( C_log::LL_INFO, "keycode_high       : %d\n", keycode_high );
+    //log_write_raw( C_log::LL_INFO, "keysyms_per_keycode: %d\n", keysyms_per_keycode );
+    //log_write_raw( C_log::LL_INFO, "%s", "" );
 
     uint32_t shavian = SHAVIAN_10450;
 
@@ -159,14 +167,7 @@ C_x11_output::find_unused_keycodes()
 
             if ( sym_count == 0 )
             {
-                if ( keysymstring == nullptr )
-                {
-                    // Found an entry we can repurpose for Shavian
-                    //log_write_raw( C_log::LL_INFO, "%s", "REPURPOSE" );
-                    //repurpose_count++;
-                    //break;
-                }
-                else
+                if ( keysymstring != nullptr )
                 {
                     std::string entry( keysymstring );
 
@@ -189,9 +190,9 @@ C_x11_output::find_unused_keycodes()
                         //TODO Save original keymap so we can restore it on program exit
                         XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
 
-                        log_write_raw( C_log::LL_INFO, "keysyms %s set for keycode 0x%02x\n"
-                                                     , XKeysymToString( shavian_sym )
-                                                     , keycode );
+                        //log_write_raw( C_log::LL_INFO, "keysyms %s set for keycode 0x%02x\n"
+                                                     //, XKeysymToString( shavian_sym )
+                                                     //, keycode );
                         
                         if ( shavian == SHAVIAN_MDOT )
                         {
@@ -213,21 +214,20 @@ C_x11_output::find_unused_keycodes()
                         break;
                     }
                 }
+                // We don't currentry make use of keycodes that have no associated KeySyms, but we could
+                // ( if ( keysymstring == nullptr ) )
             }
             
             log_write_raw( C_log::LL_INFO, "%s ", keysymstring );
         }
         
         log_write_raw( C_log::LL_INFO, "%s", "\n" );
-        
-        //if ( keycode_available )
-        //{
-            //free_keycodes_.push_back( ii );
-        //}
     }
     
     XFree( keysyms );
     XFlush( display_ );
+    
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shavian codes set" );
 }
 
 void
