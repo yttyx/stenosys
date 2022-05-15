@@ -99,8 +99,7 @@ C_stenosys::run( int argc, char *argv[] )
         //TEMP
         if ( worked )
         {
-            delay( 3000 );
-            x11_output->test();
+            //x11_output->test();
         }
         else
         {
@@ -108,7 +107,7 @@ C_stenosys::run( int argc, char *argv[] )
             log_write_raw( C_log::LL_INFO, "%s", "\n" );
         }
 
-        exit( 0 );
+        //exit( 0 );
         //TEMP:END
 
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );

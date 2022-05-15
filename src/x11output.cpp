@@ -233,18 +233,26 @@ C_x11_output::find_unused_keycodes()
 void
 C_x11_output::send( const std::string & str )
 {
-    for ( char ch : str )
+    C_utf8 utf8_str( str );
+
+    uint32_t code = 0;
+
+    if ( utf8_str.get_first( code ) )
     {
-        if ( ( ( int ) ch >= 0x20 ) && ( ( int ) ch <= 0x7f ) )
+        do
         {
-        //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ch: %c, %02x, keysym: %08lx", ch, ch, ascii_to_keysym[ ( ( int ) ch ) - 0x20 ] );
-            keysym_entry * entry = &ascii_to_keysym[ ( ( int ) ch ) - 0x20 ];            
-            send_key( entry->base, entry->modifier );
-        }
-        else if ( ch == '\b' )
-        {
-            send_key( XK_BackSpace, 0 ); 
-        }
+            if ( ( ( int ) code >= 0x20 ) && ( ( int ) code <= 0x7f ) )
+            {
+            //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ch: %c, %02x, keysym: %08lx", ch, ch, ascii_to_keysym[ ( ( int ) ch ) - 0x20 ] );
+                keysym_entry * entry = &ascii_to_keysym[ ( ( int ) code ) - 0x20 ];            
+                send_key( entry->base, entry->modifier );
+            }
+            else if ( code  == '\b' )
+            {
+                send_key( XK_BackSpace, 0 ); 
+            }
+
+        } while ( utf8_str.get_next( code ) );
     }
 }
 
