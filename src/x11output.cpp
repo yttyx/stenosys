@@ -241,9 +241,13 @@ C_x11_output::send( const std::string & str )
     {
         do
         {
+
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "code: %08x", code );
+
+
+
             if ( ( ( int ) code >= 0x20 ) && ( ( int ) code <= 0x7f ) )
             {
-            //    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ch: %c, %02x, keysym: %08lx", ch, ch, ascii_to_keysym[ ( ( int ) ch ) - 0x20 ] );
                 keysym_entry * entry = &ascii_to_keysym[ ( ( int ) code ) - 0x20 ];            
                 send_key( entry->base, entry->modifier );
             }
@@ -251,7 +255,22 @@ C_x11_output::send( const std::string & str )
             {
                 send_key( XK_BackSpace, 0 ); 
             }
+            else
+            {
+                // From keysymdef.h:
+                // "For any future extension of the keysyms with characters already
+                //  found in ISO 10646 / Unicode, the following algorithm shall be
+                //  used. The new keysym code position will simply be the character's
+                //  Unicode number plus 0x01000000. The keysym values in the range
+                //  0x01000100 to 0x0110ffff are reserved to represent Unicode"
+                // 0x10450 is the base value of the Shavian code block
+                if ( code >= 0x10450 )
+                {
+                    code += 0x1000000;
+                }
 
+                send_key( code, 0 );
+            }
         } while ( utf8_str.get_next( code ) );
     }
 }
