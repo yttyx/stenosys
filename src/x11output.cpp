@@ -26,63 +26,6 @@ namespace stenosys
 
 extern C_log log;
 
-// Array of symkey strings whose references to keycodes in the keyboard
-// will have Shavian code point substituted in their stead.
-const char * XF86_symstrings[] =
-{
-    "XF86AudioMicMute" 
-,   "XF86AudioPause" 
-,   "XF86AudioPlay" 
-,   "XF86AudioPreset" 
-,   "XF86Battery" 
-,   "XF86Bluetooth" 
-,   "XF86BrightnessAuto" 
-,   "XF86DOS" 
-,   "XF86DisplayOff" 
-,   "XF86Documents" 
-,   "XF86Favorites" 
-,   "XF86Finance" 
-,   "XF86Game" 
-,   "XF86Go" 
-,   "XF86HomePage" 
-,   "XF86HomePage" 
-,   "XF86Launch1"
-,   "XF86Launch2"
-,   "XF86Launch3"
-,   "XF86Launch4"
-,   "XF86Launch5"
-,   "XF86Launch6"
-,   "XF86Launch7"
-,   "XF86Launch8"
-,   "XF86Launch9"
-,   "XF86LaunchA"
-,   "XF86LaunchB"
-,   "XF86Mail" 
-,   "XF86Mail" 
-,   "XF86MailForward" 
-,   "XF86Messenger" 
-,   "XF86MonBrightnessCycle" 
-,   "XF86MyComputer" 
-,   "XF86New" 
-,   "XF86Next_VMode" 
-,   "XF86Prev_VMode" 
-,   "XF86Reply" 
-,   "XF86Save" 
-,   "XF86ScreenSaver" 
-,   "XF86Search" 
-,   "XF86Send" 
-,   "XF86Shop" 
-,   "XF86Tools" 
-,   "XF86TouchpadOff" 
-,   "XF86TouchpadOn" 
-,   "XF86TouchpadToggle" 
-,   "XF86WLAN" 
-,   "XF86WWW" 
-,   "XF86WebCam" 
-,   "XF86Xfer" 
-,   nullptr
-};
-
 
 C_x11_output::C_x11_output()
 {
@@ -105,14 +48,6 @@ C_x11_output::initialise()
     {
         set_up_data();
         find_unused_keycodes();
-
-        log_write( C_log::LL_INFO, LOG_SOURCE, "Shavian keycodes: " );
-        for ( int keycode : shavian_keycodes_ )
-        {
-            log_write_raw( C_log::LL_INFO, "[%02x] ", keycode );
-        }
-
-        log_write_raw( C_log::LL_INFO, "%s", "\n" );
     }
 
     return display_ != NULL;
@@ -123,18 +58,7 @@ C_x11_output::test()
 {
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
 
-    // Test Shavian output
-    //for ( int idx  = 0; idx < SHAVIAN_TABLE_SIZE; idx++ )
-    //{
-        //send_key( shavian_keycodes_[ idx ] );
-    //}
-
-
-    //send_key( 0x1010450, 0 );
-
-
-
-    C_utf8 shav_test ( "𐑣𐑩𐑤𐑴 𐑢𐑻𐑤𐑛" );
+    C_utf8 shav_test ( "·𐑢𐑣𐑩𐑤𐑴   ·𐑢𐑻𐑤𐑛" );
 
     uint32_t code;
 
@@ -142,7 +66,14 @@ C_x11_output::test()
     {
         do
         {
-            if ( code >= 0x10000 )
+            // From keysymdef.h:
+            // "For any future extension of the keysyms with characters already
+            //  found in ISO 10646 / Unicode, the following algorithm shall be
+            //  used. The new keysym code position will simply be the character's
+            //  Unicode number plus 0x01000000. The keysym values in the range
+            //  0x01000100 to 0x0110ffff are reserved to represent Unicode"
+            // 0x10450 is the base value of the Shavian code block
+            if ( code >= 0x10450 )
             {
                 code += 0x1000000;
             }
@@ -182,11 +113,6 @@ C_x11_output::set_up_data()
     for ( const char ** entry = XF86_symstrings; *entry; entry++ )
     {
         symstrings_.push_back( std::string( *entry ) );
-    }
-
-    for ( int ii = 0; ii < SHAVIAN_TABLE_SIZE; ii++ )
-    {
-        shavian_keycodes_[ ii ] = 0;
     }
 }
 
@@ -267,8 +193,6 @@ C_x11_output::find_unused_keycodes()
                                                      , XKeysymToString( shavian_sym )
                                                      , keycode );
                         
-                        shavian_keycodes_[ shavian_table_index( shavian_sym ) ] = ( KeyCode ) keycode;
-
                         if ( shavian == SHAVIAN_MDOT )
                         {
                             // We're done
@@ -324,45 +248,6 @@ C_x11_output::send( const std::string & str )
     }
 }
 
-
-
-//TODO Retained as a reminder for when C_promicro_output and C_console_output are added
-// 
-//case FM_ARDUINO: to = "\xB2";  break;       // \xB2 is ARDUINO_KEY_BACKSPACE (arduino_keyboard_modifiers.h)
-///case FM_CONSOLE: to = "\b \b"; break;
-//case FM_NONE:                  break;       // Won't get here but suppress compiler warning on not handling FM_NONE
-
-#if 0
-//TEMP, for reference
-#define XK_BackSpace            0         xff08  /* Back space, back char */
-#define XK_Tab                  0         xff09
-#define XK_Linefeed             0         xff0a  /* Linefeed, LF */
-#define XK_Clear                0         xff0b
-#define XK_Return               0         xff0d  /* Return, enter */
-#define XK_Pause                0         xff13  /* Pause, hold */
-#define XK_Scroll_Lock          0         xff14
-#define XK_Sys_Req              0         xff15
-#define XK_Escape               0         xff1b
-#define XK_Delete               0         xffff  /* Delete, rubout */
-
-// Looks like we can supply these modifiers as the second param to send_key()
-#define XK_Shift_L              0         xffe1  /* Left shift */
-#define XK_Shift_R              0         xffe2  /* Right shift */
-#define XK_Control_L            0         xffe3  /* Left control */
-#define XK_Control_R            0         xffe4  /* Right control */
-#define XK_Caps_Lock            0         xffe5  /* Caps lock */
-#define XK_Shift_Lock           0         xffe6  /* Shift lock */
-
-#define XK_Meta_L               0         xffe7  /* Left meta */
-#define XK_Meta_R               0         xffe8  /* Right meta */
-#define XK_Alt_L                0         xffe9  /* Left alt */
-#define XK_Alt_R                0         xffea  /* Right alt */
-#define XK_Super_L              0         xffeb  /* Left super */
-#define XK_Super_R              0         xffec  /* Right super */
-#define XK_Hyper_L              0         xffed  /* Left hyper */
-#define XK_Hyper_R              0         xffee  /* Right hyper */
-#endif
-
 void
 C_x11_output::send_key( KeySym keysym, KeySym modsym )
 {
@@ -415,30 +300,6 @@ C_x11_output::send_key( KeyCode keycode )
  
     XSync( display_, False );
     XTestGrabControl( display_, False );
-}
-
-// Returns -1 if invalid table index
-int
-C_x11_output::shavian_table_index( KeySym keysym )
-{
-    // Mask top byte. For example KeySym for U+10460 as a KeySym is 0x1010450
-    uint32_t code = keysym & 0x00ffffff;
-
-    log_write_raw( C_log::LL_INFO, "code: %05x\n", code );
-
-
-    int result = -1;
-   
-    if ( code == SHAVIAN_MDOT )
-    {
-        result = SHAVIAN_TABLE_SIZE - 1;
-    }
-    else if ( ( SHAVIAN_10450 <= code ) && ( code <= SHAVIAN_1047f ) )
-    {
-        result = ( int ) ( code - SHAVIAN_10450 );
-    }
-    
-    return result;
 }
 
 keysym_entry
@@ -539,6 +400,63 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_bar,          XK_Shift_L }     // 007c  /* U+007C VERTICAL LINE */
 ,   { XK_braceright,   0          }     // 007d  /* U+007D RIGHT CURLY BRACKET */
 ,   { XK_asciitilde,   XK_Shift_L }     // 007e  /* U+007E TILDE */
+};
+
+// Array of symkey strings whose references to keycodes in the keyboard
+// will have Shavian code point substituted in their stead.
+const char * C_x11_output::XF86_symstrings[] =
+{
+    "XF86AudioMicMute" 
+,   "XF86AudioPause" 
+,   "XF86AudioPlay" 
+,   "XF86AudioPreset" 
+,   "XF86Battery" 
+,   "XF86Bluetooth" 
+,   "XF86BrightnessAuto" 
+,   "XF86DOS" 
+,   "XF86DisplayOff" 
+,   "XF86Documents" 
+,   "XF86Favorites" 
+,   "XF86Finance" 
+,   "XF86Game" 
+,   "XF86Go" 
+,   "XF86HomePage" 
+,   "XF86HomePage" 
+,   "XF86Launch1"
+,   "XF86Launch2"
+,   "XF86Launch3"
+,   "XF86Launch4"
+,   "XF86Launch5"
+,   "XF86Launch6"
+,   "XF86Launch7"
+,   "XF86Launch8"
+,   "XF86Launch9"
+,   "XF86LaunchA"
+,   "XF86LaunchB"
+,   "XF86Mail" 
+,   "XF86Mail" 
+,   "XF86MailForward" 
+,   "XF86Messenger" 
+,   "XF86MonBrightnessCycle" 
+,   "XF86MyComputer" 
+,   "XF86New" 
+,   "XF86Next_VMode" 
+,   "XF86Prev_VMode" 
+,   "XF86Reply" 
+,   "XF86Save" 
+,   "XF86ScreenSaver" 
+,   "XF86Search" 
+,   "XF86Send" 
+,   "XF86Shop" 
+,   "XF86Tools" 
+,   "XF86TouchpadOff" 
+,   "XF86TouchpadOn" 
+,   "XF86TouchpadToggle" 
+,   "XF86WLAN" 
+,   "XF86WWW" 
+,   "XF86WebCam" 
+,   "XF86Xfer" 
+,   nullptr
 };
 
 }
