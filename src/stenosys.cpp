@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "dictionary.h"
 #include "strokefeed.h"
 #include "translator.h"
+#include "utf8.h"
 #include "x11output.h"
 
 #define LOG_SOURCE "STSYS"
@@ -88,7 +89,11 @@ C_stenosys::run( int argc, char *argv[] )
         C_translator     translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
         
         bool worked = true;
-    
+
+        //C_utf8::test();
+        //exit( 0 );
+        //TEMP:END
+
         worked = worked && x11_output->initialise();
 
         //TEMP

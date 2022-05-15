@@ -27,6 +27,9 @@ public:
     int
     length();
 
+    static void
+    test();
+
 private:
 
     C_utf8(){}

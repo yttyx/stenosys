@@ -14,6 +14,7 @@
 
 #include "log.h"
 #include "miscellaneous.h"
+#include "utf8.h"
 #include "x11output.h"
 
 #define LOG_SOURCE "X11OP"
@@ -123,9 +124,33 @@ C_x11_output::test()
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
 
     // Test Shavian output
-    for ( int idx  = 0; idx < SHAVIAN_TABLE_SIZE; idx++ )
+    //for ( int idx  = 0; idx < SHAVIAN_TABLE_SIZE; idx++ )
+    //{
+        //send_key( shavian_keycodes_[ idx ] );
+    //}
+
+
+    //send_key( 0x1010450, 0 );
+
+
+
+    C_utf8 shav_test ( "𐑣𐑩𐑤𐑴 𐑢𐑻𐑤𐑛" );
+
+    uint32_t code;
+
+    if ( shav_test.get_first( code ) )
     {
-        send_key( shavian_keycodes_[ idx ] );
+        do
+        {
+            if ( code >= 0x10000 )
+            {
+                code += 0x1000000;
+            }
+
+            fprintf( stdout, "code: %08x\n", code );
+            send_key( code, 0 );
+
+        } while ( shav_test.get_next( code ) );
     }
 
     send_key( XK_space, 0 );
