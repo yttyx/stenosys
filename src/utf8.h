@@ -31,10 +31,17 @@ private:
 
     C_utf8(){}
 
+    bool
+    decode( uint32_t & code );
+    
+    int
+    codepoint_length( uint8_t ch );
+
 private:
 
     std::string str_;
-    int         index_curr_;
+    int         index_;     // current index into str_
+    int         length_;    // length of str_
 
 };
 
