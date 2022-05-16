@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <utility>
 
+#include "keyboard.h"
+#include "miscellaneous.h"
 #include "shavian_dictionary.h"
 #include "log.h"
 #include "textfile.h"
@@ -17,7 +19,8 @@
 namespace stenosys
 {
 
-extern C_log log;
+extern C_keyboard kbd;
+extern C_log      log;
 
 
 const char * REGEX_SHAVIAN_DICTIONARY = "^(.*?)\t(.*?)\t.*$";  // tab separated variables (first two fields)
@@ -46,16 +49,23 @@ C_shavian_dictionary::read( const std::string & path )
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Reading dictionary" );
             
             std::string line;
+            std::string latin_prev;
     
             while ( get_line( line ) )
             {
                 std::string latin;      // Latin alphabet text
                 std::string shavian;    // Shavian text
 
-                // Check for valid JSON entry
+                // Check for valid entry
                 if ( parse_line( line, REGEX_SHAVIAN_DICTIONARY, latin, shavian ) )
                 {
-                    std::string parsed_text;
+                    // Maintain count of entries that should be added, as a crosscheck. Unsorted maps have
+                    // unique keys so if a key already exists, calling insert() will have no effect on the map.
+                    if ( latin != latin_prev )
+                    {
+                        entry_count++;
+                        latin_prev = latin;
+                    }
 
                     dictionary_->insert( std::make_pair( latin, shavian ) );
                 }
@@ -65,8 +75,8 @@ C_shavian_dictionary::read( const std::string & path )
                 }
             }
 
-            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "%u entries loaded", entry_count );
-            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "%u non-data", non_data_count );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u entries loaded", entry_count );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u non-data", non_data_count );
 
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u dictionary entries", dictionary_->size() );
         }

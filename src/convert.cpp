@@ -58,15 +58,13 @@ C_convert::convert( const std::string & steno_dict
 
                 C_utf8 shavian_utf8( shavian );
 
-                //int shavian_spaces = shavian_utf8.length();
-
                 log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%04u  %-16.16s  %-20.20s  %s"
                                                            , steno_entry.flags
                                                            , steno.c_str()
                                                            , steno_entry.text.c_str()
                                                            , shavian.c_str() );
 
-                delay( 1000 );
+                delay( 500 );
 
             } while ( steno_dictionary_->get_next( steno, steno_entry ) );
         }
