@@ -118,6 +118,38 @@ C_dictionary::lookup( const std::string & steno, std::string & text, uint16_t & 
 }
 
 bool
+C_dictionary::get_first( std::string & steno, STENO_ENTRY & entry )
+{
+    it_ = dictionary_->begin();
+
+    if ( it_ != dictionary_->end() )
+    {
+        steno = it_->first;
+        entry = it_->second;
+
+        return true;
+    }
+
+    return true;
+}
+
+bool
+C_dictionary::get_next( std::string & steno, STENO_ENTRY & entry )
+{
+    it_++;
+
+    if ( it_ != dictionary_->end() )
+    {
+        steno = it_->first;
+        entry = it_->second;
+
+        return true;
+    }
+
+    return false;
+}
+
+bool
 C_dictionary::parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 )
 {
     std::regex regex_entry( regex );

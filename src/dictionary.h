@@ -32,6 +32,12 @@ public:
     bool
     lookup( const std::string & steno, std::string & text, uint16_t & flags );
 
+    bool
+    get_first( std::string & steno, STENO_ENTRY & entry );
+
+    bool
+    get_next( std::string & steno, STENO_ENTRY & entry );
+
 private:
 
     void
@@ -48,6 +54,9 @@ private:
     
     std::unique_ptr< std::unordered_map< std::string, STENO_ENTRY > >  dictionary_;
     std::unique_ptr< C_command_parser >                                parser_;
+
+    std::unordered_map< std::string, STENO_ENTRY >::iterator it_;
+
 };
 
 }

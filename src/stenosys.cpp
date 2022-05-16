@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <unistd.h>
 
 #include "config.h"
+#include "convert.h"     //TEMP
 #include "device.h"
 #include "geminipr.h"
 #include "keyboard.h"
@@ -80,6 +81,18 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Dictionary path : %s", cfg.c().file_dict.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", cfg.c().device_raw.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
+
+        //TEMP: Shavian conversion
+        {
+            std::unique_ptr< C_convert > conv = std::make_unique< C_convert >();
+
+            conv->convert( cfg.c().file_dict, "./dictionary/kingsleyreadlexicon.tsv", "" );
+        }
+        exit( 0 );
+        //TEMP: end
+
+
+
 
         std::unique_ptr< C_outputter > x11_output = std::make_unique< C_x11_output>();
 
