@@ -9,9 +9,11 @@
 
 #include "convert.h"
 #include "dictionary.h"
+#include "keyboard.h"
 #include "miscellaneous.h"
 #include "shavian_dictionary.h"
 #include "log.h"
+#include "utf8.h"
 
 #define LOG_SOURCE "CNVRT"
 
@@ -20,7 +22,8 @@ using namespace stenosys;
 namespace stenosys
 {
 
-extern C_log log;
+extern C_log      log;
+extern C_keyboard kbd;
 
 bool
 C_convert::convert( const std::string & steno_dict
@@ -44,20 +47,24 @@ C_convert::convert( const std::string & steno_dict
         {
             do
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno:: text: %s, flags: %u"
-                                                           , steno_entry.text.c_str()
-                                                           , steno_entry.flags );
+                if ( kbd.abort() )
+                {
+                    break;
+                }
 
                 std::string shavian;
 
-                if ( shavian_dictionary_->lookup( steno_entry.text, shavian ) )
-                {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    shavian: %s", shavian.c_str() );
-                }
-                else
-                {
-                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "    (no shavian entry)" );
-                }
+                shavian_dictionary_->lookup( steno_entry.text, shavian );
+
+                C_utf8 shavian_utf8( shavian );
+
+                //int shavian_spaces = shavian_utf8.length();
+
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%04u  %-16.16s  %-20.20s  %s"
+                                                           , steno_entry.flags
+                                                           , steno.c_str()
+                                                           , steno_entry.text.c_str()
+                                                           , shavian.c_str() );
 
                 delay( 1000 );
 

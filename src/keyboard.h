@@ -30,9 +30,9 @@ private:
     int
     get_key();
 
-    static const int ABORT_KEY_1    = 0x03;   // Ctrl-C
-    static const int ABORT_KEY_2    = 0x1b;   // <Esc>
-    static const int NO_KEY         = -1;
+    static const int ABORT_KEY_1 = 0x03;   // Ctrl-C
+    static const int ABORT_KEY_2 = 0x1b;   // <Esc>
+    static const int NO_KEY      = -1;
 
 private:
 
