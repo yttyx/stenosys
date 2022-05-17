@@ -5,7 +5,7 @@
 #include <cassert>
 #include <cstdint>
 #include <cstring>
-#include <iostream>
+#include <fstream>
 #include <memory>
 
 #include "convert.h"
@@ -51,38 +51,45 @@ C_convert::convert( const std::string & steno_dict
 
         if ( steno_dictionary_->get_first( steno_entry_2 ) )
         {
-            do
+            std::ofstream file_stream( output_dict, std::ios::out | std::ios::binary );
+
+            if ( file_stream.is_open() )
             {
-                if ( kbd.abort() )
+                do
                 {
-                    break;
-                }
+                    if ( kbd.abort() )
+                    {
+                        break;
+                    }
 
-                std::string shavian_key = steno_entry_2.text;
+                    std::string shavian_key = steno_entry_2.text;
 
-                // Convert text to lowercase before Shavian lookup
-                std::transform( shavian_key.begin(), shavian_key.end(), shavian_key.begin(), ::tolower );
-               
-                std::string shavian;
+                    // Convert text to lowercase before Shavian lookup
+                    std::transform( shavian_key.begin(), shavian_key.end(), shavian_key.begin(), ::tolower );
+                   
+                    std::string shavian;
 
-                shavian_dictionary_->lookup( shavian_key, shavian );
+                    shavian_dictionary_->lookup( shavian_key, shavian );
 
-                if ( display )
-                {
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%-16.16s  %-20.20s  %s"
-                                                               //, steno_entry_2.steno.c_str()
-                                                               //, steno_entry_2.text.c_str()
-                                                               //, shavian.c_str() );
+                    if ( display )
+                    {
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "\"%s\",\"%s\",\"%s\""
+                                                                   //, steno_entry_2.steno.c_str()
+                                                                   //, steno_entry_2.text.c_str()
+                                                                   //, shavian.c_str() );
+                        
+                        file_stream << "\"" << steno_entry_2.steno.c_str() << "\",";
+                        file_stream << "\"" << steno_entry_2.text.c_str() << "\",";
+                        file_stream << "\"" << shavian.c_str() << "\"\n";
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "\"%s\",\"%s\",\"%s\""
-                                                               , steno_entry_2.steno.c_str()
-                                                               , steno_entry_2.text.c_str()
-                                                               , shavian.c_str() );
+                        //file_stream.flush();
+                        //delay( 500 );
+                    }
+                } while ( steno_dictionary_->get_next( steno_entry_2 ) );
+            
+                file_stream.close();
+            }
 
-                    delay( 500 );
-                }
-
-            } while ( steno_dictionary_->get_next( steno_entry_2 ) );
         }
 
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "Done" );

@@ -86,7 +86,9 @@ C_stenosys::run( int argc, char *argv[] )
         {
             std::unique_ptr< C_convert > conv = std::make_unique< C_convert >();
 
-            conv->convert( cfg.c().file_dict, "./dictionary/kingsleyreadlexicon.tsv", "" );
+            conv->convert( cfg.c().file_dict
+                         , "./dictionary/kingsleyreadlexicon.tsv"
+                         , "./dictionary/yttyx-dict.csv" );
         }
         exit( 0 );
         //TEMP: end
