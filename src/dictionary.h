@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 #include "cmdparser.h"
 #include "dictionary.h"
@@ -14,10 +15,16 @@ namespace stenosys
 
 #define EMPTY 0xffffffff
 
-typedef struct {
+typedef struct
+{
     std::string text;
     uint16_t    flags;
 } STENO_ENTRY;
+
+typedef struct {
+    std::string steno;
+    std::string text;
+} STENO_ENTRY_2;
 
 class C_dictionary : C_text_file
 {
@@ -33,10 +40,10 @@ public:
     lookup( const std::string & steno, std::string & text, uint16_t & flags );
 
     bool
-    get_first( std::string & steno, STENO_ENTRY & entry );
+    get_first( STENO_ENTRY_2 & entry );
 
     bool
-    get_next( std::string & steno, STENO_ENTRY & entry );
+    get_next( STENO_ENTRY_2 & entry );
 
 private:
 
@@ -55,8 +62,8 @@ private:
     std::unique_ptr< std::unordered_map< std::string, STENO_ENTRY > >  dictionary_;
     std::unique_ptr< C_command_parser >                                parser_;
 
-    std::unordered_map< std::string, STENO_ENTRY >::iterator it_;
-
+    std::unique_ptr< std::vector< STENO_ENTRY_2 > >  dict_vector_;
+    std::vector< STENO_ENTRY_2 >::iterator           it_;
 };
 
 }

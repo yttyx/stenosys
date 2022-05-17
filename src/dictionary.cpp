@@ -28,6 +28,8 @@ C_dictionary::C_dictionary()
 {
     parser_     = std::make_unique< C_command_parser >();
     dictionary_ = std::make_unique< std::unordered_map< std::string, STENO_ENTRY > >();
+
+    dict_vector_ = std::make_unique< std::vector< STENO_ENTRY_2 > >();
 }
 
 C_dictionary::~C_dictionary()
@@ -68,8 +70,17 @@ C_dictionary::read( const std::string & path )
                     
                     steno_entry->text  = parsed_text;
                     steno_entry->flags = flags;
-                    
+
                     dictionary_->insert( std::make_pair( steno, * steno_entry ) );
+
+                    //TEMP Add to dict_vector_ for later sequential access
+                    //     (preserving the order of the entries in the file)
+                    STENO_ENTRY_2 * steno_entry_2 = new STENO_ENTRY_2();
+                    
+                    steno_entry_2->steno = steno;
+                    steno_entry_2->text  = text;
+
+                    dict_vector_->push_back( *steno_entry_2 );
                 }
                 else
                 {
@@ -102,7 +113,6 @@ bool
 C_dictionary::lookup( const std::string & steno, std::string & text, uint16_t & flags )
 {
     auto result = dictionary_->find( steno );
-    // std::unordered_map< std::string, STENO_ENTRY >::iterator it = dictionary_->find( steno );
 
     if ( result == dictionary_->end() )
     {
@@ -118,14 +128,13 @@ C_dictionary::lookup( const std::string & steno, std::string & text, uint16_t & 
 }
 
 bool
-C_dictionary::get_first( std::string & steno, STENO_ENTRY & entry )
+C_dictionary::get_first( STENO_ENTRY_2 & entry )
 {
-    it_ = dictionary_->begin();
+    it_ = dict_vector_->begin();
 
-    if ( it_ != dictionary_->end() )
+    if ( it_ != dict_vector_->end() )
     {
-        steno = it_->first;
-        entry = it_->second;
+        entry = *it_;
 
         return true;
     }
@@ -134,14 +143,13 @@ C_dictionary::get_first( std::string & steno, STENO_ENTRY & entry )
 }
 
 bool
-C_dictionary::get_next( std::string & steno, STENO_ENTRY & entry )
+C_dictionary::get_next( STENO_ENTRY_2 & entry )
 {
     it_++;
 
-    if ( it_ != dictionary_->end() )
+    if ( it_ != dict_vector_->end() )
     {
-        steno = it_->first;
-        entry = it_->second;
+        entry = *it_;
 
         return true;
     }

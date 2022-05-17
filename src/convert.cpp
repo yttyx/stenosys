@@ -45,11 +45,11 @@ C_convert::convert( const std::string & steno_dict
     if ( worked )
     {
         std::string steno;
-        STENO_ENTRY steno_entry;
+        STENO_ENTRY_2 steno_entry_2;
 
-        bool display = false;
+        bool display = true;
 
-        if ( steno_dictionary_->get_first( steno, steno_entry ) )
+        if ( steno_dictionary_->get_first( steno_entry_2 ) )
         {
             do
             {
@@ -58,32 +58,31 @@ C_convert::convert( const std::string & steno_dict
                     break;
                 }
 
-                std::string shavian_key = steno_entry.text;
+                std::string shavian_key = steno_entry_2.text;
 
                 // Convert text to lowercase before Shavian lookup
                 std::transform( shavian_key.begin(), shavian_key.end(), shavian_key.begin(), ::tolower );
                
-                if ( shavian_key.compare( "patsy" ) == 0 )
-                {
-                    display = true;
-                }
-
                 std::string shavian;
 
                 shavian_dictionary_->lookup( shavian_key, shavian );
 
                 if ( display )
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%04u  %-16.16s  %-20.20s  %s"
-                                                               , steno_entry.flags
-                                                               , steno.c_str()
-                                                               , steno_entry.text.c_str()
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%-16.16s  %-20.20s  %s"
+                                                               //, steno_entry_2.steno.c_str()
+                                                               //, steno_entry_2.text.c_str()
+                                                               //, shavian.c_str() );
+
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "\"%s\",\"%s\",\"%s\""
+                                                               , steno_entry_2.steno.c_str()
+                                                               , steno_entry_2.text.c_str()
                                                                , shavian.c_str() );
 
                     delay( 500 );
                 }
 
-            } while ( steno_dictionary_->get_next( steno, steno_entry ) );
+            } while ( steno_dictionary_->get_next( steno_entry_2 ) );
         }
 
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "Done" );
