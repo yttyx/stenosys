@@ -62,11 +62,11 @@ C_strokes::find_best_match( const std::string &               steno
         
         if ( dictionary_.lookup( key, text, shavian, flags) )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, shavian: %s, flags: %u"
-                                                       , key.c_str()
-                                                       , text.c_str()
-                                                       , shavian.c_str()
-                                                       , flags );
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, shavian: %s, flags: %u"
+                                                       //, key.c_str()
+                                                       //, text.c_str()
+                                                       //, shavian.c_str()
+                                                       //, flags );
 
             history_->curr()->translation( text );
             history_->curr()->shavian( shavian );
@@ -104,8 +104,8 @@ C_strokes::find_best_match( const std::string &               steno
 
     extends = history_->curr()->extends();
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "history_->curr()->extends(): %d"
-                                               , history_->curr()->extends() );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "history_->curr()->extends(): %d"
+                                               //, history_->curr()->extends() );
 }
 
 void

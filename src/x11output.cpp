@@ -155,7 +155,7 @@ C_x11_output::find_unused_keycodes()
 
     for ( int keycode = keycode_low; ( keycode <= keycode_high ) && ( ! done ); keycode++)
     {
-        log_write_raw( C_log::LL_INFO, "[%02x]  ", keycode );
+        //log_write_raw( C_log::LL_INFO, "[%02x]  ", keycode );
 
         for ( int sym_count = 0; sym_count < keysyms_per_keycode; sym_count++ )
         {

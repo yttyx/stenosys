@@ -91,11 +91,11 @@ C_formatter::format( const std::string text
 std::string
 C_formatter::transition_to( const std::string & prev, const std::string & curr, bool extends, bool undo )
 {
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "transition_to -- prev: %s, curr: %s, extends: %d, undo:%d"
-                                               , prev.c_str()
-                                               , curr.c_str()
-                                               , extends
-                                               , undo );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "transition_to -- prev: %s, curr: %s, extends: %d, undo:%d"
+                                               //, prev.c_str()
+                                               //, curr.c_str()
+                                               //, extends
+                                               //, undo );
     std::string output;
     std::string backspaces;
     std::string difference;
@@ -107,7 +107,7 @@ C_formatter::transition_to( const std::string & prev, const std::string & curr, 
 
         int idx = find_point_of_difference( curr, prev );
 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
         
         if ( idx >= 0 )
         {
@@ -136,8 +136,8 @@ C_formatter::transition_to( const std::string & prev, const std::string & curr, 
             }
         }
 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces.length(): %u", backspaces.length() );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "difference         : %s", difference.c_str() );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces.length(): %u", backspaces.length() );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "difference         : %s", difference.c_str() );
     }
     else // Not extending the previous chord
     {
@@ -162,9 +162,9 @@ C_formatter::transition_to( const std::string & prev, const std::string & curr, 
 int
 C_formatter::find_point_of_difference( const std::string & from, const std::string & to )
 {
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "find pod  --  from: >>%s<<  to: >>%s<<"
-                                               , from.c_str()
-                                               , to.c_str() );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "find pod  --  from: >>%s<<  to: >>%s<<"
+                                               //, from.c_str()
+                                               //, to.c_str() );
 
     uint16_t ii = 0;
     
@@ -183,7 +183,5 @@ C_formatter::find_point_of_difference( const std::string & from, const std::stri
 
     return -1;
 }
-
-
 
 }

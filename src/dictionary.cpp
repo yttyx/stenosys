@@ -74,12 +74,12 @@ C_dictionary::read( const std::string & path )
                     steno_entry->shavian = shavian;
                     steno_entry->flags   = flags;
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "text:%s shavian:%s flags:%u"
-                                                               , text.c_str()
-                                                               , shavian.c_str()
-                                                               , flags );
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "text:%s shavian:%s flags:%u"
+                                                               //, text.c_str()
+                                                               //, shavian.c_str()
+                                                               //, flags );
 
-                    delay( 500 );
+                    //delay( 500 );
 
                     dictionary_->insert( std::make_pair( steno, * steno_entry ) );
 
