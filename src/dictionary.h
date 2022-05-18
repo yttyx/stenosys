@@ -18,6 +18,7 @@ namespace stenosys
 typedef struct
 {
     std::string text;
+    std::string shavian;
     uint16_t    flags;
 } STENO_ENTRY;
 
@@ -49,6 +50,13 @@ private:
 
     void
     escape_characters( std::string & str );
+
+    bool
+    parse_line( const std::string & line
+              , const char * regex
+              , std::string & field1
+              , std::string & field2
+              , std::string & field3 );
 
     bool
     parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 );

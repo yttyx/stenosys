@@ -11,6 +11,7 @@
 #include "cmdparser.h"
 #include "dictionary.h"
 #include "log.h"
+#include "miscellaneous.h"
 #include "textfile.h"
 
 #define LOG_SOURCE "DICT "
@@ -21,7 +22,7 @@ namespace stenosys
 extern C_log log;
 
 
-const char * REGEX_DICTIONARY = "^.*\"(.*?)\": \"(.*?)\",$";  // JSON format line
+const char * REGEX_DICTIONARY = "^.*\"(.*?)\",\"(.*?)\",\"(.*?)\".*$";
 
 C_dictionary::C_dictionary()
     : initialised_( false )
@@ -54,12 +55,13 @@ C_dictionary::read( const std::string & path )
             while ( get_line( line ) )
             {
                 std::string steno;
-                std::string text;
+                std::string text;      // Latin alphabet
+                std::string shavian;    // Shavian
 
                 uint16_t    flags = 0;
 
                 // Check for valid JSON entry
-                if ( parse_line( line, REGEX_DICTIONARY, steno, text ) )
+                if ( parse_line( line, REGEX_DICTIONARY, steno, text, shavian ) )
                 {
                     std::string parsed_text;
 
@@ -68,19 +70,27 @@ C_dictionary::read( const std::string & path )
 
                     STENO_ENTRY * steno_entry = new STENO_ENTRY();
                     
-                    steno_entry->text  = parsed_text;
-                    steno_entry->flags = flags;
+                    steno_entry->text    = parsed_text;
+                    steno_entry->shavian = shavian;
+                    steno_entry->flags   = flags;
+
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "text:%s shavian:%s flags:%u"
+                                                               , text.c_str()
+                                                               , shavian.c_str()
+                                                               , flags );
+
+                    delay( 500 );
 
                     dictionary_->insert( std::make_pair( steno, * steno_entry ) );
 
                     //TEMP Add to dict_vector_ for later sequential access
                     //     (preserving the order of the entries in the file)
-                    STENO_ENTRY_2 * steno_entry_2 = new STENO_ENTRY_2();
+                    //STENO_ENTRY_2 * steno_entry_2 = new STENO_ENTRY_2();
                     
-                    steno_entry_2->steno = steno;
-                    steno_entry_2->text  = text;
+                    //steno_entry_2->steno = steno;
+                    //steno_entry_2->text  = text;
 
-                    dict_vector_->push_back( *steno_entry_2 );
+                    //dict_vector_->push_back( *steno_entry_2 );
                 }
                 else
                 {
@@ -158,7 +168,11 @@ C_dictionary::get_next( STENO_ENTRY_2 & entry )
 }
 
 bool
-C_dictionary::parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 )
+C_dictionary::parse_line( const std::string & line
+                        , const char * regex
+                        , std::string & field1
+                        , std::string & field2
+                        , std::string & field3 )
 {
     std::regex regex_entry( regex );
 
@@ -168,9 +182,11 @@ C_dictionary::parse_line( const std::string & line, const char * regex, std::str
     {
         std::ssub_match match1 = matches[ 1 ];
         std::ssub_match match2 = matches[ 2 ];
+        std::ssub_match match3 = matches[ 3 ];
 
-        param1 = match1.str();
-        param2 = match2.str();
+        field1 = match1.str();
+        field2 = match2.str();
+        field3 = match3.str();
 
         return true;
     }
