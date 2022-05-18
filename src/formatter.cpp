@@ -30,9 +30,9 @@ C_formatter::~C_formatter()
 
 std::string
 C_formatter::format( const std::string text
-                    , uint16_t         flags
-                    , uint16_t         flags_prev 
-                    , bool             extends )
+                   , uint16_t          flags
+                   , uint16_t          flags_prev 
+                   , bool              extends )
 {
     /* log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces: %u", ( uint16_t ) backspaces ); */
 
