@@ -118,9 +118,12 @@ C_dictionary::read( const std::string & path )
 }
 
 
-// Output: text and flags are only set if the dictionary entry is found
+// Output: text, shavian and flags are only set if the dictionary entry is found
 bool
-C_dictionary::lookup( const std::string & steno, std::string & text, uint16_t & flags )
+C_dictionary::lookup( const std::string & steno
+                    , std::string &       text
+                    , std::string &       shavian 
+                    , uint16_t &          flags )
 {
     auto result = dictionary_->find( steno );
 
@@ -130,8 +133,9 @@ C_dictionary::lookup( const std::string & steno, std::string & text, uint16_t & 
     }
     else
     {
-        text  = result->second.text;
-        flags = result->second.flags;
+        text    = result->second.text;
+        shavian = result->second.shavian;
+        flags   = result->second.flags;
     }
 
     return true;

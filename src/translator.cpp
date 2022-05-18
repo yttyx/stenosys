@@ -73,8 +73,9 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
     bool     extends    = false;
 
     std::string text;
+    std::string shavian;
 
-    strokes_->find_best_match( steno, text, flags, flags_prev, extends );
+    strokes_->find_best_match( steno, text, shavian, flags, flags_prev, extends );
 
     std::string curr = formatter_->format( text, flags, flags_prev, extends );
 

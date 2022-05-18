@@ -41,6 +41,7 @@ C_strokes::initialise()
 void
 C_strokes::find_best_match( const std::string &               steno
                           , std::string &                     text 
+                          , std::string &                     shavian 
                           , uint16_t &                        flags
                           , uint16_t &                        flags_prev
                           , bool &                            extends )
@@ -59,11 +60,16 @@ C_strokes::find_best_match( const std::string &               steno
     {
         key = ( key.length() == 0 ) ? steno : stroke->steno() + std::string( "/" ) + key;
         
-        if ( dictionary_.lookup( key, text, flags) )
+        if ( dictionary_.lookup( key, text, shavian, flags) )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, flags: %u", key.c_str(), text.c_str(), flags );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, shavian: %s, flags: %u"
+                                                       , key.c_str()
+                                                       , text.c_str()
+                                                       , shavian.c_str()
+                                                       , flags );
 
             history_->curr()->translation( text );
+            history_->curr()->shavian( shavian );
             history_->curr()->flags( flags );
 
             // Set best match so far

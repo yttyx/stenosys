@@ -38,7 +38,10 @@ public:
     read( const std::string & path );
 
     bool
-    lookup( const std::string & steno, std::string & text, uint16_t & flags );
+    lookup( const std::string & steno
+          , std::string &       text
+          , std::string &       shavian
+          , uint16_t &          flags );
 
     bool
     get_first( STENO_ENTRY_2 & entry );

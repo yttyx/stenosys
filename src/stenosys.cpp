@@ -83,18 +83,15 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
 
         //TEMP: Shavian conversion
-        {
-            std::unique_ptr< C_convert > conv = std::make_unique< C_convert >();
+        //{
+            //std::unique_ptr< C_convert > conv = std::make_unique< C_convert >();
 
-            conv->convert( cfg.c().file_dict
-                         , "./dictionary/kingsleyreadlexicon.tsv"
-                         , "./dictionary/yttyx-dict.csv" );
-        }
-        exit( 0 );
+            //conv->convert( cfg.c().file_dict
+                         //, "./dictionary/kingsleyreadlexicon.tsv"
+                         //, "./dictionary/yttyx-dict.csv" );
+        //}
+        //exit( 0 );
         //TEMP: end
-
-
-
 
         std::unique_ptr< C_outputter > x11_output = std::make_unique< C_x11_output>();
 

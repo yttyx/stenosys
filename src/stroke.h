@@ -38,6 +38,12 @@ public:
     std::string &
     translation();
 
+    void
+    shavian( const std::string & shavian );
+
+    std::string &
+    shavian();
+    
     void 
     flags( uint16_t flags );
     
@@ -67,6 +73,7 @@ private:
     std::string      steno_;                // Steno
     
     std::string      translation_;          // Steno translation
+    std::string      shavian_;              // Steno translation
     uint16_t         flags_;                // Formatting flags
 
     uint16_t         seqnum_;               // The position of this stroke in a multi-stroke word

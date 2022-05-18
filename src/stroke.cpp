@@ -53,6 +53,7 @@ C_stroke::operator=( const C_stroke & rhs )
 {
     steno_         = rhs.steno_;
     translation_   = rhs.translation_;
+    shavian_       = rhs.shavian_;
     flags_         = rhs.flags_;
     seqnum_        = rhs.seqnum_;
 
@@ -69,6 +70,18 @@ std::string &
 C_stroke::translation()
 {
     return translation_;
+}
+
+void
+C_stroke::shavian( const std::string & shavian )
+{
+    shavian_ = shavian;
+}
+
+std::string &
+C_stroke::shavian()
+{
+    return shavian_;
 }
 
 uint16_t

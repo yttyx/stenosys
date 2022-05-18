@@ -31,6 +31,7 @@ public:
     void
     find_best_match( const std::string &               steno
                    , std::string &                     text 
+                   , std::string &                     shavian
                    , uint16_t &                        flags
                    , uint16_t &                        flags_prev 
                    , bool &                            extends );
