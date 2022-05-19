@@ -27,6 +27,20 @@ extern C_log      log;
 extern C_keyboard kbd;
 
 
+
+//TEMP: Shavian conversion
+//{
+    //std::unique_ptr< C_convert > conv = std::make_unique< C_convert >();
+
+    //conv->convert( cfg.c().file_dict
+                 //, "./dictionary/kingsleyreadlexicon.tsv"
+                 //, "./dictionary/yttyx-dict.csv" );
+//}
+//exit( 0 );
+//TEMP: end
+
+
+
 // TODO: Read through steno dictionary sequentially - putting the entries into an unsorted map
 //       will cause major dictionary churn.
 bool

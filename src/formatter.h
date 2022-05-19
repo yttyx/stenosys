@@ -25,10 +25,12 @@ public:
     ~C_formatter();
 
     std::string
-    format( const std::string translation
-          , uint16_t          flags
-          , uint16_t          flags_prev
-          , bool              extends );
+    format( alphabet_type      alphabet_mode
+           , const std::string latin
+           , const std::string shavian
+           , uint16_t          flags
+           , uint16_t          flags_prev 
+           , bool              extends );
     
     std::string
     transition_to( const std::string & prev, const std::string & curr, bool extends, bool undo );

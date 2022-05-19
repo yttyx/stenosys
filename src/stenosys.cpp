@@ -82,23 +82,12 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", cfg.c().device_raw.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
 
-        //TEMP: Shavian conversion
-        //{
-            //std::unique_ptr< C_convert > conv = std::make_unique< C_convert >();
-
-            //conv->convert( cfg.c().file_dict
-                         //, "./dictionary/kingsleyreadlexicon.tsv"
-                         //, "./dictionary/yttyx-dict.csv" );
-        //}
-        //exit( 0 );
-        //TEMP: end
-
         std::unique_ptr< C_outputter > x11_output = std::make_unique< C_x11_output>();
 
         C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard */
         // C_serial       serial;               // Serial output to the Pro Micro
         C_stroke_feed    stroke_feed;
-        C_translator     translator( cfg.c().space_after ? SP_AFTER : SP_BEFORE );
+        C_translator     translator( AT_LATIN, cfg.c().space_after ? SP_AFTER : SP_BEFORE );
         
         bool worked = true;
 

@@ -39,12 +39,12 @@ C_strokes::initialise()
 
 // Add a steno stroke and find the best match
 void
-C_strokes::find_best_match( const std::string &               steno
-                          , std::string &                     text 
-                          , std::string &                     shavian 
-                          , uint16_t &                        flags
-                          , uint16_t &                        flags_prev
-                          , bool &                            extends )
+C_strokes::find_best_match( const std::string & steno
+                          , std::string &       latin
+                          , std::string &       shavian 
+                          , uint16_t &          flags
+                          , uint16_t &          flags_prev
+                          , bool &              extends )
 {
     C_stroke new_stroke( steno );
 
@@ -52,7 +52,7 @@ C_strokes::find_best_match( const std::string &               steno
 
     std::string key;
 
-    text = steno;  // Default to the raw steno
+    latin = steno;  // Default to the raw steno
 
     C_stroke * stroke = nullptr;
 
@@ -60,15 +60,21 @@ C_strokes::find_best_match( const std::string &               steno
     {
         key = ( key.length() == 0 ) ? steno : stroke->steno() + std::string( "/" ) + key;
         
-        if ( dictionary_.lookup( key, text, shavian, flags) )
+        if ( dictionary_.lookup( key, latin, shavian, flags) )
         {
             //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, shavian: %s, flags: %u"
                                                        //, key.c_str()
-                                                       //, text.c_str()
+                                                       //, latin.c_str()
                                                        //, shavian.c_str()
                                                        //, flags );
 
-            history_->curr()->translation( text );
+            // If there's no Shavian translation, default to normal English
+            if ( shavian.length() == 0 )
+            {
+                shavian = latin;
+            }
+
+            history_->curr()->translation( latin );
             history_->curr()->shavian( shavian );
             history_->curr()->flags( flags );
 

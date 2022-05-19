@@ -29,13 +29,16 @@ C_formatter::~C_formatter()
 }
 
 std::string
-C_formatter::format( const std::string text
+C_formatter::format( alphabet_type     alphabet_mode
+                   , const std::string latin
+                   , const std::string shavian
                    , uint16_t          flags
                    , uint16_t          flags_prev 
                    , bool              extends )
 {
     /* log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces: %u", ( uint16_t ) backspaces ); */
 
+    bool latin_mode          = ( alphabet_mode == AT_LATIN );
     bool config_space_before = ( space_mode_ == SP_BEFORE );
     bool config_space_after  = ! config_space_before;
 
@@ -47,34 +50,43 @@ C_formatter::format( const std::string text
     // Attach to the next stroke's output?
     bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
 
-    std::string formatted = text;
+    std::string formatted = latin_mode ? latin : shavian;
     
     std::string output;
     
     if ( formatted.length() > 0 )
     {
-        if ( flags_prev & CAPITALISE_NEXT )
+        if ( latin_mode )
         {
-            formatted[ 0 ] = toupper( formatted[ 0 ] );
+            if ( flags_prev & CAPITALISE_NEXT )
+            {
+                formatted[ 0 ] = toupper( formatted[ 0 ] );
+            }
+            else if ( flags_prev & LOWERCASE_NEXT )
+            {
+                formatted[ 0 ] = tolower( formatted[ 0 ] );
+            }
+            else if ( flags_prev & LOWERCASE_NEXT_WORD )
+            {
+                std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::tolower );
+            }
+            else if ( flags_prev & UPPERCASE_NEXT_WORD )
+            {
+                std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::toupper );
+            }
         }
-        else if ( flags_prev & LOWERCASE_NEXT )
+        else
         {
-            formatted[ 0 ] = tolower( formatted[ 0 ] );
-        }
-        else if ( flags_prev & LOWERCASE_NEXT_WORD )
-        {
-            std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::tolower );
-        }
-        else if ( flags_prev & UPPERCASE_NEXT_WORD )
-        {
-            std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::toupper );
+            if ( flags_prev & CAPITALISE_NEXT )
+            {
+                // Prefix shavian with a middle dot character
+                formatted = std::string( "·" ) + formatted;
+            }
         }
 
         if ( config_space_before && ( ! attach_to_previous ) )
         {
             output += ' '; 
-
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Added leading space" );
         }
 
         output += formatted;

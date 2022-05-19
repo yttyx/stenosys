@@ -8,6 +8,7 @@
 #include "dictionary.h"
 #include "formatter.h"
 #include "history.h"
+#include "stenoflags.h"
 #include "strokes.h"
 
 using namespace stenosys;
@@ -20,7 +21,7 @@ class C_translator
 
 public:
 
-    C_translator( space_type space_mode );
+    C_translator( alphabet_type alphabet_mode, space_type space_mode );
     ~C_translator();
 
     bool
@@ -41,10 +42,14 @@ private:
 
     void
     toggle_space_mode();
+    
+    void
+    toggle_alphabet_mode();
 
 private:
     
-    space_type space_mode_;
+    alphabet_type alphabet_mode_;
+    space_type    space_mode_;
 
     std::unique_ptr< C_dictionary > dictionary_;
     std::unique_ptr< C_strokes >    strokes_;

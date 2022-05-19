@@ -23,8 +23,9 @@ namespace stenosys
 
 extern C_log log;
 
-C_translator::C_translator( space_type space_mode )
-    : space_mode_( space_mode )
+C_translator::C_translator( alphabet_type alphabet_mode, space_type space_mode )
+    : alphabet_mode_( alphabet_mode )
+    , space_mode_( space_mode )
 {
     dictionary_ = std::make_unique< C_dictionary >();
     strokes_    = std::make_unique< C_strokes >( *dictionary_.get() );
@@ -45,23 +46,31 @@ C_translator::initialise( const std::string & dictionary_path )
 void
 C_translator::translate( const std::string & steno, std::string & output )
 {
-    // debug
-    if ( steno == "#S" )
+    if ( steno[ 0 ] == '#' )
     {
-        toggle_space_mode();
-    }
-    else if ( steno == "#-D" )
-    {
-        // Debug
-        strokes_->dump();
-    }
-    else if ( steno == "*" )
-    {
-        undo_stroke( output );
+        if ( steno == "#A" )
+        {
+            toggle_alphabet_mode();
+        }
+        else if ( steno == "#S" )
+        {
+            toggle_space_mode();
+        }
+        else if ( steno == "#-D" )
+        {
+            strokes_->dump();
+        }
     }
     else
     {
-        add_stroke( steno, output );
+        if ( steno == "*" )
+        {
+            undo_stroke( output );
+        }
+        else
+        {
+            add_stroke( steno, output );
+        }
     }
 }
 
@@ -72,14 +81,12 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
     uint16_t flags_prev = 0;
     bool     extends    = false;
 
-    std::string text;
+    std::string latin;
     std::string shavian;
 
-    strokes_->find_best_match( steno, text, shavian, flags, flags_prev, extends );
+    strokes_->find_best_match( steno, latin, shavian, flags, flags_prev, extends );
 
-    //std::string curr = formatter_->format( text, flags, flags_prev, extends );
-    //TEMP Pass in shavian 
-    std::string curr = formatter_->format( shavian, flags, flags_prev, extends );
+    std::string curr = formatter_->format( alphabet_mode_, latin, shavian, flags, flags_prev, extends );
 
     strokes_->translation( curr );
     
@@ -111,8 +118,14 @@ C_translator::toggle_space_mode()
     space_mode_ = ( space_mode_ == SP_BEFORE ) ? SP_AFTER : SP_BEFORE;
 
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s space mode active", ( space_mode_ == SP_BEFORE ) ? "Leading" : "Trailing" );
+}
 
-//    clear_all_strokes();
+void
+C_translator::toggle_alphabet_mode()
+{
+    alphabet_mode_ = ( alphabet_mode_ == AT_LATIN ) ? AT_SHAVIAN : AT_LATIN;
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s alphabet active", ( alphabet_mode_ == AT_LATIN ) ? "Latin" : "Shavian" );
 }
 
 }
