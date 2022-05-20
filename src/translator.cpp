@@ -46,6 +46,8 @@ C_translator::initialise( const std::string & dictionary_path )
 void
 C_translator::translate( const std::string & steno, std::string & output )
 {
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translate: steno: %s", steno.c_str() );
+
     if ( steno[ 0 ] == '#' )
     {
         if ( steno == "#A" )

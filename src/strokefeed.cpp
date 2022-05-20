@@ -8,6 +8,7 @@
 
 #include "geminipr.h"
 #include "log.h"
+#include "miscellaneous.h"
 #include "strokefeed.h"
 
 #define LOG_SOURCE "SFEED"
@@ -22,8 +23,8 @@ extern C_log log;
 // Sample line:
 //   SR-R     // very
 //   TAOEURD  // tired
-const char * REGEX_STROKE = "\\s*([\\w+\\-\\*]+)";
-
+//const char * REGEX_STROKE = "\\s*([\\w+\\-\\*]+)";
+const char * REGEX_STROKE = "\\s*([#STKPWHRAO*EUFBLGDZ\\-*]+)";
 
 C_stroke_feed::C_stroke_feed()
 {
@@ -50,11 +51,18 @@ C_stroke_feed::initialise( const std::string & filepath )
 
         while ( C_text_file::get_line( line ) && ( line != "end" ) )
         {
+            //TEMP
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "get_line steno: %s", line.c_str() );
+
+
             if ( parse_line( line, REGEX_STROKE, steno ) )
             {
                 //if ( steno.find_first_not_of( "#STKPWHRAO*EUFRPBLGTSDZ-" ) == std::string::npos )
                 if ( steno.find_first_not_of( "#STKPWHRAO*EUFBLGDZ-" ) == std::string::npos )
                 {
+                    //TEMP
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Pushing steno: %s", steno.c_str() );
+
                     strokes_->push_back( steno );
                     //packets_->push_back( *C_gemini_pr::encode( steno ) );
                 }
@@ -87,6 +95,12 @@ C_stroke_feed::get_steno( std::string & steno )
     {
         steno = *strokes_it_;
         strokes_it_++;
+
+        //TEMP
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stroke: %s ", steno.c_str() );
+        
+        //TEMP
+        delay( 200 );
 
         return true;
     }
