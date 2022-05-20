@@ -50,7 +50,7 @@ namespace stenosys
 
 extern C_config   cfg;
 extern C_log      log;
-extern C_keyboard kbd;
+//extern C_keyboard kbd;
 
 const char * VERSION = "0.10";
 
@@ -74,6 +74,14 @@ C_stenosys::run( int argc, char *argv[] )
 {
     if ( cfg.read( argc, argv ) )
     {
+        C_keyboard kbd;
+
+        //TEMP
+        C_utf8::test();
+        exit( 0 );
+        //TEMP:end
+    }
+#if 0
         log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
  
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys version: %s", VERSION );
@@ -91,10 +99,6 @@ C_stenosys::run( int argc, char *argv[] )
         
         bool worked = true;
 
-        //TEMP
-        C_utf8::test();
-        exit( 0 );
-        //TEMP:end
 
         worked = worked && x11_output->initialise();
 
@@ -171,6 +175,7 @@ C_stenosys::run( int argc, char *argv[] )
             log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Initialisation error" );
         }
     }
+#endif
 }
 
 }

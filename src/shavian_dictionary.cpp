@@ -19,8 +19,7 @@
 namespace stenosys
 {
 
-extern C_keyboard kbd;
-extern C_log      log;
+extern C_log log;
 
 
 const char * REGEX_SHAVIAN_DICTIONARY = "^(.*?)\t(.*?)\t.*$";  // tab separated variables (first two fields)

@@ -24,7 +24,7 @@ namespace stenosys
 {
 
 extern C_log      log;
-extern C_keyboard kbd;
+//extern C_keyboard kbd;
 
 
 
@@ -71,10 +71,10 @@ C_convert::convert( const std::string & steno_dict
             {
                 do
                 {
-                    if ( kbd.abort() )
-                    {
-                        break;
-                    }
+                    //if ( kbd.abort() )
+                    //{
+                        //break;
+                    //}
 
                     std::string shavian_key = steno_entry_2.text;
 

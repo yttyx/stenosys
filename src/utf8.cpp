@@ -108,18 +108,23 @@ C_utf8::decode( uint32_t & code )
     {
         uint8_t b1 = *( str_p_ + index_ );
 
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, " str_p       : %xh,%xh,%xh,%xh"
+                                                   , *( str_p_ + 0 )
+                                                   , *( str_p_ + 1 )
+                                                   , *( str_p_ + 2 )
+                                                   , *( str_p_ + 3 ) );
+
         int utf8_length = length( b1 );
 
 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  b1         : %02xh", utf8_length );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  utf8_length: %d,",   utf8_length );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  index_     : %d,",   index_ );
-
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  b1         : %xh", b1 );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  utf8_length: %d",  utf8_length );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  index_     : %d",  index_ );
 
         code = unpack( str_p_ + index_);
 
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  code       : %d,",   code );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  code       : %xh",   code );
 
         index_ += utf8_length;
         
@@ -212,8 +217,8 @@ C_utf8::unpack( const char * data )
         case 4:
         {
             uint8_t b2 = *( data + 1 );
-            uint8_t b3 = *( data + 1 );
-            uint8_t b4 = *( data + 1 );
+            uint8_t b3 = *( data + 2 );
+            uint8_t b4 = *( data + 3 );
             code = ( ( b1 & 0x07 ) << 18 ) + ( ( b2 & 0x3f ) << 12 )+ ( ( b3 & 0x3f ) << 6 ) + ( b4 & 0x3f );
             break;
         }
