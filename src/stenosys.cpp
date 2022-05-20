@@ -91,9 +91,10 @@ C_stenosys::run( int argc, char *argv[] )
         
         bool worked = true;
 
-        //C_utf8::test();
-        //exit( 0 );
-        //TEMP:END
+        //TEMP
+        C_utf8::test();
+        exit( 0 );
+        //TEMP:end
 
         worked = worked && x11_output->initialise();
 

@@ -1,11 +1,9 @@
-// stroke.h
+// utf8.h
 #pragma once
 
 #include <cstdint>
 #include <string>
 #include <memory>
-
-using namespace stenosys;
 
 namespace stenosys
 {
@@ -27,6 +25,9 @@ public:
     int
     length();
 
+    static int
+    length( const std::string & str );
+
     static void
     test();
 
@@ -34,17 +35,21 @@ private:
 
     C_utf8(){}
 
+    static int
+    length( uint8_t ch );
+
+    static uint32_t
+    unpack( const char * data );
+
     bool
     decode( uint32_t & code );
     
-    int
-    codepoint_length( uint8_t ch );
-
 private:
 
-    std::string str_;
-    int         index_;     // current index into str_
-    int         length_;    // length of str_
+    std::string  str_;
+    const char * str_p_;     // pointer to underlying string
+    int          index_;     // current index into str_
+    int          length_;    // length of str_
 
 };
 
