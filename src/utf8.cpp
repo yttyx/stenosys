@@ -46,57 +46,58 @@ C_utf8::get_next( uint32_t & code )
 int
 C_utf8::length()
 {
-    return C_utf8::length( str_ );
+    int offset   = 0;
+    int utf8len = 0;
+
+    while ( offset < length_ )
+    {
+        offset += length( *( str_p_ + offset) );
+        utf8len++;
+    }
+
+    return utf8len;
 }
 
-void
-C_utf8::test()
+int
+C_utf8::differs_at( const std::string & str1, const std::string & str2 )
 {
-    // https://en.wikipedia.org/wiki/UTF-8#Examples
-    uint32_t code = 0;
+    C_utf8 s1( str1 );
+    C_utf8 s2( str2 );
 
-    C_utf8 U0024 ( "\x24" );
-    assert( U0024.get_first( code ) );
+    uint32_t code1 = 0;
+    uint32_t code2 = 0;
+    int      count = 0;
 
+    if ( s1.get_first( code1 ) && s2.get_next( code2 ) )
+    {
+        do
+        {
+            if ( code1 != code2 )
+            {
+                break;
+            }
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "C_utf8::test(): code %u", code );
+            count++;
 
+        } while ( s1.get_next( code1 ) && s2.get_next( code2 ) );
+    }
 
-    assert( code == 0x00000024 );
-    assert( U0024.length() == 1 );
-
-    C_utf8 U00A3 ( "\xc2\xa3"         );
-    assert( U00A3.get_first( code ) );
-    assert( code == 0x000000A3 );
-    assert( U00A3.length() == 1 );
-
-    C_utf8 U0939 ( "\xe0\xA4\xb9"     );
-    assert( U0939.get_first( code ) );
-    assert( code == 0x00000939 );
-    assert( U0939.length() == 1 );
-
-    C_utf8 U20AC ( "\xe2\x82\xac"     );
-    assert( U20AC.get_first( code ) );
-    assert( code == 0x000020AC );
-    assert( U20AC.length() == 1 );
-
-    C_utf8 UD55C ( "\xed\x95\x9c"     );
-    assert( UD55C.get_first( code ) );
-    assert( code == 0x0000D55C );
-    assert( UD55C.length() == 1 );
-
-    C_utf8 U10348( "\xf0\x90\x8d\x88" );
-    assert( U10348.get_first( code ) );
-    assert( code == 0x00010348 );
-    assert( U10348.length() == 1 );
-
-    C_utf8 U10348x2( "\xf0\x90\x8d\x88\xf0\x90\x8d\x88" );
-    assert( U10348x2.length() == 2 );
+    return ( ( count < s1.length() ) && ( count < s2.length() ) ) ? count : -1;     
+}
     
-    C_utf8 U10348x3( "\xf0\x90\x8d\x88\xf0\x90\x8d\x88\xf0\x90\x8d\x88" );
-    assert( U10348x3.length() == 3 );
+std::string
+C_utf8::substr( int pos )
+{
+    int utf8_len = length();
 
-    fprintf( stdout, "C_utf8::test: PASS\n" );
+    if ( ( utf8_len == 0 ) || ( pos > utf8_len ) )
+    {
+        return std::string( "" );
+    }
+
+    int offset = to_offset( pos );
+
+    return str_.substr( offset );
 }
 
 bool
@@ -120,24 +121,38 @@ C_utf8::decode( uint32_t & code )
     return false;
 }
 
-// Calculate string length in UTF-8 codepoints
-int
-C_utf8::length( const std::string & str )
+// Convert UTF8 character index in string to an absolute string offset
+int 
+C_utf8::to_offset( int pos )
 {
-    int index   = 0;
-    int strlen  = str.length();
-    int utf8len = 0;
+    int offset  = 0;
 
-    const char * p = str.c_str();;
-
-    while ( index < strlen )
+    while ( pos-- )
     {
-        index += length( *( p + index ) );
-        utf8len++;
+        offset += length( *( str_p_ + offset ) );
     }
 
-    return utf8len;
+    return offset;
 }
+
+// Calculate string length in UTF-8 codepoints
+/*int*/
+/*C_utf8::length( const std::string & str )*/
+/*{*/
+    /*int index   = 0;*/
+    /*int strlen  = str.length();*/
+    /*int utf8len = 0;*/
+
+    /*const char * p = str.c_str();;*/
+
+    /*while ( index < strlen )*/
+    /*{*/
+        /*index += length( *( p + index ) );*/
+        /*utf8len++;*/
+    /*}*/
+
+    /*return utf8len;*/
+/*}*/
 
 // Calculate length of single codepoint in bytes
 int
@@ -207,6 +222,56 @@ C_utf8::unpack( const char * data )
     }
 
     return code;
+}
+
+void
+C_utf8::test()
+{
+    // https://en.wikipedia.org/wiki/UTF-8#Examples
+    uint32_t code = 0;
+
+    C_utf8 U0024 ( "\x24" );
+    assert( U0024.get_first( code ) );
+
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "C_utf8::test(): code %u", code );
+
+
+    assert( code == 0x00000024 );
+    assert( U0024.length() == 1 );
+
+    C_utf8 U00A3 ( "\xc2\xa3"         );
+    assert( U00A3.get_first( code ) );
+    assert( code == 0x000000A3 );
+    assert( U00A3.length() == 1 );
+
+    C_utf8 U0939 ( "\xe0\xA4\xb9"     );
+    assert( U0939.get_first( code ) );
+    assert( code == 0x00000939 );
+    assert( U0939.length() == 1 );
+
+    C_utf8 U20AC ( "\xe2\x82\xac"     );
+    assert( U20AC.get_first( code ) );
+    assert( code == 0x000020AC );
+    assert( U20AC.length() == 1 );
+
+    C_utf8 UD55C ( "\xed\x95\x9c"     );
+    assert( UD55C.get_first( code ) );
+    assert( code == 0x0000D55C );
+    assert( UD55C.length() == 1 );
+
+    C_utf8 U10348( "\xf0\x90\x8d\x88" );
+    assert( U10348.get_first( code ) );
+    assert( code == 0x00010348 );
+    assert( U10348.length() == 1 );
+
+    C_utf8 U10348x2( "\xf0\x90\x8d\x88\xf0\x90\x8d\x88" );
+    assert( U10348x2.length() == 2 );
+    
+    C_utf8 U10348x3( "\xf0\x90\x8d\x88\xf0\x90\x8d\x88\xf0\x90\x8d\x88" );
+    assert( U10348x3.length() == 3 );
+
+    fprintf( stdout, "C_utf8::test: PASS\n" );
 }
 
 }

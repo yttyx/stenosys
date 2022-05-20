@@ -26,8 +26,11 @@ public:
     length();
 
     static int
-    length( const std::string & str );
-
+    differs_at( const std::string & str1, const std::string & str2 );
+    
+    std::string
+    substr( int pos );
+    
     static void
     test();
 
@@ -44,6 +47,9 @@ private:
     bool
     decode( uint32_t & code );
     
+    int 
+    to_offset( int pos );
+
 private:
 
     std::string  str_;

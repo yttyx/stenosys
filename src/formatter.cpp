@@ -5,10 +5,10 @@
 #include <iostream>
 #include <memory>
 
-//#include <common.h>
 #include "formatter.h"
 #include "log.h"
 #include "stenoflags.h"
+#include "utf8.h"
 
 #define LOG_SOURCE "FRMTR"
 
@@ -117,7 +117,8 @@ C_formatter::transition_to( const std::string & prev, const std::string & curr, 
         // Minimise the number of characters required to move from one translation
         // to the next. Check for text common to both.
 
-        int idx = find_point_of_difference( curr, prev );
+        //int idx = find_point_of_difference( curr, prev );
+        int idx = C_utf8::differs_at( curr, prev );
 
         //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
         
@@ -125,25 +126,37 @@ C_formatter::transition_to( const std::string & prev, const std::string & curr, 
         {
             if ( undo )
             {
-                backspaces.assign( curr.length() - idx, '\b' );
-                difference = prev.substr( idx );
+                C_utf8 utf8_curr( curr );
+                C_utf8 utf8_prev( prev );
+
+                backspaces.assign( utf8_curr.length() - idx, '\b' );
+
+                difference = utf8_prev.substr( idx );
             }
             else
             {
-                backspaces.assign( prev.length() - idx, '\b' );
-                difference = curr.substr( idx );
+                C_utf8 utf8_curr( curr );
+                C_utf8 utf8_prev( prev );
+                
+                backspaces.assign( utf8_prev.length() - idx, '\b' );
+                
+                difference = utf8_curr.substr( idx );
             }
         }
         else {
 
             if ( undo )
             {
-                backspaces.assign( curr.length(), '\b' );
+                C_utf8 utf8_curr( curr );
+
+                backspaces.assign( utf8_curr.length(), '\b' );
                 difference = prev;
             }
             else
             {
-                backspaces.assign( prev.length(), '\b' );
+                C_utf8 utf8_prev( prev );
+                
+                backspaces.assign( utf8_prev.length(), '\b' );
                 difference = curr;
             }
         }
@@ -156,7 +169,9 @@ C_formatter::transition_to( const std::string & prev, const std::string & curr, 
         if ( undo )
         {
             // Erase the current translation
-            backspaces.assign( curr.length(), '\b' );
+            C_utf8 utf8_curr( curr );
+
+            backspaces.assign( utf8_curr.length(), '\b' );
         }
         else
         {
