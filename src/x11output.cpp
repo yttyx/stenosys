@@ -218,10 +218,10 @@ C_x11_output::find_unused_keycodes()
                 // ( if ( keysymstring == nullptr ) )
             }
             
-            log_write_raw( C_log::LL_INFO, "%s ", keysymstring );
+            //log_write_raw( C_log::LL_INFO, "%s ", keysymstring );
         }
         
-        log_write_raw( C_log::LL_INFO, "%s", "\n" );
+        //log_write_raw( C_log::LL_INFO, "%s", "\n" );
     }
     
     XFree( keysyms );

@@ -77,11 +77,10 @@ C_stenosys::run( int argc, char *argv[] )
         C_keyboard kbd;
 
         //TEMP
-        C_utf8::test();
-        exit( 0 );
+        //C_utf8::test();
+        //exit( 0 );
         //TEMP:end
-    }
-#if 0
+
         log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
  
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys version: %s", VERSION );
@@ -156,7 +155,7 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( steno_keyboard.read( key_code ) )
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %04x", key_code );
+                    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "key event: %04x", key_code );
                     //serial.send( key_code );
                 }
 
@@ -175,7 +174,6 @@ C_stenosys::run( int argc, char *argv[] )
             log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Initialisation error" );
         }
     }
-#endif
 }
 
 }

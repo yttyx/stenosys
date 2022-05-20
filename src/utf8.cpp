@@ -108,23 +108,9 @@ C_utf8::decode( uint32_t & code )
     {
         uint8_t b1 = *( str_p_ + index_ );
 
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, " str_p       : %xh,%xh,%xh,%xh"
-                                                   , *( str_p_ + 0 )
-                                                   , *( str_p_ + 1 )
-                                                   , *( str_p_ + 2 )
-                                                   , *( str_p_ + 3 ) );
-
         int utf8_length = length( b1 );
 
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  b1         : %xh", b1 );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  utf8_length: %d",  utf8_length );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  index_     : %d",  index_ );
-
         code = unpack( str_p_ + index_);
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  code       : %xh",   code );
 
         index_ += utf8_length;
         
@@ -190,15 +176,11 @@ C_utf8::unpack( const char * data )
 
     int len = length( b1 );
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Unpack, b1 : %02xh", b1 );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Unpack, len: %d", len );
-
     switch ( len )
     {
         case 1:
         {
             code = b1;
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Unpack, code: %02xh", code );
             break;
         }    
         case 2:
@@ -224,8 +206,6 @@ C_utf8::unpack( const char * data )
         }
     }
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Unpack, code: %02xh", code );
-    
     return code;
 }
 
