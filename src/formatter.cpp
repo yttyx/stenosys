@@ -47,6 +47,10 @@ C_formatter::format( alphabet_type     alphabet_mode
                                 ( flags        & ATTACH_TO_PREVIOUS ) ||
                                 ( ( flags_prev & GLUE ) && ( flags & GLUE ) ) );
 
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous: %d", attach_to_previous );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags_prev: %04x", flags_prev );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags     : %04x", flags );
+
     // Attach to the next stroke's output?
     bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
 
@@ -84,6 +88,13 @@ C_formatter::format( alphabet_type     alphabet_mode
             }
         }
 
+        // If configured for space-after we always output a trailing space, so
+        // if attaching to a previous stroke we backspace to remove that space.
+        if ( config_space_after && attach_to_previous )
+        {
+            output += "\b";
+        }
+
         if ( config_space_before && ( ! attach_to_previous ) )
         {
             output += ' '; 
@@ -91,7 +102,7 @@ C_formatter::format( alphabet_type     alphabet_mode
 
         output += formatted;
 
-        if ( config_space_after && ( ! attach_to_next ) )
+        if ( config_space_after )
         {
             output += ' ';
         }

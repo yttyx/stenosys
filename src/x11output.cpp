@@ -54,183 +54,6 @@ C_x11_output::initialise()
 }
 
 void
-C_x11_output::test()
-{
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
-
-    C_utf8 shav_test ( "·𐑢𐑣𐑩𐑤𐑴 ·𐑢𐑻𐑤𐑛" );
-
-    uint32_t code;
-
-    if ( shav_test.get_first( code ) )
-    {
-        do
-        {
-            // From keysymdef.h:
-            // "For any future extension of the keysyms with characters already
-            //  found in ISO 10646 / Unicode, the following algorithm shall be
-            //  used. The new keysym code position will simply be the character's
-            //  Unicode number plus 0x01000000. The keysym values in the range
-            //  0x01000100 to 0x0110ffff are reserved to represent Unicode"
-            // 0x10450 is the base value of the Shavian code block
-            if ( code >= 0x10450 )
-            {
-                code += 0x1000000;
-            }
-
-            send_key( code, 0 );
-
-        } while ( shav_test.get_next( code ) );
-    }
-
-    send_key( XK_space, 0 );
-    send_key( XK_space, 0 );
-    send_key( XK_space, 0 );
-    
-    send_key( XK_quotedbl, XK_Shift_L);
-    send_key( XK_H, XK_Shift_L );
-    send_key( XK_E, 0 );
-    send_key( XK_L, 0 );
-    send_key( XK_L, 0 );
-    send_key( XK_O, 0 );
-    send_key( XK_space, 0 );
-
-    send_key( XK_W, XK_Shift_L );
-    send_key( XK_O, 0 );
-    send_key( XK_R, 0 );
-    send_key( XK_L, 0 );
-    send_key( XK_D, 0 );
-    //send_key( XK_exclam, XK_Shift_L );    // gives '!'
-    send_key( XK_exclam, XK_Shift_L );      // gives '1'
-    send_key( XK_quotedbl, XK_Shift_L );
-    send_key( XK_Return, 0 );
-}
-
-void
-C_x11_output::set_up_data()
-{
-    for ( const char ** entry = XF86_symstrings; *entry; entry++ )
-    {
-        symstrings_.push_back( std::string( *entry ) );
-    }
-}
-
-void
-C_x11_output::find_unused_keycodes()
-{
-    // Check whether a Shavian KeySym has already been setup
-    int keycode = XKeysymToKeycode( display_, SHAVIAN_10450_KEYSYM );
- 
-    if ( keycode != 0 )
-    {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shavian codes already set" );
-        return;
-    }
-
-    int keysyms_per_keycode = 0;
-    int keycode_low         = 0;
-    int keycode_high        = 0;
-    
-    KeySym * keysyms = NULL;
-    
-    // Get the range of keycodes (it's usually the range 8 - 255)
-    XDisplayKeycodes( display_, &keycode_low, &keycode_high );
-
-    // Get all of the available mapped keysyms
-    keysyms = XGetKeyboardMapping( display_, keycode_low, keycode_high - keycode_low, &keysyms_per_keycode);
-
-    //log_write_raw( C_log::LL_INFO, "keycode_low        : %d\n", keycode_low );
-    //log_write_raw( C_log::LL_INFO, "keycode_high       : %d\n", keycode_high );
-    //log_write_raw( C_log::LL_INFO, "keysyms_per_keycode: %d\n", keysyms_per_keycode );
-    //log_write_raw( C_log::LL_INFO, "%s", "" );
-
-    uint32_t shavian = SHAVIAN_10450;
-
-    // Loop through the keycodes and look for keysyms associated with each keycode
-    // that can be set to use Shavian keysyms instead.
-    // XF86_symstrings contains a list of keysym strings which seem like good candidates
-    // for re-use.
-
-    bool done = false;
-
-    for ( int keycode = keycode_low; ( keycode <= keycode_high ) && ( ! done ); keycode++)
-    {
-        //log_write_raw( C_log::LL_INFO, "[%02x]  ", keycode );
-
-        for ( int sym_count = 0; sym_count < keysyms_per_keycode; sym_count++ )
-        {
-            int sym_index = ( keycode - keycode_low) * keysyms_per_keycode + sym_count;
-
-            KeySym keysym= keysyms[ sym_index ];
-
-            const char * keysymstring = XKeysymToString( keysym ); 
-
-            if ( sym_count == 0 )
-            {
-                if ( keysymstring != nullptr )
-                {
-                    std::string entry( keysymstring );
-
-                    if ( std::find( symstrings_.begin(), symstrings_.end(), entry ) != symstrings_.end() )
-                    {
-                        // Found an entry we can repurpose for Shavian
-                        std::string shavian_xstring = format_string("U%05x", shavian );
-
-                        KeySym shavian_sym   = XStringToKeysym( shavian_xstring.c_str() );
-
-                        //TODO Dynamically set size of keysym_list using keysyms_per_keycode
-                        KeySym keysym_list[] = { shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym };
-
-                        //TODO Save original keymap so we can restore it on program exit
-                        XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
-
-                        //log_write_raw( C_log::LL_INFO, "keysyms %s set for keycode 0x%02x\n"
-                                                     //, XKeysymToString( shavian_sym )
-                                                     //, keycode );
-                        
-                        if ( shavian == SHAVIAN_MDOT )
-                        {
-                            // We're done
-                            done = true;
-                        }
-                        else {
-
-                            shavian++;
-
-                            if ( shavian > SHAVIAN_1047f )
-                            {
-                                // Shavian alphabet is done, just need to set the middle dot
-                                // in the next available slot.
-                                shavian = SHAVIAN_MDOT;
-                            }
-                        }
-
-                        break;
-                    }
-                }
-                // We don't currentry make use of keycodes that have no associated KeySyms, but we could
-                // ( if ( keysymstring == nullptr ) )
-            }
-            
-            //log_write_raw( C_log::LL_INFO, "%s ", keysymstring );
-        }
-        
-        //log_write_raw( C_log::LL_INFO, "%s", "\n" );
-    }
-    
-    XFree( keysyms );
-    XFlush( display_ );
-    
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shavian codes set" );
-}
-
-void
 C_x11_output::send( const std::string & str )
 {
     C_utf8 utf8_str( str );
@@ -241,19 +64,14 @@ C_x11_output::send( const std::string & str )
     {
         do
         {
-
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "code: %08x", code );
-
-
-
-            if ( ( ( int ) code >= 0x20 ) && ( ( int ) code <= 0x7f ) )
+            if ( ( int ) code <= 0x7f )
             {
-                keysym_entry * entry = &ascii_to_keysym[ ( ( int ) code ) - 0x20 ];            
-                send_key( entry->base, entry->modifier );
-            }
-            else if ( code  == '\b' )
-            {
-                send_key( XK_BackSpace, 0 ); 
+                keysym_entry * entry = &ascii_to_keysym[ ( ( int ) code ) ];
+
+                if ( entry->base != 0 )
+                {
+                    send_key( entry->base, entry->modifier );
+                }
             }
             else
             {
@@ -271,6 +89,7 @@ C_x11_output::send( const std::string & str )
 
                 send_key( code, 0 );
             }
+
         } while ( utf8_str.get_next( code ) );
     }
 }
@@ -329,10 +148,152 @@ C_x11_output::send_key( KeyCode keycode )
     XTestGrabControl( display_, False );
 }
 
+void
+C_x11_output::set_up_data()
+{
+    for ( const char ** entry = XF86_symstrings; *entry; entry++ )
+    {
+        symstrings_.push_back( std::string( *entry ) );
+    }
+}
+
+void
+C_x11_output::find_unused_keycodes()
+{
+    // Check whether a Shavian KeySym has already been set up
+    int keycode = XKeysymToKeycode( display_, SHAVIAN_10450_KEYSYM );
+ 
+    if ( keycode != 0 )
+    {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shavian codes already set" );
+        return;
+    }
+
+    int keysyms_per_keycode = 0;
+    int keycode_low         = 0;
+    int keycode_high        = 0;
+    
+    KeySym * keysyms = NULL;
+    
+    // Get the range of keycodes (it's usually the range 8 - 255)
+    XDisplayKeycodes( display_, &keycode_low, &keycode_high );
+
+    // Get all of the available mapped keysyms
+    keysyms = XGetKeyboardMapping( display_, keycode_low, keycode_high - keycode_low, &keysyms_per_keycode);
+
+    uint32_t shavian = SHAVIAN_10450;
+
+    // Loop through the keycodes and look for keysyms associated with each keycode
+    // that can be set to use Shavian keysyms instead.
+    // XF86_symstrings contains a list of keysym strings which seem like good candidates
+    // for re-use (they will become unavailable for their original purpose).
+
+    bool done = false;
+
+    for ( int keycode = keycode_low; ( keycode <= keycode_high ) && ( ! done ); keycode++)
+    {
+        for ( int sym_count = 0; sym_count < keysyms_per_keycode; sym_count++ )
+        {
+            int sym_index = ( keycode - keycode_low) * keysyms_per_keycode + sym_count;
+
+            KeySym keysym= keysyms[ sym_index ];
+
+            const char * keysymstring = XKeysymToString( keysym ); 
+
+            if ( sym_count == 0 )
+            {
+                if ( keysymstring != nullptr )
+                {
+                    std::string entry( keysymstring );
+
+                    if ( std::find( symstrings_.begin(), symstrings_.end(), entry ) != symstrings_.end() )
+                    {
+                        // Found an entry we can repurpose for Shavian
+                        std::string shavian_xstring = format_string("U%05x", shavian );
+
+                        KeySym shavian_sym   = XStringToKeysym( shavian_xstring.c_str() );
+
+                        //TODO Dynamically set size of keysym_list using keysyms_per_keycode
+                        KeySym keysym_list[] = { shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym
+                                               , shavian_sym };
+
+                        //TODO Save original keymap so we can restore it on program exit
+                        XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
+
+                        if ( shavian == SHAVIAN_MDOT )
+                        {
+                            // We're done
+                            done = true;
+                        }
+                        else {
+
+                            shavian++;
+
+                            if ( shavian > SHAVIAN_1047f )
+                            {
+                                // Shavian alphabet is done, just need to set the middle dot
+                                // in the next available slot.
+                                shavian = SHAVIAN_MDOT;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+                // TODO? We don't currentry make use of keycodes that have no associated KeySyms,
+                //       but we could
+                // if ( keysymstring == nullptr ) ...
+            }
+        }
+    }
+    
+    XFree( keysyms );
+    XFlush( display_ );
+    
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shavian codes set" );
+}
+
 keysym_entry
 C_x11_output::ascii_to_keysym[] =
 {
-    { XK_space,        0          }     // 0020  /* U+0020 SPACE */
+    { 0,               0          }     // 0000
+,   { 0,               0          }     // 0001
+,   { 0,               0          }     // 0002
+,   { 0,               0          }     // 0003
+,   { 0,               0          }     // 0004
+,   { 0,               0          }     // 0005
+,   { 0,               0          }     // 0006
+,   { 0,               0          }     // 0007
+,   { XK_BackSpace,    0          }     // 0008
+,   { XK_Tab,          0          }     // 0009
+,   { XK_Linefeed,     0          }     // 000a
+,   { XK_Clear,        0          }     // 000b
+,   { 0,               0          }     // 000c
+,   { XK_Return,       0          }     // 000d
+,   { 0,               0          }     // 000e
+,   { 0,               0          }     // 000f
+,   { 0,               0          }     // 0010
+,   { 0,               0          }     // 0011
+,   { 0,               0          }     // 0012
+,   { XK_Pause,        0          }     // 0013
+,   { XK_Scroll_Lock,  0          }     // 0014
+,   { XK_Sys_Req,      0          }     // 0015
+,   { 0,               0          }     // 0016
+,   { 0,               0          }     // 0017
+,   { 0,               0          }     // 0018
+,   { 0,               0          }     // 0019
+,   { 0,               0          }     // 001a
+,   { XK_Escape,       0          }     // 001b
+,   { 0,               0          }     // 00lc
+,   { 0,               0          }     // 00ld
+,   { 0,               0          }     // 00le
+,   { 0,               0          }     // 00lf
+,   { XK_space,        0          }     // 0020  /* U+0020 SPACE */
 ,   { XK_exclam,       XK_Shift_L }     // 0021  /* U+0021 EXCLAMATION MARK */
 ,   { XK_quotedbl,     XK_Shift_L }     // 0022  /* U+0022 QUOTATION MARK */
 ,   { XK_numbersign,   0          }     // 0023  /* U+0023 NUMBER SIGN */
@@ -485,5 +446,58 @@ const char * C_x11_output::XF86_symstrings[] =
 ,   "XF86Xfer" 
 ,   nullptr
 };
+
+void
+C_x11_output::test()
+{
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
+
+    C_utf8 shav_test ( "·𐑢𐑣𐑩𐑤𐑴 ·𐑢𐑻𐑤𐑛" );
+
+    uint32_t code;
+
+    if ( shav_test.get_first( code ) )
+    {
+        do
+        {
+            // From keysymdef.h:
+            // "For any future extension of the keysyms with characters already
+            //  found in ISO 10646 / Unicode, the following algorithm shall be
+            //  used. The new keysym code position will simply be the character's
+            //  Unicode number plus 0x01000000. The keysym values in the range
+            //  0x01000100 to 0x0110ffff are reserved to represent Unicode"
+            // 0x10450 is the base value of the Shavian code block
+            if ( code >= 0x10450 )
+            {
+                code += 0x1000000;
+            }
+
+            send_key( code, 0 );
+
+        } while ( shav_test.get_next( code ) );
+    }
+
+    send_key( XK_space, 0 );
+    send_key( XK_space, 0 );
+    send_key( XK_space, 0 );
+    
+    send_key( XK_quotedbl, XK_Shift_L);
+    send_key( XK_H, XK_Shift_L );
+    send_key( XK_E, 0 );
+    send_key( XK_L, 0 );
+    send_key( XK_L, 0 );
+    send_key( XK_O, 0 );
+    send_key( XK_space, 0 );
+
+    send_key( XK_W, XK_Shift_L );
+    send_key( XK_O, 0 );
+    send_key( XK_R, 0 );
+    send_key( XK_L, 0 );
+    send_key( XK_D, 0 );
+    //send_key( XK_exclam, XK_Shift_L );    // gives '!'
+    send_key( XK_exclam, XK_Shift_L );      // gives '1'
+    send_key( XK_quotedbl, XK_Shift_L );
+    send_key( XK_Return, 0 );
+}
 
 }

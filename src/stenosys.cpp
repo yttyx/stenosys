@@ -134,10 +134,10 @@ C_stenosys::run( int argc, char *argv[] )
                 S_geminipr_packet packet;
                 __u16             key_code;
 
-                if ( stroke_feed.get_steno( steno ) )
-                {
-                    translator.translate( steno, translation );
-                }
+                //if ( stroke_feed.get_steno( steno ) )
+                //{
+                    //translator.translate( steno, translation );
+                //}
                 
                 if ( steno_keyboard.read( packet ) )
                 {
