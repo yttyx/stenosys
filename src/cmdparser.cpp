@@ -22,37 +22,37 @@ typedef struct {
 // NB: The order of the regex commands within the table is significant in some cases
 const plover_command plover_commands[] =
 {  
-    { false, "{-|}",                CAPITALISE_NEXT                                     }   // capitalise first letter of next word
-,   { false, "{*-|}",               CAPITALISE_LAST                                     }   // capitalise last word
-,   { false, "{<}",                 UPPERCASE_NEXT_WORD                                 }   // uppercase next word
-,   { false, "{*<}",                UPPERCASE_LAST_WORD                                 }   // uppercase previous word
-,   { false, "{>}",                 LOWERCASE_NEXT_WORD                                 }   // lowercase next word
-,   { false, "{*>}",                LOWERCASE_LAST_WORD                                 }   // lowercase previous word
-,   { false, "{^}",                 ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT                 }   // non-orthographic-aware attach
+    { false, "{-|}",                    CAPITALISE_NEXT                                     }   // capitalise first letter of next word
+,   { false,  "{~|}",                   CAPITALISE_NEXT                                     }
+,   { false, "{*-|}",                   CAPITALISE_LAST                                     }   // capitalise last word
+,   { false, "{<}",                     UPPERCASE_NEXT_WORD                                 }   // uppercase next word
+,   { false, "{*<}",                    UPPERCASE_LAST_WORD                                 }   // uppercase previous word
+,   { false, "{>}",                     LOWERCASE_NEXT_WORD                                 }   // lowercase next word
+,   { false, "{*>}",                    LOWERCASE_LAST_WORD                                 }   // lowercase previous word
+,   { false, "{^}",                     ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT                 }   // non-orthographic-aware attach
 
-,   { false,  "{-|}",               CAPITALISE_NEXT                                     }
 
-,   { true,  "\\{(;?)\\}",          ATTACH_TO_PREVIOUS | EMIT_SPACE                     }
-,   { true,  "\\{(:?)\\}",          ATTACH_TO_PREVIOUS | EMIT_SPACE                     }
+,   { true,  "\\{(;?)\\}",              ATTACH_TO_PREVIOUS | EMIT_SPACE                     }
+,   { true,  "\\{(:?)\\}",              ATTACH_TO_PREVIOUS | EMIT_SPACE                     }
 
-,   { true,  "\\{~\\|(.+?)\\^\\}",    ATTACH_TO_NEXT                                    }
-,   { true,  "\\{\\^~\\|(.+?)\\}",    ATTACH_TO_PREVIOUS                                }
-,   { true,  "\\{\\^~\\|(.+?)\\^\\}", ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT               }
-,   { true,  "\\{~\\|(.+?)\\}",       0                                                 }
+,   { true,  "\\{~\\|(.+?)\\^\\}",      ATTACH_TO_NEXT                                      }
+,   { true,  "\\{\\^~\\|(.+?)\\}",      ATTACH_TO_PREVIOUS                                  }
+,   { true,  "\\{\\^~\\|(.+?)\\^\\}",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT                 }
+,   { true,  "\\{~\\|(.+?)\\}",         0                                                   }
     
 
-,   { true,  "\\{\\^(.+?)\\^\\}",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT                 }
-,   { true,  "\\{\\^(.+?)\\}",      ATTACH_TO_PREVIOUS                                  }   // orthographic-aware attach e.g. {^ing}"  (not supported) 
-,   { true,  "\\{(.+?)\\^\\}",      ATTACH_TO_NEXT                                      }   // orthographic-aware attach e.g. {in^}"   (not supported) 
-,   { true,  "\\{&(.+?)\\}",        GLUE                                                }   // glue operator e.g. {&x} or {&ab} 
-,   { true,  "\\{(\\.)\\}",         ATTACH_TO_PREVIOUS | EMIT_SPACE | CAPITALISE_NEXT   }
-,   { true,  "\\{(,)\\}",           ATTACH_TO_PREVIOUS | EMIT_SPACE                     }
-,   { true, "\\{(!)\\}",            ATTACH_TO_PREVIOUS | EMIT_SPACE | CAPITALISE_NEXT   }
-,   { true, "\\{(\\?)\\}",          ATTACH_TO_PREVIOUS | EMIT_SPACE | CAPITALISE_NEXT   }
-,   { true,  "\\{#(.+?)\\}",        RAW                                                 }   // raw input e.g. {#Return}
-,   { true,  "\\{(.+?)\\}",         EMIT_SPACE                                          }   // catch-all for {x} commands (table entry must come after the
+,   { true,  "\\{\\^(.+?)\\^\\}",       ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT                 }
+,   { true,  "\\{\\^(.+?)\\}",          ATTACH_TO_PREVIOUS                                  }   // orthographic-aware attach e.g. {^ing}"  (not supported) 
+,   { true,  "\\{(.+?)\\^\\}",          ATTACH_TO_NEXT                                      }   // orthographic-aware attach e.g. {in^}"   (not supported) 
+,   { true,  "\\{&(.+?)\\}",            GLUE                                                }   // glue operator e.g. {&x} or {&ab} 
+,   { true,  "\\{(\\.)\\}",             ATTACH_TO_PREVIOUS | EMIT_SPACE | CAPITALISE_NEXT   }
+,   { true,  "\\{(,)\\}",               ATTACH_TO_PREVIOUS | EMIT_SPACE                     }
+,   { true, "\\{(!)\\}",                ATTACH_TO_PREVIOUS | EMIT_SPACE | CAPITALISE_NEXT   }
+,   { true, "\\{(\\?)\\}",              ATTACH_TO_PREVIOUS | EMIT_SPACE | CAPITALISE_NEXT   }
+,   { true,  "\\{#(.+?)\\}",            RAW                                                 }   // raw input e.g. {#Return}
+,   { true,  "\\{(.+?)\\}",             EMIT_SPACE                                          }   // catch-all for {x} commands (table entry must come after the
  
-,   { false, "",                    0                                                   }
+,   { false, "",                    0                                                       }
 };
 
 C_command_parser::C_command_parser()

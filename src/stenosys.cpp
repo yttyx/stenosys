@@ -120,7 +120,7 @@ C_stenosys::run( int argc, char *argv[] )
         //worked = worked && serial.initialise( cfg.c().device_output ); 
         
         worked = worked && translator.initialise( cfg.c().file_dict );
-        worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
+        worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
 
         if ( worked )
         {
@@ -134,10 +134,10 @@ C_stenosys::run( int argc, char *argv[] )
                 S_geminipr_packet packet;
                 __u16             key_code;
 
-                //if ( stroke_feed.get_steno( steno ) )
-                //{
-                    //translator.translate( steno, translation );
-                //}
+                if ( stroke_feed.get_steno( steno ) )
+                {
+                    translator.translate( steno, translation );
+                }
                 
                 if ( steno_keyboard.read( packet ) )
                 {

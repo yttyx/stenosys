@@ -60,9 +60,14 @@ C_dictionary::read( const std::string & path )
 
                 uint16_t    flags = 0;
 
-                // Check for valid JSON entry
+                // Check for valid CSV entry
                 if ( parse_line( line, REGEX_DICTIONARY, steno, text, shavian ) )
                 {
+                    if ( line.find( "\\\"" ) != std::string::npos )
+                    {
+                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "line: %s", line.c_str() );
+                    }
+
                     std::string parsed_text;
 
                     // Parse the dictionary text for Plover commands and set steno flags

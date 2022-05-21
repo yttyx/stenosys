@@ -18,7 +18,7 @@ const uint16_t UPPERCASE_LAST_WORD      = 0x0100;
 const uint16_t LOWERCASE_LAST_WORD      = 0x0200;
 const uint16_t GLUE                     = 0x0400;
 
-// Flags used internally to command parsing
+// Command parsing internal flags
 const uint16_t EMIT_SPACE               = 0x0800;
 const uint16_t RAW                      = 0x1000;
 const uint16_t GOT_TEXT                 = 0x2000;
