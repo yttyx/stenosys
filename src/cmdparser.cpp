@@ -112,9 +112,17 @@ C_command_parser::parse_command( const std::string & text_in, std::string & text
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "process_text: 1" );
         }
-    
+   
+        std::string suffix;
+
         while ( regex_search( search_start, text_in.cend(), match, regex_cmd ) )
         {
+            if ( trace )
+            {
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "match.prefix: %s", match.prefix() );
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "match.suffix: %s", match.suffix() );
+            }
+
             // Process text, either before the first command or between the current and previous commands
             process_text( match.prefix(), text_out, flags );
         
@@ -124,17 +132,20 @@ C_command_parser::parse_command( const std::string & text_in, std::string & text
             }
     
             process_command( match[ 0 ], text_out, flags );
-    
+            // Save match suffix in case there are no more commands to process
+            // (the regex_search() call will clear match.suffix() in that case).
+            suffix       = match.suffix();
             search_start = match.suffix().first;
         }
     
         if ( trace )
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "process_text: 3" );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "match.suffix: %s", match.suffix() );
         }
     
         // Process any text following the final command
-        process_text( match.suffix(), text_out, flags );
+        process_text( suffix, text_out, flags );
     
         // Mask off internal formatting flags
         flags &= ( ~ INTERNAL_FLAGS_MASK );
@@ -185,7 +196,6 @@ C_command_parser::process_command( const std::string & command, std::string & te
         if ( trace )
         {
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "process_command: command: %s", command.c_str() );
-            trace = false;
         }
 
 
@@ -247,7 +257,6 @@ C_command_parser::process_command( const std::string & command, std::string & te
         if ( trace )
         {
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "process_command: text_out: %s", text_out.c_str() );
-            trace = false;
         }
 
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Command %s not supported", command.c_str() );
