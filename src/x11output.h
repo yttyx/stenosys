@@ -66,6 +66,7 @@ private:
 private:
 
     static keysym_entry ascii_to_keysym[];
+    static keysym_entry ascii_to_shavian_keysym[];
     static const char * XF86_symstrings[];
 
     Display * display_;

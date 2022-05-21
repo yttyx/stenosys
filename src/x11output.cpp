@@ -82,7 +82,7 @@ C_x11_output::send( const std::string & str )
                 //  Unicode number plus 0x01000000. The keysym values in the range
                 //  0x01000100 to 0x0110ffff are reserved to represent Unicode"
                 // 0x10450 is the base value of the Shavian code block
-                if ( code >= 0x10450 )
+                if ( code >= SHAVIAN_10450 )
                 {
                     code += 0x1000000;
                 }
@@ -388,6 +388,63 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_bar,          XK_Shift_L }     // 007c  /* U+007C VERTICAL LINE */
 ,   { XK_braceright,   0          }     // 007d  /* U+007D RIGHT CURLY BRACKET */
 ,   { XK_asciitilde,   XK_Shift_L }     // 007e  /* U+007E TILDE */
+};
+
+keysym_entry
+C_x11_output::ascii_to_shavian_keysym[] =
+{
+    { XK_A,            XK_Shift_L }     // 0041  /* U+0041 LATIN CAPITAL LETTER A */
+,   { XK_B,            XK_Shift_L }     // 0042  /* U+0042 LATIN CAPITAL LETTER B */
+,   { XK_C,            XK_Shift_L }     // 0043  /* U+0043 LATIN CAPITAL LETTER C */
+,   { XK_D,            XK_Shift_L }     // 0044  /* U+0044 LATIN CAPITAL LETTER D */
+,   { XK_E,            XK_Shift_L }     // 0045  /* U+0045 LATIN CAPITAL LETTER E */
+,   { XK_F,            XK_Shift_L }     // 0046  /* U+0046 LATIN CAPITAL LETTER F */
+,   { XK_G,            XK_Shift_L }     // 0047  /* U+0047 LATIN CAPITAL LETTER G */
+,   { XK_H,            XK_Shift_L }     // 0048  /* U+0048 LATIN CAPITAL LETTER H */
+,   { XK_I,            XK_Shift_L }     // 0049  /* U+0049 LATIN CAPITAL LETTER I */
+,   { XK_J,            XK_Shift_L }     // 004a  /* U+004A LATIN CAPITAL LETTER J */
+,   { XK_K,            XK_Shift_L }     // 004b  /* U+004B LATIN CAPITAL LETTER K */
+,   { XK_L,            XK_Shift_L }     // 004c  /* U+004C LATIN CAPITAL LETTER L */
+,   { XK_M,            XK_Shift_L }     // 004d  /* U+004D LATIN CAPITAL LETTER M */
+,   { XK_N,            XK_Shift_L }     // 004e  /* U+004E LATIN CAPITAL LETTER N */
+,   { XK_O,            XK_Shift_L }     // 004f  /* U+004F LATIN CAPITAL LETTER O */
+,   { XK_P,            XK_Shift_L }     // 0050  /* U+0050 LATIN CAPITAL LETTER P */
+,   { XK_Q,            XK_Shift_L }     // 0051  /* U+0051 LATIN CAPITAL LETTER Q */
+,   { XK_R,            XK_Shift_L }     // 0052  /* U+0052 LATIN CAPITAL LETTER R */
+,   { XK_S,            XK_Shift_L }     // 0053  /* U+0053 LATIN CAPITAL LETTER S */
+,   { XK_T,            XK_Shift_L }     // 0054  /* U+0054 LATIN CAPITAL LETTER T */
+,   { XK_U,            XK_Shift_L }     // 0055  /* U+0055 LATIN CAPITAL LETTER U */
+,   { XK_V,            XK_Shift_L }     // 0056  /* U+0056 LATIN CAPITAL LETTER V */
+,   { XK_W,            XK_Shift_L }     // 0057  /* U+0057 LATIN CAPITAL LETTER W */
+,   { XK_X,            XK_Shift_L }     // 0058  /* U+0058 LATIN CAPITAL LETTER X */
+,   { XK_Y,            XK_Shift_L }     // 0059  /* U+0059 LATIN CAPITAL LETTER Y */
+,   { XK_Z,            XK_Shift_L }     // 005a  /* U+005A LATIN CAPITAL LETTER Z */
+,   { XK_a,            0          }     // 0061  /* U+0061 LATIN SMALL LETTER A */
+,   { XK_b,            0          }     // 0062  /* U+0062 LATIN SMALL LETTER B */
+,   { XK_c,            0          }     // 0063  /* U+0063 LATIN SMALL LETTER C */
+,   { XK_d,            0          }     // 0064  /* U+0064 LATIN SMALL LETTER D */
+,   { XK_e,            0          }     // 0065  /* U+0065 LATIN SMALL LETTER E */
+,   { XK_f,            0          }     // 0066  /* U+0066 LATIN SMALL LETTER F */
+,   { XK_g,            0          }     // 0067  /* U+0067 LATIN SMALL LETTER G */
+,   { XK_h,            0          }     // 0068  /* U+0068 LATIN SMALL LETTER H */
+,   { XK_i,            0          }     // 0069  /* U+0069 LATIN SMALL LETTER I */
+,   { XK_j,            0          }     // 006a  /* U+006A LATIN SMALL LETTER J */
+,   { XK_k,            0          }     // 006b  /* U+006B LATIN SMALL LETTER K */
+,   { XK_l,            0          }     // 006c  /* U+006C LATIN SMALL LETTER L */
+,   { XK_m,            0          }     // 006d  /* U+006D LATIN SMALL LETTER M */
+,   { XK_n,            0          }     // 006e  /* U+006E LATIN SMALL LETTER N */
+,   { XK_o,            0          }     // 006f  /* U+006F LATIN SMALL LETTER O */
+,   { XK_p,            0          }     // 0070  /* U+0070 LATIN SMALL LETTER P */
+,   { XK_q,            0          }     // 0071  /* U+0071 LATIN SMALL LETTER Q */
+,   { XK_r,            0          }     // 0072  /* U+0072 LATIN SMALL LETTER R */
+,   { XK_s,            0          }     // 0073  /* U+0073 LATIN SMALL LETTER S */
+,   { XK_t,            0          }     // 0074  /* U+0074 LATIN SMALL LETTER T */
+,   { XK_u,            0          }     // 0075  /* U+0075 LATIN SMALL LETTER U */
+,   { XK_v,            0          }     // 0076  /* U+0076 LATIN SMALL LETTER V */
+,   { XK_w,            0          }     // 0077  /* U+0077 LATIN SMALL LETTER W */
+,   { XK_x,            0          }     // 0078  /* U+0078 LATIN SMALL LETTER X */
+,   { XK_y,            0          }     // 0079  /* U+0079 LATIN SMALL LETTER Y */
+,   { XK_z,            0          }     // 007a  /* U+007A LATIN SMALL LETTER Z */
 };
 
 // Array of symkey strings whose references to keycodes in the keyboard
