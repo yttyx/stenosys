@@ -93,8 +93,7 @@ C_command_parser::parse_command( const std::string & text_in, std::string & text
         std::regex  regex_cmd( REGEX_COMMAND );
         std::smatch match;
 
-
-        if ( text_in.find( "{^},\"" ) != std::string::npos )
+        if ( text_in.find( "{''r" ) != std::string::npos )
         {
             trace = true;
         }

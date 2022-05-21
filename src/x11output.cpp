@@ -324,7 +324,7 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_less,         XK_Shift_L }     // 003c  /* U+003C LESS-THAN SIGN */
 ,   { XK_equal,        0          }     // 003d  /* U+003D EQUALS SIGN */
 ,   { XK_greater,      XK_Shift_L }     // 003e  /* U+003E GREATER-THAN SIGN */
-,   { XK_question,     0          }     // 003f  /* U+003F QUESTION MARK */
+,   { XK_question,     XK_Shift_L }     // 003f  /* U+003F QUESTION MARK */
 ,   { XK_at,           0          }     // 0040  /* U+0040 COMMERCIAL AT */
 ,   { XK_A,            XK_Shift_L }     // 0041  /* U+0041 LATIN CAPITAL LETTER A */
 ,   { XK_B,            XK_Shift_L }     // 0042  /* U+0042 LATIN CAPITAL LETTER B */
