@@ -21,8 +21,7 @@ namespace stenosys
 
 extern C_log log;
 
-
-const char * REGEX_DICTIONARY = "^.*\"(.*?)\",\"(.*?)\",\"(.*?)\".*$";
+const char * REGEX_DICTIONARY = "^(.*?)\t(.*?)\t(.*?)$";
 
 C_dictionary::C_dictionary()
     : initialised_( false )
@@ -63,10 +62,10 @@ C_dictionary::read( const std::string & path )
                 // Check for valid CSV entry
                 if ( parse_line( line, REGEX_DICTIONARY, steno, text, shavian ) )
                 {
-                    if ( line.find( "\\\"" ) != std::string::npos )
-                    {
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "line: %s", line.c_str() );
-                    }
+                    //if ( line.find( "\\\"" ) != std::string::npos )
+                    //{
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "line: %s", line.c_str() );
+                    //}
 
                     std::string parsed_text;
 

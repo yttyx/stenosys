@@ -3,15 +3,21 @@
 #include <regex>
 
 #include "cmdparser.h"
+#include "log.h"
 #include "stenoflags.h"
+
+#define LOG_SOURCE "PARSE"
 
 using namespace std::regex_constants;
 
 namespace stenosys
 {
 
+extern C_log      log;
+
 const char * REGEX_COMMAND   = "\\{(.*?)\\}";
 
+static bool trace = false;
 
 typedef struct {
     const bool         regex;               // true: indicates entry is a regular expression; false: do string comparison
@@ -82,29 +88,49 @@ C_command_parser::parse( const std::string & text_in, std::string & text_out, ui
 void
 C_command_parser::parse_command( const std::string & text_in, std::string & text_out, uint16_t & flags )
 {
-    if ( strstr( text_in.c_str(), "({^}" ) != nullptr )
-    {
-        int xxx = 666;
-        xxx++;
-    }
-
     try
     {
         std::regex  regex_cmd( REGEX_COMMAND );
         std::smatch match;
 
+
+        if ( text_in.find( "{^},\"" ) != std::string::npos )
+        {
+            trace = true;
+        }
+
+        if ( trace )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "parse_command: text_in: %s", text_in.c_str() );
+        }
+
         std::string::const_iterator search_start( text_in.cbegin() );
  
         text_out = "";
 
+        if ( trace )
+        {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "process_text: 1" );
+        }
+    
         while ( regex_search( search_start, text_in.cend(), match, regex_cmd ) )
         {
             // Process text, either before the first command or between the current and previous commands
             process_text( match.prefix(), text_out, flags );
         
+            if ( trace )
+            {
+                log_writeln( C_log::LL_INFO, LOG_SOURCE, "process_text: 2" );
+            }
+    
             process_command( match[ 0 ], text_out, flags );
     
             search_start = match.suffix().first;
+        }
+    
+        if ( trace )
+        {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "process_text: 3" );
         }
     
         // Process any text following the final command
@@ -112,13 +138,30 @@ C_command_parser::parse_command( const std::string & text_in, std::string & text
     
         // Mask off internal formatting flags
         flags &= ( ~ INTERNAL_FLAGS_MASK );
+
+        if ( trace )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "parse_command: text_out: %s", text_out.c_str() );
+            trace = false;
+        }
     }
     catch ( std::exception & ex )
     {
         std::string exc = ex.what();
+        
+        if ( trace )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "parse_command: exception: %s", exc.c_str() );
+            trace = false;
+        }
     }
     catch( ... )
     {
+        if ( trace )
+        {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "parse_command: exception (...)" );
+            trace = false;
+        }
     }
 }
 
@@ -138,6 +181,15 @@ C_command_parser::process_command( const std::string & command, std::string & te
 {
     try
     {
+
+        if ( trace )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "process_command: command: %s", command.c_str() );
+            trace = false;
+        }
+
+
+
         for ( const plover_command * entry = plover_commands; entry->command[ 0 ] != '\0'; entry++ )
         {
             if ( entry->regex )
@@ -192,11 +244,18 @@ C_command_parser::process_command( const std::string & command, std::string & te
             }
         }
 
-        std::cout << "Command " << command.c_str() << " not supported" << std::endl;
+        if ( trace )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "process_command: text_out: %s", text_out.c_str() );
+            trace = false;
+        }
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Command %s not supported", command.c_str() );
     }
     catch ( std::exception & ex )
     {
         std::string exc = ex.what();
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "parse_command: exception: %s", exc.c_str() );
     }
     catch( ... )
     {
@@ -206,6 +265,11 @@ C_command_parser::process_command( const std::string & command, std::string & te
 void
 C_command_parser::process_text( std::string text_in, std::string & text_out, uint16_t & flags )
 {
+    if ( trace )
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "process_text: text_in: %s", text_in.c_str() );
+    }
+
     if ( text_in.length() > 0 )
     {
         // Check if text_in needs to be modified following the processing of a command. If so,
@@ -218,6 +282,15 @@ C_command_parser::process_text( std::string text_in, std::string & text_out, uin
 
         // Remove any leading or trailing spaces
         text_in = std::regex_replace( text_in, std::regex( "^ +| +$|( ) +"), "$1" );
+
+
+        if ( trace )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "process_text: text_in(2): %s", text_in.c_str() );
+        }
+
+
+
 
         if ( flags & ATTACH_TO_NEXT )
         {
