@@ -1,4 +1,4 @@
-/* stenosys.cpp: stenosys is a stenography utility, a cut-down version of Plover
+/* steno Plover
 
 Copyright (C) 2020  yttyx
 
@@ -120,8 +120,8 @@ C_stenosys::run( int argc, char *argv[] )
         //worked = worked && serial.initialise( cfg.c().device_output ); 
         
         worked = worked && translator.initialise( cfg.c().file_dict );
-        worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
-        //worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
+        //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
+        worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
 
         if ( worked )
         {

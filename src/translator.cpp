@@ -95,19 +95,21 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
 
     std::string curr = formatter_->format( alphabet_mode_, latin, shavian, flags, flags_prev, extends );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "add_stroke(): curr: %s", ctrl_to_text( curr ).c_str() );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "add_stroke()" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
 
 
     strokes_->translation( curr );
     
     std::string prev = strokes_->previous_translation();
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_translator::add_stroke()" );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev: %s, curr: %s", prev.c_str(), curr.c_str() );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "add_stroke()" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev: >>%s<<", ctrl_to_text( prev ).c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
 
     output = formatter_->transition_to( prev, curr, extends, false );
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: %s", output.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: >>%s<<", ctrl_to_text( output ).c_str() );
 }
 
 void
