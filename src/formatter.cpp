@@ -36,8 +36,6 @@ C_formatter::format( alphabet_type     alphabet_mode
                    , uint16_t          flags_prev 
                    , bool              extends )
 {
-    /* log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces: %u", ( uint16_t ) backspaces ); */
-
     bool latin_mode          = ( alphabet_mode == AT_LATIN );
     bool config_space_before = ( space_mode_ == SP_BEFORE );
     bool config_space_after  = ! config_space_before;

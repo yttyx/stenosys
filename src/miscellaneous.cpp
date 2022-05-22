@@ -102,6 +102,31 @@ find_and_replace( std::string & source, std::string const & find, std::string co
     }
 }
 
+// Convert control characters in a string to text
+// For example, "\n" becomes [0a]"
+std::string
+ctrl_to_text( const std::string & text )
+{
+    std::string output;
+
+    for ( size_t ii = 0; ii < text.length(); ii++ )
+    {
+        if ( iscntrl( text[ ii ] ) )
+        {
+            char buffer[ 10 ];
+
+            snprintf( buffer, sizeof( buffer ), "[%02x]", text[ ii ] );
+            output += buffer;
+        }
+        else
+        {
+            output += text[ ii ];
+        }
+    }
+
+    return output;
+}
+
 void
 delay( unsigned int milliseconds)
 {

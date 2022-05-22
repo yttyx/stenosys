@@ -9,6 +9,7 @@
 #include "common.h"
 #include "dictionary.h"
 #include "log.h"
+#include "miscellaneous.h"
 #include "stenoflags.h"
 #include "strokes.h"
 
@@ -179,31 +180,6 @@ C_strokes::dump()
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", line );
     
     } while ( history_->go_back( stroke ) );
-}
-
-// Convert control characters in a string to text
-// For example, "\n" becomes [0a]"
-std::string
-C_strokes::ctrl_to_text( const std::string & text )
-{
-    std::string output;
-
-    for ( size_t ii = 0; ii < text.length(); ii++ )
-    {
-        if ( iscntrl( text[ ii ] ) )
-        {
-            char buffer[ 10 ];
-
-            snprintf( buffer, sizeof( buffer ), "[%02x]", text[ ii ] );
-            output += buffer;
-        }
-        else
-        {
-            output += text[ ii ];
-        }
-    }
-
-    return output;
 }
 
 }

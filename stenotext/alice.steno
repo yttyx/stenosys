@@ -1,5 +1,4 @@
 R-R
-#A
 AL              // Alice
 EUS             //
 WAS             // was
@@ -61,14 +60,14 @@ AEU
 PWAOBG
 KW-BG
 KR-GS
-THAUT
-AL
+THAUT           // thought
+AL              // Alice
 EUS
 KW-GS
-WOUT
-P*EUFPS
-OR
-K-FRGS
+WOUT            // without
+P*EUFPS         // pictures
+OR              // or
+K-FRGS          // conversations
 -S
 STPHR-RB        // question mark
 KR-GS           // close quotes
@@ -108,7 +107,7 @@ PHRERB
 -F
 PHAEUG
 AEU
-TKAEU
+TKAEUS
 SEU
 H-PB
 KHAEUPB
@@ -124,7 +123,7 @@ SKP             // and
 P*EUG
 -T
 TKAEUS          // daisies
-KWREU
+SEU
 -S
 KW-BG
 WHEPB
@@ -172,21 +171,22 @@ KP
 RABT
 SAEU
 TO
-EUT
+EUT         // itself
 SEFL
-KW-BG
-KW-GS
+KW-BG       // ,
+KW-GS       // "
+KP          // uppercase next word
+O*ERBGS     // Oh
+TKAER       // dear
+SKHRAPL     // !
 KP
-O*ERBGS
-TKAER
-SKHRAPL
-KP
-O*ERBGS
-TKAER
-SKHRAPL
+O*ERBGS     // Oh
+TKAER       // dear
+SKHRAPL     // !
 EU
 SHAL
 -B
+TAO
 HRAEUT
 SKHRAPL
 KR-GS
@@ -267,28 +267,28 @@ PHAOEUPBD
 THA
 SHE
 H
-TPHEFR
-PW-FR
-SAOEPB
-AEU
-RABT
-W
-AOERT
-AEU
-WA*EUS
+TPHEFR          // never
+PW-FR           // before
+SAOEPB          // seen
+AEU             // a
+RABT            // rabbit
+W               // with
+AOERT           // either
+AEU             // a
+WA*EUS          // waistcoat
 KOET
-H-PB
-POBGT
-KW-BG
+H-PB            // -
+POBGT           // pocket
+KW-BG           // ,
 OR
 AEU
-WAFP
+WAFP            // watch
 TO
-TAEUBG
+TAEUBG          // take
 OUT
 -F
 EUT
-KW-BG
+KW-BG           // ,
 SKP
 PWURPBG
 W

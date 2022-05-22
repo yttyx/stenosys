@@ -8655,7 +8655,7 @@ H-L	𐑣𐑩𐑤𐑴
 H-LD	HDL	
 H-LT	headlight	𐑣𐑧𐑛𐑤𐑲𐑑
 H-LTS	headlights	𐑣𐑧𐑛𐑤𐑲𐑑𐑕
-H-PB	{^-^}	
+H-PB	{^}-{^}	
 H-PB/KAPB/TKA	-Canada	
 H-PB/KUPL/H-PB	-cum-	
 H-PB/PHERPB	{^-American}	
@@ -20043,7 +20043,7 @@ KW-FBL	qualifiable
 KW-FGS	qualification	𐑒𐑢𐑪𐑤𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯
 KW-FRS	qualifiers	𐑒𐑢𐑪𐑤𐑦𐑓𐑲𐑼𐑟
 KW-G	requesting	𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑦𐑙
-KW-GS	"{~|}{^}	
+KW-GS	"{^}	
 KW-L	{^=^}	
 KW-L/KAEUGS/-S	qualifications	𐑒𐑢𐑪𐑤𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯𐑟
 KW-LS	{^==^}	
@@ -51720,7 +51720,6 @@ TKAEU/KWREUS/-S	daises	𐑛𐑱𐑦𐑕𐑩𐑟
 TKAEU/PWRAEBG	daybreak	𐑛𐑱𐑚𐑮𐑱𐑒
 TKAEU/REU	dairy	𐑛𐑺𐑦
 TKAEU/REU/-S	dairies	𐑛𐑺𐑦𐑟
-TKAEU/SEU	daisy	𐑛𐑱𐑟𐑦
 TKAEU/TKRAOEPL	daydream	𐑛𐑱𐑛𐑮𐑰𐑥
 TKAEU/TOE/TPHA	Daytona	
 TKAEU/TOPB	Dayton	𐑛𐑱𐑑𐑩𐑯
@@ -51780,6 +51779,7 @@ TKAEURS	dares	𐑛𐑺𐑟
 TKAEUS	days	𐑛𐑱𐑟
 TKAEUS/AE	days'	
 TKAEUS/AOEUZ/A*U	daises	𐑛𐑱𐑦𐑕𐑩𐑟
+TKAEUS/SEU	daisy	𐑛𐑱𐑟𐑦
 TKAEUS/SEU/-S	daisies	𐑛𐑱𐑟𐑦𐑟
 TKAEUT	date	𐑛𐑱𐑑
 TKAEUT/-D	dated	𐑛𐑱𐑑𐑩𐑛

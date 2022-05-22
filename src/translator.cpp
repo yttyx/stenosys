@@ -10,6 +10,7 @@
 #include "dictionary.h"
 #include "formatter.h"
 #include "log.h"
+#include "miscellaneous.h"
 #include "stenoflags.h"
 #include "strokes.h"
 #include "translator.h"
@@ -93,6 +94,9 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
     strokes_->find_best_match( steno, latin, shavian, flags, flags_prev, extends );
 
     std::string curr = formatter_->format( alphabet_mode_, latin, shavian, flags, flags_prev, extends );
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "add_stroke(): curr: %s", ctrl_to_text( curr ).c_str() );
+
 
     strokes_->translation( curr );
     

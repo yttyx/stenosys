@@ -65,9 +65,6 @@ private:
                    , std::string &                     text
                    , C_stroke * &                      best_match );
 
-    static std::string
-    ctrl_to_text( const std::string & text );
-
 private:
 
     C_dictionary & dictionary_;
