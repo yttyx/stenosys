@@ -43,13 +43,13 @@ C_formatter::format( alphabet_type     alphabet_mode
     bool config_space_after  = ! config_space_before;
 
     // Attach to the previous stroke's output?
-    bool attach_to_previous = ( ( flags_prev   & ATTACH_TO_NEXT )     ||
-                                ( flags        & ATTACH_TO_PREVIOUS ) ||
-                                ( ( flags_prev & GLUE ) && ( flags & GLUE ) ) );
+    bool attach_to_previous  = ( ( flags_prev   & ATTACH_TO_NEXT )     ||
+                                 ( flags        & ATTACH_TO_PREVIOUS ) ||
+                                 ( ( flags_prev & GLUE ) && ( flags & GLUE ) ) );
 
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous: %d", attach_to_previous );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags_prev: %04x", flags_prev );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags     : %04x", flags );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags_prev        : %04x", flags_prev );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags             : %04x", flags );
 
     // Attach to the next stroke's output?
     bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
@@ -131,7 +131,9 @@ C_formatter::transition_to( const std::string & prev, const std::string & curr, 
         //int idx = find_point_of_difference( curr, prev );
         int idx = C_utf8::differs_at( curr, prev );
 
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
+
         
         if ( idx >= 0 )
         {

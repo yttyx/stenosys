@@ -74,6 +74,10 @@ C_translator::translate( const std::string & steno, std::string & output )
             add_stroke( steno, output );
         }
     }
+
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_translator::translate()" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  steno: %s, output: %s", steno.c_str(), output.c_str() );
+
 }
 
 void
@@ -94,7 +98,12 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
     
     std::string prev = strokes_->previous_translation();
 
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_translator::add_stroke()" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev: %s, curr: %s", prev.c_str(), curr.c_str() );
+
     output = formatter_->transition_to( prev, curr, extends, false );
+    
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: %s", output.c_str() );
 }
 
 void

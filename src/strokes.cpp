@@ -151,9 +151,8 @@ C_strokes::extends()
 void
 C_strokes::dump()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "steno         translation       flgs  sq  s'ceded" );
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "------------  ----------------  ----  --  -------" );
-
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "steno         translation       flgs  sn" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "------------  ----------------  ----  --" );
 
     history_->reset_lookback();
 
