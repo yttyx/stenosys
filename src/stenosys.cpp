@@ -157,7 +157,7 @@ C_stenosys::run( int argc, char *argv[] )
                 // Key event input
                 if ( steno_keyboard.read( key_code ) )
                 {
-                    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "key event: %04x", key_code );
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %04x", key_code );
                     //serial.send( key_code );
                 }
 
