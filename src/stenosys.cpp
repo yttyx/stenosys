@@ -27,7 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <unistd.h>
 
 #include "config.h"
-#include "convert.h"     //TEMP
 #include "device.h"
 #include "geminipr.h"
 #include "keyboard.h"
@@ -140,6 +139,7 @@ C_stenosys::run( int argc, char *argv[] )
                     translator.translate( steno, translation );
                 }
                 
+                // Stenographic chord input
                 if ( steno_keyboard.read( packet ) )
                 {
                     steno = C_gemini_pr::decode( packet );
@@ -154,6 +154,7 @@ C_stenosys::run( int argc, char *argv[] )
                       x11_output->send( translation );
                 }
 
+                // Key event input
                 if ( steno_keyboard.read( key_code ) )
                 {
                     log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "key event: %04x", key_code );
