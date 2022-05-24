@@ -45,6 +45,9 @@ C_kbd_raw::~C_kbd_raw()
 {
     if ( handle_ >= 0 )
     {
+        // Release grab
+        ioctl( handle_, EVIOCGRAB, ( void * ) 0 );
+        
         close( handle_ );
         log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Closed raw keyboard device" );
     }
@@ -91,7 +94,15 @@ C_kbd_raw::initialise( const std::string & device )
     memset( bit, 0, sizeof( bit ) );
     ioctl( handle_, EVIOCGBIT( 0, EV_MAX ), bit[ 0 ] );
 
-    return true;
+    // Try to grab device for exclusive use
+    int rc = ioctl( handle_, EVIOCGRAB, ( void * ) 1 );
+    
+    if ( rc < 0 )
+    {
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl: EVIOCGRAB failed, rc = %d, errno = %d", rc, errno );
+    }
+
+    return rc >= 0;
 }
 
 bool

@@ -114,6 +114,9 @@ C_stenosys::run( int argc, char *argv[] )
         //exit( 0 );
         //TEMP:END
 
+        //TEMP Allow time for the keyup event when enter is pressed to execute the program
+        delay( 1000 );
+
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
         worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
@@ -134,10 +137,10 @@ C_stenosys::run( int argc, char *argv[] )
                 S_geminipr_packet packet;
                 __u16             key_code;
 
-                if ( stroke_feed.get_steno( steno ) )
-                {
-                    translator.translate( steno, translation );
-                }
+                //if ( stroke_feed.get_steno( steno ) )
+                //{
+                    //translator.translate( steno, translation );
+                //}
                 
                 // Stenographic chord input
                 if ( steno_keyboard.read( packet ) )
