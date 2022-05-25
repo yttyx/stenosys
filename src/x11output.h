@@ -72,7 +72,7 @@ private:
     static keysym_entry ascii_to_keysym[];
     static keysym_entry ascii_to_shavian_keysym[];
     static const char * XF86_symstrings[];
-    static uint8_t      scancode_table[];
+    static uint8_t      scancode_to_ascii[];
 
     Display * display_;
 

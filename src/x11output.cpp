@@ -82,6 +82,7 @@ C_x11_output::send( const std::string & str )
                 //  used. The new keysym code position will simply be the character's
                 //  Unicode number plus 0x01000000. The keysym values in the range
                 //  0x01000100 to 0x0110ffff are reserved to represent Unicode"
+                //
                 // 0x10450 is the base value of the Shavian code block
                 if ( code >= SHAVIAN_10450 )
                 {
@@ -98,6 +99,45 @@ C_x11_output::send( const std::string & str )
 void
 C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
+    // Convert scancode to ASCII
+    uint8_t ascii = scancode_to_ascii[ scancode ];
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "scancode: %02xh, %c [%02xh]", scancode, ascii, ascii );
+
+    if ( ( int ) ascii <= 0x7f )
+    {
+        // Convert ASCII to keysym
+        keysym_entry * entry = &ascii_to_keysym[ ( ( int ) ascii ) ];
+
+        if ( entry->base != 0 )
+        {
+            KeyCode keycode = 0;
+
+            keycode = XKeysymToKeycode( display_, entry->base );
+         
+            if ( keycode != 0 )
+            {
+                XTestGrabControl( display_, True );
+
+                //TODO modkey support
+             
+                // Generate regular key press and release
+                if ( key_event == KEY_EV_DOWN )
+                {
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key down, keycode: %d", keycode );
+                    XTestFakeKeyEvent( display_, keycode, True, 0 );
+                }
+                else if ( key_event == KEY_EV_UP )
+                {
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key up, keycode: %d", keycode );
+                    XTestFakeKeyEvent( display_, keycode, False, 0 ); 
+                } 
+             
+                XSync( display_, False );
+                XTestGrabControl( display_, False );
+            }
+        }
+    }
 }
 
 void
@@ -135,7 +175,6 @@ C_x11_output::send_key( KeySym keysym, KeySym modsym )
     XSync( display_, False );
     XTestGrabControl( display_, False );
 }
-
 
 void
 C_x11_output::send_key( KeyCode keycode )
@@ -513,7 +552,7 @@ const char * C_x11_output::XF86_symstrings[] =
 };
 
 uint8_t
-C_x11_output::scancode_table[] =
+C_x11_output::scancode_to_ascii[] =
 {
     '?'                         // KEY_RESERVED              0
 ,   '?'                         // KEY_ESC                   1
@@ -581,9 +620,9 @@ C_x11_output::scancode_table[] =
 ,   '?'                         // KEY_F5                    63
 ,   '?'                         // KEY_F6                    64
 ,   '?'                         // KEY_F7                    65
-,   '?'                          // KEY_F8                    66
+,   '?'                         // KEY_F8                    66
 ,   '?'                         // KEY_F9                    67
-,   '?'                         // KEY_F10                 68
+,   '?'                         // KEY_F10                   68
 ,   '?'                         // KEY_NUMLOCK               69
 ,   '?'                         // KEY_SCROLLLOCK            70
 ,   '7'                         // KEY_KP7                   71

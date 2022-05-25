@@ -166,19 +166,19 @@ C_kbd_raw::thread_handler()
                     {
                         // TODO? Suppress auto-repeat for keys such as Shift, Ctrl and Meta
                         // Key auto-repeat
-                        buffer_->put( ( EV_KEY_AUTO << 8 ) + kbd_event[ ii ].code );
+                        buffer_->put( ( KEY_EV_AUTO << 8 ) + kbd_event[ ii ].code );
 
                         //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key auto kbd_event[ii].code: %u", kbd_event[ii].code );
                     }
                     else if ( kbd_event[ ii ].value == 1 )
                     {
                         // Key down
-                        buffer_->put( ( EV_KEY_DOWN << 8 ) + kbd_event[ ii ].code );
+                        buffer_->put( ( KEY_EV_DOWN << 8 ) + kbd_event[ ii ].code );
                     }
                     else if ( kbd_event[ ii ].value == 0 )
                     {
                         // Key up
-                        buffer_->put( ( EV_KEY_UP << 8 ) + kbd_event[ ii ].code );
+                        buffer_->put( ( KEY_EV_UP << 8 ) + kbd_event[ ii ].code );
                     }
                 }
             }

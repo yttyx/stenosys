@@ -163,7 +163,7 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( steno_keyboard.read( key_event, scancode ) )
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %d, scancode: %02h", key_event, scancode );
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %d, scancode: %02xh", key_event, scancode );
                     
                     x11_output->send( key_event, scancode );
                     //serial.send( key_code );
