@@ -12,6 +12,7 @@
 #include <string>
 #include <X11/Xlib.h>
 
+#include "keyevent.h"
 #include "log.h"
 #include "miscellaneous.h"
 #include "utf8.h"
@@ -95,7 +96,7 @@ C_x11_output::send( const std::string & str )
 }
 
 void
-C_x11_output::send( uint16_t scancode )
+C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
 }
 
@@ -396,6 +397,7 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_asciitilde,   XK_Shift_L }     // 007e  /* U+007E TILDE */
 };
 
+//WIP
 keysym_entry
 C_x11_output::ascii_to_shavian_keysym[] =
 {
@@ -508,6 +510,139 @@ const char * C_x11_output::XF86_symstrings[] =
 ,   "XF86WebCam" 
 ,   "XF86Xfer" 
 ,   nullptr
+};
+
+uint8_t
+C_x11_output::scancode_table[] =
+{
+    '?'                         // KEY_RESERVED              0
+,   '?'                         // KEY_ESC                   1
+,   '1'                         // KEY_1                     2
+,   '2'                         // KEY_2                     3
+,   '3'                         // KEY_3                     4
+,   '4'                         // KEY_4                     5
+,   '5'                         // KEY_5                     6
+,   '6'                         // KEY_6                     7
+,   '7'                         // KEY_7                     8
+,   '8'                         // KEY_8                     9
+,   '9'                         // KEY_9                     10
+,   '0'                         // KEY_0                     11
+,   '-'                         // KEY_MINUS                 12
+,   '='                         // KEY_EQUAL                 13
+,   '?'                         // KEY_BACKSPACE             14
+,   '?'                         // KEY_TAB                   15
+,   'q'                         // KEY_Q                     16
+,   'w'                         // KEY_W                     17
+,   'e'                         // KEY_E                     18
+,   'r'                         // KEY_R                     19
+,   't'                         // KEY_T                     20
+,   'y'                         // KEY_Y                     21
+,   'u'                         // KEY_U                     22
+,   'i'                         // KEY_I                     23
+,   'o'                         // KEY_O                     24
+,   'p'                         // KEY_P                     25
+,   '['                         // KEY_LEFTBRACE             26  yttyx
+,   ']'                         // KEY_RIGHTBRACE            27
+,   '?'                         // KEY_ENTER                 28
+,   '?'                         // KEY_LEFTCTRL              29
+,   'a'                         // KEY_A                     30
+,   's'                         // KEY_S                     31
+,   'd'                         // KEY_D                     32
+,   'f'                         // KEY_F                     33
+,   'g'                         // KEY_G                     34
+,   'h'                         // KEY_H                     35
+,   'j'                         // KEY_J                     36
+,   'k'                         // KEY_K                     37
+,   'l'                         // KEY_L                     38
+,   ';'                         // KEY_SEMICOLON             39
+,   '\''                        // KEY_APOSTROPHE            40
+,   '`'                         // KEY_GRAVE                 41
+,   '?'                         // KEY_LEFTSHIFT             42
+,   '#'                         // KEY_BACKSLASH             43  yttyx
+,   'z'                         // KEY_Z                     44
+,   'x'                         // KEY_X                     45
+,   'c'                         // KEY_C                     46
+,   'v'                         // KEY_V                     47
+,   'b'                         // KEY_B                     48
+,   'n'                         // KEY_N                     49
+,   'm'                         // KEY_M                     50
+,   ','                         // KEY_COMMA                 51
+,   '.'                         // KEY_DOT                   52
+,   '/'                         // KEY_SLASH                 53
+,   '?'                         // KEY_RIGHTSHIFT            54
+,   '*'                         // KEY_KPASTERISK            55
+,   '?'                         // KEY_LEFTALT               56
+,   ' '                         // KEY_SPACE                 57
+,   '?'                         // KEY_CAPSLOCK              58
+,   '?'                         // KEY_F1                    59
+,   '?'                         // KEY_F2                    60
+,   '?'                         // KEY_F3                    61
+,   '?'                         // KEY_F4                    62
+,   '?'                         // KEY_F5                    63
+,   '?'                         // KEY_F6                    64
+,   '?'                         // KEY_F7                    65
+,   '?'                          // KEY_F8                    66
+,   '?'                         // KEY_F9                    67
+,   '?'                         // KEY_F10                 68
+,   '?'                         // KEY_NUMLOCK               69
+,   '?'                         // KEY_SCROLLLOCK            70
+,   '7'                         // KEY_KP7                   71
+,   '8'                         // KEY_KP8                   72
+,   '9'                         // KEY_KP9                   73
+,   '-'                         // KEY_KPMINUS               74
+,   '4'                         // KEY_KP4                   75
+,   '5'                         // KEY_KP5                   76
+,   '6'                         // KEY_KP6                   77
+,   '+'                         // KEY_KPPLUS                78
+,   '1'                         // KEY_KP1                   79
+,   '2'                         // KEY_KP2                   80
+,   '3'                         // KEY_KP3                   81
+,   '0'                         // KEY_KP0                   82
+,   '.'                         // KEY_KPDOT                 83
+,   '?'                         //                           84
+,   '?'                         // KEY_ZENKAKUHANKAKU        85
+,   '\\'                        // KEY_102ND                 86
+,   '?'                         // KEY_F11                   87
+,   '?'                         // KEY_F12                   88
+,   '?'                         // KEY_RO                    89
+,   '?'                         // KEY_KATAKANA              90
+,   '?'                         // KEY_HIRAGANA              91
+,   '?'                         // KEY_HENKAN                92
+,   '?'                         // KEY_KATAKANAHIRAGANA      93
+,   '?'                         // KEY_MUHENKAN              94
+,   '?'                         // KEY_KPJPCOMMA             95
+,   '?'                         // KEY_KPENTER               96
+,   '?'                         // KEY_RIGHTCTRL             97
+,   '?'                         // KEY_KPSLASH               98
+,   '?'                         // KEY_SYSRQ                 99
+,   '?'                         // KEY_RIGHTALT              100
+,   '?'                         // KEY_LINEFEED              101
+,   '?'                         // KEY_HOME                  102
+,   '?'                         // KEY_UP                    103
+,   '?'                         // KEY_PAGEUP                104
+,   '?'                         // KEY_LEFT                  105
+,   '?'                         // KEY_RIGHT                 106
+,   '?'                         // KEY_END                   107
+,   '?'                         // KEY_DOWN                  108
+,   '?'                         // KEY_PAGEDOWN              109
+,   '?'                         // KEY_INSERT                110
+,   '?'                         // KEY_DELETE                111
+,   '?'                         // KEY_MACRO                 112
+,   '?'                         // KEY_MUTE                  113
+,   '?'                         // KEY_VOLUMEDOWN            114
+,   '?'                         // KEY_VOLUMEUP              115
+,   '?'                         // KEY_POWER                 116
+,   '?'                         // KEY_KPEQUAL               117
+,   '?'                         // KEY_KPPLUSMINUS           118
+,   '?'                         // KEY_PAUSE                 119
+,   '?'                         // KEY_SCALE                 120
+,   '?'                         // KEY_KPCOMMA               121
+,   '?'                         // KEY_HANGEUL               122
+,   '?'                         // KEY_HANJA                 123
+,   '?'                         // KEY_YEN                   124
+,   '?'                         // KEY_LEFTMETA              125
+,   '?'                         // KEY_RIGHTMETA             126
+,   '?'                         // KEY_COMPOSE               127
 };
 
 void

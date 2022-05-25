@@ -19,6 +19,7 @@
 
 #include "buffer.h"
 #include "kbdraw.h"
+#include "keyevent.h"
 #include "log.h"
 #include "miscellaneous.h"
 
@@ -119,9 +120,19 @@ C_kbd_raw::stop()
 }
 
 bool
-C_kbd_raw::read( uint16_t & key_code )
+C_kbd_raw::read( key_event_t & key_event, uint8_t & scancode )
 {
-    return buffer_->get( key_code );
+    uint16_t key_entry = 0;
+
+    if ( buffer_->get( key_entry ) )
+    {
+        key_event = ( key_event_t ) ( key_entry >> 8 );
+        scancode  = key_entry & 0xff;
+
+        return true;
+    }
+
+    return false;
 }
 
 // -----------------------------------------------------------------------------------
@@ -153,15 +164,9 @@ C_kbd_raw::thread_handler()
                 {
                     if ( kbd_event[ ii ].value == 2 )
                     {
-                        // Suppress auto-repeat for keys such as Shift, Ctrl and Meta
-                        // TODO This did not stop the sticky keys dialog popping up in Windows.
-                        //      Find out what key events are leading to that (it doesn't occur
-                        //      when holding down Shift on a directly-connected keyboard).
-                        if ( allow_repeat( kbd_event[ ii ].code ) )
-                        {
-                            // Key auto-repeat
-                            buffer_->put( ( EV_KEY_AUTO << 8 ) + kbd_event[ ii ].code );
-                        }
+                        // TODO? Suppress auto-repeat for keys such as Shift, Ctrl and Meta
+                        // Key auto-repeat
+                        buffer_->put( ( EV_KEY_AUTO << 8 ) + kbd_event[ ii ].code );
 
                         //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key auto kbd_event[ii].code: %u", kbd_event[ii].code );
                     }
@@ -183,24 +188,24 @@ C_kbd_raw::thread_handler()
     log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Shutting down raw keyboard thread" );
 }
 
-bool
-C_kbd_raw::allow_repeat( __u16 key_code )
-{
-    switch ( key_code )
-    {
-        case ARDUINO_KEY_LEFT_SHIFT:
-        case ARDUINO_KEY_RIGHT_SHIFT:
-        case ARDUINO_KEY_LEFT_CTRL:
-        case ARDUINO_KEY_RIGHT_CTRL:
-        case ARDUINO_KEY_LEFT_ALT:
-        case ARDUINO_KEY_RIGHT_ALT:
-        case ARDUINO_KEY_LEFT_GUI:
-        case ARDUINO_KEY_CAPS_LOCK:
-        case ARDUINO_KEY_INSERT:
-            return false;
-    }
+//bool
+//C_kbd_raw::allow_repeat( __u16 key_code )
+//{
+    //switch ( key_code )
+    //{
+        //case ARDUINO_KEY_LEFT_SHIFT:
+        //case ARDUINO_KEY_RIGHT_SHIFT:
+        //case ARDUINO_KEY_LEFT_CTRL:
+        //case ARDUINO_KEY_RIGHT_CTRL:
+        //case ARDUINO_KEY_LEFT_ALT:
+        //case ARDUINO_KEY_RIGHT_ALT:
+        //case ARDUINO_KEY_LEFT_GUI:
+        //case ARDUINO_KEY_CAPS_LOCK:
+        //case ARDUINO_KEY_INSERT:
+            //return false;
+    //}
 
-    return true;
-}
+    //return true;
+//}
 
 }

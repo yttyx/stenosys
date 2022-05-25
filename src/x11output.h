@@ -1,6 +1,7 @@
 // x11output.h
 #pragma once
 
+#include "keyevent.h"
 #include "stdarg.h"
 #include <X11/X.h>
 #include <cstdint>
@@ -44,7 +45,7 @@ public:
     send( const std::string & str );
 
     virtual void
-    send( uint16_t scancode );
+    send( key_event_t key_event, uint8_t scancode );
     
     virtual void
     test();
@@ -71,6 +72,7 @@ private:
     static keysym_entry ascii_to_keysym[];
     static keysym_entry ascii_to_shavian_keysym[];
     static const char * XF86_symstrings[];
+    static uint8_t      scancode_table[];
 
     Display * display_;
 

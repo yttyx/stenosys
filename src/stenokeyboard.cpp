@@ -15,6 +15,7 @@
 #include "geminipr.h"
 #include "kbdraw.h"
 #include "kbdsteno.h"
+#include "keyevent.h"
 #include "log.h"
 #include "promicro.h"
 #include "stenokeyboard.h"
@@ -64,9 +65,9 @@ C_steno_keyboard::stop()
 }
 
 bool
-C_steno_keyboard::read( uint16_t & key_code )
+C_steno_keyboard::read( key_event_t & key_event, uint8_t & scancode )
 {
-    return raw_->read( key_code );
+    return raw_->read( key_event, scancode );
 }
     
 bool

@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "device.h"
 #include "geminipr.h"
 #include "keyboard.h"
+#include "keyevent.h"
 #include "log.h"
 #include "miscellaneous.h"
 #include "stenokeyboard.h"
@@ -135,7 +136,6 @@ C_stenosys::run( int argc, char *argv[] )
                 std::string       steno;
                 std::string       translation;
                 S_geminipr_packet packet;
-                uint16_t          key_code;
 
                 //if ( stroke_feed.get_steno( steno ) )
                 //{
@@ -158,11 +158,14 @@ C_stenosys::run( int argc, char *argv[] )
                 }
 
                 // Key event input
-                if ( steno_keyboard.read( key_code ) )
+                key_event_t key_event = KEY_EV_UNKNOWN;
+                uint8_t     scancode  = 0;
+
+                if ( steno_keyboard.read( key_event, scancode ) )
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %04x", key_code );
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %d, scancode: %02h", key_event, scancode );
                     
-                    x11_output->send( key_code );
+                    x11_output->send( key_event, scancode );
                     //serial.send( key_code );
                 }
 

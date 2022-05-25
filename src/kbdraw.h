@@ -8,6 +8,7 @@
 
 #include "buffer.h"
 #include "geminipr.h"
+#include "keyevent.h"
 #include "mutex.h"
 #include "thread.h"
 
@@ -34,7 +35,7 @@ public:
     stop();
 
     bool
-    read( uint16_t & key_code );
+    read( key_event_t & key_event, uint8_t & scan_code );
     
 private:
 
@@ -44,8 +45,8 @@ private:
     bool
     get_byte( unsigned char & ch );
 
-    bool
-    allow_repeat( uint16_t key_code );
+    //bool
+    //allow_repeat( uint16_t key_code );
 
 private:
     

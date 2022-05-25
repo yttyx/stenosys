@@ -9,6 +9,7 @@
 #include "geminipr.h"
 #include "kbdraw.h"
 #include "kbdsteno.h"
+#include "keyevent.h"
 
 namespace stenosys
 {
@@ -32,7 +33,7 @@ public:
     stop();
 
     bool
-    read( uint16_t & key_code );
+    read( key_event_t & key_event, uint8_t & scancode );
     
     bool
     read( S_geminipr_packet & packet );

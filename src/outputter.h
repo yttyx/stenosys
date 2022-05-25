@@ -1,5 +1,6 @@
 #pragma once
 
+#include "keyevent.h"
 #include <string>
 
 namespace stenosys
@@ -22,7 +23,7 @@ public:
     send( const std::string & text ) = 0;
 
     virtual void
-    send( uint16_t scancode ) = 0;
+    send( key_event_t key_event, uint8_t scancode ) = 0;
     
         virtual void
     test() = 0;
