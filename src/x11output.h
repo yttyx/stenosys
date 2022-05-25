@@ -44,6 +44,9 @@ public:
     send( const std::string & str );
 
     virtual void
+    send( uint16_t scancode );
+    
+    virtual void
     test();
 
 private:

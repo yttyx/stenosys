@@ -95,6 +95,11 @@ C_x11_output::send( const std::string & str )
 }
 
 void
+C_x11_output::send( uint16_t scancode )
+{
+}
+
+void
 C_x11_output::send_key( KeySym keysym, KeySym modsym )
 {
     KeyCode keycode = 0;
@@ -129,6 +134,7 @@ C_x11_output::send_key( KeySym keysym, KeySym modsym )
     XSync( display_, False );
     XTestGrabControl( display_, False );
 }
+
 
 void
 C_x11_output::send_key( KeyCode keycode )

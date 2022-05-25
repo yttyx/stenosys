@@ -22,6 +22,9 @@ public:
     send( const std::string & text ) = 0;
 
     virtual void
+    send( uint16_t scancode ) = 0;
+    
+        virtual void
     test() = 0;
 
 private:

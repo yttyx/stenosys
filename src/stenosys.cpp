@@ -135,7 +135,7 @@ C_stenosys::run( int argc, char *argv[] )
                 std::string       steno;
                 std::string       translation;
                 S_geminipr_packet packet;
-                __u16             key_code;
+                uint16_t          key_code;
 
                 //if ( stroke_feed.get_steno( steno ) )
                 //{
@@ -161,6 +161,8 @@ C_stenosys::run( int argc, char *argv[] )
                 if ( steno_keyboard.read( key_code ) )
                 {
                     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %04x", key_code );
+                    
+                    x11_output->send( key_code );
                     //serial.send( key_code );
                 }
 
