@@ -99,28 +99,21 @@ C_x11_output::send( const std::string & str )
 void
 C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
-    // Convert scancode to ASCII
-    uint8_t ascii = scancode_to_ascii[ scancode ];
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "scancode: %02xh, %c [%02xh]", scancode, ascii, ascii );
-
-    if ( ( int ) ascii <= 0x7f )
+    if ( scancode <= 0x7f )
     {
-        // Convert ASCII to keysym
-        keysym_entry * entry = &ascii_to_keysym[ ( ( int ) ascii ) ];
+        // Convert scancode to ASCII
+        KeySym keysym = scancode_to_keysym[ scancode ];
 
-        if ( entry->base != 0 )
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "scancode: %02xh, keysym: %04xh", scancode, keysym );
+
+        if ( keysym != 0 )
         {
-            KeyCode keycode = 0;
-
-            keycode = XKeysymToKeycode( display_, entry->base );
+            KeyCode keycode = XKeysymToKeycode( display_, keysym );
          
             if ( keycode != 0 )
             {
                 XTestGrabControl( display_, True );
 
-                //TODO modkey support
-             
                 // Generate regular key press and release
                 if ( key_event == KEY_EV_DOWN )
                 {
@@ -438,7 +431,9 @@ C_x11_output::scancode_to_keysym[] =
 };
 
 
-};
+
+
+
 
 //WIP
 keysym_entry
@@ -555,6 +550,7 @@ const char * C_x11_output::XF86_symstrings[] =
 ,   nullptr
 };
 
+#if 0
 uint8_t
 C_x11_output::scancode_to_ascii[] =
 {
@@ -687,6 +683,7 @@ C_x11_output::scancode_to_ascii[] =
 ,   '?'                         // KEY_RIGHTMETA             126
 ,   '?'                         // KEY_COMPOSE               127
 };
+#endif
 
 void
 C_x11_output::test()
