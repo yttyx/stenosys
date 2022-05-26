@@ -430,10 +430,137 @@ C_x11_output::scancode_to_keysym[] =
 ,   0                           // KEY_COMPOSE               127
 };
 
-
-
-
-
+keysym_entry
+C_x11_output::ascii_to_keysym[] =
+{
+    { 0,               0          }     // 0000
+,   { 0,               0          }     // 0001
+,   { 0,               0          }     // 0002
+,   { 0,               0          }     // 0003
+,   { 0,               0          }     // 0004
+,   { 0,               0          }     // 0005
+,   { 0,               0          }     // 0006
+,   { 0,               0          }     // 0007
+,   { XK_BackSpace,    0          }     // 0008
+,   { XK_Tab,          0          }     // 0009
+,   { XK_Linefeed,     0          }     // 000a
+,   { XK_Clear,        0          }     // 000b
+,   { 0,               0          }     // 000c
+,   { XK_Return,       0          }     // 000d
+,   { 0,               0          }     // 000e
+,   { 0,               0          }     // 000f
+,   { 0,               0          }     // 0010
+,   { 0,               0          }     // 0011
+,   { 0,               0          }     // 0012
+,   { XK_Pause,        0          }     // 0013
+,   { XK_Scroll_Lock,  0          }     // 0014
+,   { XK_Sys_Req,      0          }     // 0015
+,   { 0,               0          }     // 0016
+,   { 0,               0          }     // 0017
+,   { 0,               0          }     // 0018
+,   { 0,               0          }     // 0019
+,   { 0,               0          }     // 001a
+,   { XK_Escape,       0          }     // 001b
+,   { 0,               0          }     // 00lc
+,   { 0,               0          }     // 00ld
+,   { 0,               0          }     // 00le
+,   { 0,               0          }     // 00lf
+,   { XK_space,        0          }     // 0020  /* U+0020 SPACE */
+,   { XK_exclam,       XK_Shift_L }     // 0021  /* U+0021 EXCLAMATION MARK */
+,   { XK_quotedbl,     XK_Shift_L }     // 0022  /* U+0022 QUOTATION MARK */
+,   { XK_numbersign,   0          }     // 0023  /* U+0023 NUMBER SIGN */
+,   { XK_dollar,       XK_Shift_L }     // 0024  /* U+0024 DOLLAR SIGN */
+,   { XK_percent,      XK_Shift_L }     // 0025  /* U+0025 PERCENT SIGN */
+,   { XK_ampersand,    XK_Shift_L }     // 0026  /* U+0026 AMPERSAND */
+,   { XK_apostrophe,   0          }     // 0027  /* U+0027 APOSTROPHE */
+,   { XK_parenleft,    XK_Shift_L }     // 0028  /* U+0028 LEFT PARENTHESIS */
+,   { XK_parenright,   XK_Shift_L }     // 0029  /* U+0029 RIGHT PARENTHESIS */
+,   { XK_asterisk,     XK_Shift_L }     // 002a  /* U+002A ASTERISK */
+,   { XK_plus,         XK_Shift_L }     // 002b  /* U+002B PLUS SIGN */
+,   { XK_comma,        0          }     // 002c  /* U+002C COMMA */
+,   { XK_minus,        0          }     // 002d  /* U+002D HYPHEN-MINUS */
+,   { XK_period,       0          }     // 002e  /* U+002E FULL STOP */
+,   { XK_slash,        0          }     // 002f  /* U+002F SOLIDUS */
+,   { XK_0,            0          }     // 0030  /* U+0030 DIGIT ZERO */
+,   { XK_1,            0          }     // 0031  /* U+0031 DIGIT ONE */
+,   { XK_2,            0          }     // 0032  /* U+0032 DIGIT TWO */
+,   { XK_3,            0          }     // 0033  /* U+0033 DIGIT THREE */
+,   { XK_4,            0          }     // 0034  /* U+0034 DIGIT FOUR */
+,   { XK_5,            0          }     // 0035  /* U+0035 DIGIT FIVE */
+,   { XK_6,            0          }     // 0036  /* U+0036 DIGIT SIX */
+,   { XK_7,            0          }     // 0037  /* U+0037 DIGIT SEVEN */
+,   { XK_8,            0          }     // 0038  /* U+0038 DIGIT EIGHT */
+,   { XK_9,            0          }     // 0039  /* U+0039 DIGIT NINE */
+,   { XK_colon,        XK_Shift_L }     // 003a  /* U+003A COLON */
+,   { XK_semicolon,    0          }     // 003b  /* U+003B SEMICOLON */
+,   { XK_less,         XK_Shift_L }     // 003c  /* U+003C LESS-THAN SIGN */
+,   { XK_equal,        0          }     // 003d  /* U+003D EQUALS SIGN */
+,   { XK_greater,      XK_Shift_L }     // 003e  /* U+003E GREATER-THAN SIGN */
+,   { XK_question,     XK_Shift_L }     // 003f  /* U+003F QUESTION MARK */
+,   { XK_at,           0          }     // 0040  /* U+0040 COMMERCIAL AT */
+,   { XK_A,            XK_Shift_L }     // 0041  /* U+0041 LATIN CAPITAL LETTER A */
+,   { XK_B,            XK_Shift_L }     // 0042  /* U+0042 LATIN CAPITAL LETTER B */
+,   { XK_C,            XK_Shift_L }     // 0043  /* U+0043 LATIN CAPITAL LETTER C */
+,   { XK_D,            XK_Shift_L }     // 0044  /* U+0044 LATIN CAPITAL LETTER D */
+,   { XK_E,            XK_Shift_L }     // 0045  /* U+0045 LATIN CAPITAL LETTER E */
+,   { XK_F,            XK_Shift_L }     // 0046  /* U+0046 LATIN CAPITAL LETTER F */
+,   { XK_G,            XK_Shift_L }     // 0047  /* U+0047 LATIN CAPITAL LETTER G */
+,   { XK_H,            XK_Shift_L }     // 0048  /* U+0048 LATIN CAPITAL LETTER H */
+,   { XK_I,            XK_Shift_L }     // 0049  /* U+0049 LATIN CAPITAL LETTER I */
+,   { XK_J,            XK_Shift_L }     // 004a  /* U+004A LATIN CAPITAL LETTER J */
+,   { XK_K,            XK_Shift_L }     // 004b  /* U+004B LATIN CAPITAL LETTER K */
+,   { XK_L,            XK_Shift_L }     // 004c  /* U+004C LATIN CAPITAL LETTER L */
+,   { XK_M,            XK_Shift_L }     // 004d  /* U+004D LATIN CAPITAL LETTER M */
+,   { XK_N,            XK_Shift_L }     // 004e  /* U+004E LATIN CAPITAL LETTER N */
+,   { XK_O,            XK_Shift_L }     // 004f  /* U+004F LATIN CAPITAL LETTER O */
+,   { XK_P,            XK_Shift_L }     // 0050  /* U+0050 LATIN CAPITAL LETTER P */
+,   { XK_Q,            XK_Shift_L }     // 0051  /* U+0051 LATIN CAPITAL LETTER Q */
+,   { XK_R,            XK_Shift_L }     // 0052  /* U+0052 LATIN CAPITAL LETTER R */
+,   { XK_S,            XK_Shift_L }     // 0053  /* U+0053 LATIN CAPITAL LETTER S */
+,   { XK_T,            XK_Shift_L }     // 0054  /* U+0054 LATIN CAPITAL LETTER T */
+,   { XK_U,            XK_Shift_L }     // 0055  /* U+0055 LATIN CAPITAL LETTER U */
+,   { XK_V,            XK_Shift_L }     // 0056  /* U+0056 LATIN CAPITAL LETTER V */
+,   { XK_W,            XK_Shift_L }     // 0057  /* U+0057 LATIN CAPITAL LETTER W */
+,   { XK_X,            XK_Shift_L }     // 0058  /* U+0058 LATIN CAPITAL LETTER X */
+,   { XK_Y,            XK_Shift_L }     // 0059  /* U+0059 LATIN CAPITAL LETTER Y */
+,   { XK_Z,            XK_Shift_L }     // 005a  /* U+005A LATIN CAPITAL LETTER Z */
+,   { XK_bracketleft,  0          }     // 005b  /* U+005B LEFT SQUARE BRACKET */
+,   { XK_backslash,    0          }     // 005c  /* U+005C REVERSE SOLIDUS */
+,   { XK_bracketright, 0          }     // 005d  /* U+005D RIGHT SQUARE BRACKET */
+,   { XK_asciicircum,  XK_Shift_L }     // 005e  /* U+005E CIRCUMFLEX ACCENT */
+,   { XK_underscore,   XK_Shift_L }     // 005f  /* U+005F LOW LINE */
+,   { XK_grave,        0          }     // 0060  /* U+0060 GRAVE ACCENT */
+,   { XK_a,            0          }     // 0061  /* U+0061 LATIN SMALL LETTER A */
+,   { XK_b,            0          }     // 0062  /* U+0062 LATIN SMALL LETTER B */
+,   { XK_c,            0          }     // 0063  /* U+0063 LATIN SMALL LETTER C */
+,   { XK_d,            0          }     // 0064  /* U+0064 LATIN SMALL LETTER D */
+,   { XK_e,            0          }     // 0065  /* U+0065 LATIN SMALL LETTER E */
+,   { XK_f,            0          }     // 0066  /* U+0066 LATIN SMALL LETTER F */
+,   { XK_g,            0          }     // 0067  /* U+0067 LATIN SMALL LETTER G */
+,   { XK_h,            0          }     // 0068  /* U+0068 LATIN SMALL LETTER H */
+,   { XK_i,            0          }     // 0069  /* U+0069 LATIN SMALL LETTER I */
+,   { XK_j,            0          }     // 006a  /* U+006A LATIN SMALL LETTER J */
+,   { XK_k,            0          }     // 006b  /* U+006B LATIN SMALL LETTER K */
+,   { XK_l,            0          }     // 006c  /* U+006C LATIN SMALL LETTER L */
+,   { XK_m,            0          }     // 006d  /* U+006D LATIN SMALL LETTER M */
+,   { XK_n,            0          }     // 006e  /* U+006E LATIN SMALL LETTER N */
+,   { XK_o,            0          }     // 006f  /* U+006F LATIN SMALL LETTER O */
+,   { XK_p,            0          }     // 0070  /* U+0070 LATIN SMALL LETTER P */
+,   { XK_q,            0          }     // 0071  /* U+0071 LATIN SMALL LETTER Q */
+,   { XK_r,            0          }     // 0072  /* U+0072 LATIN SMALL LETTER R */
+,   { XK_s,            0          }     // 0073  /* U+0073 LATIN SMALL LETTER S */
+,   { XK_t,            0          }     // 0074  /* U+0074 LATIN SMALL LETTER T */
+,   { XK_u,            0          }     // 0075  /* U+0075 LATIN SMALL LETTER U */
+,   { XK_v,            0          }     // 0076  /* U+0076 LATIN SMALL LETTER V */
+,   { XK_w,            0          }     // 0077  /* U+0077 LATIN SMALL LETTER W */
+,   { XK_x,            0          }     // 0078  /* U+0078 LATIN SMALL LETTER X */
+,   { XK_y,            0          }     // 0079  /* U+0079 LATIN SMALL LETTER Y */
+,   { XK_z,            0          }     // 007a  /* U+007A LATIN SMALL LETTER Z */
+,   { XK_braceleft,    0          }     // 007b  /* U+007B LEFT CURLY BRACKET */
+,   { XK_bar,          XK_Shift_L }     // 007c  /* U+007C VERTICAL LINE */
+,   { XK_braceright,   0          }     // 007d  /* U+007D RIGHT CURLY BRACKET */
+,   { XK_asciitilde,   XK_Shift_L }     // 007e  /* U+007E TILDE */
+};
 
 //WIP
 keysym_entry
