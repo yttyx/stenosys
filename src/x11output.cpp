@@ -85,10 +85,7 @@ C_x11_output::send( const std::string & str )
                 //  0x01000100 to 0x0110ffff are reserved to represent Unicode"
                 //
                 // 0x10450 is the base value of the Shavian code block
-                if ( code >= SHAVIAN_10450 )
-                {
-                    code += 0x1000000;
-                }
+                code = to_keysym( code );
 
                 send_key( code, 0 );
             }
@@ -201,7 +198,7 @@ void
 C_x11_output::find_unused_keycodes()
 {
     // Check whether a Shavian KeySym has already been set up
-    int keycode = XKeysymToKeycode( display_, SHAVIAN_10450_KEYSYM );
+    int keycode = XKeysymToKeycode( display_, to_keysym( XK_peep ) );
  
     if ( keycode != 0 )
     {
@@ -221,7 +218,7 @@ C_x11_output::find_unused_keycodes()
     // Get all of the available mapped keysyms
     keysyms = XGetKeyboardMapping( display_, keycode_low, keycode_high - keycode_low, &keysyms_per_keycode);
 
-    uint32_t shavian = SHAVIAN_10450;
+    uint32_t shavian = XK_peep;
 
     // Loop through the keycodes and look for keysyms associated with each keycode
     // that can be set to use Shavian keysyms instead.
@@ -265,7 +262,7 @@ C_x11_output::find_unused_keycodes()
                         //TODO Save original keymap so we can restore it on program exit
                         XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
 
-                        if ( shavian == SHAVIAN_MDOT )
+                        if ( shavian == XK_namingdot )
                         {
                             // We're done
                             done = true;
@@ -274,11 +271,11 @@ C_x11_output::find_unused_keycodes()
 
                             shavian++;
 
-                            if ( shavian > SHAVIAN_1047f )
+                            if ( shavian > XK_yew )
                             {
                                 // Shavian alphabet is done, just need to set the middle dot
                                 // in the next available slot.
-                                shavian = SHAVIAN_MDOT;
+                                shavian = XK_namingdot;
                             }
                         }
 

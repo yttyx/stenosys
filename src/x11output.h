@@ -18,12 +18,13 @@
 namespace stenosys
 {
 
-const uint32_t SHAVIAN_10450        = 0x10450;
-const uint32_t SHAVIAN_10450_KEYSYM = 0x1010450;
-const uint32_t SHAVIAN_1047f        = 0x1047f;
-const uint32_t SHAVIAN_MDOT         = 0x00B7;
+//const uint32_t SHAVIAN_10450        = 0x10450;
+//const uint32_t SHAVIAN_10450_KEYSYM = 0x1010450;
+//const uint32_t SHAVIAN_1047f        = 0x1047f;
+//const uint32_t SHAVIAN_MDOT         = 0x00B7;
 
 #define is_modifier( x ) ( ( XK_Shift_L <= x ) && ( x <= XK_Hyper_R ) )
+#define to_keysym( x )   ( ( x >= XK_peep ) ? ( x + 0x1000000 ) : x )
 
 struct keysym_entry
 {
