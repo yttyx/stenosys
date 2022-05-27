@@ -19,7 +19,7 @@
 #include "utf8.h"
 #include "x11output.h"
 
-#define LOG_SOURCE "X11OP"
+#define  LOG_SOURCE "X11OP"
 
 using namespace stenosys;
 
@@ -105,8 +105,23 @@ C_x11_output::send( const std::string & str )
 void
 C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
-    if ( scancode <= 0x7f )
+    // Check for the scancode used for the Latin/Shavian alphabet switch
+
+    if ( scancode == 51 ) /* Comma for test, final scancode TBD */
     {
+        toggle_shavian();
+        return;
+    }
+
+    if ( shavian_ )
+    {
+
+
+    }
+    else if ( scancode <= 0x7f )
+    {
+        // Latin alphabet mode
+        //
         // Convert scancode to ASCII
         KeySym keysym = scancode_to_keysym[ scancode ];
 
@@ -568,62 +583,64 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_asciitilde,   XK_Shift_L }     // 007e  /* U+007E TILDE */
 };
 
-//WIP
-keysym_entry
-C_x11_output::ascii_to_shavian_keysym[] =
+KeySym
+C_x11_output::scancode_to_shavian_keysym[] =
 {
-    { XK_A,            XK_Shift_L }     // 0041  /* U+0041 LATIN CAPITAL LETTER A */
-,   { XK_B,            XK_Shift_L }     // 0042  /* U+0042 LATIN CAPITAL LETTER B */
-,   { XK_C,            XK_Shift_L }     // 0043  /* U+0043 LATIN CAPITAL LETTER C */
-,   { XK_D,            XK_Shift_L }     // 0044  /* U+0044 LATIN CAPITAL LETTER D */
-,   { XK_E,            XK_Shift_L }     // 0045  /* U+0045 LATIN CAPITAL LETTER E */
-,   { XK_F,            XK_Shift_L }     // 0046  /* U+0046 LATIN CAPITAL LETTER F */
-,   { XK_G,            XK_Shift_L }     // 0047  /* U+0047 LATIN CAPITAL LETTER G */
-,   { XK_H,            XK_Shift_L }     // 0048  /* U+0048 LATIN CAPITAL LETTER H */
-,   { XK_I,            XK_Shift_L }     // 0049  /* U+0049 LATIN CAPITAL LETTER I */
-,   { XK_J,            XK_Shift_L }     // 004a  /* U+004A LATIN CAPITAL LETTER J */
-,   { XK_K,            XK_Shift_L }     // 004b  /* U+004B LATIN CAPITAL LETTER K */
-,   { XK_L,            XK_Shift_L }     // 004c  /* U+004C LATIN CAPITAL LETTER L */
-,   { XK_M,            XK_Shift_L }     // 004d  /* U+004D LATIN CAPITAL LETTER M */
-,   { XK_N,            XK_Shift_L }     // 004e  /* U+004E LATIN CAPITAL LETTER N */
-,   { XK_O,            XK_Shift_L }     // 004f  /* U+004F LATIN CAPITAL LETTER O */
-,   { XK_P,            XK_Shift_L }     // 0050  /* U+0050 LATIN CAPITAL LETTER P */
-,   { XK_Q,            XK_Shift_L }     // 0051  /* U+0051 LATIN CAPITAL LETTER Q */
-,   { XK_R,            XK_Shift_L }     // 0052  /* U+0052 LATIN CAPITAL LETTER R */
-,   { XK_S,            XK_Shift_L }     // 0053  /* U+0053 LATIN CAPITAL LETTER S */
-,   { XK_T,            XK_Shift_L }     // 0054  /* U+0054 LATIN CAPITAL LETTER T */
-,   { XK_U,            XK_Shift_L }     // 0055  /* U+0055 LATIN CAPITAL LETTER U */
-,   { XK_V,            XK_Shift_L }     // 0056  /* U+0056 LATIN CAPITAL LETTER V */
-,   { XK_W,            XK_Shift_L }     // 0057  /* U+0057 LATIN CAPITAL LETTER W */
-,   { XK_X,            XK_Shift_L }     // 0058  /* U+0058 LATIN CAPITAL LETTER X */
-,   { XK_Y,            XK_Shift_L }     // 0059  /* U+0059 LATIN CAPITAL LETTER Y */
-,   { XK_Z,            XK_Shift_L }     // 005a  /* U+005A LATIN CAPITAL LETTER Z */
-,   { XK_a,            0          }     // 0061  /* U+0061 LATIN SMALL LETTER A */
-,   { XK_b,            0          }     // 0062  /* U+0062 LATIN SMALL LETTER B */
-,   { XK_c,            0          }     // 0063  /* U+0063 LATIN SMALL LETTER C */
-,   { XK_d,            0          }     // 0064  /* U+0064 LATIN SMALL LETTER D */
-,   { XK_e,            0          }     // 0065  /* U+0065 LATIN SMALL LETTER E */
-,   { XK_f,            0          }     // 0066  /* U+0066 LATIN SMALL LETTER F */
-,   { XK_g,            0          }     // 0067  /* U+0067 LATIN SMALL LETTER G */
-,   { XK_h,            0          }     // 0068  /* U+0068 LATIN SMALL LETTER H */
-,   { XK_i,            0          }     // 0069  /* U+0069 LATIN SMALL LETTER I */
-,   { XK_j,            0          }     // 006a  /* U+006A LATIN SMALL LETTER J */
-,   { XK_k,            0          }     // 006b  /* U+006B LATIN SMALL LETTER K */
-,   { XK_l,            0          }     // 006c  /* U+006C LATIN SMALL LETTER L */
-,   { XK_m,            0          }     // 006d  /* U+006D LATIN SMALL LETTER M */
-,   { XK_n,            0          }     // 006e  /* U+006E LATIN SMALL LETTER N */
-,   { XK_o,            0          }     // 006f  /* U+006F LATIN SMALL LETTER O */
-,   { XK_p,            0          }     // 0070  /* U+0070 LATIN SMALL LETTER P */
-,   { XK_q,            0          }     // 0071  /* U+0071 LATIN SMALL LETTER Q */
-,   { XK_r,            0          }     // 0072  /* U+0072 LATIN SMALL LETTER R */
-,   { XK_s,            0          }     // 0073  /* U+0073 LATIN SMALL LETTER S */
-,   { XK_t,            0          }     // 0074  /* U+0074 LATIN SMALL LETTER T */
-,   { XK_u,            0          }     // 0075  /* U+0075 LATIN SMALL LETTER U */
-,   { XK_v,            0          }     // 0076  /* U+0076 LATIN SMALL LETTER V */
-,   { XK_w,            0          }     // 0077  /* U+0077 LATIN SMALL LETTER W */
-,   { XK_x,            0          }     // 0078  /* U+0078 LATIN SMALL LETTER X */
-,   { XK_y,            0          }     // 0079  /* U+0079 LATIN SMALL LETTER Y */
-,   { XK_z,            0          }     // 007a  /* U+007A LATIN SMALL LETTER Z */
+                    // ASCII
+    XK_ash          // a
+,   XK_ian          // b
+,   XK_kick         // c
+,   XK_are          // d
+,   XK_egg          // e
+,   XK_fee          // f
+,   XK_array        // g
+,   XK_so           // h 
+,   XK_if           // i
+,   XK_church       // j 
+,   XK_ah           // k
+,   XK_loll         // l
+,   XK_mime         // m
+,   XK_thigh        // n
+,   XK_on           // o 
+    XK_peep         // p
+,   XK_yea          // q
+,   XK_out          // r
+,   XK_sure         // s 
+,   XK_tot          // t
+,   XK_ado          // u
+,   XK_hung         // v
+,   XK_air          // w
+,   XK_namingdot    // x
+,   XK_wool         // y
+,   0               // z disabled
+
+,   XK_age          // A
+,   XK_yew          // B
+,   XK_or           // D
+,   XK_gag          // C
+,   XK_eat          // E
+,   XK_vow          // F
+,   XK_ear          // G
+,   XK_zoo          // H
+,   XK_ice          // I
+,   XK_judge        // J
+,   XK_awe          // K
+,   XK_roar         // L
+,   XK_none         // M
+,   XK_they         // N
+,   XK_oak          // O
+,   XK_bib          // P 
+,   XK_woe          // Q
+,   XK_oil          // R
+,   XK_measure      // S
+,   XK_dead         // T
+,   XK_up           // U
+,   XK_haha         // V
+,   XK_urge         // W
+,   XK_namingdot    // X
+,   XK_ooze         // Y
+,   0               // Z disabled
+
 };
 
 // Array of symkey strings whose references to keycodes in the keyboard
@@ -682,141 +699,6 @@ const char * C_x11_output::XF86_symstrings[] =
 ,   "XF86Xfer" 
 ,   nullptr
 };
-
-#if 0
-uint8_t
-C_x11_output::scancode_to_ascii[] =
-{
-    '?'                         // KEY_RESERVED              0
-,   '?'                         // KEY_ESC                   1
-,   '1'                         // KEY_1                     2
-,   '2'                         // KEY_2                     3
-,   '3'                         // KEY_3                     4
-,   '4'                         // KEY_4                     5
-,   '5'                         // KEY_5                     6
-,   '6'                         // KEY_6                     7
-,   '7'                         // KEY_7                     8
-,   '8'                         // KEY_8                     9
-,   '9'                         // KEY_9                     10
-,   '0'                         // KEY_0                     11
-,   '-'                         // KEY_MINUS                 12
-,   '='                         // KEY_EQUAL                 13
-,   '?'                         // KEY_BACKSPACE             14
-,   '?'                         // KEY_TAB                   15
-,   'q'                         // KEY_Q                     16
-,   'w'                         // KEY_W                     17
-,   'e'                         // KEY_E                     18
-,   'r'                         // KEY_R                     19
-,   't'                         // KEY_T                     20
-,   'y'                         // KEY_Y                     21
-,   'u'                         // KEY_U                     22
-,   'i'                         // KEY_I                     23
-,   'o'                         // KEY_O                     24
-,   'p'                         // KEY_P                     25
-,   '['                         // KEY_LEFTBRACE             26  yttyx
-,   ']'                         // KEY_RIGHTBRACE            27
-,   '?'                         // KEY_ENTER                 28
-,   '?'                         // KEY_LEFTCTRL              29
-,   'a'                         // KEY_A                     30
-,   's'                         // KEY_S                     31
-,   'd'                         // KEY_D                     32
-,   'f'                         // KEY_F                     33
-,   'g'                         // KEY_G                     34
-,   'h'                         // KEY_H                     35
-,   'j'                         // KEY_J                     36
-,   'k'                         // KEY_K                     37
-,   'l'                         // KEY_L                     38
-,   ';'                         // KEY_SEMICOLON             39
-,   '\''                        // KEY_APOSTROPHE            40
-,   '`'                         // KEY_GRAVE                 41
-,   '?'                         // KEY_LEFTSHIFT             42
-,   '#'                         // KEY_BACKSLASH             43  yttyx
-,   'z'                         // KEY_Z                     44
-,   'x'                         // KEY_X                     45
-,   'c'                         // KEY_C                     46
-,   'v'                         // KEY_V                     47
-,   'b'                         // KEY_B                     48
-,   'n'                         // KEY_N                     49
-,   'm'                         // KEY_M                     50
-,   ','                         // KEY_COMMA                 51
-,   '.'                         // KEY_DOT                   52
-,   '/'                         // KEY_SLASH                 53
-,   '?'                         // KEY_RIGHTSHIFT            54
-,   '*'                         // KEY_KPASTERISK            55
-,   '?'                         // KEY_LEFTALT               56
-,   ' '                         // KEY_SPACE                 57
-,   '?'                         // KEY_CAPSLOCK              58
-,   '?'                         // KEY_F1                    59
-,   '?'                         // KEY_F2                    60
-,   '?'                         // KEY_F3                    61
-,   '?'                         // KEY_F4                    62
-,   '?'                         // KEY_F5                    63
-,   '?'                         // KEY_F6                    64
-,   '?'                         // KEY_F7                    65
-,   '?'                         // KEY_F8                    66
-,   '?'                         // KEY_F9                    67
-,   '?'                         // KEY_F10                   68
-,   '?'                         // KEY_NUMLOCK               69
-,   '?'                         // KEY_SCROLLLOCK            70
-,   '7'                         // KEY_KP7                   71
-,   '8'                         // KEY_KP8                   72
-,   '9'                         // KEY_KP9                   73
-,   '-'                         // KEY_KPMINUS               74
-,   '4'                         // KEY_KP4                   75
-,   '5'                         // KEY_KP5                   76
-,   '6'                         // KEY_KP6                   77
-,   '+'                         // KEY_KPPLUS                78
-,   '1'                         // KEY_KP1                   79
-,   '2'                         // KEY_KP2                   80
-,   '3'                         // KEY_KP3                   81
-,   '0'                         // KEY_KP0                   82
-,   '.'                         // KEY_KPDOT                 83
-,   '?'                         //                           84
-,   '?'                         // KEY_ZENKAKUHANKAKU        85
-,   '\\'                        // KEY_102ND                 86
-,   '?'                         // KEY_F11                   87
-,   '?'                         // KEY_F12                   88
-,   '?'                         // KEY_RO                    89
-,   '?'                         // KEY_KATAKANA              90
-,   '?'                         // KEY_HIRAGANA              91
-,   '?'                         // KEY_HENKAN                92
-,   '?'                         // KEY_KATAKANAHIRAGANA      93
-,   '?'                         // KEY_MUHENKAN              94
-,   '?'                         // KEY_KPJPCOMMA             95
-,   '?'                         // KEY_KPENTER               96
-,   '?'                         // KEY_RIGHTCTRL             97
-,   '?'                         // KEY_KPSLASH               98
-,   '?'                         // KEY_SYSRQ                 99
-,   '?'                         // KEY_RIGHTALT              100
-,   '?'                         // KEY_LINEFEED              101
-,   '?'                         // KEY_HOME                  102
-,   '?'                         // KEY_UP                    103
-,   '?'                         // KEY_PAGEUP                104
-,   '?'                         // KEY_LEFT                  105
-,   '?'                         // KEY_RIGHT                 106
-,   '?'                         // KEY_END                   107
-,   '?'                         // KEY_DOWN                  108
-,   '?'                         // KEY_PAGEDOWN              109
-,   '?'                         // KEY_INSERT                110
-,   '?'                         // KEY_DELETE                111
-,   '?'                         // KEY_MACRO                 112
-,   '?'                         // KEY_MUTE                  113
-,   '?'                         // KEY_VOLUMEDOWN            114
-,   '?'                         // KEY_VOLUMEUP              115
-,   '?'                         // KEY_POWER                 116
-,   '?'                         // KEY_KPEQUAL               117
-,   '?'                         // KEY_KPPLUSMINUS           118
-,   '?'                         // KEY_PAUSE                 119
-,   '?'                         // KEY_SCALE                 120
-,   '?'                         // KEY_KPCOMMA               121
-,   '?'                         // KEY_HANGEUL               122
-,   '?'                         // KEY_HANJA                 123
-,   '?'                         // KEY_YEN                   124
-,   '?'                         // KEY_LEFTMETA              125
-,   '?'                         // KEY_RIGHTMETA             126
-,   '?'                         // KEY_COMPOSE               127
-};
-#endif
 
 void
 C_x11_output::test()

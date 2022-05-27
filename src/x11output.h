@@ -46,9 +46,6 @@ public:
     send( key_event_t key_event, uint8_t scancode );
 
     virtual void
-    toggle_shavian();
-
-    virtual void
     test();
 
 private:
@@ -67,22 +64,26 @@ private:
 
     void
     send_key( KeyCode keycode );
+    
+    virtual void
+    toggle_shavian();
 
 private:
     
     bool shavian_;  // mode for typed output:   
                     //   true:  shavian alphabet
                     //   false: latin alphabet
-
-    static keysym_entry ascii_to_keysym[];
-    static keysym_entry ascii_to_shavian_keysym[];
-    static const char * XF86_symstrings[];
-    static KeySym       scancode_to_keysym[];
+    bool shift_;    // used in typed Shavian mode
 
     Display * display_;
 
     std::vector< std::string > symstrings_;
 
+    static keysym_entry ascii_to_keysym[];
+    static keysym_entry ascii_to_shavian_keysym[];
+    static const char * XF86_symstrings[];
+    static KeySym       scancode_to_keysym[];
+    static KeySym       scancode_to_shavian_keysym[];
 };
 
 }
