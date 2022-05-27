@@ -143,7 +143,7 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
                 index += 26;
             }
 
-            keysym = shavian_keysym[ index ];
+            keysym = to_keysym( shavian_keysym[ index ] );
             
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "index   : %d", index );
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym  : %04xh (Shavian)", keysym );

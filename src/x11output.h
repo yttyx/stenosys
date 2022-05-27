@@ -18,10 +18,10 @@
 namespace stenosys
 {
 
-#define is_modifier( x )    ( ( XK_Shift_L <= x ) && ( x <= XK_Hyper_R ) )
-#define is_shift( x )       ( ( x == XK_Shift_L ) || ( x == XK_Shift_R ) )
-#define is_shavian_key( x ) ( ( XK_A <= x ) && ( x <= XK_Z ) )
-#define to_keysym( x )      ( ( x >= XK_peep ) ? ( x + 0x1000000 ) : x )
+#define is_modifier( x )    ( ( XK_Shift_L <= ( x ) ) && ( ( x ) <= XK_Hyper_R ) )
+#define is_shift( x )       ( ( ( x ) == XK_Shift_L ) || ( x == XK_Shift_R ) )
+#define is_shavian_key( x ) ( ( XK_A <= ( x ) ) && ( x <= XK_Z ) )
+#define to_keysym( x )      ( ( ( x ) >= XK_peep ) ? ( ( x ) + 0x1000000 ) : x )
 
 struct keysym_entry
 {
