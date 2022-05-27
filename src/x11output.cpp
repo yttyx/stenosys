@@ -31,6 +31,7 @@ extern C_log log;
 
 C_x11_output::C_x11_output()
     : shavian_( false )
+    , shift_( false )
     , display_( nullptr )
 {
 }
@@ -105,51 +106,72 @@ C_x11_output::send( const std::string & str )
 void
 C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
-    // Check for the scancode used for the Latin/Shavian alphabet switch
-
-    if ( scancode == 51 ) /* Comma for test, final scancode TBD */
+    if ( scancode > 0x7f )
     {
-        toggle_shavian();
         return;
     }
 
+    // Check for the scancode used for the Latin/Shavian alphabet switch
+    if ( scancode == 51 )
+    {
+        if ( key_event == KEY_EV_DOWN ) /* Comma for test, final scancode TBD */
+        {
+            toggle_shavian();
+        }
+
+        return;
+    }
+
+    KeySym keysym = scancode_to_keysym[ scancode ];
+
+    if ( is_shift( keysym ) )
+    {
+        shift_ = ( key_event == KEY_EV_DOWN );
+    }
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "scancode: %02xh", scancode );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym  : %04xh", keysym );
+
     if ( shavian_ )
     {
-
-
-    }
-    else if ( scancode <= 0x7f )
-    {
-        // Latin alphabet mode
-        //
-        // Convert scancode to ASCII
-        KeySym keysym = scancode_to_keysym[ scancode ];
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "scancode: %02xh, keysym: %04xh", scancode, keysym );
-
-        if ( keysym != 0 )
+        if ( is_shavian_key( keysym ) )
         {
-            KeyCode keycode = XKeysymToKeycode( display_, keysym );
-         
-            if ( keycode != 0 )
-            {
-                XTestGrabControl( display_, True );
+            unsigned long index = keysym - XK_A;
 
-                // Generate regular key press and release
-                if ( key_event == KEY_EV_DOWN )
-                {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key down, keycode: %d", keycode );
-                    XTestFakeKeyEvent( display_, keycode, True, 0 );
-                }
-                else if ( key_event == KEY_EV_UP )
-                {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key up, keycode: %d", keycode );
-                    XTestFakeKeyEvent( display_, keycode, False, 0 ); 
-                } 
-             
-                XSync( display_, False );
-                XTestGrabControl( display_, False );
+            if ( shift_ )
+            {
+                index += 26;
             }
+
+            keysym = shavian_keysym[ index ];
+            
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "index   : %d", index );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym  : %04xh (Shavian)", keysym );
+        }
+    }
+
+    if ( keysym != 0 )
+    {
+        KeyCode keycode = XKeysymToKeycode( display_, keysym );
+     
+        if ( keycode != 0 )
+        {
+            XTestGrabControl( display_, True );
+
+            // Generate regular key press and release
+            if ( key_event == KEY_EV_DOWN )
+            {
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keycode: %d (key down)", keycode );
+                XTestFakeKeyEvent( display_, keycode, True, 0 );
+            }
+            else if ( key_event == KEY_EV_UP )
+            {
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keycode: %d (key up )", keycode );
+                XTestFakeKeyEvent( display_, keycode, False, 0 ); 
+            } 
+         
+            XSync( display_, False );
+            XTestGrabControl( display_, False );
         }
     }
 }
@@ -584,7 +606,7 @@ C_x11_output::ascii_to_keysym[] =
 };
 
 KeySym
-C_x11_output::scancode_to_shavian_keysym[] =
+C_x11_output::shavian_keysym[] =
 {
                     // ASCII
     XK_ash          // a
@@ -602,7 +624,7 @@ C_x11_output::scancode_to_shavian_keysym[] =
 ,   XK_mime         // m
 ,   XK_thigh        // n
 ,   XK_on           // o 
-    XK_peep         // p
+,   XK_peep         // p
 ,   XK_yea          // q
 ,   XK_out          // r
 ,   XK_sure         // s 
@@ -613,7 +635,6 @@ C_x11_output::scancode_to_shavian_keysym[] =
 ,   XK_namingdot    // x
 ,   XK_wool         // y
 ,   0               // z disabled
-
 ,   XK_age          // A
 ,   XK_yew          // B
 ,   XK_or           // D
@@ -640,7 +661,6 @@ C_x11_output::scancode_to_shavian_keysym[] =
 ,   XK_namingdot    // X
 ,   XK_ooze         // Y
 ,   0               // Z disabled
-
 };
 
 // Array of symkey strings whose references to keycodes in the keyboard
