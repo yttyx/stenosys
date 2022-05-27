@@ -25,7 +25,10 @@ public:
     virtual void
     send( key_event_t key_event, uint8_t scancode ) = 0;
     
-        virtual void
+    virtual void
+    toggle_shavian() = 0;
+    
+    virtual void
     test() = 0;
 
 private:

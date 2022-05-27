@@ -30,6 +30,8 @@ extern C_log log;
 
 
 C_x11_output::C_x11_output()
+    : shavian_( false )
+    , display_( nullptr )
 {
 }
 
@@ -53,6 +55,12 @@ C_x11_output::initialise()
     }
 
     return display_ != NULL;
+}
+
+void
+C_x11_output::toggle_shavian()
+{
+    shavian_ = ! shavian_;
 }
 
 void
