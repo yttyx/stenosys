@@ -15,6 +15,7 @@
 #include "keyevent.h"
 #include "log.h"
 #include "miscellaneous.h"
+#include "shaviankeysymdefs.h"
 #include "utf8.h"
 #include "x11output.h"
 

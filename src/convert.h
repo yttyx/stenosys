@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "dictionary.h"
-#include "shavian_dictionary.h"
+#include "shaviandictionary.h"
 
 
 using namespace stenosys;

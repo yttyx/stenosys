@@ -50,7 +50,7 @@ C_formatter::format( alphabet_type     alphabet_mode
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous: %d",   attach_to_previous );
 
     // Attach to the next stroke's output?
-    bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
+    //bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
 
     std::string formatted = latin_mode ? latin : shavian;
     

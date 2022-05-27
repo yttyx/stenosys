@@ -5,7 +5,6 @@
 #include <memory>
 #include <unordered_map>
 
-#include "shavian_dictionary.h"
 #include "textfile.h"
 
 namespace stenosys

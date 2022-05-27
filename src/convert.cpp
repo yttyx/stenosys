@@ -12,7 +12,7 @@
 #include "dictionary.h"
 #include "keyboard.h"
 #include "miscellaneous.h"
-#include "shavian_dictionary.h"
+#include "shaviandictionary.h"
 #include "log.h"
 #include "utf8.h"
 
