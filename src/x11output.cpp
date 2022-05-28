@@ -778,7 +778,6 @@ const char * C_x11_output::XF86_symstrings[] =
 ,   "XF86Game" 
 ,   "XF86Go" 
 ,   "XF86HomePage" 
-,   "XF86HomePage" 
 ,   "XF86Launch1"
 ,   "XF86Launch2"
 ,   "XF86Launch3"
