@@ -90,9 +90,20 @@ C_x11_output::send( const std::string & str )
             {
                 if ( is_shavian_code( code ) )
                 {
-                    //code = to_keysym( code );
+                    if ( code == XK_namingdot )
+                    {
+                        code = to_keysym( code );
 
-                    send_key( code, 0 );
+                        send_key( to_keysym( code ) , 0 );
+                    }
+                    else
+                    {
+                        int index = code - XK_peep;
+
+                        keysym_entry * entry = &shavian_to_keysym[ index ];
+
+                        send_key( to_keysym( entry->keysym1 ), entry->keysym2 );
+                    }
                 }
             }
 
