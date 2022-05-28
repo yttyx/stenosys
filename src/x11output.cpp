@@ -32,8 +32,10 @@ extern C_log log;
 C_x11_output::C_x11_output()
     : shavian_( false )
     , shift_( false )
+    , shift_prev_( false )
     , display_( nullptr )
 {
+    keysym_replacements_= std::make_unique< std::unordered_map< std::string, shavian_keysym_entry > >();
 }
 
 C_x11_output::~C_x11_output()
@@ -127,10 +129,16 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     if ( is_shift( keysym ) )
     {
         shift_ = ( key_event == KEY_EV_DOWN );
+    
+        if ( shift_ != shift_prev_ )
+        {
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Shift   : %s", shift_ ? "UP" : "DOWN" );
+            shift_prev_ = shift_;
+        }
     }
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "scancode: %02xh", scancode );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym  : %04xh", keysym );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "scancode: %02xh", scancode );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym  : %04xh", keysym );
 
     if ( shavian_ )
     {
@@ -145,8 +153,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
 
             keysym = to_keysym( shavian_keysym[ index ] );
             
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "index   : %d", index );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym  : %04xh (Shavian)", keysym );
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "index   : %d", index );
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym  : %04xh (Shavian)", keysym );
         }
     }
 
@@ -161,12 +169,12 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             // Generate regular key press and release
             if ( key_event == KEY_EV_DOWN )
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keycode: %d (key down)", keycode );
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %02xh (key down)", keysym, keycode );
                 XTestFakeKeyEvent( display_, keycode, True, 0 );
             }
             else if ( key_event == KEY_EV_UP )
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keycode: %d (key up )", keycode );
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %02xh (key up)", keysym, keycode );
                 XTestFakeKeyEvent( display_, keycode, False, 0 ); 
             } 
          
@@ -233,11 +241,27 @@ C_x11_output::send_key( KeyCode keycode )
 void
 C_x11_output::set_up_data()
 {
+    int index = 0;
+
     for ( const char ** entry = XF86_symstrings; *entry; entry++ )
     {
-        symstrings_.push_back( std::string( *entry ) );
+
+        keysym_replacements_->insert( std::make_pair( *entry, * ( new shavian_keysym_entry( XK_ash, XK_age ) ) ) );
+    
+
+        keysym_replacements_->insert( std::make_pair( *entry, * ( new shavian_keysym_entry( the_table[ index ].base
+                                                                                          , the_table[ index ].modifier ) ) ) );
+
+
+            //symstrings_.push_back( std::string( *entry ) );
     }
-}
+
+    keysym_replacements_->insert( std::make_pair( "XF86AudioMicMute", * ( new shavian_keysym_entry( XK_ash, XK_age ) ) ) );
+    
+
+    //keysym_replacements_->insert( std::make_pair( "", * ( new shavian_keysym_entry( XK_, XK_ ) ) ) );
+};
+
 
 void
 C_x11_output::find_unused_keycodes()
@@ -272,13 +296,16 @@ C_x11_output::find_unused_keycodes()
 
     bool done = false;
 
+    //TEMP
+    int unassigned_count = 0;
+
     for ( int keycode = keycode_low; ( keycode <= keycode_high ) && ( ! done ); keycode++)
     {
         for ( int sym_count = 0; sym_count < keysyms_per_keycode; sym_count++ )
         {
-            int sym_index = ( keycode - keycode_low) * keysyms_per_keycode + sym_count;
+            int sym_index = ( ( keycode - keycode_low ) * keysyms_per_keycode ) + sym_count;
 
-            KeySym keysym= keysyms[ sym_index ];
+            KeySym keysym = keysyms[ sym_index ];
 
             const char * keysymstring = XKeysymToString( keysym ); 
 
@@ -293,7 +320,7 @@ C_x11_output::find_unused_keycodes()
                         // Found an entry we can repurpose for Shavian
                         std::string shavian_xstring = format_string("U%05x", shavian );
 
-                        KeySym shavian_sym   = XStringToKeysym( shavian_xstring.c_str() );
+                        KeySym shavian_sym = XStringToKeysym( shavian_xstring.c_str() );
 
                         //TODO Dynamically set size of keysym_list using keysyms_per_keycode
                         KeySym keysym_list[] = { shavian_sym
@@ -329,10 +356,15 @@ C_x11_output::find_unused_keycodes()
                 }
                 // TODO? We don't currentry make use of keycodes that have no associated KeySyms,
                 //       but we could
-                // if ( keysymstring == nullptr ) ...
+                if ( keysymstring == nullptr )
+                {
+                    unassigned_count++;
+                }
             }
         }
     }
+    
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "unassigned_count: %d", unassigned_count );
     
     XFree( keysyms );
     XFlush( display_ );
@@ -637,8 +669,8 @@ C_x11_output::shavian_keysym[] =
 ,   0               // z disabled
 ,   XK_age          // A
 ,   XK_yew          // B
-,   XK_or           // D
 ,   XK_gag          // C
+,   XK_or           // D
 ,   XK_eat          // E
 ,   XK_vow          // F
 ,   XK_ear          // G
@@ -664,7 +696,14 @@ C_x11_output::shavian_keysym[] =
 };
 
 // Array of symkey strings whose references to keycodes in the keyboard
-// will have Shavian code point substituted in their stead.
+// will have Shavian code point substituted.
+
+
+const keysym_entry C_x11_output::the_table[] =
+{
+    { XK_ash, XK_ian }
+};
+
 const char * C_x11_output::XF86_symstrings[] =
 {
     "XF86AudioMicMute" 
@@ -693,32 +732,34 @@ const char * C_x11_output::XF86_symstrings[] =
 ,   "XF86Launch8"
 ,   "XF86Launch9"
 ,   "XF86LaunchA"
-,   "XF86LaunchB"
-,   "XF86Mail" 
-,   "XF86Mail" 
-,   "XF86MailForward" 
-,   "XF86Messenger" 
-,   "XF86MonBrightnessCycle" 
-,   "XF86MyComputer" 
-,   "XF86New" 
-,   "XF86Next_VMode" 
-,   "XF86Prev_VMode" 
-,   "XF86Reply" 
-,   "XF86Save" 
-,   "XF86ScreenSaver" 
-,   "XF86Search" 
-,   "XF86Send" 
-,   "XF86Shop" 
-,   "XF86Tools" 
-,   "XF86TouchpadOff" 
-,   "XF86TouchpadOn" 
-,   "XF86TouchpadToggle" 
-,   "XF86WLAN" 
-,   "XF86WWW" 
-,   "XF86WebCam" 
-,   "XF86Xfer" 
-,   nullptr
 };
+
+//,   "XF86LaunchB"
+//,   "XF86Mail" 
+//,   "XF86Mail" 
+//,   "XF86MailForward" 
+//,   "XF86Messenger" 
+//,   "XF86MonBrightnessCycle" 
+//,   "XF86MyComputer" 
+//,   "XF86New" 
+//,   "XF86Next_VMode" 
+//,   "XF86Prev_VMode" 
+//,   "XF86Reply" 
+//,   "XF86Save" 
+//,   "XF86ScreenSaver" 
+//,   "XF86Search" 
+//,   "XF86Send" 
+//,   "XF86Shop" 
+//,   "XF86Tools" 
+//,   "XF86TouchpadOff" 
+//,   "XF86TouchpadOn" 
+//,   "XF86TouchpadToggle" 
+//,   "XF86WLAN" 
+//,   "XF86WWW" 
+//,   "XF86WebCam" 
+//,   "XF86Xfer" 
+//,   nullptr
+//};
 
 void
 C_x11_output::test()

@@ -3,9 +3,11 @@
 
 #include "keyevent.h"
 #include "stdarg.h"
-#include <X11/X.h>
 #include <cstdint>
+#include <memory>
 #include <string>
+#include <unordered_map>
+#include <X11/X.h>
 
 #include <X11/Xlib.h>
 #include <X11/Intrinsic.h>
@@ -29,6 +31,16 @@ struct keysym_entry
     KeySym modifier;
 };
 
+class shavian_keysym_entry
+{
+
+public:
+
+    shavian_keysym_entry( KeySym base, KeySym shifted ) { base_ = base; shifted_ = shifted; }
+
+    KeySym base_;
+    KeySym shifted_;
+};
 
 class C_x11_output : public C_outputter
 {
@@ -76,9 +88,12 @@ private:
                     //   true:  shavian alphabet
                     //   false: latin alphabet
     bool shift_;    // used in typed Shavian mode
+    bool shift_prev_;    // used in typed Shavian mode
 
     Display * display_;
 
+    std::unique_ptr< std::unordered_map< std::string, shavian_keysym_entry > > keysym_replacements_;
+    
     std::vector< std::string > symstrings_;
 
     static keysym_entry ascii_to_keysym[];
@@ -86,6 +101,8 @@ private:
     static const char * XF86_symstrings[];
     static KeySym       scancode_to_keysym[];
     static KeySym       shavian_keysym[];
+
+    static const keysym_entry the_table[];
 };
 
 }

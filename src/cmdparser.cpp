@@ -1,3 +1,4 @@
+#include <cstring>
 #include <iostream>
 #include <string>
 #include <regex>
@@ -94,10 +95,10 @@ C_command_parser::parse_command( const std::string & text_in, std::string & text
         std::smatch match;
 
         //DEBUG
-        if ( text_in.find( "{^}-{^}" ) != std::string::npos )
-        {
-            trace = true;
-        }
+        //if ( text_in.find( "{^}-{^}" ) != std::string::npos )
+        //{
+            //trace = true;
+        //}
 
         if ( trace )
         {
