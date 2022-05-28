@@ -141,11 +141,6 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
         {
             unsigned long index = keysym - XK_A;
 
-            //if ( shift_ )
-            //{
-                //index += 26;
-            //}
-
             keysym = to_keysym( shavian_keysym[ index ] );
             
             //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "index   : %d", index );
@@ -635,7 +630,63 @@ C_x11_output::ascii_to_keysym[] =
 ,   { XK_asciitilde,   XK_Shift_L }     // 007e  /* U+007E TILDE */
 };
 
-KeySym
+keysym_entry
+C_x11_output::shavian_to_keysym[] =
+{
+    { XK_peep,         0          }
+,   { XK_tot,          0          }
+,   { XK_kick,         0          }
+,   { XK_fee,          0          }
+,   { XK_thigh,        0          }
+,   { XK_so,           0          }
+,   { XK_sure,         0          }
+,   { XK_church,       0          }
+,   { XK_yea,          0          }
+,   { XK_hung,         0          }
+,   { XK_bib,          0          }
+,   { XK_dead,         XK_Shift_L }
+,   { XK_gag,          XK_Shift_L }
+,   { XK_vow,          XK_Shift_L }
+,   { XK_they,         XK_Shift_L }
+,   { XK_zoo,          XK_Shift_L }
+
+,   { XK_measure,      XK_Shift_L }
+,   { XK_judge,        XK_Shift_L }
+,   { XK_woe,          XK_Shift_L }
+,   { XK_haha,         XK_Shift_L }
+,   { XK_loll,         0          }
+,   { XK_mime,         0          }
+,   { XK_if,           0          }
+,   { XK_egg,          0          }
+,   { XK_ash,          0          }
+,   { XK_ado,          0          }
+,   { XK_on,           0          }
+,   { XK_wool,         0          }
+,   { XK_out,          0          }
+,   { XK_ah,           0          }
+,   { XK_roar,         XK_Shift_L }
+,   { XK_none,         XK_Shift_L }
+
+,   { XK_eat,          XK_Shift_L }
+,   { XK_age,          XK_Shift_L }
+,   { XK_ice,          XK_Shift_L }
+,   { XK_up,           XK_Shift_L }
+,   { XK_oak,          XK_Shift_L }
+,   { XK_ooze,         XK_Shift_L }
+,   { XK_oil,          XK_Shift_L }
+,   { XK_awe,          XK_Shift_L }
+,   { XK_are,          0          }
+,   { XK_or,           XK_Shift_L }
+,   { XK_air,          0          }
+,   { XK_urge,         XK_Shift_L }
+,   { XK_array,        0          }
+,   { XK_ear,          XK_Shift_L }
+,   { XK_ian,          0          }
+,   { XK_yew,          XK_Shift_L }
+};
+
+// Shavian keysyms in their unshifted form
+const KeySym
 C_x11_output::shavian_keysym[] =
 {
                     // ASCII
@@ -665,35 +716,10 @@ C_x11_output::shavian_keysym[] =
 ,   XK_namingdot    // x
 ,   XK_wool         // y
 ,   0               // z disabled
-,   XK_age          // A
-,   XK_yew          // B
-,   XK_gag          // C
-,   XK_or           // D
-,   XK_eat          // E
-,   XK_vow          // F
-,   XK_ear          // G
-,   XK_zoo          // H
-,   XK_ice          // I
-,   XK_judge        // J
-,   XK_awe          // K
-,   XK_roar         // L
-,   XK_none         // M
-,   XK_they         // N
-,   XK_oak          // O
-,   XK_bib          // P 
-,   XK_woe          // Q
-,   XK_oil          // R
-,   XK_measure      // S
-,   XK_dead         // T
-,   XK_up           // U
-,   XK_haha         // V
-,   XK_urge         // W
-,   XK_namingdot    // X
-,   XK_ooze         // Y
-,   0               // Z disabled
 };
 
-const keysym_entry C_x11_output::shavian_keysyms[] =
+const keysym_entry
+C_x11_output::shavian_keysyms[] =
 {
     { XK_ash,       XK_age       }
 ,   { XK_ian,       XK_yew       }
@@ -719,7 +745,7 @@ const keysym_entry C_x11_output::shavian_keysyms[] =
 ,   { XK_hung,      XK_haha      }
 ,   { XK_air,       XK_urge      }
 ,   { XK_namingdot, XK_namingdot }
-,   { XK_wool, XK_ooze           }
+,   { XK_wool,      XK_ooze      }
 };
 
 // Array of symkey strings whose references to keycodes in the keyboard

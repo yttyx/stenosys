@@ -110,11 +110,13 @@ private:
     std::vector< std::string > symstrings_;
 
     static keysym_entry ascii_to_keysym[];
+    static keysym_entry shavian_to_keysym[];
+
     static keysym_entry ascii_to_shavian_keysym[];
     static const char * XF86_symstrings[];
     static KeySym       scancode_to_keysym[];
-    static KeySym       shavian_keysym[];
 
+    static const KeySym       shavian_keysym[];
     static const keysym_entry shavian_keysyms[];
 };
 
