@@ -27,19 +27,20 @@ namespace stenosys
 
 struct keysym_entry
 {
-    KeySym base;
-    KeySym modifier;
-};
+    keysym_entry()
+    {
+        keysym1 = 0;
+        keysym2 = 0;
+    }
+    
+    keysym_entry( KeySym ks1, KeySym ks2 )
+    {
+        keysym1 = ks1;
+        keysym2 = ks2;
+    }
 
-class shavian_keysym_entry
-{
-
-public:
-
-    shavian_keysym_entry( KeySym base, KeySym shifted ) { base_ = base; shifted_ = shifted; }
-
-    KeySym base_;
-    KeySym shifted_;
+    KeySym keysym1;
+    KeySym keysym2;
 };
 
 class C_x11_output : public C_outputter
@@ -68,7 +69,7 @@ private:
     set_up_data();
     
     void
-    find_unused_keycodes();
+    set_shavian_keysyms();
 
     //virtual std::string
     //format( const std::string & text );
@@ -92,7 +93,7 @@ private:
 
     Display * display_;
 
-    std::unique_ptr< std::unordered_map< std::string, shavian_keysym_entry > > keysym_replacements_;
+    std::unique_ptr< std::unordered_map< std::string, keysym_entry > > keysym_replacements_;
     
     std::vector< std::string > symstrings_;
 
@@ -102,7 +103,7 @@ private:
     static KeySym       scancode_to_keysym[];
     static KeySym       shavian_keysym[];
 
-    static const keysym_entry the_table[];
+    static const keysym_entry shavian_keysyms[];
 };
 
 }

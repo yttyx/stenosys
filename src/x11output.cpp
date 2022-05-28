@@ -35,7 +35,7 @@ C_x11_output::C_x11_output()
     , shift_prev_( false )
     , display_( nullptr )
 {
-    keysym_replacements_= std::make_unique< std::unordered_map< std::string, shavian_keysym_entry > >();
+    keysym_replacements_= std::make_unique< std::unordered_map< std::string, keysym_entry > >();
 }
 
 C_x11_output::~C_x11_output()
@@ -54,7 +54,7 @@ C_x11_output::initialise()
     if ( display_ != NULL )
     {
         set_up_data();
-        find_unused_keycodes();
+        set_shavian_keysyms();
     }
 
     return display_ != NULL;
@@ -81,9 +81,9 @@ C_x11_output::send( const std::string & str )
             {
                 keysym_entry * entry = &ascii_to_keysym[ ( ( int ) code ) ];
 
-                if ( entry->base != 0 )
+                if ( entry->keysym1 != 0 )
                 {
-                    send_key( entry->base, entry->modifier );
+                    send_key( entry->keysym1, entry->keysym2 );
                 }
             }
             else
@@ -246,25 +246,18 @@ C_x11_output::set_up_data()
     for ( const char ** entry = XF86_symstrings; *entry; entry++ )
     {
 
-        keysym_replacements_->insert( std::make_pair( *entry, * ( new shavian_keysym_entry( XK_ash, XK_age ) ) ) );
-    
+        keysym_entry * ks_entry = new keysym_entry(); 
 
-        keysym_replacements_->insert( std::make_pair( *entry, * ( new shavian_keysym_entry( the_table[ index ].base
-                                                                                          , the_table[ index ].modifier ) ) ) );
+        ks_entry->keysym1 = shavian_keysyms[ index ].keysym1;
+        ks_entry->keysym2 = shavian_keysyms[ index ].keysym2;
 
 
-            //symstrings_.push_back( std::string( *entry ) );
+        keysym_replacements_->insert( std::make_pair( *entry, *ks_entry ) );
     }
-
-    keysym_replacements_->insert( std::make_pair( "XF86AudioMicMute", * ( new shavian_keysym_entry( XK_ash, XK_age ) ) ) );
-    
-
-    //keysym_replacements_->insert( std::make_pair( "", * ( new shavian_keysym_entry( XK_, XK_ ) ) ) );
 };
 
-
 void
-C_x11_output::find_unused_keycodes()
+C_x11_output::set_shavian_keysyms()
 {
     // Check whether a Shavian KeySym has already been set up
     int keycode = XKeysymToKeycode( display_, to_keysym( XK_peep ) );
@@ -313,23 +306,27 @@ C_x11_output::find_unused_keycodes()
             {
                 if ( keysymstring != nullptr )
                 {
-                    std::string entry( keysymstring );
+                    //std::string entry( keysymstring );
 
-                    if ( std::find( symstrings_.begin(), symstrings_.end(), entry ) != symstrings_.end() )
+                    auto result = keysym_replacements_->find( keysymstring );
+
+                    if ( result != keysym_replacements_->end() )
                     {
                         // Found an entry we can repurpose for Shavian
-                        std::string shavian_xstring = format_string("U%05x", shavian );
+                        shavian = result->second.keysym1;
 
-                        KeySym shavian_sym = XStringToKeysym( shavian_xstring.c_str() );
+                        //std::string shavian_xstring = format_string("U%05x", shavian );
+
+                        //KeySym shavian_sym = XStringToKeysym( shavian_xstring.c_str() );
 
                         //TODO Dynamically set size of keysym_list using keysyms_per_keycode
-                        KeySym keysym_list[] = { shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym
-                                               , shavian_sym };
+                        KeySym keysym_list[] = { to_keysym( result->second.keysym1 )
+                                               , to_keysym( result->second.keysym2 )
+                                               , NoSymbol
+                                               , NoSymbol
+                                               , NoSymbol
+                                               , NoSymbol
+                                               , NoSymbol };
 
                         //TODO Save original keymap so we can restore it on program exit
                         XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
@@ -695,15 +692,37 @@ C_x11_output::shavian_keysym[] =
 ,   0               // Z disabled
 };
 
-// Array of symkey strings whose references to keycodes in the keyboard
-// will have Shavian code point substituted.
-
-
-const keysym_entry C_x11_output::the_table[] =
+const keysym_entry C_x11_output::shavian_keysyms[] =
 {
-    { XK_ash, XK_ian }
+    { XK_ash,       XK_age       }
+,   { XK_ian,       XK_yew       }
+,   { XK_kick,      XK_gag       }
+,   { XK_are,       XK_or        }
+,   { XK_egg,       XK_eat       }
+,   { XK_fee,       XK_vow       }
+,   { XK_array,     XK_ear       }
+,   { XK_so,        XK_zoo       }
+,   { XK_if,        XK_ice       }
+,   { XK_church,    XK_judge     }
+,   { XK_ah,        XK_awe       }
+,   { XK_loll,      XK_roar      }
+,   { XK_mime,      XK_none      }
+,   { XK_thigh,     XK_they      }
+,   { XK_on,        XK_oak       }
+,   { XK_peep,      XK_bib       }
+,   { XK_yea,       XK_woe       }
+,   { XK_out,       XK_oil       }
+,   { XK_sure,      XK_measure   }
+,   { XK_tot,       XK_dead      }
+,   { XK_ado,       XK_up        }
+,   { XK_hung,      XK_haha      }
+,   { XK_air,       XK_urge      }
+,   { XK_namingdot, XK_namingdot }
+,   { XK_wool, XK_ooze           }
 };
 
+// Array of symkey strings whose references to keycodes in the keyboard
+// will have Shavian code point substituted.
 const char * C_x11_output::XF86_symstrings[] =
 {
     "XF86AudioMicMute" 
@@ -732,6 +751,7 @@ const char * C_x11_output::XF86_symstrings[] =
 ,   "XF86Launch8"
 ,   "XF86Launch9"
 ,   "XF86LaunchA"
+,   nullptr
 };
 
 //,   "XF86LaunchB"
