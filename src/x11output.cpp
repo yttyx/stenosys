@@ -88,17 +88,12 @@ C_x11_output::send( const std::string & str )
             }
             else
             {
-                // From keysymdef.h:
-                // "For any future extension of the keysyms with characters already
-                //  found in ISO 10646 / Unicode, the following algorithm shall be
-                //  used. The new keysym code position will simply be the character's
-                //  Unicode number plus 0x01000000. The keysym values in the range
-                //  0x01000100 to 0x0110ffff are reserved to represent Unicode"
-                //
-                // 0x10450 is the base value of the Shavian code block
-                code = to_keysym( code );
+                if ( is_shavian_code( code ) )
+                {
+                    //code = to_keysym( code );
 
-                send_key( code, 0 );
+                    send_key( code, 0 );
+                }
             }
 
         } while ( utf8_str.get_next( code ) );
@@ -115,8 +110,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
 
     // Check for the scancode used for the Latin/Shavian alphabet switch
     if ( scancode == 51 )
-    {
-        if ( key_event == KEY_EV_DOWN ) /* Comma for test, final scancode TBD */
+    { 
+        if ( key_event == KEY_EV_DOWN ) //TODO Comma for test, final scancode TBD
         {
             toggle_shavian();
         }

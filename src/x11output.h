@@ -23,7 +23,19 @@ namespace stenosys
 #define is_modifier( x )    ( ( XK_Shift_L <= ( x ) ) && ( ( x ) <= XK_Hyper_R ) )
 #define is_shift( x )       ( ( ( x ) == XK_Shift_L ) || ( x == XK_Shift_R ) )
 #define is_shavian_key( x ) ( ( XK_A <= ( x ) ) && ( x <= XK_Z ) )
-#define to_keysym( x )      ( ( ( x ) >= XK_peep ) ? ( ( x ) + 0x1000000 ) : x )
+
+#define is_shavian_code( x ) ( ( ( XK_peep <= ( x ) ) && ( x <= XK_yew ) ) || \
+                               ( x == XK_namingdot ) )
+
+// From keysymdef.h:
+// "For any future extension of the keysyms with characters already
+//  found in ISO 10646 / Unicode, the following algorithm shall be
+//  used. The new keysym code position will simply be the character's
+//  Unicode number plus 0x01000000. The keysym values in the range
+//  0x01000100 to 0x0110ffff are reserved to represent Unicode"
+//
+// 0x10450 is the base value of the Shavian code block
+#define to_keysym( x ) ( ( ( x ) >= XK_peep ) ? ( ( x ) + 0x1000000 ) : x )
 
 struct keysym_entry
 {
