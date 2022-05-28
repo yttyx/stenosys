@@ -146,10 +146,10 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
         {
             unsigned long index = keysym - XK_A;
 
-            if ( shift_ )
-            {
-                index += 26;
-            }
+            //if ( shift_ )
+            //{
+                //index += 26;
+            //}
 
             keysym = to_keysym( shavian_keysym[ index ] );
             
@@ -245,14 +245,13 @@ C_x11_output::set_up_data()
 
     for ( const char ** entry = XF86_symstrings; *entry; entry++ )
     {
-
         keysym_entry * ks_entry = new keysym_entry(); 
 
         ks_entry->keysym1 = shavian_keysyms[ index ].keysym1;
         ks_entry->keysym2 = shavian_keysyms[ index ].keysym2;
 
-
         keysym_replacements_->insert( std::make_pair( *entry, *ks_entry ) );
+        index++;
     }
 };
 
@@ -280,7 +279,7 @@ C_x11_output::set_shavian_keysyms()
     // Get all of the available mapped keysyms
     keysyms = XGetKeyboardMapping( display_, keycode_low, keycode_high - keycode_low, &keysyms_per_keycode);
 
-    uint32_t shavian = XK_peep;
+    //uint32_t shavian = XK_peep;
 
     // Loop through the keycodes and look for keysyms associated with each keycode
     // that can be set to use Shavian keysyms instead.
@@ -313,11 +312,18 @@ C_x11_output::set_shavian_keysyms()
                     if ( result != keysym_replacements_->end() )
                     {
                         // Found an entry we can repurpose for Shavian
-                        shavian = result->second.keysym1;
+                        //shavian = result->second.keysym1;
 
                         //std::string shavian_xstring = format_string("U%05x", shavian );
 
                         //KeySym shavian_sym = XStringToKeysym( shavian_xstring.c_str() );
+
+                        //TEMP
+                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "str: %s, ks1: %xh, ks2: %xh"
+                                                                   , keysymstring
+                                                                   , to_keysym( result->second.keysym1 )
+                                                                   , to_keysym( result->second.keysym2 ) );
+
 
                         //TODO Dynamically set size of keysym_list using keysyms_per_keycode
                         KeySym keysym_list[] = { to_keysym( result->second.keysym1 )
@@ -331,22 +337,22 @@ C_x11_output::set_shavian_keysyms()
                         //TODO Save original keymap so we can restore it on program exit
                         XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
 
-                        if ( shavian == XK_namingdot )
-                        {
-                            // We're done
-                            done = true;
-                        }
-                        else {
+                        //if ( shavian == XK_namingdot )
+                        //{
+                            //// We're done
+                            //done = true;
+                        //}
+                        //else {
 
-                            shavian++;
+                            //shavian++;
 
-                            if ( shavian > XK_yew )
-                            {
-                                // Shavian alphabet is done, just need to set the middle dot
-                                // in the next available slot.
-                                shavian = XK_namingdot;
-                            }
-                        }
+                            //if ( shavian > XK_yew )
+                            //{
+                                //// Shavian alphabet is done, just need to set the middle dot
+                                //// in the next available slot.
+                                //shavian = XK_namingdot;
+                            //}
+                        //}
 
                         break;
                     }
