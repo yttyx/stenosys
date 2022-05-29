@@ -285,12 +285,11 @@ C_x11_output::set_shavian_keysyms()
     // XF86_symstrings contains a list of keysym strings which seem like good candidates
     // for re-use (they will become unavailable for their original purpose).
 
-    bool done      = false;
-    int  sym_count = 0;
+    bool done = false;
 
     for ( int keycode = keycode_low; ( keycode <= keycode_high ) && ( ! done ); keycode++ )
     {
-        int sym_index = ( ( keycode - keycode_low ) * keysyms_per_keycode ) + sym_count;
+        int sym_index = ( ( keycode - keycode_low ) * keysyms_per_keycode );
 
         KeySym keysym = keysyms[ sym_index ];
 
@@ -318,11 +317,8 @@ C_x11_output::set_shavian_keysyms()
 
                 //TODO Save original keymap so we can restore it on program exit
                 XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
-                break;
             }
         }
-
-        sym_count += keysyms_per_keycode;
     }
     
     XFree( keysyms );
