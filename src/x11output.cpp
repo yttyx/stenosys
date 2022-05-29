@@ -138,13 +138,9 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     
         if ( shift_ != shift_prev_ )
         {
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Shift   : %s", shift_ ? "UP" : "DOWN" );
             shift_prev_ = shift_;
         }
     }
-
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "scancode: %02xh", scancode );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym  : %04xh", keysym );
 
     if ( shavian_ )
     {
@@ -153,9 +149,6 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             unsigned long index = keysym - XK_A;
 
             keysym = to_keysym( shavian_keysym[ index ] );
-            
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "index   : %d", index );
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym  : %04xh (Shavian)", keysym );
         }
     }
 
@@ -170,12 +163,12 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             // Generate regular key press and release
             if ( key_event == KEY_EV_DOWN )
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %02xh (key down)", keysym, keycode );
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %02xh (key down)", keysym, keycode );
                 XTestFakeKeyEvent( display_, keycode, True, 0 );
             }
             else if ( key_event == KEY_EV_UP )
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %02xh (key up)", keysym, keycode );
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %02xh (key up)", keysym, keycode );
                 XTestFakeKeyEvent( display_, keycode, False, 0 ); 
             } 
          
@@ -301,10 +294,10 @@ C_x11_output::set_shavian_keysyms()
 
             if ( result != keysym_replacements_->end() )
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "str: %s, ks1: %xh, ks2: %xh"
-                                                           , keysymstring
-                                                           , to_keysym( result->second.keysym1 )
-                                                           , to_keysym( result->second.keysym2 ) );
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "str: %s, ks1: %xh, ks2: %xh"
+                                                           //, keysymstring
+                                                           //, to_keysym( result->second.keysym1 )
+                                                           //, to_keysym( result->second.keysym2 ) );
 
                 // Found an entry we can repurpose for Shavian
                 KeySym keysym_list[] = { to_keysym( result->second.keysym1 )
@@ -742,33 +735,6 @@ const char * C_x11_output::XF86_symstrings[] =
 ,   nullptr
 };
 
-//,   "XF86LaunchB"
-//,   "XF86Mail" 
-//,   "XF86Mail" 
-//,   "XF86MailForward" 
-//,   "XF86Messenger" 
-//,   "XF86MonBrightnessCycle" 
-//,   "XF86MyComputer" 
-//,   "XF86New" 
-//,   "XF86Next_VMode" 
-//,   "XF86Prev_VMode" 
-//,   "XF86Reply" 
-//,   "XF86Save" 
-//,   "XF86ScreenSaver" 
-//,   "XF86Search" 
-//,   "XF86Send" 
-//,   "XF86Shop" 
-//,   "XF86Tools" 
-//,   "XF86TouchpadOff" 
-//,   "XF86TouchpadOn" 
-//,   "XF86TouchpadToggle" 
-//,   "XF86WLAN" 
-//,   "XF86WWW" 
-//,   "XF86WebCam" 
-//,   "XF86Xfer" 
-//,   nullptr
-//};
-
 void
 C_x11_output::test()
 {
@@ -791,7 +757,7 @@ C_x11_output::test()
             // 0x10450 is the base value of the Shavian code block
             if ( code >= 0x10450 )
             {
-                code += 0x1000000;
+                code = to_keysym( code );
             }
 
             send_key( code, 0 );
