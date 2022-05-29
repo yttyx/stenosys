@@ -114,19 +114,19 @@ C_x11_output::send( const std::string & str )
 void
 C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
-    if ( scancode > 0x7f )
-    {
-        return;
-    }
-
     // Check for the scancode used for the Latin/Shavian alphabet switch
-    if ( scancode == 51 )
+    if ( scancode == KC_EXECUTE )
     { 
-        if ( key_event == KEY_EV_DOWN ) //TODO Comma for test, final scancode TBD
+        if ( key_event == KEY_EV_DOWN )
         {
             toggle_shavian();
         }
 
+        return;
+    }
+    
+    if ( scancode > 0x7f )
+    {
         return;
     }
 
