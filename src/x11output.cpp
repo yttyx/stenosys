@@ -645,15 +645,15 @@ const KeySym
 C_x11_output::shavian_keysym[] =
 {
                     // ASCII
-    XK_ash          // a
+    XK_egg          // a
 ,   XK_ian          // b
 ,   XK_kick         // c
-,   XK_are          // d
-,   XK_egg          // e
+,   XK_ash          // d
+,   XK_wool         // e
 ,   XK_fee          // f
 ,   XK_array        // g
-,   XK_so           // h 
-,   XK_if           // i
+,   XK_hung         // h 
+,   XK_ash          // i
 ,   XK_church       // j 
 ,   XK_ah           // k
 ,   XK_loll         // l
@@ -663,28 +663,28 @@ C_x11_output::shavian_keysym[] =
 ,   XK_peep         // p
 ,   XK_yea          // q
 ,   XK_out          // r
-,   XK_sure         // s 
+,   XK_so           // s
 ,   XK_tot          // t
 ,   XK_ado          // u
-,   XK_hung         // v
+,   XK_sure         // v 
 ,   XK_air          // w
 ,   XK_namingdot    // x
-,   XK_wool         // y
-,   0               // z disabled
+,   XK_if           // y
+,   XK_namingdot    // z
 };
 
 const keysym_entry
 C_x11_output::shavian_keysyms[] =
 {
-    { XK_ash,       XK_age       }
+    { XK_ash,       XK_ice       }
 ,   { XK_ian,       XK_yew       }
 ,   { XK_kick,      XK_gag       }
 ,   { XK_are,       XK_or        }
-,   { XK_egg,       XK_eat       }
+,   { XK_egg,       XK_age       }
 ,   { XK_fee,       XK_vow       }
 ,   { XK_array,     XK_ear       }
 ,   { XK_so,        XK_zoo       }
-,   { XK_if,        XK_ice       }
+,   { XK_if,        XK_eat       }
 ,   { XK_church,    XK_judge     }
 ,   { XK_ah,        XK_awe       }
 ,   { XK_loll,      XK_roar      }
