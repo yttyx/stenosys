@@ -648,7 +648,7 @@ C_x11_output::shavian_keysym[] =
     XK_egg          // a
 ,   XK_ian          // b
 ,   XK_kick         // c
-,   XK_ash          // d
+,   XK_are          // d
 ,   XK_wool         // e
 ,   XK_fee          // f
 ,   XK_array        // g
