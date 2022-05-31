@@ -53,7 +53,8 @@ C_strokes::find_best_match( const std::string & steno
 
     std::string key;
 
-    latin = steno;  // Default to the raw steno
+    latin   = steno;  // Default to the raw steno
+    shavian = steno;  //
 
     C_stroke * stroke = nullptr;
 
@@ -69,11 +70,6 @@ C_strokes::find_best_match( const std::string & steno
                                                        //, shavian.c_str()
                                                        //, flags );
 
-            // If there's no Shavian translation, default to normal English
-            if ( shavian.length() == 0 )
-            {
-                shavian = latin;
-            }
 
             history_->curr()->translation( latin );
             history_->curr()->shavian( shavian );
@@ -93,7 +89,6 @@ C_strokes::find_best_match( const std::string & steno
   
     history_->goto_bookmark();
    
-    //flags      = history_->curr()->flags();
     flags_prev = history_->bookmark_prev()->flags();
 
     uint16_t seqnum = 1;
@@ -113,6 +108,12 @@ C_strokes::find_best_match( const std::string & steno
     
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "history_->curr()->extends(): %d"
                                                //, history_->curr()->extends() );
+
+    // If there's no Shavian translation, default to the Latin alphabet version
+    if ( shavian.length() == 0 )
+    {
+        shavian = latin;
+    }
 }
 
 void
