@@ -144,6 +144,18 @@ C_strokes::previous_translation()
     return history_->prev()->translation();
 }
 
+uint16_t
+C_strokes::flags()
+{
+    return history_->curr()->flags();
+}
+
+uint16_t
+C_strokes::flags_prev()
+{
+    return history_->prev()->flags();
+}
+
 bool
 C_strokes::extends()
 {

@@ -32,7 +32,7 @@ std::string
 C_formatter::format( alphabet_type     alphabet_mode
                    , const std::string latin
                    , const std::string shavian
-                   , uint16_t          flags
+                   , uint16_t          flags_curr
                    , uint16_t          flags_prev 
                    , bool              extends )
 {
@@ -40,14 +40,11 @@ C_formatter::format( alphabet_type     alphabet_mode
     bool config_space_before = ( space_mode_ == SP_BEFORE );
     bool config_space_after  = ! config_space_before;
 
-    // Attach to the previous stroke's output?
-    bool attach_to_previous  = ( ( flags_prev   & ATTACH_TO_NEXT )     ||
-                                 ( flags        & ATTACH_TO_PREVIOUS ) ||
-                                 ( ( flags_prev & GLUE ) && ( flags & GLUE ) ) );
-
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags_prev        : %04x", flags_prev );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags             : %04x", flags );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous: %d",   attach_to_previous );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags             : %04x", flags_curr );
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous: %d",
+                                                 attach_to_previous( flags_curr, flags_prev ) );
 
     // Attach to the next stroke's output?
     //bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
@@ -86,14 +83,7 @@ C_formatter::format( alphabet_type     alphabet_mode
             }
         }
 
-        // If configured for space-after we always output a trailing space, so
-        // if attaching to a previous stroke we backspace to remove that space.
-        if ( config_space_after && attach_to_previous )
-        {
-            output += "\b";
-        }
-
-        if ( config_space_before && ( ! attach_to_previous ) )
+        if ( config_space_before && ( ! attach_to_previous( flags_curr, flags_prev ) ) )
         {
             output += ' '; 
         }
@@ -110,7 +100,12 @@ C_formatter::format( alphabet_type     alphabet_mode
 }
 
 std::string
-C_formatter::transition_to( const std::string & prev, const std::string & curr, bool extends, bool undo )
+C_formatter::transition_to( const std::string & prev
+                          , const std::string & curr
+                          , uint16_t            flags_curr
+                          , uint16_t            flags_prev 
+                          , bool                extends
+                          , bool                undo )
 {
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "transition_to -- prev: %s, curr: %s, extends: %d, undo:%d"
                                                //, prev.c_str()
@@ -186,6 +181,13 @@ C_formatter::transition_to( const std::string & prev, const std::string & curr, 
         }
         else
         {
+            // If configured for space-after we would have output a space after the previous
+            // translation, so if attaching to a previous stroke we backspace to remove that space.
+            if ( attach_to_previous( flags_curr, flags_prev ) )
+            {
+                backspaces= "\b";
+            }
+
             // Send the current translation
             difference = curr;
         }
@@ -220,6 +222,16 @@ C_formatter::find_point_of_difference( const std::string & from, const std::stri
     }
 
     return -1;
+}
+
+
+// Attach to the previous stroke's output?
+bool
+C_formatter::attach_to_previous( uint16_t flags_curr, uint16_t flags_prev )
+{
+    return ( ( flags_prev   & ATTACH_TO_NEXT )     ||
+             ( flags_curr   & ATTACH_TO_PREVIOUS ) ||
+             ( ( flags_prev & GLUE ) && ( flags_curr & GLUE ) ) );
 }
 
 }

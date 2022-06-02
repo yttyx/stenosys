@@ -48,6 +48,12 @@ public:
     std::string
     previous_translation();
 
+    uint16_t
+    flags();
+
+    uint16_t
+    flags_prev();
+
     bool
     extends();
 

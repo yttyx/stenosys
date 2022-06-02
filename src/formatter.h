@@ -28,12 +28,17 @@ public:
     format( alphabet_type      alphabet_mode
            , const std::string latin
            , const std::string shavian
-           , uint16_t          flags
+           , uint16_t          flags_curr
            , uint16_t          flags_prev 
            , bool              extends );
     
     std::string
-    transition_to( const std::string & prev, const std::string & curr, bool extends, bool undo );
+    transition_to( const std::string & prev
+                 , const std::string & curr
+                 , uint16_t            flags_curr
+                 , uint16_t            flags_prev 
+                 , bool                extends
+                 , bool                undo );
     
 private:
     
@@ -41,6 +46,9 @@ private:
 
     int 
     find_point_of_difference( const std::string & s1, const std::string & s2 );
+
+    bool
+    attach_to_previous( uint16_t flags_curr, uint16_t flags_prev );
 
 private:
     

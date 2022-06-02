@@ -84,20 +84,19 @@ C_translator::translate( const std::string & steno, std::string & output )
 void
 C_translator::add_stroke( const std::string & steno, std::string & output )
 {
-    uint16_t flags      = 0;
+    uint16_t flags_curr = 0;
     uint16_t flags_prev = 0;
     bool     extends    = false;
 
     std::string latin;
     std::string shavian;
 
-    strokes_->find_best_match( steno, latin, shavian, flags, flags_prev, extends );
+    strokes_->find_best_match( steno, latin, shavian, flags_curr, flags_prev, extends );
 
-    std::string curr = formatter_->format( alphabet_mode_, latin, shavian, flags, flags_prev, extends );
+    std::string curr = formatter_->format( alphabet_mode_, latin, shavian, flags_curr, flags_prev, extends );
 
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "add_stroke()" );
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
-
 
     strokes_->translation( curr );
     
@@ -107,7 +106,7 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev: >>%s<<", ctrl_to_text( prev ).c_str() );
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
 
-    output = formatter_->transition_to( prev, curr, extends, false );
+    output = formatter_->transition_to( prev, curr, flags_curr, flags_prev, extends, false );
     
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: >>%s<<", ctrl_to_text( output ).c_str() );
 }
@@ -123,7 +122,10 @@ C_translator::undo_stroke( std::string & output )
 
         bool extends = strokes_->extends();
 
-        output = formatter_->transition_to( prev, curr, extends, true );
+        uint16_t flags_curr = strokes_->flags();
+        uint16_t flags_prev = strokes_->flags_prev();
+
+        output = formatter_->transition_to( prev, curr, flags_curr, flags_prev, extends, true );
     }
 
     strokes_->undo();
