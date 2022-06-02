@@ -47,8 +47,6 @@ C_translator::initialise( const std::string & dictionary_path )
 void
 C_translator::translate( const std::string & steno, std::string & output )
 {
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translate: steno: %s", steno.c_str() );
-
     if ( steno[ 0 ] == '#' )
     {
         if ( steno == "#A" )
@@ -77,7 +75,8 @@ C_translator::translate( const std::string & steno, std::string & output )
     }
 
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_translator::translate()" );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  steno: %s, output: %s", steno.c_str(), output.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  steno : %s", steno.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: >%s<", ctrl_to_text( output ).c_str() );
 
 }
 
@@ -95,8 +94,8 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
 
     std::string curr = formatter_->format( alphabet_mode_, latin, shavian, flags_curr, flags_prev, extends );
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "add_stroke()" );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
+    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "add_stroke()" );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
 
     strokes_->translation( curr );
     

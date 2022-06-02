@@ -37,14 +37,12 @@ C_formatter::format( alphabet_type     alphabet_mode
                    , bool              extends )
 {
     bool latin_mode          = ( alphabet_mode == AT_LATIN );
-    bool config_space_before = ( space_mode_ == SP_BEFORE );
-    bool config_space_after  = ! config_space_before;
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags_prev        : %04x", flags_prev );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags             : %04x", flags_curr );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags_prev        : %04x", flags_prev );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags             : %04x", flags_curr );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous: %d",
-                                                 attach_to_previous( flags_curr, flags_prev ) );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous: %d",
+                                                 //attach_to_previous( flags_curr, flags_prev ) );
 
     // Attach to the next stroke's output?
     //bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
@@ -83,14 +81,14 @@ C_formatter::format( alphabet_type     alphabet_mode
             }
         }
 
-        if ( config_space_before && ( ! attach_to_previous( flags_curr, flags_prev ) ) )
+        if ( space_before() && ( ! attach_to_previous( flags_curr, flags_prev ) ) )
         {
             output += ' '; 
         }
 
         output += formatted;
 
-        if ( config_space_after )
+        if ( space_after() )
         {
             output += ' ';
         }
@@ -124,8 +122,7 @@ C_formatter::transition_to( const std::string & prev
         //int idx = find_point_of_difference( curr, prev );
         int idx = C_utf8::differs_at( curr, prev );
 
-
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
 
         
         if ( idx >= 0 )
@@ -178,14 +175,42 @@ C_formatter::transition_to( const std::string & prev
             C_utf8 utf8_curr( curr );
 
             backspaces.assign( utf8_curr.length(), '\b' );
+
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Undo: not extending" );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  backspaces.length(): %u", backspaces.length() );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  attach_to_next     : %d", attach_to_next( flags_prev ) );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  attach_to_prev     : %d", attach_to_previous( flags_curr ) );
+
+            if ( space_after() )
+            {
+                // If the previous stroke did not itself have attachment to the current stroke
+                // but the current stroke had attachment to the previous stroke, then we need
+                // to output a space to undo the removal of the space when the current stroke
+                // was formatted.
+                if ( attach_to_previous( flags_curr ) )
+                {
+                    backspaces += " ";
+                }
+            }
+            else
+            {
+                // Space before
+                //
+                //
+                //
+            }
         }
         else
         {
-            // If configured for space-after we would have output a space after the previous
-            // translation, so if attaching to a previous stroke we backspace to remove that space.
-            if ( attach_to_previous( flags_curr, flags_prev ) )
+            if ( space_after() )
             {
-                backspaces= "\b";
+                // If configured for space-after we would have output a space after the previous
+                // translation, so if attaching to a previous stroke we backspace to remove that
+                // space.
+                if ( attach_to_previous( flags_curr, flags_prev ) )
+                {
+                    backspaces= "\b";
+                }
             }
 
             // Send the current translation
@@ -232,6 +257,30 @@ C_formatter::attach_to_previous( uint16_t flags_curr, uint16_t flags_prev )
     return ( ( flags_prev   & ATTACH_TO_NEXT )     ||
              ( flags_curr   & ATTACH_TO_PREVIOUS ) ||
              ( ( flags_prev & GLUE ) && ( flags_curr & GLUE ) ) );
+}
+
+bool
+C_formatter::attach_to_next( uint16_t flags )
+{
+    return flags & ATTACH_TO_NEXT;
+}
+
+bool
+C_formatter::attach_to_previous( uint16_t flags )
+{
+    return flags & ATTACH_TO_PREVIOUS;
+}
+
+bool
+C_formatter::space_after()
+{
+    return space_mode_ == SP_AFTER;
+}
+
+bool
+C_formatter::space_before()
+{
+    return space_mode_ == SP_BEFORE;
 }
 
 }
