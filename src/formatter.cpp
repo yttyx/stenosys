@@ -165,7 +165,7 @@ C_formatter::transition_to( const std::string & prev
 
             if ( space_after() )
             {
-                if ( ! attach_to_previous( flags_curr, flags_prev ) )
+                if ( ! attach_to_next( flags_prev ) )
                 {
                     // Undo the space-after that would have followed the stroke output
                     backspaces.append( "\b" );
@@ -178,12 +178,16 @@ C_formatter::transition_to( const std::string & prev
         }
         else
         {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "New text" );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  flags_prev: %04x", flags_prev );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  flags_curr: %04x", flags_curr );
+            
             if ( space_after() )
             {
                 // Send the current translation
                 difference = curr;
 
-                add_space_after = ( ! attach_to_previous( flags_curr, flags_prev ) );
+                add_space_after = ( ! attach_to_next( flags_curr ) );
             }
             else // space_before
             {
