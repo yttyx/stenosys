@@ -7,6 +7,7 @@
 
 #include "formatter.h"
 #include "log.h"
+#include "miscellaneous.h"
 #include "stenoflags.h"
 #include "utf8.h"
 
@@ -36,20 +37,9 @@ C_formatter::format( alphabet_type     alphabet_mode
                    , uint16_t          flags_prev 
                    , bool              extends )
 {
-    bool latin_mode          = ( alphabet_mode == AT_LATIN );
-
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags_prev        : %04x", flags_prev );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "flags             : %04x", flags_curr );
-
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "attach_to_previous: %d",
-                                                 //attach_to_previous( flags_curr, flags_prev ) );
-
-    // Attach to the next stroke's output?
-    //bool attach_to_next = ( ( flags & ATTACH_TO_NEXT ) || ( flags & GLUE ) ); 
+    bool latin_mode = ( alphabet_mode == AT_LATIN );
 
     std::string formatted = latin_mode ? latin : shavian;
-    
-    std::string output;
     
     if ( formatted.length() > 0 )
     {
@@ -72,29 +62,17 @@ C_formatter::format( alphabet_type     alphabet_mode
                 std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::toupper );
             }
         }
-        else
+        else  // shavian mode
         {
             if ( flags_prev & CAPITALISE_NEXT )
             {
-                // Prefix shavian with a middle dot character
+                // Prefix shavian with a naming dot
                 formatted = std::string( "·" ) + formatted;
             }
         }
-
-        if ( space_before() && ( ! attach_to_previous( flags_curr, flags_prev ) ) )
-        {
-            output += ' '; 
-        }
-
-        output += formatted;
-
-        if ( space_after() )
-        {
-            output += ' ';
-        }
     }
     
-    return output;
+    return formatted;
 }
 
 std::string
@@ -105,14 +83,18 @@ C_formatter::transition_to( const std::string & prev
                           , bool                extends
                           , bool                undo )
 {
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "transition_to -- prev: %s, curr: %s, extends: %d, undo:%d"
-                                               //, prev.c_str()
-                                               //, curr.c_str()
-                                               //, extends
-                                               //, undo );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "transition_to()" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev   : >%s<", ctrl_to_text( prev ).c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr   : >%s<", ctrl_to_text( curr).c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  extends: %d", extends );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  undo   : %d", undo );
+
     std::string output;
     std::string backspaces;
     std::string difference;
+   
+    bool add_space_before = false;
+    bool add_space_after  = false;
     
     if ( extends )
     {
@@ -183,21 +165,21 @@ C_formatter::transition_to( const std::string & prev
 
             if ( space_after() )
             {
+                // Remove the space-after that would have followed the stroke output
+                backspaces.append( "\b" );
+
                 // If the previous stroke did not itself have attachment to the current stroke
                 // but the current stroke had attachment to the previous stroke, then we need
                 // to output a space to undo the removal of the space when the current stroke
                 // was formatted.
                 if ( attach_to_previous( flags_curr ) )
                 {
-                    backspaces += " ";
+                    add_space_after = true;
                 }
             }
-            else
+            else // space_before
             {
-                // Space before
-                //
-                //
-                //
+                //TBW
             }
         }
         else
@@ -211,15 +193,32 @@ C_formatter::transition_to( const std::string & prev
                 {
                     backspaces= "\b";
                 }
-            }
 
-            // Send the current translation
-            difference = curr;
+                // Send the current translation
+                difference = curr;
+
+                add_space_after = true;
+            }
+            else // space_before
+            {
+                //TBW        
+            }
         }
     }
 
     output = backspaces;
+    
+    if ( add_space_before )
+    {
+        output += " ";
+    }
+
     output += difference;
+    
+    if ( add_space_after )
+    {
+        output += " ";
+    }
 
     return output;  
 }
