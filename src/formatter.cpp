@@ -165,16 +165,10 @@ C_formatter::transition_to( const std::string & prev
 
             if ( space_after() )
             {
-                // Remove the space-after that would have followed the stroke output
-                backspaces.append( "\b" );
-
-                // If the previous stroke did not itself have attachment to the current stroke
-                // but the current stroke had attachment to the previous stroke, then we need
-                // to output a space to undo the removal of the space when the current stroke
-                // was formatted.
-                if ( attach_to_previous( flags_curr ) )
+                if ( ! attach_to_previous( flags_curr, flags_prev ) )
                 {
-                    add_space_after = true;
+                    // Undo the space-after that would have followed the stroke output
+                    backspaces.append( "\b" );
                 }
             }
             else // space_before
@@ -186,18 +180,10 @@ C_formatter::transition_to( const std::string & prev
         {
             if ( space_after() )
             {
-                // If configured for space-after we would have output a space after the previous
-                // translation, so if attaching to a previous stroke we backspace to remove that
-                // space.
-                if ( attach_to_previous( flags_curr, flags_prev ) )
-                {
-                    backspaces= "\b";
-                }
-
                 // Send the current translation
                 difference = curr;
 
-                add_space_after = true;
+                add_space_after = ( ! attach_to_previous( flags_curr, flags_prev ) );
             }
             else // space_before
             {

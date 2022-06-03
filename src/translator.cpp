@@ -124,7 +124,13 @@ C_translator::undo_stroke( std::string & output )
         uint16_t flags_curr = strokes_->flags();
         uint16_t flags_prev = strokes_->flags_prev();
 
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "undo_stroke()" );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev: >>%s<<", ctrl_to_text( prev ).c_str() );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
+    
         output = formatter_->transition_to( prev, curr, flags_curr, flags_prev, extends, true );
+    
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: >>%s<<", ctrl_to_text( output ).c_str() );
     }
 
     strokes_->undo();

@@ -35,6 +35,14 @@ C_strokes::~C_strokes()
 bool
 C_strokes::initialise()
 {
+    // Add a dummy stroke
+   
+    C_stroke new_stroke( "" );
+
+    new_stroke.flags( ATTACH_TO_NEXT );
+
+    history_->add( new_stroke );
+
     return true;
 }
 
