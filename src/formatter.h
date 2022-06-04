@@ -50,18 +50,6 @@ private:
     bool
     attach( uint16_t flags_prev, uint16_t flags_curr );
 
-    //bool
-    //attach_to_next( uint16_t flags );
-
-    //bool
-    //attach_to_previous( uint16_t flags );
-
-    //bool
-    //space_after();
-
-    //bool
-    //space_before();
-
 private:
     
     space_type space_mode_;

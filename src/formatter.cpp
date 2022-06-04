@@ -44,9 +44,6 @@ C_formatter::format( alphabet_type     alphabet_mode
 
     if ( formatted.length() > 0 )
     {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_formatter::format" );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  attach: %d", attach( flags_curr, flags_prev ) );
-           
         if ( ! attach( flags_prev, flags_curr ) )
         {
             // Insert a space
@@ -93,29 +90,22 @@ C_formatter::transition_to( const std::string & prev
                           , bool                extends
                           , bool                undo )
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "transition_to()" );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev   : >%s<", ctrl_to_text( prev ).c_str() );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr   : >%s<", ctrl_to_text( curr).c_str() );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  extends: %d", extends );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  undo   : %d", undo );
+    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "transition_to()" );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev   : >%s<", ctrl_to_text( prev ).c_str() );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr   : >%s<", ctrl_to_text( curr).c_str() );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  extends: %d", extends );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  undo   : %d", undo );
 
     std::string output;
     std::string backspaces;
     std::string difference;
    
-    //bool add_space_before = false;
-    //bool add_space_after  = false;
-    
     if ( extends )
     {
         // Minimise the number of characters required to move from one translation
         // to the next. Check for text common to both.
 
-        //int idx = find_point_of_difference( curr, prev );
         int idx = C_utf8::differs_at( curr, prev );
-
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "idx: %d", idx );
-
         
         if ( idx >= 0 )
         {
@@ -155,9 +145,6 @@ C_formatter::transition_to( const std::string & prev
                 difference = curr;
             }
         }
-
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "backspaces.length(): %u", backspaces.length() );
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "difference         : %s", difference.c_str() );
     }
     else // Not extending the previous chord
     {
@@ -186,10 +173,6 @@ C_formatter::transition_to( const std::string & prev
 int
 C_formatter::find_point_of_difference( const std::string & from, const std::string & to )
 {
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "find pod  --  from: >>%s<<  to: >>%s<<"
-                                               //, from.c_str()
-                                               //, to.c_str() );
-
     uint16_t ii = 0;
     
     for ( ; ( ii < from.length() ) && ( ii < to.length() ); ii++ )
@@ -217,29 +200,5 @@ C_formatter::attach( uint16_t flags_prev, uint16_t flags_curr )
              ( flags_curr   & ATTACH_TO_PREVIOUS ) ||
              ( ( flags_prev & GLUE ) && ( flags_curr & GLUE ) ) );
 }
-
-//bool
-//C_formatter::attach_to_next( uint16_t flags )
-//{
-    //return flags & ATTACH_TO_NEXT;
-//}
-
-//bool
-//C_formatter::attach_to_previous( uint16_t flags )
-//{
-    //return flags & ATTACH_TO_PREVIOUS;
-//}
-
-//bool
-//C_formatter::space_after()
-//{
-    //return space_mode_ == SP_AFTER;
-//}
-
-//bool
-//C_formatter::space_before()
-//{
-    //return space_mode_ == SP_BEFORE;
-//}
 
 }

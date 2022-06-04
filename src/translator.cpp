@@ -73,11 +73,6 @@ C_translator::translate( const std::string & steno, std::string & output )
             add_stroke( steno, output );
         }
     }
-
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_translator::translate()" );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  steno : %s", steno.c_str() );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: >%s<", ctrl_to_text( output ).c_str() );
-
 }
 
 void
@@ -98,13 +93,7 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
 
     std::string prev = strokes_->previous_translation();
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "add_stroke()" );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev: >>%s<<", ctrl_to_text( prev ).c_str() );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
-
     output = formatter_->transition_to( prev, curr, flags_curr, flags_prev, extends, false );
-    
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: >>%s<<", ctrl_to_text( output ).c_str() );
 }
 
 void
@@ -122,12 +111,8 @@ C_translator::undo_stroke( std::string & output )
         uint16_t flags_prev = strokes_->flags_prev();
 
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "undo_stroke()" );
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev: >>%s<<", ctrl_to_text( prev ).c_str() );
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
     
         output = formatter_->transition_to( prev, curr, flags_curr, flags_prev, extends, true );
-    
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: >>%s<<", ctrl_to_text( output ).c_str() );
     }
 
     strokes_->undo();
