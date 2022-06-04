@@ -40,7 +40,7 @@ C_translator::~C_translator()
 bool
 C_translator::initialise( const std::string & dictionary_path )
 {
-    return dictionary_->read( dictionary_path );
+    return strokes_->initialise() && dictionary_->read( dictionary_path );
 }
 
 // Returns true if a translation was made
@@ -97,7 +97,7 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
     //log_writeln( C_log::LL_INFO, LOG_SOURCE, "add_stroke()" );
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
 
-    strokes_->translation( curr );
+    //strokes_->translation( curr );
     
     std::string prev = strokes_->previous_translation();
 
@@ -106,6 +106,8 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr: >>%s<<", ctrl_to_text( curr ).c_str() );
 
     output = formatter_->transition_to( prev, curr, flags_curr, flags_prev, extends, false );
+    
+    strokes_->translation( output );
     
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  output: >>%s<<", ctrl_to_text( output ).c_str() );
 }

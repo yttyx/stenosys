@@ -93,8 +93,8 @@ C_formatter::transition_to( const std::string & prev
     std::string backspaces;
     std::string difference;
    
-    bool add_space_before = false;
-    bool add_space_after  = false;
+    //bool add_space_before = false;
+    //bool add_space_after  = false;
     
     if ( extends )
     {
@@ -160,57 +160,26 @@ C_formatter::transition_to( const std::string & prev
 
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Undo: not extending" );
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  backspaces.length(): %u", backspaces.length() );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  attach_to_next     : %d", attach_to_next( flags_prev ) );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  attach_to_prev     : %d", attach_to_previous( flags_curr ) );
-
-            if ( space_after() )
-            {
-                if ( ! attach_to_next( flags_prev ) )
-                {
-                    // Undo the space-after that would have followed the stroke output
-                    backspaces.append( "\b" );
-                }
-            }
-            else // space_before
-            {
-                //TBW
-            }
         }
         else
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "New text" );
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  flags_prev: %04x", flags_prev );
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  flags_curr: %04x", flags_curr );
-            
-            if ( space_after() )
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  attach    : %d", attach( flags_curr, flags_prev ) );
+           
+            if ( ! attach( flags_prev, flags_curr ) )
             {
-                // Send the current translation
-                difference = curr;
+                // Insert a space
+                difference += " ";
+            }
 
-                add_space_after = ( ! attach_to_next( flags_curr ) );
-            }
-            else // space_before
-            {
-                //TBW        
-            }
+            // Send the current translation
+            difference += curr;
         }
     }
 
-    output = backspaces;
-    
-    if ( add_space_before )
-    {
-        output += " ";
-    }
-
-    output += difference;
-    
-    if ( add_space_after )
-    {
-        output += " ";
-    }
-
-    return output;  
+    return backspaces + difference;  
 }
 
 int
@@ -241,35 +210,35 @@ C_formatter::find_point_of_difference( const std::string & from, const std::stri
 
 // Attach to the previous stroke's output?
 bool
-C_formatter::attach_to_previous( uint16_t flags_curr, uint16_t flags_prev )
+C_formatter::attach( uint16_t flags_prev, uint16_t flags_curr )
 {
     return ( ( flags_prev   & ATTACH_TO_NEXT )     ||
              ( flags_curr   & ATTACH_TO_PREVIOUS ) ||
              ( ( flags_prev & GLUE ) && ( flags_curr & GLUE ) ) );
 }
 
-bool
-C_formatter::attach_to_next( uint16_t flags )
-{
-    return flags & ATTACH_TO_NEXT;
-}
+//bool
+//C_formatter::attach_to_next( uint16_t flags )
+//{
+    //return flags & ATTACH_TO_NEXT;
+//}
 
-bool
-C_formatter::attach_to_previous( uint16_t flags )
-{
-    return flags & ATTACH_TO_PREVIOUS;
-}
+//bool
+//C_formatter::attach_to_previous( uint16_t flags )
+//{
+    //return flags & ATTACH_TO_PREVIOUS;
+//}
 
-bool
-C_formatter::space_after()
-{
-    return space_mode_ == SP_AFTER;
-}
+//bool
+//C_formatter::space_after()
+//{
+    //return space_mode_ == SP_AFTER;
+//}
 
-bool
-C_formatter::space_before()
-{
-    return space_mode_ == SP_BEFORE;
-}
+//bool
+//C_formatter::space_before()
+//{
+    //return space_mode_ == SP_BEFORE;
+//}
 
 }

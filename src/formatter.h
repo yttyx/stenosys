@@ -48,19 +48,19 @@ private:
     find_point_of_difference( const std::string & s1, const std::string & s2 );
 
     bool
-    attach_to_previous( uint16_t flags_curr, uint16_t flags_prev );
+    attach( uint16_t flags_prev, uint16_t flags_curr );
 
-    bool
-    attach_to_next( uint16_t flags );
+    //bool
+    //attach_to_next( uint16_t flags );
 
-    bool
-    attach_to_previous( uint16_t flags );
+    //bool
+    //attach_to_previous( uint16_t flags );
 
-    bool
-    space_after();
+    //bool
+    //space_after();
 
-    bool
-    space_before();
+    //bool
+    //space_before();
 
 private:
     
