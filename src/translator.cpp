@@ -24,13 +24,12 @@ namespace stenosys
 
 extern C_log log;
 
-C_translator::C_translator( alphabet_type alphabet_mode, space_type space_mode )
+C_translator::C_translator( alphabet_type alphabet_mode )
     : alphabet_mode_( alphabet_mode )
-    , space_mode_( space_mode )
 {
     dictionary_ = std::make_unique< C_dictionary >();
     strokes_    = std::make_unique< C_strokes >( *dictionary_.get() );
-    formatter_  = std::make_unique< C_formatter >( space_mode );
+    formatter_  = std::make_unique< C_formatter >();
 }
 
 C_translator::~C_translator()
@@ -52,10 +51,6 @@ C_translator::translate( const std::string & steno, std::string & output )
         if ( steno == "#A" )
         {
             toggle_alphabet_mode();
-        }
-        else if ( steno == "#S" )
-        {
-            toggle_space_mode();
         }
         else if ( steno == "#-D" )
         {
@@ -114,14 +109,6 @@ C_translator::undo_stroke( std::string & output )
     }
 
     strokes_->undo();
-}
-
-void
-C_translator::toggle_space_mode()
-{
-    space_mode_ = ( space_mode_ == SP_BEFORE ) ? SP_AFTER : SP_BEFORE;
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s space mode active", ( space_mode_ == SP_BEFORE ) ? "Leading" : "Trailing" );
 }
 
 void

@@ -32,7 +32,6 @@ static S_option options[] =
     { OPT_DEVICE_RAW,        FLD_STRING,  offsetof( S_config, device_raw ),        "device.raw",        "1",   "256" },
     { OPT_DEVICE_STENO,      FLD_STRING,  offsetof( S_config, device_steno ),      "device.steno",      "1",   "256" },
     { OPT_DEVICE_OUTPUT,     FLD_STRING,  offsetof( S_config, device_output ),     "device.output",     "1",   "256" },
-    { OPT_SPACE_AFTER,       FLD_BOOLEAN, offsetof( S_config, space_after ),       "space_after",       "",    ""    },
     { OPT_NONE,              FLD_NONE,    0,                                       "",                  "0",   "0"   }
 };
 
@@ -119,8 +118,6 @@ C_config::read_profile( const std::string & profile )
 
     // Set logging parameters
     log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
-
-//    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Applied profile: %s", profile.c_str() );
 
     return true;
 }

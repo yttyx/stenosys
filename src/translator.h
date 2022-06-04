@@ -21,7 +21,7 @@ class C_translator
 
 public:
 
-    C_translator( alphabet_type alphabet_mode, space_type space_mode );
+    C_translator( alphabet_type alphabet_mode );
     ~C_translator();
 
     bool
@@ -41,15 +41,11 @@ private:
     undo_stroke( std::string & output );
 
     void
-    toggle_space_mode();
-    
-    void
     toggle_alphabet_mode();
 
 private:
     
     alphabet_type alphabet_mode_;
-    space_type    space_mode_;
 
     std::unique_ptr< C_dictionary > dictionary_;
     std::unique_ptr< C_strokes >    strokes_;

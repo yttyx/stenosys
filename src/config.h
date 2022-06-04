@@ -20,8 +20,7 @@ enum eOption
     OPT_FILE_DICT,
     OPT_DEVICE_RAW,
     OPT_DEVICE_STENO,
-    OPT_DEVICE_OUTPUT,
-    OPT_SPACE_AFTER
+    OPT_DEVICE_OUTPUT
 };
 
 enum eFieldType
@@ -53,8 +52,6 @@ struct S_config
     std::string device_raw;
     std::string device_steno;
     std::string device_output;
-
-    bool space_after;
 };
 
 

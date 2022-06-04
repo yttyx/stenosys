@@ -21,7 +21,7 @@ class C_formatter
 
 public:
 
-    C_formatter( space_type space_mode );
+    C_formatter();
     ~C_formatter();
 
     std::string
@@ -42,8 +42,6 @@ public:
     
 private:
     
-    C_formatter(){}
-
     int 
     find_point_of_difference( const std::string & s1, const std::string & s2 );
 
@@ -51,8 +49,6 @@ private:
     attach( uint16_t flags_prev, uint16_t flags_curr );
 
 private:
-    
-    space_type space_mode_;
 
 };
 

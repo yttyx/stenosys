@@ -89,7 +89,7 @@ C_stenosys::run( int argc, char *argv[] )
         C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard */
         // C_serial       serial;               // Serial output to the Pro Micro
         C_stroke_feed    stroke_feed;
-        C_translator     translator( AT_LATIN, cfg.c().space_after ? SP_AFTER : SP_BEFORE );
+        C_translator     translator( AT_LATIN );
         
         bool worked = true;
 

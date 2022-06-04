@@ -20,8 +20,7 @@ namespace stenosys
 
 extern C_log log;
 
-C_formatter::C_formatter( space_type space_mode )
-    : space_mode_( space_mode )
+C_formatter::C_formatter()
 {
 }
 
