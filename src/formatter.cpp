@@ -40,9 +40,19 @@ C_formatter::format( alphabet_type     alphabet_mode
     bool latin_mode = ( alphabet_mode == AT_LATIN );
 
     std::string formatted = latin_mode ? latin : shavian;
-    
+    std::string space; 
+
     if ( formatted.length() > 0 )
     {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_formatter::format" );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  attach: %d", attach( flags_curr, flags_prev ) );
+           
+        if ( ! attach( flags_prev, flags_curr ) )
+        {
+            // Insert a space
+            space = " ";
+        }
+
         if ( latin_mode )
         {
             if ( flags_prev & CAPITALISE_NEXT )
@@ -62,7 +72,7 @@ C_formatter::format( alphabet_type     alphabet_mode
                 std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::toupper );
             }
         }
-        else  // shavian mode
+        else  // Shavian mode
         {
             if ( flags_prev & CAPITALISE_NEXT )
             {
@@ -72,7 +82,7 @@ C_formatter::format( alphabet_type     alphabet_mode
         }
     }
     
-    return formatted;
+    return space + formatted;
 }
 
 std::string
@@ -164,18 +174,9 @@ C_formatter::transition_to( const std::string & prev
         else
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "New text" );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  flags_prev: %04x", flags_prev );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  flags_curr: %04x", flags_curr );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  attach    : %d", attach( flags_curr, flags_prev ) );
            
-            if ( ! attach( flags_prev, flags_curr ) )
-            {
-                // Insert a space
-                difference += " ";
-            }
-
             // Send the current translation
-            difference += curr;
+            difference = curr;
         }
     }
 
