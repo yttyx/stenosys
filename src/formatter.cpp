@@ -154,14 +154,9 @@ C_formatter::transition_to( const std::string & prev
             C_utf8 utf8_curr( curr );
 
             backspaces.assign( utf8_curr.length(), '\b' );
-
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Undo: not extending" );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  backspaces.length(): %u", backspaces.length() );
         }
         else
         {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "New text" );
-           
             // Send the current translation
             difference = curr;
         }

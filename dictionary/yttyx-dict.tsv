@@ -20043,7 +20043,7 @@ KW-FBL	qualifiable
 KW-FGS	qualification	𐑒𐑢𐑪𐑤𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯
 KW-FRS	qualifiers	𐑒𐑢𐑪𐑤𐑦𐑓𐑲𐑼𐑟
 KW-G	requesting	𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑦𐑙
-KW-GS	"{^}	
+KW-GS	"{^}{-|}	
 KW-L	{^=^}	
 KW-L/KAEUGS/-S	qualifications	𐑒𐑢𐑪𐑤𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯𐑟
 KW-LS	{^==^}	
@@ -20827,7 +20827,6 @@ KWUPL	outcome	𐑬𐑑𐑒𐑳𐑥
 KWUPLS	outcomes	𐑬𐑑𐑒𐑳𐑥𐑟
 KWUZ	quiz	𐑒𐑢𐑦𐑟
 KWUZ/-S	quizes	𐑒𐑢𐑦𐑟𐑩𐑟
-NO-S	{^}	
 O*	{>}{&o}	
 O*/*E	oe	
 O*/*E/TP-PL	oe.	
@@ -60617,7 +60616,7 @@ TPHORPTS	incorporates	𐑦𐑯𐑒𐑹𐑐𐑼𐑱𐑑𐑕
 TPHORS	Norse	𐑯𐑹𐑕
 TPHORT	north	𐑯𐑹𐑔
 TPHORT/AOEFT	northeast	𐑯𐑹𐑔𐑰𐑕𐑑
-TPHOS	no{,}sir	
+TPHOS	{^}	
 TPHOS/KO/PEU	{^noscopy}	
 TPHOS/TEUS/EUFPL	gnosticism	
 TPHOS/TOS	nostos	

@@ -76,11 +76,6 @@ C_stenosys::run( int argc, char *argv[] )
     {
         C_keyboard kbd;
 
-        //TEMP
-        //C_utf8::test();
-        //exit( 0 );
-        //TEMP:end
-
         log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
  
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys version: %s", VERSION );
@@ -101,21 +96,12 @@ C_stenosys::run( int argc, char *argv[] )
 
         worked = worked && x11_output->initialise();
 
-        //TEMP
-        if ( worked )
-        {
-            //x11_output->test();
-        }
-        else
+        if ( ! worked )
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "X initialisation failed (running locally?)" );
-            log_write_raw( C_log::LL_INFO, "%s", "\n" );
         }
 
-        //exit( 0 );
-        //TEMP:END
-
-        //TEMP Allow time for the keyup event when enter is pressed to execute the program
+        // Allow time for the keyup event when enter is pressed to execute the program
         delay( 1000 );
 
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
@@ -137,10 +123,10 @@ C_stenosys::run( int argc, char *argv[] )
                 std::string       translation;
                 S_geminipr_packet packet;
 
-                //if ( stroke_feed.get_steno( steno ) )
-                //{
-                    //translator.translate( steno, translation );
-                //}
+                if ( stroke_feed.get_steno( steno ) )
+                {
+                    translator.translate( steno, translation );
+                }
                 
                 // Stenographic chord input
                 if ( steno_keyboard.read( packet ) )
@@ -152,8 +138,6 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( translation.length() > 0 )
                 {
-                      //log_write_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", translation.c_str() );
-
                       x11_output->send( translation );
                 }
 
@@ -163,8 +147,6 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( steno_keyboard.read( key_event, scancode ) )
                 {
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: %d, scancode: %d (%02xh)", key_event, scancode, scancode );
-                    
                     x11_output->send( key_event, scancode );
                     //serial.send( key_code );
                 }

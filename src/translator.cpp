@@ -110,8 +110,6 @@ C_translator::undo_stroke( std::string & output )
         uint16_t flags_curr = strokes_->flags();
         uint16_t flags_prev = strokes_->flags_prev();
 
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "undo_stroke()" );
-    
         output = formatter_->transition_to( prev, curr, flags_curr, flags_prev, extends, true );
     }
 
