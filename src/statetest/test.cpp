@@ -11,10 +11,10 @@ using namespace stenosys;
 namespace stenosys
 {
 
-C_test::C_test()
+C_test::C_test( const std::string & str )
     : state_( C_state_A::s.instance() )
 {
-
+    str_ = str;
 }
 
 void
@@ -29,6 +29,18 @@ C_test::run()
     state_->handler( this );
 
     return state_->done();
+}
+
+void
+C_test::str( std::string & str )
+{
+    str_ = str;
+}
+
+std::string &
+C_test::str()
+{
+    return str_;
 }
 
 }

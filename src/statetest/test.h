@@ -14,7 +14,7 @@ class C_test
 
 public:
 
-    C_test();
+    C_test( const std::string & str );
     ~C_test(){}
 
     void
@@ -22,6 +22,12 @@ public:
 
     bool
     run();
+
+    void
+    str( std::string & str );
+
+    std::string &
+    str();
 
 private:
     

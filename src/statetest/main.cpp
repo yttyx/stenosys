@@ -11,13 +11,17 @@ using namespace stenosys;
 
 int main( int argc, char *argv[] )
 {
-    C_test test;
+    C_test test( "Hello World!" );
 
+    fprintf( stdout, "%s\n", test.str().c_str() );
+    
     test.change_state_to( C_state_A::s.instance() );
 
     while ( ! test.run() )
     {
+        fprintf( stdout, "%s\n", test.str().c_str() );
     }
+
 
     return 0;
 }
