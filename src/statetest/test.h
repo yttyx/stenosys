@@ -23,6 +23,9 @@ public:
     void
     run();
 
+    bool 
+    done() { return state_->done(); }
+
 private:
     
     std::shared_ptr< C_base_state > state_;

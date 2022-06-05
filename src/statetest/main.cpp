@@ -15,7 +15,7 @@ int main( int argc, char *argv[] )
 
     test.change_state_to( C_state_A::s.instance() );
 
-    for ( int ii = 0; ii < 15; ii++ )
+    while ( ! test.done() )
     {
         test.run();
     }

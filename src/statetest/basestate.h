@@ -13,16 +13,23 @@ class C_base_state
 {
 public:
 
-    C_base_state() {}
+    C_base_state();
     virtual ~C_base_state() {}
 
     virtual void
     handler( C_test * p );
 
+    bool
+    done() { return done_; }
+
 protected:
 
     void
     change_state_to( C_test * test, std::shared_ptr< C_base_state > state, const char * description );
+
+    bool done_;
+
+private:
 
 };
 

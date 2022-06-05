@@ -29,5 +29,4 @@ C_test::run()
     state_->handler( this );
 }
 
-
 }

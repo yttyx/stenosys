@@ -9,6 +9,11 @@ using namespace  stenosys;
 namespace stenosys
 {
 
+C_base_state::C_base_state()
+    : done_( false )
+{
+}
+
 void
 C_base_state::change_state_to( C_test * test, std::shared_ptr< C_base_state > state, const char * description )
 {
@@ -45,6 +50,8 @@ C_state_C::handler( C_test * p )
     fprintf( stdout, "C_state_C::handler()\n" );
 
     change_state_to( p, C_state_A::s.instance(), "C_state_A" );
+
+    done_ = true;
 }
 
 }
