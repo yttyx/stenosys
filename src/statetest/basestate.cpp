@@ -15,11 +15,11 @@ C_base_state::C_base_state()
 }
 
 void
-C_base_state::change_state_to( C_test * test, std::shared_ptr< C_base_state > state, const char * description )
+C_base_state::set_state( C_test * test, std::shared_ptr< C_base_state > state, const char * description )
 {
     //fprintf( stdout, "Change state to: %s\n", description );
 
-    test->change_state_to( state );
+    test->set_state( state );
 }
 
 void
@@ -39,7 +39,7 @@ C_state_A::handler( C_test * p )
 
     p->str().replace( 0, 5, "Howdo" );
     
-    change_state_to( p, C_state_B::s.instance(), "C_state_B" );
+    set_state( p, C_state_B::s.instance(), "C_state_B" );
 }
 
 void
@@ -49,7 +49,7 @@ C_state_B::handler( C_test * p )
    
     p->str().replace( 6, 5, "Matey" );
 
-    change_state_to( p, C_state_C::s.instance(), "C_state_C" );
+    set_state( p, C_state_C::s.instance(), "C_state_C" );
 }
 
 void
@@ -59,7 +59,7 @@ C_state_C::handler( C_test * p )
     
     p->str().replace( 11, 1, "?" );
     
-    change_state_to( p, C_state_D::s.instance(), "C_state_D" );
+    set_state( p, C_state_D::s.instance(), "C_state_D" );
 }
 
 void

@@ -22,12 +22,12 @@ public:
     handler( C_test * p );
 
     bool
-    done() { fprintf( stdout, "C_base_state::done_: %d,  %p\n", done_, &C_base_state::done_ ); return done_; }
+    done() { return done_; }
 
 protected:
 
     void
-    change_state_to( C_test * test, std::shared_ptr< C_base_state > state, const char * description );
+    set_state( C_test * test, std::shared_ptr< C_base_state > state, const char * description );
 
     static bool done_;
 

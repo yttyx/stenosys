@@ -18,7 +18,7 @@ public:
     ~C_test(){}
 
     void
-    change_state_to( std::shared_ptr< C_base_state > state );
+    set_state( std::shared_ptr< C_base_state > state );
 
     bool
     run();

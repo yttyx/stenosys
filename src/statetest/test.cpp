@@ -18,7 +18,7 @@ C_test::C_test( const std::string & str )
 }
 
 void
-C_test::change_state_to( std::shared_ptr< C_base_state > state )
+C_test::set_state( std::shared_ptr< C_base_state > state )
 {
     state_ = state;
 }

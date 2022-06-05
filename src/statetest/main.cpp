@@ -15,7 +15,7 @@ int main( int argc, char *argv[] )
 
     fprintf( stdout, "%s\n", test.str().c_str() );
     
-    test.change_state_to( C_state_A::s.instance() );
+    test.set_state( C_state_A::s.instance() );
 
     while ( ! test.run() )
     {
