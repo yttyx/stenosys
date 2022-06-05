@@ -49,9 +49,9 @@ C_state_C::handler( C_test * p )
 {
     fprintf( stdout, "C_state_C::handler()\n" );
 
-    change_state_to( p, C_state_A::s.instance(), "C_state_A" );
-
     done_ = true;
+    
+    change_state_to( p, C_state_A::s.instance(), "C_state_A" );
 }
 
 }

@@ -20,11 +20,8 @@ public:
     void
     change_state_to( std::shared_ptr< C_base_state > state );
 
-    void
+    bool
     run();
-
-    bool 
-    done() { return state_->done(); }
 
 private:
     

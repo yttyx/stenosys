@@ -23,10 +23,12 @@ C_test::change_state_to( std::shared_ptr< C_base_state > state )
     state_ = state;
 }
 
-void
+bool
 C_test::run()
 {
     state_->handler( this );
+
+    return state_->done();
 }
 
 }
