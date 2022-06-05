@@ -11,7 +11,6 @@ namespace stenosys
 {
 
 C_base_state::C_base_state()
-    : done_( false )
 {
 }
 
@@ -28,6 +27,10 @@ C_base_state::handler( C_test * p )
 {
     fprintf( stdout, "C_base_state::handler()\n" );
 }
+
+bool 
+C_base_state::done_ = false;
+
 
 void
 C_state_A::handler( C_test * p )
@@ -51,9 +54,15 @@ C_state_C::handler( C_test * p )
 {
     fprintf( stdout, "C_state_C::handler()\n" );
     
-    done_ = true;
+    change_state_to( p, C_state_D::s.instance(), "C_state_D" );
+}
+
+void
+C_state_D::handler( C_test * p )
+{
+    fprintf( stdout, "C_state_D::handler()\n" );
     
-    change_state_to( p, C_state_A::s.instance(), "C_state_A" );
+    C_base_state::done_ = true;
 }
 
 }
