@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <stdio.h>
 
 #include "single.h"
 
@@ -20,7 +21,7 @@ public:
     handler( C_test * p );
 
     bool
-    done() { return done_; }
+    done() { fprintf( stdout, "C_base_state::done_: %d\n", done_ ); return done_; }
 
 protected:
 
