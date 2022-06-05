@@ -52,4 +52,17 @@ protected:
 
 };
 
+class C_state_C : public C_base_state
+{
+public:
+
+    static C_single< C_state_C, C_base_state > s;
+
+protected:
+
+    virtual void
+    handler( C_test * p ) override;
+
+};
+
 }

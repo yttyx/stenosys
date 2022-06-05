@@ -11,8 +11,6 @@ namespace stenosys
 
 class C_test
 {
-//friend class C_state_A;
-//friend class C_state_B;
 
 public:
 
@@ -21,6 +19,9 @@ public:
 
     void
     change_state_to( std::shared_ptr< C_base_state > state );
+
+    void
+    run();
 
 private:
     
