@@ -26,7 +26,7 @@ const char * REGEX_DICTIONARY = "^(.*?)\t(.*?)\t(.*?)$";
 C_dictionary::C_dictionary()
     : initialised_( false )
 {
-    parser_     = std::make_unique< C_command_parser >();
+    parser_     = std::make_unique< C_cmd_parser >();
     dictionary_ = std::make_unique< std::unordered_map< std::string, STENO_ENTRY > >();
 
     dict_vector_ = std::make_unique< std::vector< STENO_ENTRY_2 > >();
@@ -70,7 +70,8 @@ C_dictionary::read( const std::string & path )
                     std::string parsed_text;
 
                     // Parse the dictionary text for Plover commands and set steno flags
-                    parser_->parse( text, parsed_text, flags );
+                    //TBW
+                    //parser_->parse( text, parsed_text, flags );
 
                     STENO_ENTRY * steno_entry = new STENO_ENTRY();
                     

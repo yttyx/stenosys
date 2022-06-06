@@ -71,7 +71,7 @@ private:
     std::string error_message_;
     
     std::unique_ptr< std::unordered_map< std::string, STENO_ENTRY > >  dictionary_;
-    std::unique_ptr< C_command_parser >                                parser_;
+    std::unique_ptr< C_cmd_parser >                                    parser_;
 
     std::unique_ptr< std::vector< STENO_ENTRY_2 > >  dict_vector_;
     std::vector< STENO_ENTRY_2 >::iterator           it_;

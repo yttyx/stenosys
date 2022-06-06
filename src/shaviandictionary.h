@@ -31,7 +31,7 @@ private:
 
 private:
 
-    bool        initialised_;
+    bool initialised_;
 
     std::string error_message_;
     
