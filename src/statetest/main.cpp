@@ -3,15 +3,15 @@
 #include <iostream>
 #include <memory>
 
-#include "basestate.h"
-#include "test.h"
+#include "cmdparserstate.h"
+#include "cmdparser.h"
 
 using namespace stenosys;
 
 
 int main( int argc, char *argv[] )
 {
-    C_test test( "Hello World!" );
+    C_cmd_parser test( "Hello World!" );
 
     fprintf( stdout, "%s\n", test.str().c_str() );
     

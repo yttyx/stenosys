@@ -3,28 +3,28 @@
 #include <cstdint>
 #include <cstring>
 
-#include "test.h"
-
+#include "cmdparser.h"
+#include "cmdparserstate.h"
 
 using namespace stenosys;
 
 namespace stenosys
 {
 
-C_test::C_test( const std::string & str )
+C_cmd_parser::C_cmd_parser( const std::string & str )
     : state_( C_state_A::s.instance() )
 {
     str_ = str;
 }
 
 void
-C_test::set_state( std::shared_ptr< C_base_state > state )
+C_cmd_parser::set_state( std::shared_ptr< C_state > state )
 {
     state_ = state;
 }
 
 bool
-C_test::run()
+C_cmd_parser::run()
 {
     state_->handler( this );
 
@@ -32,13 +32,13 @@ C_test::run()
 }
 
 void
-C_test::str( std::string & str )
+C_cmd_parser::str( std::string & str )
 {
     str_ = str;
 }
 
 std::string &
-C_test::str()
+C_cmd_parser::str()
 {
     return str_;
 }
