@@ -1,6 +1,7 @@
 #include <cstring>
 #include <stdio.h>
 
+#include "cmdparser.h"
 #include "state.h"
 #include "cmdparserstate.h"
 
@@ -10,18 +11,16 @@ using namespace  stenosys;
 namespace stenosys
 {
 
-void
-C_state_A::handler( C_cmd_parser * p )
+STATE_DEFINITION( C_state_A, C_cmd_parser )
 {
-    //fprintf( stdout, "C_state_A::handler()\n" );
+    fprintf( stdout, "C_state_A::handler()\n" );
 
     p->str().replace( 0, 5, "Howdo" );
     
     set_state( p, C_state_B::s.instance(), "C_state_B" );
 }
 
-void
-C_state_B::handler( C_cmd_parser * p )
+STATE_DEFINITION( C_state_B, C_cmd_parser )
 {
     //fprintf( stdout, "C_state_B::handler()\n" );
    
@@ -30,8 +29,7 @@ C_state_B::handler( C_cmd_parser * p )
     set_state( p, C_state_C::s.instance(), "C_state_C" );
 }
 
-void
-C_state_C::handler( C_cmd_parser * p )
+STATE_DEFINITION( C_state_C, C_cmd_parser )
 {
     //fprintf( stdout, "C_state_C::handler()\n" );
     
@@ -40,8 +38,7 @@ C_state_C::handler( C_cmd_parser * p )
     set_state( p, C_state_D::s.instance(), "C_state_D" );
 }
 
-void
-C_state_D::handler( C_cmd_parser * p )
+STATE_DEFINITION( C_state_D, C_cmd_parser )
 {
     //fprintf( stdout, "C_state_D::handler()\n" );
     
