@@ -29,6 +29,7 @@ C_dictionary::C_dictionary()
     parser_     = std::make_unique< C_cmd_parser >();
     dictionary_ = std::make_unique< std::unordered_map< std::string, STENO_ENTRY > >();
 
+    //TODO Remove dict_vector_: it was used when merging the Shavian dictionary into the base dictionary
     dict_vector_ = std::make_unique< std::vector< STENO_ENTRY_2 > >();
 }
 
@@ -57,21 +58,15 @@ C_dictionary::read( const std::string & path )
                 std::string text;      // Latin alphabet
                 std::string shavian;    // Shavian
 
-                uint16_t    flags = 0;
+                uint16_t flags = 0;
 
                 // Check for valid CSV entry
                 if ( parse_line( line, REGEX_DICTIONARY, steno, text, shavian ) )
                 {
-                    //if ( line.find( "\\\"" ) != std::string::npos )
-                    //{
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "line: %s", line.c_str() );
-                    //}
-
                     std::string parsed_text;
 
                     // Parse the dictionary text for Plover commands and set steno flags
-                    //TBW
-                    //parser_->parse( text, parsed_text, flags );
+                    parser_->parse( text, parsed_text, flags );
 
                     STENO_ENTRY * steno_entry = new STENO_ENTRY();
                     

@@ -12,7 +12,7 @@ namespace stenosys
 {
 
 C_cmd_parser::C_cmd_parser()
-    : state_( C_state_A::s.instance() )
+    : state_( C_st_init::s.instance() )
 {
 }
 
@@ -22,24 +22,20 @@ C_cmd_parser::set_state( std::shared_ptr< C_state > state )
     state_ = state;
 }
 
-bool
-C_cmd_parser::run()
-{
-    state_->handler( this );
-
-    return state_->done();
-}
-
 void
-C_cmd_parser::str( std::string & str )
+C_cmd_parser::parse( const std::string & input, std::string & output, uint16_t & flags )
 {
-    str_ = str;
-}
+    input_ = input;
 
-std::string &
-C_cmd_parser::str()
-{
-    return str_;
+    set_state( C_st_init::s.instance() );
+
+    while ( ! state_->done() )
+    {
+        state_->handler( this );
+    }
+
+    output = output_;
+    flags  = flags_;
 }
 
 }
