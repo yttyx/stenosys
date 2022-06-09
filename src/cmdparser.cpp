@@ -6,6 +6,7 @@
 #include "cmdparser.h"
 #include "cmdparserstate.h"
 #include "miscellaneous.h"
+#include "utf8.h"
 
 using namespace stenosys;
 
@@ -24,7 +25,7 @@ C_cmd_parser::set_state( std::shared_ptr< C_state > state )
 }
 
 void
-C_cmd_parser::parse( const std::string & input, std::string & output, uint16_t & flags )
+C_cmd_parser::parse( const C_utf8 & input, C_utf8 & output, uint16_t & flags )
 {
     input_ = input;
 

@@ -2,6 +2,7 @@
 
 #include <X11/Intrinsic.h>
 #include <cassert>
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -21,14 +22,37 @@ namespace stenosys
 extern C_log log;
 
 
+C_utf8::C_utf8()
+    : str_( "" )
+    , str_p_( str_.c_str() )
+    , index_( 0 )
+    , length_( 0 )
+{
+}
+
 C_utf8::C_utf8( const std::string & str )
     : str_( str )
-    , str_p_( str.c_str() )
+    , str_p_( str_.c_str() )
     , index_( 0 )
     , length_( str.length() )
 {
 }
 
+// copy assignment
+C_utf8 &
+C_utf8::operator=( const C_utf8 & rhs )
+{
+    // Guard self assignment
+    if ( this == &rhs)
+    {
+        return *this;
+    }
+
+    str_ = rhs.
+
+
+    return *this;
+}
 
 bool
 C_utf8::get_first( uint32_t & code )
@@ -100,6 +124,14 @@ C_utf8::substr( int pos )
     return str_.substr( offset );
 }
 
+void
+C_utf8::append( const std::string & str )
+{
+    str_ += str;
+
+    length_ = str_.length();
+}
+
 bool
 C_utf8::decode( uint32_t & code )
 {
@@ -155,7 +187,7 @@ C_utf8::to_offset( int pos )
 /*}*/
 
 // Calculate length of single codepoint in bytes
-int
+size_t
 C_utf8::length( uint8_t ch )
 {
     if ( ( ch & 0x80 ) == 0 )

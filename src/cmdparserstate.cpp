@@ -5,6 +5,7 @@
 #include "log.h"
 #include "state.h"
 #include "cmdparserstate.h"
+#include "utf8.h"
 
 using namespace  stenosys;
 
@@ -18,7 +19,7 @@ STATE_DEFINITION( C_st_init, C_cmd_parser )
     fprintf( stdout, "C_st_init::handler() p: %p\n", p );
     fprintf( stdout, "  input_: %s\n", p->input_.c_str() );
 
-    p->output_        = "";
+    p->output_        = C_utf8( "" );
     p->input_length_  = p->input_.length();
     p->pos_           = 0;
     p->bracket_count_ = 0;

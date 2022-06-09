@@ -7,6 +7,7 @@
 
 #include "cmdparserstate.h"
 #include "state.h"
+#include "utf8.h"
 
 using namespace stenosys;
 
@@ -28,14 +29,14 @@ public:
     set_state( std::shared_ptr< C_state > state );
 
     void
-    parse( const std::string & input, std::string & output, uint16_t & flags );
+    parse( const C_utf8 & input, C_utf8 & output, uint16_t & flags );
 
 private:
     
     std::shared_ptr< C_state > state_;
 
-    std::string input_;
-    std::string output_;
+    C_utf8 input_;
+    C_utf8 output_;
 
     int pos_;
     int bracket_count_;
@@ -43,6 +44,7 @@ private:
 
     bool        in_command_;
     uint16_t    flags_;
+    uint16_t    flags_internal_;
 };
 
 }

@@ -13,6 +13,7 @@
 #include "log.h"
 #include "miscellaneous.h"
 #include "textfile.h"
+#include "utf8.h"
 
 #define LOG_SOURCE "DICT "
 
@@ -63,14 +64,14 @@ C_dictionary::read( const std::string & path )
                 // Check for valid CSV entry
                 if ( parse_line( line, REGEX_DICTIONARY, steno, text, shavian ) )
                 {
-                    std::string parsed_text;
+                    C_utf8 parsed_text;
 
                     // Parse the dictionary text for Plover commands and set steno flags
-                    parser_->parse( text, parsed_text, flags );
+                    parser_->parse( C_utf8( text ), parsed_text, flags );
 
                     STENO_ENTRY * steno_entry = new STENO_ENTRY();
                     
-                    steno_entry->text    = parsed_text;
+                    steno_entry->text    = parsed_text.str();
                     steno_entry->shavian = shavian;
                     steno_entry->flags   = flags;
 
