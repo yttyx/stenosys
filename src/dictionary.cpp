@@ -74,10 +74,11 @@ C_dictionary::read( const std::string & path )
                     steno_entry->shavian = shavian;
                     steno_entry->flags   = flags;
 
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "text:%s shavian:%s flags:%u"
-                                                               //, text.c_str()
-                                                               //, shavian.c_str()
-                                                               //, flags );
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "text:%s, parsed text: %s, shavian:%s, flags:%u"
+                                                               , text.c_str()
+                                                               , parsed_text.c_str()
+                                                               , shavian.c_str()
+                                                               , flags );
 
                     //delay( 500 );
 
@@ -91,6 +92,13 @@ C_dictionary::read( const std::string & path )
                     //steno_entry_2->text  = text;
 
                     //dict_vector_->push_back( *steno_entry_2 );
+               
+                    entry_count++;
+
+                    if ( entry_count > 10 )
+                    {
+                        break;
+                    }
                 }
                 else
                 {
@@ -109,6 +117,8 @@ C_dictionary::read( const std::string & path )
     catch ( std::exception & ex )
     {
         error_message_ = ex.what();
+        
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Expection: %s", ex.what() );
     }
     catch( ... )
     {

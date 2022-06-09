@@ -72,9 +72,10 @@ C_stenosys::~C_stenosys()
 void
 C_stenosys::run( int argc, char *argv[] )
 {
+    C_keyboard kbd;
+
     if ( cfg.read( argc, argv ) )
     {
-        C_keyboard kbd;
 
         log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
  
@@ -93,8 +94,7 @@ C_stenosys::run( int argc, char *argv[] )
         
         bool worked = true;
 
-
-        worked = worked && x11_output->initialise();
+        //worked = worked && x11_output->initialise();
 
         if ( ! worked )
         {
@@ -104,11 +104,12 @@ C_stenosys::run( int argc, char *argv[] )
         // Allow time for the keyup event when enter is pressed to execute the program
         delay( 1000 );
 
-        worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
-        worked = worked && steno_keyboard.start();
+        //worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
+        //worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
         
         worked = worked && translator.initialise( cfg.c().file_dict );
+
         //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
         worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
 
@@ -116,7 +117,9 @@ C_stenosys::run( int argc, char *argv[] )
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ready" );
         
-            while ( ! kbd.abort() )
+            //TEMP
+            //while ( ! kbd.abort() )
+            while ( false )
             {
                 std::string       stroke;
                 std::string       steno;
@@ -157,7 +160,8 @@ C_stenosys::run( int argc, char *argv[] )
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
             
             //serial.stop();
-            steno_keyboard.stop();
+            //TEMP
+            //steno_keyboard.stop();
 
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Devices closed down" );
         }

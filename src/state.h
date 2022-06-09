@@ -27,6 +27,9 @@ public:
     bool
     done() { return done_; }
 
+    void
+    reset();
+
 protected:
 
     void

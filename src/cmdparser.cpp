@@ -5,6 +5,7 @@
 
 #include "cmdparser.h"
 #include "cmdparserstate.h"
+#include "miscellaneous.h"
 
 using namespace stenosys;
 
@@ -29,10 +30,13 @@ C_cmd_parser::parse( const std::string & input, std::string & output, uint16_t &
 
     set_state( C_st_init::s.instance() );
 
-    while ( ! state_->done() )
+    do
     {
         state_->handler( this );
-    }
+
+        delay( 500 );
+
+    } while ( ! state_->done() );
 
     output = output_;
     flags  = flags_;

@@ -37,9 +37,9 @@ private:
     std::string input_;
     std::string output_;
 
-    std::size_t pos_;
-    std::size_t bracket_count_;
-    std::size_t input_length_;
+    int pos_;
+    int bracket_count_;
+    int input_length_;
 
     bool        in_command_;
     uint16_t    flags_;
