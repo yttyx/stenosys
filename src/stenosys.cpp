@@ -38,7 +38,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "dictionary.h"
 #include "strokefeed.h"
 #include "translator.h"
-#include "utf8.h"
 #include "x11output.h"
 
 #define LOG_SOURCE "STSYS"

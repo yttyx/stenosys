@@ -29,14 +29,14 @@ public:
     set_state( std::shared_ptr< C_state > state );
 
     void
-    parse( const C_utf8 & input, C_utf8 & output, uint16_t & flags );
+    parse( const std::string & input, std::string & output, uint16_t & flags );
 
 private:
     
     std::shared_ptr< C_state > state_;
 
-    C_utf8 input_;
-    C_utf8 output_;
+    C_utf8      input_;
+    std::string output_;
 
     int pos_;
     int bracket_count_;

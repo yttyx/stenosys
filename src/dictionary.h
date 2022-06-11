@@ -21,6 +21,7 @@ typedef struct
     std::string text;
     std::string shavian;
     uint16_t    flags;
+    uint16_t    shavian_flags;
 } STENO_ENTRY;
 
 typedef struct {

@@ -57,31 +57,54 @@ C_dictionary::read( const std::string & path )
             while ( get_line( line ) )
             {
                 std::string steno;
-                std::string text;      // Latin alphabet
+                std::string latin;      // Latin alphabet
                 std::string shavian;    // Shavian
 
-                uint16_t flags = 0;
+                uint16_t flags         = 0;
+                uint16_t shavian_flags = 0;
 
                 // Check for valid CSV entry
-                if ( parse_line( line, REGEX_DICTIONARY, steno, text, shavian ) )
+                if ( parse_line( line, REGEX_DICTIONARY, steno, latin, shavian ) )
                 {
-                    C_utf8 parsed_text;
+                    std::string parsed_latin;
+                    std::string parsed_shavian;
 
                     // Parse the dictionary text for Plover commands and set steno flags
-                    parser_->parse( C_utf8( text ), parsed_text, flags );
+                    // Only use the parser if the text contains a command (starts with "{")
+                    if ( latin.find( "{" ) != std::string::npos )
+                    {
+                        parser_->parse( latin, parsed_latin, flags );
+                    }
+                    else
+                    {
+                        parsed_latin = latin;
+                    }
+
+                    if ( shavian.find( "{" ) != std::string::npos )
+                    {
+                        parser_->parse( shavian, parsed_shavian, flags );
+                    }
+                    else
+                    {
+                        parsed_shavian = shavian;
+                    }
 
                     STENO_ENTRY * steno_entry = new STENO_ENTRY();
                     
-                    steno_entry->text    = parsed_text.str();
-                    steno_entry->shavian = shavian;
-                    steno_entry->flags   = flags;
+                    steno_entry->text          = parsed_latin;
+                    steno_entry->shavian       = shavian;
+                    steno_entry->flags         = flags;
+                    steno_entry->shavian_flags = shavian_flags;
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "text:%s, parsed text: %s, shavian:%s, flags:%u"
-                                                               , text.c_str()
-                                                               , parsed_text.c_str()
-                                                               , shavian.c_str()
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "latin: %s, parsed latin: %s, flags:%u"
+                                                               , latin.c_str()
+                                                               , parsed_latin.c_str()
                                                                , flags );
 
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%u"
+                                                               , shavian.c_str()
+                                                               , parsed_shavian.c_str()
+                                                               , shavian_flags );
                     //delay( 500 );
 
                     dictionary_->insert( std::make_pair( steno, * steno_entry ) );
