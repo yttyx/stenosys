@@ -24,8 +24,8 @@ namespace stenosys
 
 extern C_log log;
 
-C_translator::C_translator( alphabet_type alphabet_mode )
-    : alphabet_mode_( alphabet_mode )
+C_translator::C_translator( alphabet_type alphabet)
+    : alphabet_( alphabet)
 {
     dictionary_ = std::make_unique< C_dictionary >();
     strokes_    = std::make_unique< C_strokes >( *dictionary_.get() );

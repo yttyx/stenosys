@@ -48,8 +48,7 @@ C_utf8::operator=( const C_utf8 & rhs )
         return *this;
     }
 
-    str_ = rhs.
-
+    str_ = rhs.str_;
 
     return *this;
 }
@@ -67,7 +66,7 @@ C_utf8::get_next( uint32_t & code )
     return decode( code );
 }
 
-int
+size_t
 C_utf8::length()
 {
     int offset   = 0;
@@ -90,7 +89,7 @@ C_utf8::differs_at( const std::string & str1, const std::string & str2 )
 
     uint32_t code1 = 0;
     uint32_t code2 = 0;
-    int      count = 0;
+    size_t   count = 0;
 
     if ( s1.get_first( code1 ) && s2.get_next( code2 ) )
     {

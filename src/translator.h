@@ -21,7 +21,7 @@ class C_translator
 
 public:
 
-    C_translator( alphabet_type alphabet_mode );
+    C_translator( alphabet_type alphabet);
     ~C_translator();
 
     bool

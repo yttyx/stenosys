@@ -41,26 +41,26 @@ STATE_DEFINITION( C_st_find_command, C_cmd_parser )
     fprintf( stdout, "p->pos_: %u\n", p->pos_ );
     
     // For now we handle the string as ASCII
-    if ( p->pos_ < p->input_length_ )
-    {
-        fprintf( stdout, "char: %c\n", p->input_[ p->pos_ ] );
+    //if ( p->pos_ < p->input_length_ )
+    //{
+        //fprintf( stdout, "char: %c\n", p->input_[ p->pos_ ] );
         
-        if ( p->input_[ p->pos_ ] == '{' )
-        {
-            // Found start of command
-            set_state( p, C_st_got_command::s.instance(), "C_st_got_command" );
-        }
-        else
-        {
-            // Copy a character to the output and move on
-            p->output_ += p->input_[ p->pos_ ];
-            p->pos_++;
-        }
-    }
-    else
-    {
-        set_state( p, C_st_end::s.instance(), "C_st_end" );
-    }
+        //if ( p->input_[ p->pos_ ] == '{' )
+        //{
+            //// Found start of command
+            //set_state( p, C_st_got_command::s.instance(), "C_st_got_command" );
+        //}
+        //else
+        //{
+            //// Copy a character to the output and move on
+            //p->output_ += p->input_[ p->pos_ ];
+            //p->pos_++;
+        //}
+    //}
+    //else
+    //{
+        //set_state( p, C_st_end::s.instance(), "C_st_end" );
+    //}
 }
 
 // Search for valid command, whilst copying to the output any text which is not a command
