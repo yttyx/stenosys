@@ -38,12 +38,6 @@ public:
     std::string &
     translation();
 
-    void
-    shavian( const std::string & shavian );
-
-    std::string &
-    shavian();
-    
     void 
     flags( uint16_t flags );
     

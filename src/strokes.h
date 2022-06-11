@@ -7,6 +7,7 @@
 
 #include "dictionary.h"
 #include "history.h"
+#include "stenoflags.h"
 #include "stroke.h"
 
 using namespace stenosys;
@@ -30,8 +31,8 @@ public:
 
     void
     find_best_match( const std::string & steno
-                   , std::string &       text 
-                   , std::string &       shavian
+                   , alphabet_type       alphabet
+                   , std::string &       text
                    , uint16_t &          flags
                    , uint16_t &          flags_prev 
                    , bool &              extends );

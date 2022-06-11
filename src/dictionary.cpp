@@ -12,6 +12,7 @@
 #include "dictionary.h"
 #include "log.h"
 #include "miscellaneous.h"
+#include "stenoflags.h"
 #include "textfile.h"
 #include "utf8.h"
 
@@ -132,8 +133,8 @@ C_dictionary::read( const std::string & path )
 // Output: text, shavian and flags are only set if the dictionary entry is found
 bool
 C_dictionary::lookup( const std::string & steno
+                    , alphabet_type       alphabet
                     , std::string &       text
-                    , std::string &       shavian 
                     , uint16_t &          flags )
 {
     auto result = dictionary_->find( steno );
@@ -144,9 +145,12 @@ C_dictionary::lookup( const std::string & steno
     }
     else
     {
-        text    = result->second.text;
-        shavian = result->second.shavian;
-        flags   = result->second.flags;
+        std::string shavian = result->second.shavian;
+
+        // If configured for Shavian, use the Shavian entry if it's not empty; otherwise use
+        // the Latin entry.
+        text  = ( alphabet == AT_SHAVIAN ) ? ( ( shavian.length() > 0 ) ? shavian : text) : text;
+        flags = result->second.flags;
     }
 
     return true;

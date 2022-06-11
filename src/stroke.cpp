@@ -72,18 +72,6 @@ C_stroke::translation()
     return translation_;
 }
 
-void
-C_stroke::shavian( const std::string & shavian )
-{
-    shavian_ = shavian;
-}
-
-std::string &
-C_stroke::shavian()
-{
-    return shavian_;
-}
-
 uint16_t
 C_stroke::flags()
 {

@@ -45,7 +45,7 @@ private:
 
 private:
     
-    alphabet_type alphabet_mode_;
+    alphabet_type alphabet_;
 
     std::unique_ptr< C_dictionary > dictionary_;
     std::unique_ptr< C_strokes >    strokes_;

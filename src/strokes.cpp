@@ -49,8 +49,8 @@ C_strokes::initialise()
 // Add a steno stroke and find the best match
 void
 C_strokes::find_best_match( const std::string & steno
-                          , std::string &       latin
-                          , std::string &       shavian 
+                          , alphabet_type       alphabet
+                          , std::string &       text
                           , uint16_t &          flags
                           , uint16_t &          flags_prev
                           , bool &              extends )
@@ -61,26 +61,24 @@ C_strokes::find_best_match( const std::string & steno
 
     std::string key;
 
-    latin   = steno;  // Default to the raw steno
-    shavian = steno;  //
+    text = steno;  // Default to the raw steno
 
     C_stroke * stroke = nullptr;
 
     do
     {
         key = ( key.length() == 0 ) ? steno : stroke->steno() + std::string( "/" ) + key;
-        
-        if ( dictionary_.lookup( key, latin, shavian, flags) )
+     
+        std::string shavian;
+
+        if ( dictionary_.lookup( key, alphabet, text, flags) )
         {
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, shavian: %s, flags: %u"
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, flags: %u"
                                                        //, key.c_str()
-                                                       //, latin.c_str()
-                                                       //, shavian.c_str()
+                                                       //, output.c_str()
                                                        //, flags );
 
-
-            history_->curr()->translation( latin );
-            history_->curr()->shavian( shavian );
+            history_->curr()->translation( text );
             history_->curr()->flags( flags );
 
             // Set best match so far
@@ -116,12 +114,6 @@ C_strokes::find_best_match( const std::string & steno
     
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "history_->curr()->extends(): %d"
                                                //, history_->curr()->extends() );
-
-    // If there's no Shavian translation, default to the Latin alphabet version
-    if ( shavian.length() == 0 )
-    {
-        shavian = latin;
-    }
 }
 
 void

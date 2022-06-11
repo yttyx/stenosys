@@ -30,17 +30,14 @@ C_formatter::~C_formatter()
 
 std::string
 C_formatter::format( alphabet_type     alphabet_mode
-                   , const std::string latin
-                   , const std::string shavian
+                   , const std::string text
                    , uint16_t          flags_curr
                    , uint16_t          flags_prev 
                    , bool              extends )
 {
-    bool latin_mode = ( alphabet_mode == AT_LATIN );
-
-    std::string formatted = latin_mode ? latin : shavian;
-    std::string space; 
-
+    std::string space;
+    std::string formatted = text;
+    
     if ( formatted.length() > 0 )
     {
         if ( ! attach( flags_prev, flags_curr ) )
@@ -49,7 +46,7 @@ C_formatter::format( alphabet_type     alphabet_mode
             space = " ";
         }
 
-        if ( latin_mode )
+        if ( alphabet_mode == AT_LATIN )
         {
             if ( flags_prev & CAPITALISE_NEXT )
             {
@@ -68,7 +65,7 @@ C_formatter::format( alphabet_type     alphabet_mode
                 std::transform( formatted.begin(), formatted.end(), formatted.begin(), ::toupper );
             }
         }
-        else  // Shavian mode
+        else  // Shavian alphabet
         {
             if ( flags_prev & CAPITALISE_NEXT )
             {

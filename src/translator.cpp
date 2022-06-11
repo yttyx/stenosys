@@ -77,12 +77,11 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
     uint16_t flags_prev = 0;
     bool     extends    = false;
 
-    std::string latin;
-    std::string shavian;
+    std::string text;
 
-    strokes_->find_best_match( steno, latin, shavian, flags_curr, flags_prev, extends );
+    strokes_->find_best_match( steno, alphabet_, text, flags_curr, flags_prev, extends );
 
-    std::string curr = formatter_->format( alphabet_mode_, latin, shavian, flags_curr, flags_prev, extends );
+    std::string curr = formatter_->format( alphabet_, text, flags_curr, flags_prev, extends );
 
     strokes_->translation( curr );
 
@@ -114,9 +113,9 @@ C_translator::undo_stroke( std::string & output )
 void
 C_translator::toggle_alphabet_mode()
 {
-    alphabet_mode_ = ( alphabet_mode_ == AT_LATIN ) ? AT_SHAVIAN : AT_LATIN;
+    alphabet_= ( alphabet_== AT_LATIN ) ? AT_SHAVIAN : AT_LATIN;
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s alphabet active", ( alphabet_mode_ == AT_LATIN ) ? "Latin" : "Shavian" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s alphabet active", ( alphabet_== AT_LATIN ) ? "Latin" : "Shavian" );
 }
 
 }

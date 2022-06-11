@@ -8,6 +8,7 @@
 
 #include "cmdparser.h"
 #include "dictionary.h"
+#include "stenoflags.h"
 #include "textfile.h"
 
 namespace stenosys
@@ -39,8 +40,8 @@ public:
 
     bool
     lookup( const std::string & steno
+          , alphabet_type       alphabet  
           , std::string &       text
-          , std::string &       shavian
           , uint16_t &          flags );
 
     bool
