@@ -60,7 +60,7 @@ C_dictionary::read( const std::string & path )
                 std::string latin;      // Latin alphabet
                 std::string shavian;    // Shavian
 
-                uint16_t flags         = 0;
+                uint16_t latin_flags   = 0;
                 uint16_t shavian_flags = 0;
 
                 // Check for valid CSV entry
@@ -73,7 +73,7 @@ C_dictionary::read( const std::string & path )
                     // Only use the parser if the text contains a command (starts with "{")
                     if ( latin.find( "{" ) != std::string::npos )
                     {
-                        parser_->parse( latin, parsed_latin, flags );
+                        parser_->parse( latin, parsed_latin, latin_flags );
                     }
                     else
                     {
@@ -82,7 +82,7 @@ C_dictionary::read( const std::string & path )
 
                     if ( shavian.find( "{" ) != std::string::npos )
                     {
-                        parser_->parse( shavian, parsed_shavian, flags );
+                        parser_->parse( shavian, parsed_shavian, latin_flags );
                     }
                     else
                     {
@@ -91,15 +91,15 @@ C_dictionary::read( const std::string & path )
 
                     STENO_ENTRY * steno_entry = new STENO_ENTRY();
                     
-                    steno_entry->text          = parsed_latin;
+                    steno_entry->latin         = parsed_latin;
                     steno_entry->shavian       = shavian;
-                    steno_entry->flags         = flags;
+                    steno_entry->latin_flags   = latin_flags;
                     steno_entry->shavian_flags = shavian_flags;
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "latin: %s, parsed latin: %s, flags:%u"
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "latin: %s, parsed latin: %s, latin flags:%u"
                                                                , latin.c_str()
                                                                , parsed_latin.c_str()
-                                                               , flags );
+                                                               , latin_flags );
 
                     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%u"
                                                                , shavian.c_str()
@@ -173,7 +173,7 @@ C_dictionary::lookup( const std::string & steno
         // If configured for Shavian, use the Shavian entry if it's not empty; otherwise use
         // the Latin entry.
         text  = ( alphabet == AT_SHAVIAN ) ? ( ( shavian.length() > 0 ) ? shavian : text) : text;
-        flags = result->second.flags;
+        flags = ( alphabet == AT_SHAVIAN ) ? result->second.shavian_flags : result->second.latin_flags;
     }
 
     return true;

@@ -18,9 +18,9 @@ namespace stenosys
 
 typedef struct
 {
-    std::string text;
+    std::string latin;
+    uint16_t    latin_flags;
     std::string shavian;
-    uint16_t    flags;
     uint16_t    shavian_flags;
 } STENO_ENTRY;
 
