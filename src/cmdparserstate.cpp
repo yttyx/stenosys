@@ -38,14 +38,13 @@ STATE_DEFINITION( C_st_find_command, C_cmd_parser )
     std::string ch;
 
     // If there is a character, fetch it. It's a UTF-8 character, so it's returned as a string.
-    if ( p->input_.peek_next( ch ) )
+    if ( p->input_.get_next( ch ) )
     {
         //fprintf( stdout, "ch: %s\n", ch.c_str() );
 
         if ( ch[ 0 ] == '{' )
         {
             // Found start of command
-            p->input_.consume_next();
             set_state( p, C_st_got_command::s.instance(), "C_st_got_command" );
         }
         else
@@ -63,8 +62,39 @@ STATE_DEFINITION( C_st_find_command, C_cmd_parser )
 // Search for valid command, whilst copying to the output any text which is not a command
 STATE_DEFINITION( C_st_got_command, C_cmd_parser )
 {
+    // 1 char command e.g. ^ > & < 
+    // {&} attach
+    // {>} 
+    // {.} output '.' <space> and uppercase next word
+    // {?} output '?' <space> and uppercase next word
+    // {!} output '!' <space> and uppercase next word
+    //
+    // 2 char command e.g. -|
+    // no more chars
+    // end of command '}'
+    //
+    std::string ch;
+
+    if ( p->input_.get_next( ch ) )
+    {
+        switch ( ch[ 0 ] )
+        {
+            case '}':
+                // End of command
+                set_state( p, C_st_find_command::s.instance(), "C_st_find_command" );
+                break;
+        
+            //TBC
+
+        }
+    }
+    else
+    {
+        set_state( p, C_st_end::s.instance(), "C_st_end" );
+    }
+
+
     //TEMP
-    set_state( p, C_st_end::s.instance(), "C_st_end" );
 }
 
 STATE_DEFINITION( C_st_end, C_cmd_parser )

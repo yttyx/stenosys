@@ -18,6 +18,7 @@ class C_cmd_parser
 {
     friend class C_st_init;
     friend class C_st_find_command;
+    friend class C_st_got_command;
     friend class C_st_end;
 
 public:
