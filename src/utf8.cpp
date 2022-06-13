@@ -57,13 +57,51 @@ bool
 C_utf8::get_first( uint32_t & code )
 {
     index_ = 0;
-    return decode( code );
+    return decode( code, true );
 }
 
 bool
 C_utf8::get_next( uint32_t & code )
 {
-    return decode( code );
+    return decode( code, true );
+}
+
+bool
+C_utf8::peek_next( uint32_t & code )
+{
+    return decode( code, false );
+}
+
+bool
+C_utf8::get_first( std::string  & str )
+{
+    index_ = 0;
+    return decode( str, true );
+}
+
+bool
+C_utf8::get_next( std::string  & str )
+{
+    return decode( str, true );
+}
+
+bool
+C_utf8::peek_next( std::string & str )
+{
+    return decode( str, false );
+}
+
+void
+C_utf8::consume_next()
+{
+    if ( index_ < length_ )
+    {
+        uint8_t b1 = *( str_p_ + index_ );
+
+        int utf8_length = length( b1 );
+
+        index_ += utf8_length;
+    }
 }
 
 size_t
@@ -132,7 +170,7 @@ C_utf8::append( const std::string & str )
 }
 
 bool
-C_utf8::decode( uint32_t & code )
+C_utf8::decode( uint32_t & code, bool update_index )
 {
     code = '?';
 
@@ -144,8 +182,33 @@ C_utf8::decode( uint32_t & code )
 
         code = unpack( str_p_ + index_);
 
-        index_ += utf8_length;
-        
+        if ( update_index )
+        {
+            index_ += utf8_length;
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+bool
+C_utf8::decode( std::string & str, bool update_index )
+{
+    if ( index_ < length_ )
+    {
+        uint8_t b1 = *( str_p_ + index_ );
+
+        int utf8_length = length( b1 );
+
+        str = str_.substr( index_, utf8_length );
+
+        if ( update_index )
+        {
+            index_ += utf8_length;
+        }
+
         return true;
     }
 

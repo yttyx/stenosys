@@ -27,6 +27,21 @@ public:
     bool
     get_next( uint32_t & code );
 
+    bool
+    peek_next( uint32_t & code );
+    
+    bool
+    get_first( std::string & str );
+
+    bool
+    get_next( std::string & str );
+
+    bool
+    peek_next( std::string & str );
+    
+    void
+    consume_next();
+
     size_t
     length();
 
@@ -42,7 +57,7 @@ public:
     const std::string
     str() { return str_; }
 
-    const char  *
+    const char *
     c_str() { return str_p_; }
 
     static void
@@ -57,8 +72,11 @@ private:
     unpack( const char * data );
 
     bool
-    decode( uint32_t & code );
-    
+    decode( uint32_t & code, bool update_index );
+
+    bool
+    decode( std::string & str, bool update_index );
+
     int 
     to_offset( int pos );
 

@@ -21,7 +21,6 @@ STATE_DEFINITION( C_st_init, C_cmd_parser )
 
     p->output_        = "";
     p->input_length_  = p->input_.length();
-    p->pos_           = 0;
     p->bracket_count_ = 0;
     p->flags_         = 0;
     p->in_command_    = false;
@@ -34,38 +33,37 @@ STATE_DEFINITION( C_st_init, C_cmd_parser )
 }
 
 // Copy input text to the output until the start of a Plover command ("{") is found
-// TODO Need to treat the dictionary text as UTF-8 strings when we come to parse
-//      the Shavian dictionary entries (dual parsing the Latin and Shavian fields)
 STATE_DEFINITION( C_st_find_command, C_cmd_parser )
 {
-    fprintf( stdout, "p->pos_: %u\n", p->pos_ );
-    
-    // For now we handle the string as ASCII
-    //if ( p->pos_ < p->input_length_ )
-    //{
-        //fprintf( stdout, "char: %c\n", p->input_[ p->pos_ ] );
-        
-        //if ( p->input_[ p->pos_ ] == '{' )
-        //{
-            //// Found start of command
-            //set_state( p, C_st_got_command::s.instance(), "C_st_got_command" );
-        //}
-        //else
-        //{
-            //// Copy a character to the output and move on
-            //p->output_ += p->input_[ p->pos_ ];
-            //p->pos_++;
-        //}
-    //}
-    //else
-    //{
-        //set_state( p, C_st_end::s.instance(), "C_st_end" );
-    //}
+    std::string ch;
+
+    // If there is a character, fetch it. It's a UTF-8 character, so it's returned as a string.
+    if ( p->input_.peek_next( ch ) )
+    {
+        //fprintf( stdout, "ch: %s\n", ch.c_str() );
+
+        if ( ch[ 0 ] == '{' )
+        {
+            // Found start of command
+            p->input_.consume_next();
+            set_state( p, C_st_got_command::s.instance(), "C_st_got_command" );
+        }
+        else
+        {
+            // Copy a character to the output and move on
+            p->output_ += ch;
+        }
+    }
+    else
+    {
+        set_state( p, C_st_end::s.instance(), "C_st_end" );
+    }
 }
 
 // Search for valid command, whilst copying to the output any text which is not a command
 STATE_DEFINITION( C_st_got_command, C_cmd_parser )
 {
+    //TEMP
     set_state( p, C_st_end::s.instance(), "C_st_end" );
 }
 

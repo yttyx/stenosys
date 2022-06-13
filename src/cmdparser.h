@@ -38,9 +38,8 @@ private:
     C_utf8      input_;
     std::string output_;
 
-    int pos_;
-    int bracket_count_;
-    int input_length_;
+    int         bracket_count_;
+    int         input_length_;
 
     bool        in_command_;
     uint16_t    flags_;
