@@ -42,6 +42,9 @@ public:
     void
     consume_next();
 
+    bool
+    find( const std::string & str );
+
     size_t
     length();
 

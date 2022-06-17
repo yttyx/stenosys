@@ -31,7 +31,7 @@ public:
     void
     set_state( std::shared_ptr< C_state > state );
 
-    void
+    bool
     parse( const std::string & input, std::string & output, uint16_t & flags );
 
 private:
@@ -43,8 +43,9 @@ private:
 
     int         input_length_;
 
-    bool        in_command_;
     bool        got_text_;
+    bool        parsed_ok_;
+
     uint16_t    flags_;
     uint16_t    flags_internal_;
 };

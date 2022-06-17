@@ -48,7 +48,10 @@ C_utf8::operator=( const C_utf8 & rhs )
         return *this;
     }
 
-    str_ = rhs.str_;
+    str_    = rhs.str_;
+    str_p_  = str_.c_str();
+    index_  = 0;
+    length_ = str_.length();
 
     return *this;
 }
@@ -104,10 +107,18 @@ C_utf8::consume_next()
     }
 }
 
+bool
+C_utf8::find( const std::string & s )
+{
+    return str_.find( s ) != std::string::npos;
+}
+
 size_t
 C_utf8::length()
 {
-    int offset   = 0;
+    fprintf( stdout, "C_utf8::length - str_: %s\n", str_.c_str() );
+
+    int offset  = 0;
     int utf8len = 0;
 
     while ( offset < length_ )

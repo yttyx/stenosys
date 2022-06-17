@@ -35,7 +35,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "miscellaneous.h"
 #include "stenokeyboard.h"
 #include "stenosys.h"
-#include "dictionary.h"
 #include "strokefeed.h"
 #include "translator.h"
 #include "x11output.h"

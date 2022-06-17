@@ -8,30 +8,43 @@
 #include "stenoflags.h"
 #include "utf8.h"
 
-using namespace  stenosys;
+#define LOG_SOURCE "CPARS"
 
+using namespace  stenosys;
 
 namespace stenosys
 {
 
+extern C_log log;
+
 // Initialise parser variables
 STATE_DEFINITION( C_st_init, C_cmd_parser )
 {
-    fprintf( stdout, "C_st_init::handler() p: %p\n", p );
-    fprintf( stdout, "  input_: %s\n", p->input_.c_str() );
+    fprintf( stdout, "C_st_init\n" );
+    fprintf( stdout, "  input_       : %s\n", p->input_.c_str() );
+    fprintf( stdout, "  input_length_: %ld\n", p->input_.length() );
 
     p->output_         = "";
     p->input_length_   = p->input_.length();
     p->flags_          = 0;
     p->flags_internal_ = 0;
-    p->in_command_     = false;
+    p->parsed_ok_      = true;
     p->got_text_       = false;
 
     C_state::done_ = false;
 
-    fprintf( stdout, "  input_.length(): %ld\n", p->input_.length() );
-    
-    set_state( p, C_st_in_text::s.instance(), "C_st_in_text" );
+    // Check if the string contains a command start character
+    if ( p->input_.find( "{" ) )
+    {
+        set_state( p, C_st_in_text::s.instance(), "C_st_in_text" );
+    }
+    else
+    {
+        // No command to parse
+        p->output_ = p->input_.str();
+
+        set_state( p, C_st_end::s.instance(), "C_st_end" );
+    }
 }
 
 // Copy input text to the output until the start of a Plover command ("{") is found
@@ -39,11 +52,9 @@ STATE_DEFINITION( C_st_in_text, C_cmd_parser )
 {
     std::string ch;
 
-    // If there is a character, fetch it. It's a UTF-8 character, so it's returned as a string.
+    // If there is a character, fetch it. It's a UTF-8 character so it's returned as a string.
     if ( p->input_.get_next( ch ) )
     {
-        //fprintf( stdout, "ch: %s\n", ch.c_str() );
-
         if ( ch[ 0 ] == '{' )
         {
             // Found start of command
@@ -89,14 +100,12 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
         switch ( ch[ 0 ] )
         {
             case '^':
-                if (  ! p->got_text_ )
+                if ( ! p->got_text_ )
                 {
                     p->flags_ |= ATTACH_TO_PREVIOUS;
                 }
 
                 p->flags_ |= ATTACH_TO_NEXT;
-                
-                set_state( p, C_st_get_command_end::s.instance(), "C_st_get_command_end" );
                 break;
 
             case '.':
@@ -109,27 +118,50 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
                 break;
 
             case '<':
-                p->flags_  |= UPPERCASE_NEXT_WORD;
+                p->flags_ |= UPPERCASE_NEXT_WORD;
                 break;
 
             case '>':
-                p->flags_  |= LOWERCASE_NEXT_WORD;
+                p->flags_ |= LOWERCASE_NEXT_WORD;
+                break;
+
+            case '&':
+                if ( p->input_.get_next( ch ) )
+                {
+                    p->output_ += ch;
+                    p->flags_  |= GLUE;
+
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "p->flags_: %04x", p->flags_ );
+                }
+                else
+                {
+                    p->parsed_ok_ = false;
+                
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Missing character from glue command: %s", p->input_.c_str() );
+                    set_state( p, C_st_end::s.instance(), "C_st_end" );
+                }
                 break;
 
             case '-':
                 // Two character command
-                //set_state( p, C_st_got_command_2::s.instance(), "C_st_got_command_2" );
+                set_state( p, C_st_got_command_2::s.instance(), "C_st_got_command_2" );
+                break;
 
             case '}':
                 // End of command
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Empty command: %s", p->input_.c_str() );
                 set_state( p, C_st_in_text::s.instance(), "C_st_in_text" );
                 break;
         
             default:
-                //TODO Report command error
+                p->parsed_ok_ = false;
+                
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid command: %s", p->input_.c_str() );
                 set_state( p, C_st_end::s.instance(), "C_st_end" );
                 break;
         }
+        
+        set_state( p, C_st_get_command_end::s.instance(), "C_st_get_command_end" );
     }
     else
     {
@@ -155,14 +187,18 @@ STATE_DEFINITION( C_st_got_command_2, C_cmd_parser )
                 break;
 
             default:
-                //TODO Report command error here
+                p->parsed_ok_ = false;
+                
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid command: %s", p->input_.c_str() );
                 set_state( p, C_st_end::s.instance(), "C_st_end" );
                 break;
         }
     }
     else
     {
-        //TODO Report command error here
+        p->parsed_ok_ = false;
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Incomplete command: %s", p->input_.c_str() );
         set_state( p, C_st_end::s.instance(), "C_st_end" );
     }
 }
@@ -180,7 +216,9 @@ STATE_DEFINITION( C_st_get_command_end, C_cmd_parser )
         }
         else
         {
-            //TODO Report command error here
+            p->parsed_ok_ = false;
+
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Bad command format: %s", p->input_.c_str() );
             set_state( p, C_st_end::s.instance(), "C_st_end" );
         }
     }
