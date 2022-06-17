@@ -15,6 +15,11 @@ namespace stenosys
 
 C_cmd_parser::C_cmd_parser()
     : state_( C_st_init::s.instance() )
+    , input_length_( 0 )
+    , in_command_( false )
+    , got_text_( false )
+    , flags_( 0 )
+    , flags_internal_( 0 )
 {
 }
 

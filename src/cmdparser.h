@@ -17,8 +17,10 @@ namespace stenosys
 class C_cmd_parser
 {
     friend class C_st_init;
-    friend class C_st_find_command;
+    friend class C_st_in_text;
     friend class C_st_got_command;
+    friend class C_st_got_command_2;
+    friend class C_st_get_command_end;
     friend class C_st_end;
 
 public:
@@ -39,10 +41,10 @@ private:
     C_utf8      input_;
     std::string output_;
 
-    int         bracket_count_;
     int         input_length_;
 
     bool        in_command_;
+    bool        got_text_;
     uint16_t    flags_;
     uint16_t    flags_internal_;
 };
