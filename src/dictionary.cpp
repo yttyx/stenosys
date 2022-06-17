@@ -73,15 +73,15 @@ C_dictionary::read( const std::string & path )
                     bool latin_ok   = parser_->parse( latin, parsed_latin, latin_flags );
                     bool shavian_ok = parser_->parse( shavian, parsed_shavian, shavian_flags );
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "latin: %s, parsed latin: %s, latin flags:%04x"
-                                                               , latin.c_str()
-                                                               , parsed_latin.c_str()
-                                                               , latin_flags );
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "latin: %s, parsed latin: %s, latin flags:%04x"
+                                                               //, latin.c_str()
+                                                               //, parsed_latin.c_str()
+                                                               //, latin_flags );
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%04x"
-                                                               , shavian.c_str()
-                                                               , parsed_shavian.c_str()
-                                                               , shavian_flags );
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%04x"
+                                                               //, shavian.c_str()
+                                                               //, parsed_shavian.c_str()
+                                                               //, shavian_flags );
 
                     if ( latin_ok && shavian_ok )
                     {

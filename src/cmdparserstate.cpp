@@ -95,6 +95,8 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
     //
     std::string ch;
 
+    bool two_char_cmd = false;
+
     if ( p->input_.get_next( ch ) )
     {
         switch ( ch[ 0 ] )
@@ -136,30 +138,40 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
                     p->parsed_ok_ = false;
                 
                     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Missing character from glue command: %s", p->input_.c_str() );
-                    set_state( p, C_st_end::s.instance(), "C_st_end" );
                 }
                 break;
 
             case '-':
                 // Two character command
-                set_state( p, C_st_got_command_2::s.instance(), "C_st_got_command_2" );
+                two_char_cmd = true;
                 break;
 
             case '}':
                 // End of command
+                p->parsed_ok_ = false;
+                
                 log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Empty command: %s", p->input_.c_str() );
-                set_state( p, C_st_in_text::s.instance(), "C_st_in_text" );
                 break;
         
             default:
                 p->parsed_ok_ = false;
                 
                 log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid command: %s", p->input_.c_str() );
-                set_state( p, C_st_end::s.instance(), "C_st_end" );
                 break;
         }
         
-        set_state( p, C_st_get_command_end::s.instance(), "C_st_get_command_end" );
+        if ( two_char_cmd )
+        {
+            set_state( p, C_st_got_command_2::s.instance(), "C_st_got_command_2" );
+        }
+        else if ( p->parsed_ok_ )
+        {
+            set_state( p, C_st_get_command_end::s.instance(), "C_st_get_command_end" );
+        }
+        else
+        {
+            set_state( p, C_st_end::s.instance(), "C_st_end" );
+        }
     }
     else
     {
@@ -182,6 +194,7 @@ STATE_DEFINITION( C_st_got_command_2, C_cmd_parser )
         {
             case '|':
                 p->flags_ |= CAPITALISE_NEXT;
+                set_state( p, C_st_get_command_end::s.instance(), "C_st_get_command_end" );
                 break;
 
             default:
@@ -211,6 +224,7 @@ STATE_DEFINITION( C_st_get_command_end, C_cmd_parser )
     {
         if ( ch[ 0 ] == '}' )
         {
+            set_state( p, C_st_in_text::s.instance(), "C_st_in_text" );
         }
         else
         {
@@ -222,6 +236,7 @@ STATE_DEFINITION( C_st_get_command_end, C_cmd_parser )
     }
     else
     {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Incomplete command: %s", p->input_.c_str() );
         set_state( p, C_st_end::s.instance(), "C_st_end" );
     }
 }
