@@ -258,7 +258,7 @@
 -F	of	𐑝
 -F/TP-PL	of.	
 -FPLT/-9D	{.}99	
--FPLT/HR-PS	{.}...{|}	
+-FPLT/HR-PS	{.}...{-|}	
 -FR	ever	𐑧𐑝𐑼
 -FR/PHO*R	evermore	𐑧𐑝𐑼𐑥𐑹
 -FR/TKPWHRAEUDZ	Everglades	
@@ -8338,7 +8338,6 @@ H-DZ	homicide	𐑣𐑪𐑥𐑦𐑕𐑲𐑛
 H-DZ/-Z	homicides	𐑣𐑪𐑥𐑦𐑕𐑲𐑛𐑟
 H-DZ/TKAL	homicidal	𐑣𐑪𐑥𐑦𐑕𐑲𐑛𐑩𐑤
 H-F	{?}	
-H-F/HRAO*EUBG	{?}like{,}	
 H-F/SKHRAPL	{^}‽{-|}	
 H-FPLTS	H.	
 H-G	handgun	𐑣𐑨𐑯𐑛𐑜𐑳𐑯
@@ -8634,7 +8633,6 @@ HAFRP/ER	hamper	𐑣𐑨𐑥𐑐𐑼
 HAFRP/ERD	hampered	𐑣𐑨𐑥𐑐𐑼𐑛
 HAFRP/ERG	hampering	𐑣𐑨𐑥𐑐𐑼𐑦𐑙
 HAFRP/ERS	hampers	𐑣𐑨𐑥𐑐𐑼𐑟
-HAFRPB/STPHERPB	African-Americans{?}	
 HAFS	halves	𐑣𐑭𐑝𐑟
 HAFT	Haft	𐑣𐑭𐑓𐑑
 HAG	hag	𐑣𐑨𐑜
@@ -10938,7 +10936,6 @@ HRAO*ET/ALT	lethality
 HRAO*ET/ALT/-S	lethalities	
 HRAO*ET/HREU	lethally	
 HRAO*EU	lye	𐑤𐑲
-HRAO*EUBG	{,}like{,}	
 HRAO*EUBL	libel	𐑤𐑲𐑚𐑩𐑤
 HRAO*EUBL/EUFT	libelist	
 HRAO*EUF/HREU/*PBS	liveliness	𐑤𐑲𐑝𐑤𐑦𐑯𐑩𐑕
@@ -20064,7 +20061,6 @@ KWRAU/PEU/HRU	Yaupilu
 KWRAUL	y'all	
 KWRAUPB	yawn	𐑘𐑷𐑯
 KWRAUPB/-G	yawning	𐑘𐑷𐑯𐑦𐑙
-KWRAUR/KWREPBT	{-orient}	
 KWRAZ	Yaz	
 KWRAZ/EUD	Yazid	
 KWRE	yes	𐑘𐑧𐑕
@@ -20486,7 +20482,6 @@ OBGD	okayed	𐑴𐑒𐑱𐑛
 OBGS	objection	𐑩𐑚𐑡𐑧𐑒𐑖𐑩𐑯
 OBGS/*EPB	oxen	𐑪𐑒𐑕𐑩𐑯
 OBGS/-S	objections	𐑩𐑚𐑡𐑧𐑒𐑖𐑩𐑯𐑟
-OBGS/A*PB	{oxan}	
 OBGS/AL	oxal	
 OBGS/AL/KWREU	oxaly	
 OBGS/AS	Oxus	
@@ -20982,7 +20977,6 @@ OPB/TOLG/KHREU	ontologically
 OPB/WARDZ	onwards	𐑪𐑯𐑢𐑼𐑛𐑟
 OPBG/OLG	oncology	
 OPBG/OLG/-S	oncologies	
-OPBLG/EUBG	{ologic}	
 OPBLG/TPHAEUS	oxygenase	
 OPBT/HR-LG	ontological	
 OPBT/SKWREPB/SEUS	ontogenesis	
@@ -23729,7 +23723,6 @@ PH*EUT/HROPBLG/KHREU	mythologically
 PH*EUT/K-L	mythical	𐑥𐑦𐑔𐑦𐑒𐑩𐑤
 PH*EUT/OLG	mythology	𐑥𐑦𐑔𐑪𐑤𐑩𐑡𐑦
 PH*EUT/OLG/EUFT	mythologist	𐑥𐑦𐑔𐑪𐑤𐑩𐑡𐑦𐑕𐑑
-PH*EUT/RA/SEUPB	{mithracin}	
 PH*G/A*U	milligramme	
 PH*L/A*U	millilitre	
 PH*LS	milliliters	
@@ -27500,11 +27493,8 @@ PHROEURB	plasia
 PHROEURS	employers	𐑦𐑥𐑐𐑤𐑶𐑼𐑟
 PHROEUS	employs	𐑦𐑥𐑐𐑤𐑶𐑟
 PHROEUT	Plato	
-PHROF	{PLOVER:SUSPEND}	
 PHROFR	Plover	𐑐𐑤𐑳𐑝𐑼
-PHROLG	{PLOVER:TOGGLE}	
 PHROP	plop	𐑐𐑤𐑪𐑐
-PHROPB	{PLOVER:RESUME}	
 PHROPB/-S	microns	𐑥𐑲𐑒𐑮𐑪𐑯𐑟
 PHROPBS	Parkinson's	𐑐𐑸𐑒𐑦𐑯𐑕𐑩𐑯𐑟
 PHROPL	policewoman	𐑐𐑩𐑤𐑰𐑕𐑢𐑫𐑥𐑩𐑯
@@ -29046,7 +29036,6 @@ PREP/POGS	preposition	𐑐𐑮𐑧𐑐𐑩𐑟𐑦𐑖𐑩𐑯
 PREP/SEUGS/A*L	prepositional	𐑐𐑮𐑧𐑐𐑩𐑟𐑦𐑖𐑩𐑯𐑩𐑤
 PREP/TOER	preparatory	𐑐𐑮𐑦𐑐𐑨𐑮𐑩𐑑𐑼𐑦
 PREPB/-BL	presentable	𐑐𐑮𐑦𐑟𐑧𐑯𐑑𐑩𐑚𐑩𐑤
-PREPB/-S	{~|(})	
 PREPB/KWRAL	perennial	𐑐𐑼𐑧𐑯𐑾𐑤
 PREPB/KWRAL/TEU	perenniality	
 PREPBD/*ER/TKPWAFT	Prendergast	
@@ -32719,7 +32708,6 @@ PWR*EUT/TPHEU	Britney
 PWR*S	\\}	
 PWR-BG	{[}	
 PWR-BGS	{]}	
-PWR-BGT/-S	{~|[}]	
 PWR-PL	bathroom	𐑚𐑭𐑔𐑮𐑵𐑥
 PWR-PLS	bathrooms	𐑚𐑭𐑔𐑮𐑵𐑥𐑟
 PWR-RBG	BCR	
@@ -36056,7 +36044,6 @@ REPZ/-S	repses
 RER	remember	𐑮𐑦𐑥𐑧𐑥𐑚𐑼
 RERB	refresh	𐑮𐑦𐑓𐑮𐑧𐑖
 RERB/-S	refreshes	𐑮𐑦𐑓𐑮𐑧𐑖𐑩𐑟
-RERBGS	{,}{remember}	
 RERD	remembered	𐑮𐑦𐑥𐑧𐑥𐑚𐑼𐑛
 RERG	remembering	𐑮𐑦𐑥𐑧𐑥𐑚𐑼𐑦𐑙
 RERL	earlier	𐑻𐑤𐑦𐑼
@@ -41519,7 +41506,6 @@ SKWR*URPBL	Journal	𐑡𐑻𐑯𐑩𐑤
 SKWR*URPL	skwr*urpl	
 SKWR-R	injure	𐑦𐑯𐑡𐑼
 SKWR-R/KWROUS	injurious	𐑦𐑯𐑡𐑫𐑼𐑾𐑕
-SKWR-RBGS/HRAO*EUBG	{...}like{,}	
 SKWR-RBGS/KR*R	JCR	
 SKWR-RBGS/TP*BG	JFK	
 SKWR-RD	injured	𐑦𐑯𐑡𐑼𐑛
@@ -46417,8 +46403,6 @@ STKPHEUS	dismiss	𐑛𐑦𐑕𐑥𐑦𐑕
 STKPHEUS/A*L	dismissal	𐑛𐑦𐑕𐑥𐑦𐑕𐑩𐑤
 STKPW*	{>}{&z}	
 STKPW*P	{&Z}	
-STKPW*P/HRAOEUPB	Z-line	
-STKPW*P/TKEUFBG	Z-disc	
 STKPW-LT	SGLT	
 STKPWAO*U	ZUI	
 STKPWAO*URB	extinguish	𐑦𐑒𐑕𐑑𐑦𐑙𐑢𐑦𐑖
@@ -46435,10 +46419,7 @@ STKPWEFR	zephyr	𐑟𐑧𐑓𐑼
 STKPWEURL	salesgirl	
 STKPWHR*ARD	JD	
 STKPWHR-FPLT/KW-TS	!”	
-STKPWHR-FPLT/SKW-TS	{!'}	
-STKPWHR-FPLT/STPH-FPLD	{!})	
-STKPWO*E	 CEUs On The Go	
-STKPWRA/TPEUT/TOE	sgraffito	
+STKPWHR-FPLT/SKW-TS	!'	
 STKPWRET	cigarette	𐑕𐑦𐑜𐑼𐑧𐑑
 STKRABGS	distraction	𐑛𐑦𐑕𐑑𐑮𐑨𐑒𐑖𐑩𐑯
 STKRABGT	distract	𐑛𐑦𐑕𐑑𐑮𐑨𐑒𐑑
@@ -46449,7 +46430,6 @@ STKREFD	distressed	𐑛𐑦𐑕𐑑𐑮𐑧𐑕𐑑
 STKRES	distress	𐑛𐑦𐑕𐑑𐑮𐑧𐑕
 STKREU	dentistry	𐑛𐑧𐑯𐑑𐑦𐑕𐑑𐑮𐑦
 STKREU/-S	dentistries	
-STKRO*EPB	dihydrotestosterone	
 STKROEPLS	syndromes	𐑕𐑦𐑯𐑛𐑮𐑴𐑥𐑟
 STKROEU	destroy	𐑛𐑦𐑕𐑑𐑮𐑶
 STKROEUD	destroyed	𐑛𐑦𐑕𐑑𐑮𐑶𐑛
@@ -46484,7 +46464,6 @@ STO/KA*S/EUBG/HREU	stochastically	𐑕𐑑𐑩𐑒𐑨𐑕𐑑𐑦𐑒𐑤𐑦
 STO/KA*S/EUBG/KHREU	stochastically	𐑕𐑑𐑩𐑒𐑨𐑕𐑑𐑦𐑒𐑤𐑦
 STO/PHA	stoma	
 STO/PHA/TA	stomata	
-STO/TEUPB/KAOE	stotinki	
 STOBG	stock	𐑕𐑑𐑪𐑒
 STOBG/*ER	stocker	
 STOBG/-G	stocking	𐑕𐑑𐑪𐑒𐑦𐑙
@@ -46547,9 +46526,6 @@ STOES	stows	𐑕𐑑𐑴𐑟
 STOET	stoat	𐑕𐑑𐑴𐑑
 STOEU	study	𐑕𐑑𐑳𐑛𐑦
 STOEUBG	stoic	𐑕𐑑𐑴𐑦𐑒
-STOEUBG/OPL/TREU	stoichiometry	
-STOEUBG/OPL/TREU/-S	stoichiometries	
-STOEUBG/OPL/TREU/KHREU	stoichiometrically	
 STOEUD	studied	𐑕𐑑𐑳𐑛𐑦𐑛
 STOEUPB	steno	
 STOEUPB/-D	stenoed	
@@ -46561,7 +46537,6 @@ STOEUR/AOEUS/PHER	stereoisomer
 STOEUR/OPS/EUS	stereopsis	
 STOEUR/SEUL/KWRA	stereocilia	
 STOEUR/SKR*EU	stereochemistry	
-STOEUR/SKR*EU/-S	stereochemistries	
 STOEUR/TABGS	stereotax	
 STOEUR/TABGS/-S	stereotaxes	
 STOEUR/TAOEUP	stereotype	𐑕𐑑𐑧𐑮𐑦𐑴𐑑𐑲𐑐
@@ -49850,7 +49825,6 @@ THO*EUPBT	thousandth	𐑔𐑬𐑟𐑩𐑯𐑛𐑔
 THO*EUT	theta	𐑔𐑰𐑑𐑩
 THO*R	Thor	
 THO*U	thou	𐑞𐑬
-THO*UZ	{,^000}	
 THOE	though	𐑞𐑴
 THOER	author	𐑷𐑔𐑼
 THOER/EURB	authorish	
@@ -50084,7 +50058,7 @@ THUPLS	thumbs	𐑔𐑳𐑥𐑟
 THURD	Thursday	𐑔𐑻𐑟𐑛𐑱
 THUS	thus	𐑞𐑳𐑕
 THUS/HREU	thusly	
-THUZ	{&000}	
+THUZ	{^}000	
 TK	did	𐑛𐑦𐑛
 TK*	{>}{&d}	
 TK*/*E/HR*	del	
@@ -52567,7 +52541,6 @@ TKOBG/TRAT	doctorate	𐑛𐑪𐑒𐑑𐑼𐑩𐑑
 TKOBG/TREUPB/AEUR	doctrinaire	𐑛𐑪𐑒𐑑𐑮𐑦𐑯𐑺
 TKOBGD	docked	𐑛𐑪𐑒𐑑
 TKOBGS	docks	𐑛𐑪𐑒𐑕
-TKOBGS/*EUPB	{doxin}	
 TKOBGS/AZ/SEUPB	doxazosin	
 TKOBGS/KWREU	doxy	
 TKOBGS/KWREU/-S	doxies	
@@ -59422,7 +59395,6 @@ TPHRO*EPB	fluoroquinolone
 TPHRO*EPBS	fluoroquinolones	
 TPHRO*EUBGS	Firefox	
 TPHRO*EUBGS/OS	FirefoxOS	
-TPHRO*L	{n}	
 TPHRO*UP	follow-up	𐑓𐑪𐑤𐑴-𐑳𐑐
 TPHRO*UR	flower	𐑓𐑤𐑬𐑼
 TPHRO*UR/REU	flowery	𐑓𐑤𐑬𐑼𐑦
