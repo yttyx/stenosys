@@ -16,7 +16,7 @@ C_state::C_state()
 void
 C_state::set_state( C_cmd_parser * cmd_parser, std::shared_ptr< C_state > state, const char * description )
 {
-    fprintf( stdout, "state set to: %s\n", description );
+    //fprintf( stdout, "state set to: %s\n", description );
 
     cmd_parser->set_state( state );
 }
@@ -24,7 +24,7 @@ C_state::set_state( C_cmd_parser * cmd_parser, std::shared_ptr< C_state > state,
 void
 C_state::handler( C_cmd_parser * p )
 {
-    fprintf( stdout, "C_state::handler()\n" );
+    //fprintf( stdout, "C_state::handler()\n" );
 }
 
 void

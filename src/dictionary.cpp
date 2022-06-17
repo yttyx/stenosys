@@ -93,14 +93,14 @@ C_dictionary::read( const std::string & path )
                         steno_entry->shavian_flags = shavian_flags;
 
                         //TEMP
-                        //delay( 500 );
+                        delay( 250 );
 
                         dictionary_->insert( std::make_pair( steno, * steno_entry ) );
 
                         entry_count++;
                     }
                     //TEMP
-                    if ( entry_count > 2 )
+                    if ( entry_count > 200 )
                     {
                         break;
                     }

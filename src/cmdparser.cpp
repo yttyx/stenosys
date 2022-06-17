@@ -39,8 +39,6 @@ C_cmd_parser::parse( const std::string & input, std::string & output, uint16_t &
     {
         state_->handler( this );
 
-        delay( 500 );
-
     } while ( ! state_->done() );
 
     output = output_;

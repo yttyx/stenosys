@@ -20,9 +20,9 @@ extern C_log log;
 // Initialise parser variables
 STATE_DEFINITION( C_st_init, C_cmd_parser )
 {
-    fprintf( stdout, "C_st_init\n" );
-    fprintf( stdout, "  input_       : %s\n", p->input_.c_str() );
-    fprintf( stdout, "  input_length_: %ld\n", p->input_.length() );
+    //fprintf( stdout, "C_st_init\n" );
+    //fprintf( stdout, "  input_       : %s\n", p->input_.c_str() );
+    //fprintf( stdout, "  input_length_: %ld\n", p->input_.length() );
 
     p->output_         = "";
     p->input_length_   = p->input_.length();
@@ -130,8 +130,6 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
                 {
                     p->output_ += ch;
                     p->flags_  |= GLUE;
-
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "p->flags_: %04x", p->flags_ );
                 }
                 else
                 {

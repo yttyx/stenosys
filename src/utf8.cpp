@@ -116,8 +116,6 @@ C_utf8::find( const std::string & s )
 size_t
 C_utf8::length()
 {
-    fprintf( stdout, "C_utf8::length - str_: %s\n", str_.c_str() );
-
     int offset  = 0;
     int utf8len = 0;
 
@@ -240,25 +238,6 @@ C_utf8::to_offset( int pos )
     return offset;
 }
 
-// Calculate string length in UTF-8 codepoints
-/*int*/
-/*C_utf8::length( const std::string & str )*/
-/*{*/
-    /*int index   = 0;*/
-    /*int strlen  = str.length();*/
-    /*int utf8len = 0;*/
-
-    /*const char * p = str.c_str();;*/
-
-    /*while ( index < strlen )*/
-    /*{*/
-        /*index += length( *( p + index ) );*/
-        /*utf8len++;*/
-    /*}*/
-
-    /*return utf8len;*/
-/*}*/
-
 // Calculate length of single codepoint in bytes
 size_t
 C_utf8::length( uint8_t ch )
@@ -338,9 +317,7 @@ C_utf8::test()
     C_utf8 U0024 ( "\x24" );
     assert( U0024.get_first( code ) );
 
-
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "C_utf8::test(): code %u", code );
-
 
     assert( code == 0x00000024 );
     assert( U0024.length() == 1 );
