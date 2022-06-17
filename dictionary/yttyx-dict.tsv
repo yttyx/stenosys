@@ -15714,7 +15714,6 @@ KHOUD/ER	chowder	𐑗𐑬𐑛𐑼
 KHOUD/ERS	chowders	𐑗𐑬𐑛𐑼𐑟
 KHOURS	chorus	𐑒𐑹𐑩𐑕
 KHOURS/-S	choruses	𐑒𐑹𐑩𐑕𐑩𐑟
-KHR*BG	{#Control_L(k)}	
 KHR*EF/RER	cleverer	𐑒𐑤𐑧𐑝𐑼𐑼
 KHR*EFR/*ES	cleverest	𐑒𐑤𐑧𐑝𐑼𐑩𐑕𐑑
 KHR*EPBLG	College	𐑒𐑪𐑤𐑦𐑡
@@ -15725,13 +15724,10 @@ KHR*EUP	CLIP	𐑒𐑤𐑦𐑐
 KHR*EUPBG	clink	𐑒𐑤𐑦𐑙𐑒
 KHR*EUPBT	Clinton	𐑒𐑤𐑦𐑯𐑑𐑩𐑯
 KHR*EUT/PHAOEUFPB	clarithromycin	
-KHR*F	{#Control_L(v)}	
 KHR*PB	{:}{^}	
-KHR*T	{#Control_L(w)}	
 KHR*UP	cleanup	
 KHR*UPBG	clunk	𐑒𐑤𐑳𐑙𐑒
 KHR*US	clust	
-KHR-BG	{#Control_L(c)}	
 KHR-PB	{^}:{^}	
 KHR/PHEUD/KWRA	chlamydia	
 KHRA*BG	callback	
@@ -17903,13 +17899,9 @@ KPEUT/HRAEUT	capitulate	𐑒𐑩𐑐𐑦𐑗𐑩𐑤𐑱𐑑
 KPEUT/HRAEUT/AER	capitulatory	
 KPEUT/HRAEUT/REU	capitulatory	
 KPEUTS	exits	𐑧𐑒𐑕𐑦𐑑𐑕
-KPH*BG	{#Super_L(k)}	
 KPH*EPB	Congressmen	𐑒𐑪𐑙𐑜𐑮𐑧𐑕𐑥𐑧𐑯
 KPH*EUGS	Commission	𐑒𐑩𐑥𐑦𐑖𐑩𐑯
 KPH*EUT/TAOE	Committee	𐑒𐑩𐑥𐑦𐑑𐑦
-KPH*F	{#Super_L(v)}	
-KPH*T	{#Super_L(w)}	
-KPH-BG	{#Super_L(c)}	
 KPHA	comma	𐑒𐑪𐑥𐑩
 KPHA*PB	Congressman	𐑒𐑪𐑙𐑜𐑮𐑧𐑕𐑥𐑩𐑯
 KPHAEL	economically	𐑰𐑒𐑩𐑯𐑪𐑥𐑦𐑒𐑤𐑦
@@ -18295,7 +18287,6 @@ KPWEUPBGS/-S	combinations	𐑒𐑪𐑥𐑚𐑦𐑯𐑱𐑖𐑩𐑯𐑟
 KPWEUPBGS/TOER	combinatory	
 KPWHR-BL	Sibylline	𐑕𐑦𐑚𐑩𐑤𐑲𐑯
 KPWOL/EUFPL	embolism	
-KPWRABGS	{^}</>{#Left}{^}	
 KPWRAOEUPB	recombine	
 KPWRAOEUPBG	recombining	
 KPWRAOEUPBS	recombines	
@@ -30341,7 +30332,6 @@ PW*EUS/KAEUPB	Biscayne
 PW*EUT/EUPB/KWRA	Bithynia	
 PW*EUT/EUPB/KWRA/*EPB	Bithynian	
 PW*EUTD	BID	𐑚𐑦𐑛
-PW*FP	{#BackSpace}	
 PW*FPLT/S*FPLT	B.S.	
 PW*L	bel	
 PW*LT	billionth	𐑚𐑦𐑤𐑘𐑩𐑯𐑔
@@ -32870,7 +32860,6 @@ PWR*S	\\}
 PWR-BG	{[}	
 PWR-BGS	{]}	
 PWR-BGT/-S	{~|[}]	
-PWR-BGTS	{~|[}]{#Left}	
 PWR-PL	bathroom	𐑚𐑭𐑔𐑮𐑵𐑥
 PWR-PLS	bathrooms	𐑚𐑭𐑔𐑮𐑵𐑥𐑟
 PWR-RBG	BCR	
@@ -32901,7 +32890,6 @@ PWRABG/*EPB	bracken	𐑚𐑮𐑨𐑒𐑩𐑯
 PWRABG/EURB	brackish	𐑚𐑮𐑨𐑒𐑦𐑖
 PWRABG/KWRAL/EUS	brachialis	
 PWRABG/SKWREU	brachii	
-PWRABGS	{^}<>{#Left}{^}	
 PWRABGT/-D	bracketed	𐑚𐑮𐑨𐑒𐑩𐑑𐑩𐑛
 PWRAD	Brad	𐑚𐑮𐑨𐑛
 PWRAD/HREU	Bradley	
@@ -33718,7 +33706,6 @@ R*P/TPH*P/A*P	RNA
 R*PB	R.N.	
 R*PBD	right-hand	𐑮𐑲𐑑-𐑣𐑨𐑯𐑛
 R*PG	RPG	
-R*R	{#Return}{^}	
 R*UF	ruff	𐑮𐑳𐑓
 R*UFBG	Rusk	𐑮𐑳𐑕𐑒
 R*UFL	roughly	𐑮𐑳𐑓𐑤𐑦
@@ -33771,7 +33758,6 @@ R-PT/PWHREU	respectably	𐑮𐑦𐑕𐑐𐑧𐑒𐑑𐑩𐑚𐑤𐑦
 R-PT/TPHREU	respectfully	𐑮𐑦𐑕𐑐𐑧𐑒𐑑𐑓𐑩𐑤𐑦
 R-PTD	respected	𐑮𐑦𐑕𐑐𐑧𐑒𐑑𐑩𐑛
 R-PTS	respects	𐑮𐑦𐑕𐑐𐑧𐑒𐑑𐑕
-R-R	{^}{#Return}{^}	
 R-RBGS	are{,}	
 R-RBGS/P*R	RPR	
 R-RBGS/PH*R	RMR	
@@ -39674,7 +39660,6 @@ SH*EULG	schilling
 SH*ULT	shuttle	𐑖𐑳𐑑𐑩𐑤
 SH*UR	seizure	𐑕𐑰𐑠𐑼
 SH-D	should	𐑖𐑫𐑛
-SH-FT	{#Control_L(Home)}{^}	
 SH-G	shotgun	𐑖𐑪𐑑𐑜𐑳𐑯
 SH/HREP	schlepp	
 SHA	Shah	𐑖𐑭
@@ -41521,7 +41506,6 @@ SKUT/-LD	scuttled	𐑕𐑒𐑳𐑑𐑩𐑤𐑛
 SKUT/-LS	scuttles	𐑕𐑒𐑳𐑑𐑩𐑤𐑟
 SKUT/WO*RBG	scutwork	
 SKUZ/SAOE	SCSI	
-SKW*BGS	{^}''{#Left}{^}	
 SKW*ELT	SQLite	
 SKW*EPBT	consequent	𐑒𐑪𐑯𐑕𐑦𐑒𐑢𐑩𐑯𐑑
 SKW*ES/ERD	sequestered	𐑕𐑦𐑒𐑢𐑧𐑕𐑑𐑼𐑛
@@ -42054,7 +42038,6 @@ SKWRAUPBT/HREU	jauntily	𐑡𐑷𐑯𐑑𐑦𐑤𐑦
 SKWRAUPL	Jaume	
 SKWRAURB	josh	𐑡𐑪𐑖
 SKWRAURB/-S	joshes	
-SKWRAURBGS	{#Return}{#Return}{^}{-|}	
 SKWRAURBGS/HRAO*EUBG	like{,}	
 SKWRAUS	jaws	𐑡𐑷𐑟
 SKWRAZ	jazz	𐑡𐑨𐑟
@@ -44273,7 +44256,6 @@ SPWHREBGT/WAL/TEU	intellectuality
 SPWHREBGT/WAL/TEU/-S	intellectualities	
 SPWHROEPB	Barcelona	𐑚𐑸𐑕𐑩𐑤𐑴𐑯𐑩
 SPWHROEPB/*EPB	Barcelonan	
-SPWO*L	{#}	
 SPWO*L/*EUR	€	
 SPWO*L/*EUR/KURPB	₠	
 SPWO*L/AU/STRAL	₳	
@@ -46853,16 +46835,10 @@ STPH*EUFT	sensitivity	𐑕𐑧𐑯𐑕𐑦𐑑𐑦𐑝𐑦𐑑𐑦
 STPH*EUFT/-S	sensitivities	𐑕𐑧𐑯𐑕𐑦𐑑𐑦𐑝𐑦𐑑𐑦𐑟
 STPH*EURB	issue{?}	
 STPH*FPL	{;}	
-STPH-B	{#Down}{^}	
-STPH-BG	{#Control_L(Right)}{^}	
-STPH-G	{#Right}{^}	
-STPH-P	{#Up}{^}	
 STPH-PBD	sentenced	𐑕𐑧𐑯𐑑𐑩𐑯𐑕𐑑
 STPH-PBG	sentencing	𐑕𐑧𐑯𐑑𐑩𐑯𐑕𐑦𐑙
 STPH-PBSZ	sentences	𐑕𐑧𐑯𐑑𐑩𐑯𐑕𐑩𐑟
 STPH-PS	snp	
-STPH-R	{#Left}{^}	
-STPH-RB	{#Control_L(Left)}{^}	
 STPHA*PS	synapse	𐑕𐑦𐑯𐑨𐑐𐑕
 STPHA*T	Senate	𐑕𐑧𐑯𐑩𐑑
 STPHABG	snack	𐑕𐑯𐑨𐑒
@@ -48474,10 +48450,8 @@ T-RBGS/WA*	TWA
 T-S	it's	𐑦𐑑𐑕
 T-TD	TdT	
 T/SEFL	itself	𐑦𐑑𐑕𐑧𐑤𐑓
-TA*B	{#Tab}{^}	
 TA*BG	TCA	
 TA*BGS	Tmax	
-TA*BT	{#Alt_L(Tab(Tab))}	
 TA*D	torsades	
 TA*E	tai	
 TA*EFT	activate	𐑨𐑒𐑑𐑦𐑝𐑱𐑑
@@ -55809,7 +55783,6 @@ TKUS/TEU/*PBS/-S	dustinesses
 TKUS/TEU/ER	dustier	𐑛𐑳𐑕𐑑𐑦𐑼
 TKUS/TEUPB	Dustin	
 TKUT/O*PB	Dutton	
-TKW*BGS	{^}{#Left}{^}	
 TKW*EU	DUI	
 TKW-D	÷	
 TKWA*EUPB	Dwayne	
@@ -57347,7 +57320,6 @@ TPEDZ	feds	𐑓𐑧𐑛𐑟
 TPEF	effective	𐑦𐑓𐑧𐑒𐑑𐑦𐑝
 TPEF/O*R	effector	
 TPEF/TPAOE	feoffee	
-TPEFBG	{#Escape}	
 TPEFL	effectively	𐑦𐑓𐑧𐑒𐑑𐑦𐑝𐑤𐑦
 TPEFP	fetch	𐑓𐑧𐑗
 TPEFP/-S	fetches	𐑓𐑧𐑗𐑩𐑟
@@ -61161,7 +61133,6 @@ TPUZ/HREU	fuzzily
 TPUZ/PW*US/ER	Fuzzbuster	
 TPUZ/PW*US/ERS	Fuzzbusters	
 TPUZ/SEU	fuzzy	𐑓𐑳𐑟𐑦
-TPW-R	{#Alt_L(Left)}	
 TPW-S/-FL	tablespoonful	𐑑𐑱𐑚𐑩𐑤𐑕𐑐𐑵𐑯𐑓𐑫𐑤
 TPWABG	tobacco	𐑑𐑩𐑚𐑨𐑒𐑴
 TPWAOEL/SAOE	Tbilisi	𐑑𐑩𐑚𐑦𐑤𐑰𐑕𐑦
