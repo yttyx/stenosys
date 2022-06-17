@@ -416,7 +416,6 @@
 4/KHAPB	4Chan	
 40	40	
 40EU	04	
-40RBGS	40{,}	
 40S	40s	
 40U	{:}40	
 40Z	4000	
@@ -933,7 +932,6 @@ A/PAEURL	apparel	𐑩𐑐𐑨𐑮𐑩𐑤
 A/PAEUS	apace	𐑩𐑐𐑱𐑕
 A/PAFP/SKWRE	Apache	𐑩𐑐𐑨𐑗𐑦
 A/PAOEBL	appealable	
-A/PAOEFRP	appear{.}	
 A/PAOER	appear	𐑩𐑐𐑽
 A/PAOERD	appeared	𐑩𐑐𐑽𐑛
 A/PAOERG	appearing	𐑩𐑐𐑽𐑦𐑙
@@ -981,7 +979,6 @@ A/PHAOE/TKPWOE	amigo
 A/PHAOE/TPHA	Amina	
 A/PHAOEB/EUBG	amoebic	𐑩𐑥𐑰𐑚𐑦𐑒
 A/PHAOEL/KWRA	Amelia	
-A/PHAOEL/KWRAFPLT	Amelia{.}	
 A/PHAOEL/RAEUGS	amelioration	𐑩𐑥𐑰𐑤𐑽𐑱𐑖𐑩𐑯
 A/PHAOEL/RAEUT	ameliorate	𐑩𐑥𐑰𐑤𐑽𐑱𐑑
 A/PHAOEL/RAEUT/AER	amelioratory	
@@ -1031,7 +1028,6 @@ A/PHORT/SAEUGS	amortisation	𐑩𐑥𐑹𐑑𐑦𐑟𐑱𐑖𐑩𐑯
 A/PHOUPBT/-D	amounted	𐑩𐑥𐑬𐑯𐑑𐑩𐑛
 A/PHRAEU/SHA	aplasia	
 A/PHRAOEU	apply	𐑩𐑐𐑤𐑲
-A/PHRAOEU/-PS	applies{.}	
 A/PHRAOEUD	applied	𐑩𐑐𐑤𐑲𐑛
 A/PHRAOEUG	applying	𐑩𐑐𐑤𐑲𐑦𐑙
 A/PHRAOEUS	applies	𐑩𐑐𐑤𐑲𐑟
@@ -1408,7 +1404,6 @@ A/STPAOER/EURBG/K*L	aspherical
 A/STPAOERBGS	aspherics	
 A/STPEUBGS/KWRAEUT	asphyxiate	𐑩𐑕𐑓𐑦𐑒𐑕𐑦𐑱𐑑
 A/STPEUBGS/KWRAPBT	asphyxiant	
-A/STPHROUPBD	around{?}	
 A/STRAG/HRUS	astragalus	
 A/STRAG/HRUS/-S	astragaluses	
 A/STREUPBG/SEU	astringency	𐑩𐑕𐑑𐑮𐑦𐑯𐑡𐑩𐑯𐑕𐑦
@@ -1474,7 +1469,6 @@ A/TEUBGT	addict	𐑨𐑛𐑦𐑒𐑑
 A/TEUP/KWRA	atypia	
 A/THAOE/TPHA	Athena	
 A/THAOEPB/KWRAPB	Athenian	𐑩𐑔𐑰𐑯𐑾𐑯
-A/THAOEPB/TPHARBGS	Athena{,}	
 A/THE/EUFT	atheist	𐑱𐑔𐑦𐑦𐑕𐑑
 A/TKAOU	adieu	𐑩𐑛𐑿
 A/TKAOUS	adduce	𐑩𐑛𐑿𐑕
@@ -1607,7 +1601,6 @@ A/TPHAOE/TA	Anita	𐑩𐑯𐑰𐑑𐑩
 A/TPHAOED	Aeneid	
 A/TPHAOEL	anneal	𐑩𐑯𐑰𐑤
 A/TPHAOEPL/KWRAFP	anemia,	
-A/TPHAOEPL/KWRARBGS	anemia{,}	
 A/TPHAOES	Aeneas	
 A/TPHAOEU/SHA	Anusha	
 A/TPHAOEU/TKRAOEUD	anydride	
@@ -1639,7 +1632,6 @@ A/TPHOPB/PHEUT	anonymity	𐑨𐑯𐑩𐑯𐑦𐑥𐑦𐑑𐑦
 A/TPHOPB/PHEUT/-S	anonymities	
 A/TPHOPL/HREUS	anomalies	𐑩𐑯𐑪𐑥𐑩𐑤𐑦𐑟
 A/TPHOPL/HRUS	anomalous	𐑩𐑯𐑪𐑥𐑩𐑤𐑩𐑕
-A/TPHOPL/TPHREUPL	anomaly{.}	
 A/TPHOUPBS/-D	announced	𐑩𐑯𐑬𐑯𐑕𐑑
 A/TPHOUPBS/-G	announcing	𐑩𐑯𐑬𐑯𐑕𐑦𐑙
 A/TPHOUPBS/-PLTS	announcements	𐑩𐑯𐑬𐑯𐑕𐑥𐑩𐑯𐑑𐑕
@@ -1704,7 +1696,6 @@ A/WAEUBG/-D	awaked
 A/WAEUBG/-G	awaking	𐑩𐑢𐑱𐑒𐑦𐑙
 A/WAEUBG/-PBD	awakened	𐑩𐑢𐑱𐑒𐑩𐑯𐑛
 A/WAEUBG/EPBG	awakening	𐑩𐑢𐑱𐑒𐑩𐑯𐑦𐑙
-A/WAEUFPLT	away{.}	
 A/WAEUR	aware	𐑩𐑢𐑺
 A/WAEURPBS	awareness	𐑩𐑢𐑺𐑯𐑩𐑕
 A/WAEURPBS/-S	awarenesses	
@@ -2058,7 +2049,6 @@ AD/PHEUGT	admitting	𐑩𐑛𐑥𐑦𐑑𐑦𐑙
 AD/PHEUPBS	administrates	
 AD/PHEUR/AEUGS	admiration	𐑨𐑛𐑥𐑼𐑱𐑖𐑩𐑯
 AD/PHEUR/PWHREU	admirably	𐑨𐑛𐑥𐑼𐑩𐑚𐑤𐑦
-AD/PHEUR/STPH-BL	admirable{?}	
 AD/PHEURBL	admirable	𐑨𐑛𐑥𐑼𐑩𐑚𐑩𐑤
 AD/PHEURL	admiral	𐑨𐑛𐑥𐑼𐑩𐑤
 AD/PHEUT/APBS	admittance	𐑩𐑛𐑥𐑦𐑑𐑩𐑯𐑕
@@ -2240,7 +2230,6 @@ AEUF/KWRAEUT/O*R	aviator	𐑱𐑝𐑦𐑱𐑑𐑼
 AEUF/KWRAPB	avian	
 AEUF/KWRUPL	avium	
 AEUF/O*PB	Avon	𐑱𐑝𐑩𐑯
-AEUFPLGT	agent{.}	
 AEUFR/KWREU	Avery	
 AEUG/REPB	Agren	
 AEUG/ROET	agorot	
@@ -2309,13 +2298,11 @@ AEUR/HREUFT	airlift	𐑺𐑤𐑦𐑓𐑑
 AEUR/HROBG	airlock	𐑺𐑤𐑪𐑒
 AEUR/K-PB	air-condition	
 AEUR/KWRAD/TPHE	Ariadne	
-AEUR/KWRAFPLT	area{.}	
 AEUR/KWRAL	aerial	𐑺𐑾𐑤
 AEUR/KWRAL/EUFT	aerialist	
 AEUR/KWRAL/TEU	aeriality	
 AEUR/KWRALS	aerials	𐑺𐑾𐑤𐑟
 AEUR/KWRAPB	Aryan	𐑺𐑾𐑯
-AEUR/KWRARBGS	area{,}	
 AEUR/KWREL	Ariel	
 AEUR/KWREPB	Arien	
 AEUR/KWRER	airier	
@@ -2522,7 +2509,6 @@ AFRPBS	arches	𐑸𐑗𐑩𐑟
 AFRPBT	afferent	𐑨𐑓𐑼𐑩𐑯𐑑
 AFRPBTS	 afferents	
 AFRPL	ample	𐑨𐑥𐑐𐑩𐑤
-AFRPLT	art{.}	
 AFRT/HRAEUB	astrolabe	𐑨𐑕𐑑𐑮𐑴𐑤𐑱𐑚
 AFRT/TPHAUT	astronaut	𐑨𐑕𐑑𐑮𐑩𐑯𐑷𐑑
 AFT/HR-LG	astrological	𐑨𐑕𐑑𐑮𐑩𐑤𐑪𐑡𐑦𐑒𐑩𐑤
@@ -2780,7 +2766,6 @@ ALD/ER/PHAPB	alderman	𐑷𐑤𐑛𐑼𐑥𐑩𐑯
 ALD/HAOEUD	aldehyde	
 ALD/HRAEUZ	aldolase	
 ALD/REUPBLG	Aldridge	
-ALD/STER/STPHOEPB	aldosterone{?}	
 ALG	additional	𐑩𐑛𐑦𐑖𐑩𐑯𐑩𐑤
 ALG/AEUT/O*R	alligator	𐑨𐑤𐑦𐑜𐑱𐑑𐑼
 ALG/HREUPBT	alkalinity	
@@ -2845,7 +2830,6 @@ AO*ET/KWROPB/PHAOEUD	ethionamide
 AO*ET/TPHET	ethernet	
 AO*EU	aye	𐑱
 AO*EU/AO*EU	aye-aye	
-AO*EU/AO*EU/AO*EU	ay{,}ay{,}ay	
 AO*EU/HRAPBDZ	Islands	𐑲𐑤𐑩𐑯𐑛𐑟
 AO*EU/HREPB	Eileen	𐑲𐑤𐑰𐑯
 AO*EU/HRET	eyelet	𐑲𐑤𐑩𐑑
@@ -3414,7 +3398,6 @@ AOEU/TKPWHRAS	eyeglass	𐑲𐑜𐑤𐑭𐑕
 AOEU/TOL	inositol	
 AOEU/W-PBS	eyewitness	𐑲𐑢𐑦𐑑𐑯𐑩𐑕
 AOEU/W-PBS/-S	eyewitnesses	𐑲𐑢𐑦𐑑𐑯𐑩𐑕𐑩𐑟
-AOEU/WAFPLT	Iowa{.}	
 AOEUB/EBGS	ibex	𐑲𐑚𐑧𐑒𐑕
 AOEUB/EBGS/-S	ibexes	𐑲𐑚𐑧𐑒𐑕𐑩𐑟
 AOEUB/PROEFPB	ibuprofen	
@@ -3521,7 +3504,6 @@ AOEURPB/EUBG	ironic	𐑲𐑮𐑪𐑯𐑦𐑒
 AOEURPB/K-L	ironical	𐑲𐑮𐑪𐑯𐑦𐑒𐑩𐑤
 AOEURPB/KHRAD	ironclad	𐑲𐑼𐑯𐑒𐑤𐑨𐑛
 AOEURPB/KHREU	ironically	𐑲𐑮𐑪𐑯𐑦𐑒𐑤𐑦
-AOEURPB/KHREURBGS	ironically{,}	
 AOEURPBD	ironed	𐑲𐑼𐑯𐑛
 AOEURPBG	ironing	𐑲𐑼𐑯𐑦𐑙
 AOEURPBS	irons	𐑲𐑼𐑯𐑟
@@ -3648,7 +3630,6 @@ AOU/TPHAOEUTS	unites	𐑿𐑯𐑲𐑑𐑕
 AOU/TPHAPB/SHREU	unanimously	𐑿𐑯𐑨𐑯𐑦𐑥𐑩𐑕𐑤𐑦
 AOU/TPHO*E	Ueno	
 AOU/TPOR/KWRA	euphoria	𐑿𐑓𐑹𐑾
-AOU/TPOR/KWRARBGS	euphoria{,}	
 AOU/TPORB/KWRA	euphorbia	
 AOU/TPORBG	euphoric	𐑿𐑓𐑪𐑮𐑦𐑒
 AOU/TPORBG/HREU	euphorically	
@@ -3948,7 +3929,6 @@ AP/TAOEUT	appetite	𐑨𐑐𐑩𐑑𐑲𐑑
 AP/TAOEUZ/-G	appetising	
 AP/TAOEUZ/ER	appetiser	
 AP/TAOEUZ/ERS	appetisers	
-AP/TAOEUZ/STPH*ER	appetiser{?}	
 AP/TAOUR	aperture	𐑨𐑐𐑼𐑗𐑼
 AP/THET/EUBG	apathetic	𐑨𐑐𐑩𐑔𐑧𐑑𐑦𐑒
 AP/THET/EUBG/K*L	apathetical	
@@ -4082,11 +4062,9 @@ APB/SREUL	anvil	𐑨𐑯𐑝𐑦𐑤
 APB/STAEUS/KWRA	Anastasia	
 APB/STAOES/KWROLGS	anesthesiologist	
 APB/STET/EUFT	anesthetist	𐑩𐑯𐑰𐑕𐑔𐑩𐑑𐑦𐑕𐑑
-APB/STHAOES/KWRARBGS	anesthesia{,}	
 APB/TAEUGS	annotation	𐑨𐑯𐑩𐑑𐑱𐑖𐑩𐑯
 APB/TAEUT	annotate	𐑨𐑯𐑩𐑑𐑱𐑑
 APB/TAEUT/*EUF	annotative	
-APB/TAG/STPHEUFPL	antagonism{?}	
 APB/TAG/TPHAOEUZ	antagonise	𐑨𐑯𐑑𐑨𐑜𐑩𐑯𐑲𐑟
 APB/TAG/TPHEUFPL	antagonism	𐑨𐑯𐑑𐑨𐑜𐑩𐑯𐑦𐑟𐑩𐑥
 APB/TAOE	ante	𐑨𐑯𐑑𐑦
@@ -4140,7 +4118,6 @@ APB/TOEUPB	Antoine
 APB/TOPB/KWROE	Antonio	
 APB/TOPL/K-L	anatomical	𐑨𐑯𐑩𐑑𐑪𐑥𐑦𐑒𐑩𐑤
 APB/TOPL/KHREU	anatomically	𐑨𐑯𐑩𐑑𐑪𐑥𐑦𐑒𐑤𐑦
-APB/TOPL/KHREURBGS	anatomically{,}	
 APB/TPAEUZ	anaphase	
 APB/TPHA	Anna	𐑨𐑯𐑩
 APB/TPHABGS/EUS	anaphylaxis	
@@ -4558,13 +4535,11 @@ ARD/WUS	arduous	𐑸𐑡𐑫𐑩𐑕
 ARG	argue	𐑸𐑜𐑿
 ARG/*L	Argyll	
 ARG/-BL	arguable	𐑸𐑜𐑘𐑫𐑩𐑚𐑩𐑤
-ARG/-FPLT/STPH	argument{?}	
 ARG/-G	arguing	𐑸𐑜𐑿𐑦𐑙
 ARG/KAPB	aggrecan	
 ARG/O*PB	argon	𐑸𐑜𐑪𐑯
 ARG/PWHREU	arguably	𐑸𐑜𐑘𐑫𐑩𐑚𐑤𐑦
 ARG/SRAEUTD	aggravated	𐑨𐑜𐑮𐑩𐑝𐑱𐑑𐑩𐑛
-ARG/STPH-PLT	argument{.}	
 ARG/TAOEPB	Argentine	𐑸𐑡𐑩𐑯𐑑𐑲𐑯
 ARG/TAOEPB/TPHA	Argentina	𐑸𐑡𐑩𐑯𐑑𐑰𐑯𐑩
 ARG/TEUF	argumentative	𐑸𐑜𐑘𐑩𐑥𐑧𐑯𐑑𐑩𐑑𐑦𐑝
@@ -4676,7 +4651,6 @@ ART/TPEURB/KWRALT/-S	artificialities
 ART/TPEUS	artifice	𐑸𐑑𐑦𐑓𐑦𐑕
 ART/TPHOEUD	arytenoid	
 ART/TPHREU	artfully	𐑸𐑑𐑓𐑩𐑤𐑦
-ART/TPREUPL	artery{.}	
 ART/WO*RBGS	artworks	𐑸𐑑𐑢𐑻𐑒𐑕
 ART/WORBG	artwork	𐑸𐑑𐑢𐑻𐑒
 ARTS	arts	𐑸𐑑𐑕
@@ -4737,7 +4711,6 @@ AS/SET/KAL	ascetical
 AS/SET/KHREU	ascetically	𐑩𐑕𐑧𐑑𐑦𐑒𐑤𐑦
 AS/SHUR/TKPWHREU	assuringly	
 AS/SORT	assort	
-AS/STPHREUPB	aspirin{?}	
 AS/SUPL/SEUT	assumpsit	
 AS/TA	asta	
 AS/TAB/HRAR	acetabular	
@@ -4813,7 +4786,6 @@ AT/TAOUD	attitude	𐑨𐑑𐑦𐑑𐑿𐑛
 AT/TAOUD/TPHAL	attitudinal	
 AT/TEUBG	attic	𐑨𐑑𐑦𐑒
 AT/TPHAT/PHEU	  at anatomy	
-ATS/STPAOEFRPLT	atmosphere{.}	
 ATS/STPAOERBG	atmospheric	𐑨𐑑𐑥𐑩𐑕𐑓𐑧𐑮𐑦𐑒
 ATS/STPAOERBG/HREU	atmospherically	
 ATS/STPAOERBG/K*L	atmospherical	
@@ -5833,7 +5805,6 @@ EP/THAL/PHUS	epithalamus
 EP/THAOEL	epithelial	
 EP/THAOEL/AOEUTS	epitheliitis	
 EP/THAOEL/AOEUZ	epithelise	
-EP/THAOEL/KWRARBGS	epithelia{,}	
 EP/THAOEPL	epithelium	
 EP/THET	epithet	𐑧𐑐𐑦𐑔𐑧𐑑
 EP/TKAOEPL/HR-L	epidemiological	
@@ -7584,7 +7555,6 @@ EUPBD/KAEUT/TORS	indicators	𐑦𐑯𐑛𐑦𐑒𐑱𐑑𐑼𐑟
 EUPBD/KWRA	India	𐑦𐑯𐑛𐑾
 EUPBD/KWRAPB	Indian	𐑦𐑯𐑛𐑾𐑯
 EUPBD/KWRAPBS	Indians	𐑦𐑯𐑛𐑾𐑯𐑟
-EUPBD/KWRARBGS	India{,}	
 EUPBD/OEL	indole	
 EUPBD/OFS	interoffice	
 EUPBD/PH*ET/SEUPB	indomethacin	
@@ -8602,7 +8572,6 @@ HAEUR/TKRES/-G	hairdressing	𐑣𐑺𐑛𐑮𐑧𐑕𐑦𐑙
 HAEUR/TKRES/ER	hairdresser	𐑣𐑺𐑛𐑮𐑧𐑕𐑼
 HAEUR/TKRESZ/ERS	hairdressers	𐑣𐑺𐑛𐑮𐑧𐑕𐑼𐑟
 HAEUR/TOR/KWRUPL	Hairatorium	
-HAEURBGS	hey{,}	
 HAEURBL	hairball	
 HAEURD	haired	𐑣𐑺𐑛
 HAEURD/KWRAPB	Hadrian	
@@ -8773,8 +8742,6 @@ HAOED/TPHEUFPL	hedonism	𐑣𐑰𐑛𐑩𐑯𐑦𐑟𐑩𐑥
 HAOEDZ	heeds	𐑣𐑰𐑛𐑟
 HAOEF	heave	𐑣𐑰𐑝
 HAOEF/-G	heaving	𐑣𐑰𐑝𐑦𐑙
-HAOEFR	here{?}	
-HAOEFRP	here{.}	
 HAOEG	hyperglycemia	
 HAOEGT	heating	𐑣𐑰𐑑𐑦𐑙
 HAOEL	heel	𐑣𐑰𐑤
@@ -8833,7 +8800,6 @@ HAOER/O*F	hereof	𐑣𐑽𐑪𐑝
 HAOER/UPB/TO	hereunto	
 HAOER/W*EUT	herewith	𐑣𐑽𐑢𐑦𐑞
 HAOERB	hereby	𐑣𐑽𐑚𐑲
-HAOERBGS	here{,}	
 HAOERBT	hereabout	
 HAOERBTS	hereabouts	𐑣𐑽𐑩𐑚𐑬𐑑𐑕
 HAOERGS	hearings	𐑣𐑽𐑦𐑙𐑟
@@ -9031,7 +8997,6 @@ HAOEURD/HREBG/TREUBG/KHREU	hydroelectrically
 HAOEURD/KHROR/A*T	hydrochlorate	
 HAOEURD/OBG/*PL	hydroxyl	𐑣𐑲𐑛𐑮𐑪𐑒𐑕𐑦𐑤
 HAOEURD/OBGS/AOEUD	hydroxide	
-HAOEURD/OBGS/HRAEUFPZ	hydroxylase{.}	
 HAOEURD/OBGS/HRAEUGS	hydroxylation	
 HAOEURD/OBGS/HRAEUS	hydroxylase	
 HAOEURD/OBGS/HRAEUT	hydroxylate	
@@ -9582,7 +9547,6 @@ HEFL	heavily	𐑣𐑧𐑝𐑦𐑤𐑦
 HEFPB	heaven	𐑣𐑧𐑝𐑩𐑯
 HEFPBL	heavenly	𐑣𐑧𐑝𐑩𐑯𐑤𐑦
 HEFPBS	heavens	𐑣𐑧𐑝𐑩𐑯𐑟
-HEFPD	head{.}	
 HEFPL	helpful	𐑣𐑧𐑤𐑐𐑓𐑩𐑤
 HEFR	heifer	𐑣𐑧𐑓𐑼
 HEFRP	hemp	𐑣𐑧𐑥𐑐
@@ -9986,7 +9950,6 @@ HEUR/KWRAOU/KEU	Hiroyuki
 HEUR/SAOUT	hirsute	𐑣𐑻𐑕𐑵𐑑
 HEUR/SAOUT/EUFPL	hirsutism	
 HEURB/PHA*PB	Hirschman	
-HEURBGS	hi{,}	
 HEURBT	inhibit	𐑦𐑯𐑣𐑦𐑚𐑦𐑑
 HEURD	hired	𐑣𐑲𐑼𐑛
 HEURG	hiring	𐑣𐑲𐑼𐑦𐑙
@@ -10174,7 +10137,6 @@ HOEPL/SPUPB	homespun	𐑣𐑴𐑥𐑕𐑐𐑳𐑯
 HOEPL/STAOEUL	homestyle	
 HOEPL/STED	homestead	𐑣𐑴𐑥𐑕𐑑𐑧𐑛
 HOEPL/STEDZ	homesteads	𐑣𐑴𐑥𐑕𐑑𐑧𐑛𐑟
-HOEPL/STPH-LS	homeless{?}	
 HOEPL/TOUPB	hometown	
 HOEPL/TPO*EBG	homophobic	
 HOEPL/TPOEB/KWRA	homophobia	𐑣𐑴𐑥𐑩𐑓𐑴𐑚𐑾
@@ -10237,7 +10199,6 @@ HOEZ/REU/-S	hosieries
 HOF/PHAPB	Hoffman	
 HOF/PWRA/HAUS	Hofbrauhaus	
 HOF/STRA	Hofstra	
-HOFBG	okay{?}	
 HOFL	hovel	𐑣𐑪𐑝𐑩𐑤
 HOFR	hover	𐑣𐑪𐑝𐑼
 HOFR/KRAFT	hovercraft	𐑣𐑪𐑝𐑼𐑒𐑮𐑭𐑓𐑑
@@ -10289,7 +10250,6 @@ HOL/SKWRO/SAO*EUPL	holoenzyme
 HOL/STAOEPB	Holstein	
 HOL/STER	holster	𐑣𐑴𐑤𐑕𐑑𐑼
 HOL/TKAEU	holiday	𐑣𐑪𐑤𐑦𐑛𐑱
-HOL/TKAEUFPLT	holiday{.}	
 HOL/TKAEUS	holidays	𐑣𐑪𐑤𐑦𐑛𐑱𐑟
 HOL/TKPWRAF	holograph	𐑣𐑪𐑤𐑩𐑜𐑮𐑨𐑓
 HOL/TKPWRAFBG	holographic	𐑣𐑪𐑤𐑩𐑜𐑮𐑨𐑓𐑦𐑒
@@ -10625,7 +10585,6 @@ HR-FL/A*U	wilful	𐑢𐑦𐑤𐑓𐑩𐑤
 HR-FL/HREU	willfully	𐑢𐑦𐑤𐑓𐑩𐑤𐑦
 HR-FPD	lectured	𐑤𐑧𐑒𐑗𐑼𐑛
 HR-FPG	lecturing	𐑤𐑧𐑒𐑗𐑼𐑦𐑙
-HR-FPLT	will{.}	
 HR-FPS	lectures	𐑤𐑧𐑒𐑗𐑼𐑟
 HR-FR	elevator	𐑧𐑤𐑦𐑝𐑱𐑑𐑼
 HR-FT	elevate	𐑧𐑤𐑦𐑝𐑱𐑑
@@ -10658,7 +10617,6 @@ HR-PLT/REU/*PBS	elementariness
 HR-PLT/REU/*PBS/-S	elementarinesses	
 HR-PS/-FPLT/SKW-TS	...{.}{'}	
 HR-R	already	𐑷𐑤𐑮𐑧𐑛𐑦
-HR-RBGS	will{,}	
 HR-RBGS/P*PB	LPN	
 HR-RBGS/P*PL	LPM	
 HR-RBGS/PW*PBLG	LBJ	
@@ -10941,7 +10899,6 @@ HRAFGT	lasting	𐑤𐑭𐑕𐑑𐑦𐑙
 HRAFLT	lastly	𐑤𐑭𐑕𐑑𐑤𐑦
 HRAFP	latch	𐑤𐑨𐑗
 HRAFP/-S	latches	𐑤𐑨𐑗𐑩𐑟
-HRAFPBLT	lab{.}	
 HRAFPD	latched	𐑤𐑨𐑗𐑑
 HRAFPG	latching	𐑤𐑨𐑗𐑦𐑙
 HRAFPS	laches	
@@ -11070,7 +11027,6 @@ HRAOEG/HREU	legally	𐑤𐑰𐑜𐑩𐑤𐑦
 HRAOEG/HREUFPL	legalism	𐑤𐑰𐑜𐑩𐑤𐑦𐑟𐑩𐑥
 HRAOEGS	lesion	𐑤𐑰𐑠𐑩𐑯
 HRAOEGS/EL/HRA	legionella	
-HRAOEGS/EL/HRAFP	legionella{.}	
 HRAOEGT	LGBT	
 HRAOEL	legal	𐑤𐑰𐑜𐑩𐑤
 HRAOEL/AOEUZ	legalise	𐑤𐑰𐑜𐑩𐑤𐑲𐑟
@@ -11184,7 +11140,6 @@ HRAOEUF/TKPWARD	lifeguard	𐑤𐑲𐑓𐑜𐑸𐑛
 HRAOEUF/WO*RBG	lifework	
 HRAOEUFL	lively	𐑤𐑲𐑝𐑤𐑦
 HRAOEUFPB	liven	𐑤𐑲𐑝𐑩𐑯
-HRAOEUFPBLT	line{.}	
 HRAOEUFR	lifer	𐑤𐑲𐑓𐑼
 HRAOEUG	lying	𐑤𐑲𐑦𐑙
 HRAOEUG/*ER	liger	
@@ -11921,7 +11876,6 @@ HRES/HREU/AES	Leslie's
 HRES/ORS	lessors	𐑤𐑧𐑕𐑹𐑟
 HRES/SAE	lessee	𐑤𐑧𐑕𐑰
 HRES/SOR	lessor	𐑤𐑧𐑕𐑹
-HRES/STPHO*PB	lesson{?}	
 HRES/TER	Lester	
 HRET	let	𐑤𐑧𐑑
 HRET/*ER/PHA*PB	Letterman	
@@ -12539,7 +12493,6 @@ HROPBLG/ER	lodger	𐑤𐑪𐑡𐑼
 HROPBLG/EUBG	logic	𐑤𐑪𐑡𐑦𐑒
 HROPBLG/EUFT/EUBGS	logistics	𐑤𐑩𐑡𐑦𐑕𐑑𐑦𐑒𐑕
 HROPBLG/ST-BG	logistic	
-HROPBLG/STPHEUBG	logic{?}	
 HROPBLG/TEBG	Logitech	
 HROPBLGD	lodged	𐑤𐑪𐑡𐑛
 HROPBLGS	lodges	𐑤𐑪𐑡𐑩𐑟
@@ -12620,7 +12573,6 @@ HRUBG/*PBS/-S	luckinesses
 HRUBG/-LS	luckless	𐑤𐑳𐑒𐑤𐑩𐑕
 HRUBG/KWREFT	luckiest	𐑤𐑳𐑒𐑦𐑩𐑕𐑑
 HRUBG/KWRER	luckier	𐑤𐑳𐑒𐑦𐑼
-HRUBG/KWREURBGS	lucky{,}	
 HRUBG/SHUR/KWRAEUT	luxuriate	𐑤𐑳𐑜𐑠𐑫𐑼𐑦𐑱𐑑
 HRUBGD	lucked	
 HRUBGS	luxe	𐑤𐑳𐑒𐑕
@@ -13001,7 +12953,6 @@ K-PBS	conditions	𐑒𐑩𐑯𐑛𐑦𐑖𐑩𐑯𐑟
 K-PBT	can't	𐑒𐑭𐑯𐑑
 K-PS	companies	𐑒𐑳𐑥𐑐𐑩𐑯𐑦𐑟
 K-PS/AE	companies'	
-K-RBG	can{,}	
 K-RBGS/K*BG	KKK	
 K-RBS	conscious	𐑒𐑪𐑯𐑖𐑩𐑕
 K-RBS/-S	consciouses	
@@ -13264,7 +13215,6 @@ KA/TPHOE/HRA	canola
 KA/TPHOE/HREU	cannoli	
 KA/TPHOPB	canon	𐑒𐑨𐑯𐑘𐑩𐑯
 KA/TPHUBG	Canuck	𐑒𐑩𐑯𐑫𐑒
-KA/TRAOEPB/TPHARBGS	Katrina{,}	
 KA/TREU/TPHA	Katrina	
 KA/TUL/HRUS	Catullus	
 KAB	cab	𐑒𐑨𐑚
@@ -13449,7 +13399,6 @@ KAF/SOL	Caphosol
 KAF/TAEUGS	cavitation	
 KAF/TAEUT	cavitate	
 KAF/TAOER/KWRA	cafeteria	𐑒𐑨𐑓𐑩𐑑𐑽𐑾
-KAF/TAOER/KWRAFPLT	cafeteria{.}	
 KAF/TAOER/KWRAS	cafeterias	𐑒𐑨𐑓𐑩𐑑𐑽𐑾𐑟
 KAF/TEUS	cavities	𐑒𐑨𐑝𐑦𐑑𐑦𐑟
 KAF/TPAOE/KHRAFP	kaffeeklatsch	
@@ -14605,7 +14554,6 @@ KAUPB/SROEU	convoy	𐑒𐑪𐑯𐑝𐑶
 KAUPB/SROL/AOUGS	convolution	𐑒𐑪𐑯𐑝𐑩𐑤𐑵𐑖𐑩𐑯
 KAUPB/STABL	constable	𐑒𐑳𐑯𐑕𐑑𐑩𐑚𐑩𐑤
 KAUPB/STAPBS	Constance	𐑒𐑪𐑯𐑕𐑑𐑩𐑯𐑕
-KAUPB/STKPWHREGS	congestion{?}	
 KAUPB/STRAEUPB	constrain	𐑒𐑩𐑯𐑕𐑑𐑮𐑱𐑯
 KAUPB/STRAEUPB/-D	constrained	𐑒𐑩𐑯𐑕𐑑𐑮𐑱𐑯𐑛
 KAUPB/STRAOU	construe	𐑒𐑩𐑯𐑕𐑑𐑮𐑵
@@ -14947,7 +14895,6 @@ KEUFG	kissing	𐑒𐑦𐑕𐑦𐑙
 KEUFP	kitsch	𐑒𐑦𐑗
 KEUFP/TPHER	Kitchener	
 KEUFPL	Cubism	𐑒𐑿𐑚𐑦𐑟𐑩𐑥
-KEUFPLTD	kid{.}	
 KEUFR/KWRAEUT	differentiate	𐑛𐑦𐑓𐑼𐑧𐑯𐑖𐑦𐑱𐑑
 KEUGD	kidding	𐑒𐑦𐑛𐑦𐑙
 KEUGT	contingent	𐑒𐑩𐑯𐑑𐑦𐑯𐑡𐑩𐑯𐑑
@@ -14967,8 +14914,6 @@ KEUL/SKWROEU	killjoy	𐑒𐑦𐑤𐑡𐑶
 KEUL/SREUPBG/TO*PB	Kilvington	
 KEUL/SROLT	kilovolt	
 KEUL/TER	kilter	
-KEUL/TKPWRARPBLGS	kilograms{,}	
-KEUL/TKPWRARPBLGS/A*U	kilogrammes{,}	
 KEUL/TOPB	kiloton	
 KEUL/WAT	kilowatt	𐑒𐑦𐑤𐑩𐑢𐑪𐑑
 KEULD	killed	𐑒𐑦𐑤𐑛
@@ -15290,7 +15235,6 @@ KHAOEULD/TPHAP/ERS	childnappers
 KHAOEUPB	chine	𐑗𐑲𐑯
 KHAOEUPB/A	china	𐑗𐑲𐑯𐑩
 KHAOEUPB/KWRA/TO*UPB	Chinatown	
-KHAOEUPB/KWRARBGS	China{,}	
 KHAOEUPBZ	Chinese	𐑗𐑲𐑯𐑰𐑟
 KHAOEUPL	chime	𐑗𐑲𐑥
 KHAOEUPL/-D	chimed	𐑗𐑲𐑥𐑛
@@ -15523,7 +15467,6 @@ KHERB/EUBG	cherubic	𐑗𐑼𐑵𐑚𐑦𐑒
 KHERB/EUBG/HREU	cherubically	
 KHERB/EUBG/K*L	cherubical	
 KHERB/EUBG/KHREU	cherubically	
-KHERBGS	check{,}	
 KHERL	Cheryl	
 KHERT	chert	
 KHERT/HOF	Chertoff	
@@ -15660,7 +15603,6 @@ KHOEU	choy
 KHOEUFS	choices	𐑗𐑶𐑕𐑩𐑟
 KHOEUPB	China	𐑗𐑲𐑯𐑩
 KHOEUR	choir	𐑒𐑢𐑲𐑼
-KHOEURPBGS	chemotherapy{,}	
 KHOEUS	choice	𐑗𐑶𐑕
 KHOEUS/*ES	choicest	
 KHOEUS/ER	choicer	
@@ -15799,7 +15741,6 @@ KHRAF/KHRAR	clavicular
 KHRAFBGS	classics	𐑒𐑤𐑨𐑕𐑦𐑒𐑕
 KHRAFD	collapsed	𐑒𐑩𐑤𐑨𐑐𐑕𐑑
 KHRAFP	clasp	𐑒𐑤𐑭𐑕𐑐
-KHRAFPLTS	class{.}	
 KHRAFRP	clamp	𐑒𐑤𐑨𐑥𐑐
 KHRAL	classical	𐑒𐑤𐑨𐑕𐑦𐑒𐑩𐑤
 KHRAL/EUFT	classicalist	
@@ -16239,7 +16180,6 @@ KHROEUS/TER	cloister	𐑒𐑤𐑶𐑕𐑑𐑼
 KHROEUS/TER/-D	cloistered	𐑒𐑤𐑶𐑕𐑑𐑼𐑛
 KHROEUS/TER/-G	cloistering	𐑒𐑤𐑶𐑕𐑑𐑼𐑦𐑙
 KHROFL	colossal	𐑒𐑩𐑤𐑪𐑕𐑩𐑤
-KHROFRPLT	color{.}	
 KHROFT	closet	𐑒𐑤𐑪𐑟𐑩𐑑
 KHROFT/REUD/KWRUPL	Clostridium	
 KHROG	clog	𐑒𐑤𐑪𐑜
@@ -16317,7 +16257,6 @@ KHROUD/-PBS/-S	cloudinesses
 KHROUD/HREU	cloudily	
 KHROUD/PHA*ED	Cloudmade	
 KHROUDZ	clouds	𐑒𐑤𐑬𐑛𐑟
-KHROUFRPLT/A*U	colour{.}	
 KHROUPB	clown	𐑒𐑤𐑬𐑯
 KHROUPB/EURB	clownish	𐑒𐑤𐑬𐑯𐑦𐑖
 KHROUR	colour	𐑒𐑳𐑤𐑼
@@ -17402,7 +17341,6 @@ KORPB/KHOPB	cornichon
 KORPB/KOB	corncob	𐑒𐑹𐑯𐑒𐑪𐑚
 KORPB/KOEP/KWRA	cornucopia	𐑒𐑹𐑯𐑘𐑩𐑒𐑴𐑐𐑾
 KORPB/KOEP/KWRA/*EPB	cornucopian	
-KORPB/KWRAFPLT	cornea{.}	
 KORPB/KWRUPL	corneum	
 KORPB/PWAOERPL	corynebacterium	
 KORPB/PWRAED	cornbread	
@@ -17660,7 +17598,6 @@ KPAEURS	compares	𐑒𐑩𐑥𐑐𐑺𐑟
 KPAEURT/EUFL	comparatively	𐑒𐑩𐑥𐑐𐑨𐑮𐑩𐑑𐑦𐑝𐑤𐑦
 KPAFD	compassed	𐑒𐑳𐑥𐑐𐑩𐑕𐑑
 KPAFL	capsule	𐑒𐑨𐑐𐑕𐑿𐑤
-KPAFPLT	exam{.}	
 KPAFT	capacity	𐑒𐑩𐑐𐑨𐑕𐑦𐑑𐑦
 KPAFT/-S	capacities	𐑒𐑩𐑐𐑨𐑕𐑦𐑑𐑦𐑟
 KPAFT/EUF	capacitative	
@@ -17966,7 +17903,6 @@ KPHAZ	commas	𐑒𐑪𐑥𐑩𐑟
 KPHE	economy	𐑦𐑒𐑪𐑯𐑩𐑥𐑦
 KPHEBG	economic	𐑰𐑒𐑩𐑯𐑪𐑥𐑦𐑒
 KPHEBGS	economics	𐑰𐑒𐑩𐑯𐑪𐑥𐑦𐑒𐑕
-KPHEFPBLGT	economic{.}	
 KPHEFT	economist	𐑦𐑒𐑪𐑯𐑩𐑥𐑦𐑕𐑑
 KPHEFT/-BL	comestible	𐑒𐑩𐑥𐑧𐑕𐑑𐑩𐑚𐑩𐑤
 KPHEL	economical	𐑰𐑒𐑩𐑯𐑪𐑥𐑦𐑒𐑩𐑤
@@ -18023,7 +17959,6 @@ KPHERS	commerce	𐑒𐑪𐑥𐑻𐑕
 KPHES	economies	𐑦𐑒𐑪𐑯𐑩𐑥𐑦𐑟
 KPHEUBTD	exhibited	𐑦𐑜𐑟𐑦𐑚𐑦𐑑𐑩𐑛
 KPHEUFPB/-G	Christening	𐑒𐑮𐑦𐑕𐑩𐑯𐑦𐑙
-KPHEUFPGS	commission{.}	
 KPHEUFTS	economists	𐑦𐑒𐑪𐑯𐑩𐑥𐑦𐑕𐑑𐑕
 KPHEUGS	commission	𐑒𐑩𐑥𐑦𐑖𐑩𐑯
 KPHEUGS/-D	commissioned	𐑒𐑩𐑥𐑦𐑖𐑩𐑯𐑛
@@ -18092,7 +18027,6 @@ KPHRAEURPB	complainer
 KPHRAEUS/EPBS	complacence	𐑒𐑩𐑥𐑐𐑤𐑱𐑕𐑩𐑯𐑕
 KPHRAEUS/SEU	complacency	𐑒𐑩𐑥𐑐𐑤𐑱𐑕𐑩𐑯𐑕𐑦
 KPHRAEUS/SEU/-S	complacencies	
-KPHRAOEFPLT	complete{.}	
 KPHRAOEGS	completion	𐑒𐑩𐑥𐑐𐑤𐑰𐑖𐑩𐑯
 KPHRAOEGT	completing	𐑒𐑩𐑥𐑐𐑤𐑰𐑑𐑦𐑙
 KPHRAOELT	completely	𐑒𐑩𐑥𐑐𐑤𐑰𐑑𐑤𐑦
@@ -18561,7 +18495,6 @@ KRAOBGD/HREU	crookedly	𐑒𐑮𐑫𐑒𐑩𐑛𐑤𐑦
 KRAOBGS	crooks	𐑒𐑮𐑫𐑒𐑕
 KRAOE	cree	
 KRAOE/KWRA	Korea	𐑒𐑼𐑾
-KRAOE/KWRAFPLT	Korea{.}	
 KRAOE/O*EL	creole	𐑒𐑮𐑰𐑴𐑤
 KRAOE/OEL	Creole	𐑒𐑮𐑰𐑴𐑤
 KRAOE/PEU	creepy	𐑒𐑮𐑰𐑐𐑦
@@ -18635,7 +18568,6 @@ KRAOEU/PHAOE/KWRAPB	Crimean
 KRAOEU/SKWREPB/EUBG	cryogenic	
 KRAOEU/SKWREPB/EUBGS	cryogenics	
 KRAOEU/SKWREPB/KHREU	cryogenically	
-KRAOEU/TAOER/KWRARBGS	criteria{,}	
 KRAOEUBG/KWREU	crikey	𐑒𐑮𐑲𐑒𐑦
 KRAOEUD	cried	𐑒𐑮𐑲𐑛
 KRAOEUFL	archival	
@@ -18850,7 +18782,6 @@ KREPBT	cent	𐑕𐑧𐑯𐑑
 KREPBT/PHAOERT/A*U	centimetre	𐑕𐑧𐑯𐑑𐑦𐑥𐑰𐑑𐑼
 KREPBT/REUS	centuries	𐑕𐑧𐑯𐑗𐑼𐑦𐑟
 KREPBT/TKPWRAEUD	centigrade	𐑕𐑧𐑯𐑑𐑦𐑜𐑮𐑱𐑛
-KREPBT/TPREUPL	century{.}	
 KREPL	creme	
 KREPL/HREUPB	Kremlin	𐑒𐑮𐑧𐑥𐑤𐑦𐑯
 KREPL/STER	cremaster	
@@ -19550,7 +19481,6 @@ KW*EUP	quip	𐑒𐑢𐑦𐑐
 KW*EUPL	Congresswomen	𐑒𐑪𐑙𐑜𐑮𐑧𐑕𐑢𐑦𐑥𐑦𐑯
 KW*EURBG	quicker	𐑒𐑢𐑦𐑒𐑼
 KW*EURS	inquiries	𐑦𐑯𐑒𐑢𐑲𐑼𐑦𐑟
-KW*EZ	Questions{?}	
 KW*P	{&Q}	
 KW*P/TEUP	Q-Tip	
 KW*P/TKPWEUS	QGIS	
@@ -19788,7 +19718,6 @@ KWE/TAOEU/PAOEUPB	qetiapine
 KWEBG/EPB/STETS	Queckenstedt's	
 KWEBL	questionable	𐑒𐑢𐑧𐑕𐑗𐑩𐑯𐑩𐑚𐑩𐑤
 KWED	questioned	𐑒𐑢𐑧𐑕𐑗𐑩𐑯𐑛
-KWEFP	question{.}	
 KWEFP/WA	Queua	
 KWEFRB	conserve	𐑒𐑩𐑯𐑕𐑻𐑝
 KWEFRPB	quench	𐑒𐑢𐑧𐑯𐑗
@@ -19968,8 +19897,6 @@ KWR*/TKPWHROB/HREUPB	y-globulin
 KWR*BGD	KYD	
 KWR*D	why'd	
 KWR*E	yeah	𐑘𐑧𐑩
-KWR*E/T-RBGS	yeah{,}it	
-KWR*EFP	Yes{.}	
 KWR*EFPLT	yes.	
 KWR*EP	Yelp	𐑘𐑧𐑤𐑐
 KWR*EU/OS	iOS	
@@ -19988,7 +19915,6 @@ KWR*UPBGS/ERS	youngsters	𐑘𐑳𐑙𐑕𐑑𐑼𐑟
 KWR*UPL/KWR*UPL	yum-yum	
 KWR-D	idea	𐑲𐑛𐑾
 KWR-DZ	ideas	𐑲𐑛𐑾𐑟
-KWR-FPLT	why{.}	
 KWR-L	ideal	𐑲𐑛𐑾𐑤
 KWR-L/EUFT	ideologist	
 KWR-L/HRAOEUZ	idealise	𐑲𐑛𐑾𐑤𐑲𐑟
@@ -19997,10 +19923,8 @@ KWR-LD/HROG	ideologue
 KWR-LD/OG	idealogue	
 KWR-LS	ideals	𐑲𐑛𐑾𐑤𐑟
 KWR-PBLT	YLNT	
-KWR-RBGS	why{,}	
 KWR/EUFT	whist	𐑢𐑦𐑕𐑑
 KWRA*/WE	Yahweh	
-KWRA*/WE/KW-BG	Yahweh{,}	
 KWRA*ER	area	𐑺𐑾
 KWRA*ERS	areas	𐑺𐑾𐑟
 KWRA*EU	yea	𐑘𐑱
@@ -20063,7 +19987,6 @@ KWRAOER/-LG	yearling	𐑘𐑽𐑤𐑦𐑙
 KWRAOER/-LGS	yearlings	𐑘𐑽𐑤𐑦𐑙𐑟
 KWRAOER/PWAOBG	yearbook	𐑘𐑽𐑚𐑫𐑒
 KWRAOER/RO*UPBD	year-round	
-KWRAOERBGS	year{,}	
 KWRAOERL	yearly	𐑘𐑽𐑤𐑦
 KWRAOERL/-S	yearlies	
 KWRAOERLDZ	year-olds	
@@ -20169,12 +20092,10 @@ KWRELT/SEUPB	Yeltsin
 KWREP	yep	
 KWREPB	yen	𐑘𐑧𐑯
 KWREPB/TA	yenta	
-KWREPL	yes{,}ma'am	
 KWREPL/-PB	Yemen	𐑘𐑧𐑥𐑩𐑯
 KWRER/SEUPB/KWRA	Yersinia	
 KWRER/SRAUPB	Yerevan	𐑘𐑧𐑮𐑦𐑝𐑭𐑯
 KWRER/TPHER	yearner	
-KWRERBGS	yes{,}	
 KWRERPB	yearn	𐑘𐑻𐑯
 KWRERPBD	yearned	𐑘𐑻𐑯𐑛
 KWRERPBG	yearning	𐑘𐑻𐑯𐑦𐑙
@@ -20267,7 +20188,6 @@ KWRUPBG/PWHRAOD	Youngblood
 KWRUPBG/STER	youngster	𐑘𐑳𐑙𐑕𐑑𐑼
 KWRUPL	yum	
 KWRUPL/KWREU	yummy	
-KWRUPL/KWREURBGS	yummy{,}	
 KWRUPL/KWRUPL/-S	yum-yums	
 KWRUPL/O*	yummo	
 KWRUPL/PHEU/-S	yummies	
@@ -20771,7 +20691,6 @@ OEFL/TEU	ovality
 OEFL/TEU/-S	ovalities	
 OEFPB	oven	𐑳𐑝𐑩𐑯
 OEFPB/-FL	ovenful	
-OEFPLT	open{.}	
 OEFR	over	𐑴𐑝𐑼
 OEFR/HRAOEUG	overlying	𐑴𐑝𐑼𐑤𐑲𐑦𐑙
 OEFR/KWREUS	ovaries	𐑴𐑝𐑼𐑦𐑟
@@ -20847,7 +20766,6 @@ OER/AES	other's
 OER/WORLD/HREU	otherworldly	𐑳𐑞𐑼𐑢𐑻𐑤𐑛𐑤𐑦
 OERB	observer	𐑩𐑚𐑟𐑻𐑝𐑼
 OERBG	ochre	𐑴𐑒𐑼
-OERBGS	oh{,}	
 OERBGS/HOE	oh-ho	
 OERBGS/TP-PL	 oh{.}	
 OERBGS/TPHAOEL	O'Neill	
@@ -20885,7 +20803,6 @@ OET/KWRUPL	otium
 OET/PHAOEL	oatmeal	𐑴𐑑𐑥𐑰𐑤
 OET/RAOE/KWRA	otorrhea	
 OEU/HREU	oily	𐑶𐑤𐑦
-OEU/KWROEU/KWROEU	oy{,}oy{,}oy	
 OEU/SEUPB	eosin	
 OEU/SEUPB/TPEUL	eosinophil	
 OEU/THROEUD	euthyroid	
@@ -20928,7 +20845,6 @@ OF/SET/-G	offsetting	𐑪𐑓𐑕𐑧𐑑𐑦𐑙
 OF/SETS	offsets	𐑪𐑓𐑕𐑧𐑑𐑕
 OF/SKWRAOEL	esophageal	
 OFB	obvious	𐑪𐑚𐑝𐑾𐑕
-OFBLG	okay{.}	
 OFD	Ovid	
 OFG	offering	𐑪𐑓𐑼𐑦𐑙
 OFGS	observation	𐑪𐑚𐑟𐑼𐑝𐑱𐑖𐑩𐑯
@@ -21173,7 +21089,6 @@ ORBG/STRAEUGS	orchestration	𐑹𐑒𐑦𐑕𐑑𐑮𐑱𐑖𐑩𐑯
 ORBG/STRAEUT	orchestrate	𐑹𐑒𐑦𐑕𐑑𐑮𐑱𐑑
 ORBG/STRAL	orchestral	𐑹𐑒𐑧𐑕𐑑𐑮𐑩𐑤
 ORBG/STRAL/EUFT	orchestralist	
-ORBGS	Okay{,}	
 ORBGS/KR*R	OCR	
 ORBGS/T*BG	OTC	
 ORBGS/TRA	orchestra	𐑹𐑒𐑦𐑕𐑑𐑮𐑩
@@ -21333,7 +21248,6 @@ OU/TOEP/KWRAPB	utopian	𐑿𐑑𐑴𐑐𐑾𐑯
 OUDZ	outside	𐑬𐑑𐑕𐑲𐑛
 OUFP	ouch	𐑬𐑗
 OUFP/-S	ouches	
-OUFPT	out{.}	
 OUFT	oust	𐑬𐑕𐑑
 OUG/AOEUPB	Augustine	
 OUL	owl	𐑬𐑤
@@ -21569,7 +21483,6 @@ PA*RBG/WA*EU	Parkway
 PA*RD/OE	Pardo	
 PA*RPBT/SEUS	parenthesis	𐑐𐑼𐑧𐑯𐑔𐑩𐑕𐑦𐑕
 PA*RPL	param	
-PA*RT/STPHOPB	Parthenon{?}	
 PA*RT/TPHOPB	Parthenon	𐑐𐑸𐑔𐑩𐑯𐑪𐑯
 PA*T	path	𐑐𐑭𐑔
 PA*T/HR-L	pathological	𐑐𐑨𐑔𐑩𐑤𐑪𐑡𐑦𐑒𐑩𐑤
@@ -21819,7 +21732,6 @@ PAEUFP	pH
 PAEUFPD	Ph.D.	
 PAEUFPLT	pavement	𐑐𐑱𐑝𐑥𐑩𐑯𐑑
 PAEUFPLT/-S	pavements	𐑐𐑱𐑝𐑥𐑩𐑯𐑑𐑕
-PAEUFRPBLT	patient{.}	
 PAEUFRS	pavers	
 PAEUFS	paves	𐑐𐑱𐑝𐑟
 PAEUFT	paste	𐑐𐑱𐑕𐑑
@@ -21906,7 +21818,6 @@ PAEUT	pate	𐑐𐑨𐑑𐑱
 PAEUT/*EPB	patten	𐑐𐑨𐑑𐑩𐑯
 PAEUT/*ER	Pater	𐑐𐑱𐑑𐑼
 PAEUT/O*PB	Peyton	
-PAEUT/ROPB/ARPBLGS	patronage{,}	
 PAEUT/ROPBS	patrons	𐑐𐑱𐑑𐑮𐑩𐑯𐑟
 PAEUT/SEU	pacy	
 PAEUT/TPHAOEUZ/-G	patronising	𐑐𐑨𐑑𐑮𐑩𐑯𐑲𐑟𐑦𐑙
@@ -22072,7 +21983,6 @@ PAOEF/EURB/-PBS	peevishness	𐑐𐑰𐑝𐑦𐑖𐑯𐑩𐑕
 PAOEF/EURB/-PBS/-S	peevishnesses	
 PAOEF/EURB/HREU	peevishly	𐑐𐑰𐑝𐑦𐑖𐑤𐑦
 PAOEFD	peeved	𐑐𐑰𐑝𐑛
-PAOEFPLTS	piece{.}	
 PAOEFS	pieces	𐑐𐑰𐑕𐑩𐑟
 PAOEL	peel	𐑐𐑰𐑤
 PAOEL/*ER	peeler	𐑐𐑰𐑤𐑼
@@ -23986,12 +23896,10 @@ PHA*ET	matte
 PHA*EU/ARD	Maillard	
 PHA*EUBG/-S	medications	𐑥𐑧𐑛𐑦𐑒𐑱𐑖𐑩𐑯𐑟
 PHA*EUBS	medication	𐑥𐑧𐑛𐑦𐑒𐑱𐑖𐑩𐑯
-PHA*EUFPBLGTS	medication{.}	
 PHA*EUPL	maple	𐑥𐑱𐑐𐑩𐑤
 PHA*EUR	Mayor	𐑥𐑺
 PHA*EURPB	migraine	𐑥𐑲𐑜𐑮𐑱𐑯
 PHA*FBG	masque	𐑥𐑭𐑕𐑒
-PHA*FPLT	abnormality{.}	
 PHA*FR	Marv	
 PHA*G	mag	𐑥𐑨𐑜
 PHA*G/*EPB	mang	
@@ -24090,7 +23998,6 @@ PHA/KWRORBG/KA	Maiorca
 PHA/PAOU/TOE	Maputo	
 PHA/PHA	mama	𐑥𐑩𐑥𐑭
 PHA/PHAEUL/KWRAPB	mammalian	𐑥𐑩𐑥𐑱𐑤𐑾𐑯
-PHA/PHARBGS	Mama{,}	
 PHA/PHEUL/HRA	mamilla	
 PHA/POEL/KWROPB	Napoleon	
 PHA/RA/KA	maraca	
@@ -24257,7 +24164,6 @@ PHAEBGS	maxillary
 PHAEBGS/-S	maxillaries	
 PHAED	made	𐑥𐑱𐑛
 PHAED/SKWRUP	made-up	
-PHAEFRPLT	matter{.}	
 PHAEL	male	𐑥𐑱𐑤
 PHAEL/STROPL	maelstrom	𐑥𐑱𐑤𐑕𐑑𐑮𐑩𐑥
 PHAELS	males	𐑥𐑱𐑤𐑟
@@ -24414,7 +24320,6 @@ PHAEUT	mate	𐑥𐑭𐑑𐑱
 PHAEUT/-D	mated	𐑥𐑱𐑑𐑩𐑛
 PHAEUT/-G	mating	𐑥𐑱𐑑𐑦𐑙
 PHAEUT/KWREU	matey	𐑥𐑱𐑑𐑦
-PHAEUT/REUFPBLGTS	matrix{.}	
 PHAEUT/ROPB/HREU	matronly	𐑥𐑱𐑑𐑮𐑩𐑯𐑤𐑦
 PHAEUTS	mates	𐑥𐑱𐑑𐑕
 PHAEUTS/*EPB	mantes	
@@ -24664,7 +24569,6 @@ PHAOED/KWRAEUT/-G	mediating	𐑥𐑰𐑛𐑦𐑱𐑑𐑦𐑙
 PHAOED/KWRAEUT/ORS	mediators	𐑥𐑰𐑛𐑦𐑱𐑑𐑼𐑟
 PHAOED/KWRAEUTD	mediated	𐑥𐑰𐑛𐑦𐑱𐑑𐑩𐑛
 PHAOED/KWRAEUTS	mediates	𐑥𐑰𐑛𐑦𐑱𐑑𐑕
-PHAOED/KWRAFP	media{.}	
 PHAOED/KWRAL	medial	𐑥𐑰𐑛𐑾𐑤
 PHAOED/KWRAL/EUS	medialis	
 PHAOED/KWRAPB	median	𐑥𐑰𐑛𐑾𐑯
@@ -24686,7 +24590,6 @@ PHAOED/SEU	immediacy	𐑦𐑥𐑰𐑛𐑾𐑕𐑦
 PHAOED/SEU/-S	immediacies	
 PHAOEFL	Medieval	𐑥𐑧𐑛𐑦𐑰𐑝𐑩𐑤
 PHAOEFLS	measles	𐑥𐑰𐑟𐑩𐑤𐑟
-PHAOEFPB	mean{?}	
 PHAOEG/ER	meager	𐑥𐑰𐑜𐑼
 PHAOEG/ER/A*U	meagre	𐑥𐑰𐑜𐑼
 PHAOEG/ERL	meagerly	
@@ -24749,7 +24652,6 @@ PHAOET/RO*LGS	meteorologist	𐑥𐑰𐑑𐑽𐑪𐑤𐑩𐑡𐑦𐑕𐑑
 PHAOET/ROLG	meteorology	𐑥𐑰𐑑𐑽𐑪𐑤𐑩𐑡𐑦
 PHAOET/ROLG/-S	meteorologies	
 PHAOET/ROLG/KHREU	meteorologically	
-PHAOET/TP-LGS	meetings{.}	
 PHAOETS	meets	𐑥𐑰𐑑𐑕
 PHAOEU/*ER	Meyer	
 PHAOEU/A*PB	Mayan	
@@ -24789,7 +24691,6 @@ PHAOEU/SKW-L	MySQL
 PHAOEU/STAOEPB/KWRA	myasthenia	
 PHAOEU/STROE	maestro	𐑥𐑲𐑕𐑑𐑮𐑴
 PHAOEU/TAT/EUBG	myotatic	
-PHAOEU/TKPWRAEUFPGS	migration{.}	
 PHAOEU/TKPWRAEUTS	migrates	𐑥𐑲𐑜𐑮𐑱𐑑𐑕
 PHAOEU/TOES/EUS	mitosis	
 PHAOEU/TOT/EUBG	mitotic	
@@ -24886,7 +24787,6 @@ PHAOEURBG/THAL/PHOS	microphthalmos
 PHAOEURBG/TKHRAOUGS	microdilution	
 PHAOEURBG/TOEPL	microtome	
 PHAOEURBG/TP*EUPLT	microfilament	
-PHAOEURBG/TPHROR/KWRABG	microflora{,}	
 PHAOEURBG/WAF/-BL	microwavable	
 PHAOEURD	mired	𐑥𐑲𐑼𐑛
 PHAOEURG/A*T	migrate	𐑥𐑲𐑜𐑮𐑱𐑑
@@ -25318,7 +25218,6 @@ PHAR/SKWREU	Margie	𐑥𐑸𐑡𐑦
 PHAR/SOE	Marceau	
 PHAR/SRER	marver	
 PHAR/SREUPB	Marvin	
-PHAR/STPH-S	Mars{?}	
 PHAR/TAL	marital	𐑥𐑨𐑮𐑦𐑑𐑩𐑤
 PHAR/TAOE/TPHAOE	martini	𐑥𐑸𐑑𐑰𐑯𐑦
 PHAR/TAOEPB/EUS	martinis	𐑥𐑸𐑑𐑰𐑯𐑦𐑟
@@ -25858,7 +25757,6 @@ PHERPB	American	𐑩𐑥𐑧𐑮𐑦𐑒𐑩𐑯
 PHERPB/TPHAOEUZ	Americanise	
 PHERPBLG	merge	𐑥𐑻𐑡
 PHERPBLG/-G	merging	𐑥𐑻𐑡𐑦𐑙
-PHERPBLG/STPEUPL	emergency{.}	
 PHERPBLGD	merged	𐑥𐑻𐑡𐑛
 PHERPBLGS	merges	𐑥𐑻𐑡𐑩𐑟
 PHERPBS	Americans	𐑩𐑥𐑧𐑮𐑦𐑒𐑩𐑯𐑟
@@ -26312,7 +26210,6 @@ PHEURD/KWRAT/EUBG	mydriatic
 PHEURL	Merrill	
 PHEURL/TOPB	mirliton	
 PHEURL/TOPB/-S	mirlitons	
-PHEURPBGS	minute{,}	
 PHEURT/*L	myrtle	𐑥𐑻𐑑𐑩𐑤
 PHEURT/KWRA	mirta	
 PHEUS	miss	𐑥𐑦𐑕
@@ -26682,7 +26579,6 @@ PHOE/TPHA	Mona
 PHOE/TPHAD	monad	𐑥𐑴𐑯𐑨𐑛
 PHOE/TPHAEU	Monet	
 PHOE/TPHAOEBG	Monique	
-PHOE/TPHARBGS	mona{,}	
 PHOE/TPHET	Monette	
 PHOE/TRAOEUZ	motorise	𐑥𐑴𐑑𐑼𐑲𐑟
 PHOEB/HRAOEUZ/ER	mobiliser	
@@ -26853,7 +26749,6 @@ PHOL/EFT	molest	𐑥𐑩𐑤𐑧𐑕𐑑
 PHOL/HREU	Molly	𐑥𐑪𐑤𐑦
 PHOL/K-L	molecule	𐑥𐑪𐑤𐑦𐑒𐑿𐑤
 PHOL/K-LS	molecules	𐑥𐑪𐑤𐑦𐑒𐑿𐑤𐑟
-PHOL/K-PL	molecule{.}	
 PHOL/KAOUT	mollicute	
 PHOL/KHRAR	molecular	𐑥𐑩𐑤𐑧𐑒𐑘𐑩𐑤𐑼
 PHOL/KHRARL	molecularly	
@@ -27178,7 +27073,6 @@ PHR*EUFT/-S	publicities
 PHR*EUPBG	plink	
 PHR*EUPBT	plinth	𐑐𐑤𐑦𐑯𐑔
 PHR*EURB	publish	𐑐𐑳𐑚𐑤𐑦𐑖
-PHR*EURB/TP-PLD	published{.}	
 PHR*EURBD	published	𐑐𐑳𐑚𐑤𐑦𐑖𐑑
 PHR*EURBG	publishing	𐑐𐑳𐑚𐑤𐑦𐑖𐑦𐑙
 PHR*EURBS	publishes	𐑐𐑳𐑚𐑤𐑦𐑖𐑩𐑟
@@ -27300,7 +27194,6 @@ PHRAEUPBS	plains	𐑐𐑤𐑱𐑯𐑟
 PHRAEUPBT	plaint	𐑐𐑤𐑱𐑯𐑑
 PHRAEUPLT	placement	𐑐𐑤𐑱𐑕𐑥𐑩𐑯𐑑
 PHRAEUR	player	𐑐𐑤𐑱𐑼
-PHRAEURBGS	population{,}	
 PHRAEURBL	palatial	𐑐𐑩𐑤𐑱𐑖𐑩𐑤
 PHRAEURS	players	𐑐𐑤𐑱𐑼𐑟
 PHRAEUS	place	𐑐𐑤𐑱𐑕
@@ -27342,13 +27235,8 @@ PHRAOED/-GS	pleadings	𐑐𐑤𐑰𐑛𐑦𐑙𐑟
 PHRAOED/ES	Pleiades	
 PHRAOEDZ	pleads	𐑐𐑤𐑰𐑛𐑟
 PHRAOEFG	pleasing	𐑐𐑤𐑰𐑟𐑦𐑙
-PHRAOEFPS	please{.}	
 PHRAOEGD	pleading	𐑐𐑤𐑰𐑛𐑦𐑙
 PHRAOEPB	marine	𐑥𐑼𐑰𐑯
-PHRAOEPL	please{,}ma'am	
-PHRAOEPLZ	please{,}ma'am{,}	
-PHRAOERS	please{,}sir	
-PHRAOERSZ	please{,}sir{,}	
 PHRAOES/-S	pleases	𐑐𐑤𐑰𐑟𐑩𐑟
 PHRAOES/SAURB/SKWRUS	plesiosaurus	
 PHRAOET	pleat	𐑐𐑤𐑰𐑑
@@ -27538,7 +27426,6 @@ PHREUBL	applicable	𐑩𐑐𐑤𐑦𐑒𐑩𐑚𐑩𐑤
 PHREUBL/HREU	applicably	
 PHREUBLT	applicability	𐑩𐑐𐑤𐑦𐑒𐑩𐑚𐑦𐑤𐑦𐑑𐑦
 PHREUBLT/-S	applicabilities	
-PHREUFPBLGT	public{.}	
 PHREUG/PH*EU	polygamy	𐑐𐑩𐑤𐑦𐑜𐑩𐑥𐑦
 PHREUG/PH*EU/-S	polygamies	
 PHREUG/PH*EUS	polygamist	𐑐𐑩𐑤𐑦𐑜𐑩𐑥𐑦𐑕𐑑
@@ -27645,7 +27532,6 @@ PHRU/TOBG/RAES/-S	plutocracies	𐑐𐑤𐑵𐑑𐑪𐑒𐑮𐑩𐑕𐑦𐑟
 PHRUBG	pluck	𐑐𐑤𐑳𐑒
 PHRUBG/-S	plucks	𐑐𐑤𐑳𐑒𐑕
 PHRUBGD	plucked	𐑐𐑤𐑳𐑒𐑑
-PHRUFPLTS	minus{.}	
 PHRUFRP	plump	𐑐𐑤𐑳𐑥𐑐
 PHRUG	plug	𐑐𐑤𐑳𐑜
 PHRUG/-G	plugging	𐑐𐑤𐑳𐑜𐑦𐑙
@@ -27733,7 +27619,6 @@ PHUFLS	muffles	𐑥𐑳𐑓𐑩𐑤𐑟
 PHUFP	much	𐑥𐑳𐑗
 PHUFP/SKWRA	Mucha	
 PHUFPB	muffin	𐑥𐑳𐑓𐑦𐑯
-PHUFPBLT	money{.}	
 PHUFPBT	mustn't	𐑥𐑳𐑕𐑩𐑯𐑑
 PHUFPL	Osmium	
 PHUFRD	mustard	𐑥𐑳𐑕𐑑𐑼𐑛
@@ -28233,7 +28118,6 @@ POEUT/*EUPB	poietin
 POF/A*U	pov	
 POF/SROE/A*U	povvo	
 POF/TKOEPB	povidone	
-POFPBLT	possible{.}	
 POFR/*EUPB	porphyrin	
 POFR/KWRA	porphyria	
 POFRP	pomp	𐑐𐑪𐑥𐑐
@@ -28345,7 +28229,6 @@ POLZ/A*U	apologise	𐑩𐑐𐑪𐑤𐑩𐑡𐑲𐑟
 POP	pop	𐑐𐑪𐑐
 POP/*ER/KWRAPB	Popperian	
 POP/AOEU	Popeye	
-POP/HRAEUFPLGTS	population{.}	
 POP/HRAEUT	populate	𐑐𐑪𐑐𐑘𐑩𐑤𐑱𐑑
 POP/HRAEUTD	populated	𐑐𐑪𐑐𐑘𐑩𐑤𐑱𐑑𐑩𐑛
 POP/HRAEUTS	populates	𐑐𐑪𐑐𐑘𐑩𐑤𐑱𐑑𐑕
@@ -28566,7 +28449,6 @@ PR*EFPB/T*EUF	preventive	𐑐𐑮𐑦𐑝𐑧𐑯𐑑𐑦𐑝
 PR*EFPBT/-BLT	preventability	
 PR*EFPBT/-BLT/-S	preventabilities	
 PR*EPBT/SES	parentheses	𐑐𐑼𐑧𐑯𐑔𐑩𐑕𐑰𐑟
-PR*ERB/-RBGS	pressure{,}	
 PR*ERBD	pressured	
 PR*ERBS	pressures	𐑐𐑮𐑧𐑖𐑼𐑟
 PR*EU/PHORD/KWRUPL	primordium	
@@ -28742,7 +28624,6 @@ PRAOEFT/-S	priests	𐑐𐑮𐑰𐑕𐑑𐑕
 PRAOEFT/ES	priestess	𐑐𐑮𐑰𐑕𐑑𐑧𐑕
 PRAOEFT/ES/-S	priestesses	𐑐𐑮𐑰𐑕𐑑𐑧𐑕𐑩𐑟
 PRAOEFT/HREU	priestly	𐑐𐑮𐑰𐑕𐑑𐑤𐑦
-PRAOEFT/STPHES	priestess{?}	
 PRAOEGD	proceeding	𐑐𐑮𐑩𐑕𐑰𐑛𐑦𐑙
 PRAOEGS	appreciation	𐑩𐑐𐑮𐑰𐑖𐑦𐑱𐑖𐑩𐑯
 PRAOEP/ER	preparer	
@@ -28806,7 +28687,6 @@ PRAOEUF/TAOEUZ	privatise	𐑐𐑮𐑲𐑝𐑩𐑑𐑲𐑟
 PRAOEUFD	priced	𐑐𐑮𐑲𐑕𐑑
 PRAOEUFG	pricing	𐑐𐑮𐑲𐑕𐑦𐑙
 PRAOEUFLS	precisely	𐑐𐑮𐑦𐑕𐑲𐑕𐑤𐑦
-PRAOEUFPS	price{.}	
 PRAOEUFS	prices	𐑐𐑮𐑲𐑕𐑩𐑟
 PRAOEUFT	private	𐑐𐑮𐑲𐑝𐑩𐑑
 PRAOEUFT/AER	privateer	𐑐𐑮𐑲𐑝𐑩𐑑𐑽
@@ -28870,7 +28750,6 @@ PRAOUPBS	prudence	𐑐𐑮𐑵𐑛𐑩𐑯𐑕
 PRAOUPBT	prudent	𐑐𐑮𐑵𐑛𐑩𐑯𐑑
 PRAOUPBT/HREU	prudently	𐑐𐑮𐑵𐑛𐑩𐑯𐑑𐑤𐑦
 PRAOUPL	presume	𐑐𐑮𐑦𐑟𐑿𐑥
-PRAOUPL/PHREUFPLT	presumably{.}	
 PRAOUPLD	presumed	𐑐𐑮𐑦𐑟𐑿𐑥𐑛
 PRAOUPLS	presumes	𐑐𐑮𐑦𐑟𐑿𐑥𐑟
 PRAOUR/KWREPBS	prurience	𐑐𐑮𐑫𐑼𐑾𐑯𐑕
@@ -29131,7 +29010,6 @@ PREFPBT	prevent	𐑐𐑮𐑦𐑝𐑧𐑯𐑑
 PREFR	prefer	𐑐𐑮𐑦𐑓𐑻
 PREFRB	preserve	𐑐𐑮𐑦𐑟𐑻𐑝
 PREFRB/*ER	preserver	𐑐𐑮𐑦𐑟𐑻𐑝𐑼
-PREFRB/TEUFP	preservative{.}	
 PREFRB/TEUFS	preservatives	𐑐𐑮𐑦𐑟𐑻𐑝𐑩𐑑𐑦𐑝𐑟
 PREFRBD	preserved	𐑐𐑮𐑦𐑟𐑻𐑝𐑛
 PREFRBL	preferable	𐑐𐑮𐑧𐑓𐑼𐑩𐑚𐑩𐑤
@@ -29150,7 +29028,6 @@ PREFT/O*PB	preston	𐑐𐑮𐑧𐑕𐑑𐑩𐑯
 PREFT/OE	presto	𐑐𐑮𐑧𐑕𐑑𐑴
 PREG	preg	
 PREG/SEUS	pregnancies	𐑐𐑮𐑧𐑜𐑯𐑩𐑯𐑕𐑦𐑟
-PREG/SPEUL	pregnancy{.}	
 PREG/TKPWERS/A*U	preggers	
 PREG/TKPWROE/A*U	preggo	
 PREG/TPHABL	pregnable	
@@ -29376,7 +29253,6 @@ PRO*F/TKEPBT	provident	𐑐𐑮𐑪𐑝𐑦𐑛𐑩𐑯𐑑
 PRO*FBL	provable	𐑐𐑮𐑵𐑝𐑩𐑚𐑩𐑤
 PRO*FBLT	provability	
 PRO*FBLT/-S	provabilities	
-PRO*FPBLT	problem{.}	
 PRO*FR	prover	
 PRO*FT	prophet	𐑐𐑮𐑪𐑓𐑩𐑑
 PRO*FT/-S	prophets	𐑐𐑮𐑪𐑓𐑩𐑑𐑕
@@ -29847,7 +29723,6 @@ PROG/EUFT	progressivity
 PROG/EUFT/-S	progressivities	
 PROG/T*EUFS	prerogatives	𐑐𐑮𐑦𐑮𐑪𐑜𐑩𐑑𐑦𐑝𐑟
 PROG/TEUF	prerogative	𐑐𐑮𐑦𐑮𐑪𐑜𐑩𐑑𐑦𐑝
-PROG/TEUFPLT	prerogative{.}	
 PROG/TPHA*T/EUBG	prognathic	
 PROG/TPHOFT/KAEUGS	prognostication	𐑐𐑮𐑪𐑜𐑯𐑪𐑕𐑑𐑦𐑒𐑱𐑖𐑩𐑯
 PROG/TPHOFT/KAEUT	prognosticate	𐑐𐑮𐑪𐑜𐑯𐑪𐑕𐑑𐑦𐑒𐑱𐑑
@@ -29943,7 +29818,6 @@ PROS/PER	prosper	𐑐𐑮𐑪𐑕𐑐𐑼
 PROS/PERD	prospered	𐑐𐑮𐑪𐑕𐑐𐑼𐑛
 PROS/PERG	prospering	𐑐𐑮𐑪𐑕𐑐𐑼𐑦𐑙
 PROS/PERS	prospers	𐑐𐑮𐑪𐑕𐑐𐑼𐑟
-PROS/STPHES	process{?}	
 PROS/TAOUGS	prostitution	𐑐𐑮𐑪𐑕𐑑𐑦𐑑𐑿𐑖𐑩𐑯
 PROS/TAOUT	prostitute	𐑐𐑮𐑪𐑕𐑑𐑦𐑑𐑿𐑑
 PROS/TAOUTS	prostitutes	𐑐𐑮𐑪𐑕𐑑𐑦𐑑𐑿𐑑𐑕
@@ -29960,7 +29834,6 @@ PROS/TKEU/EUFT	prosodist
 PROS/TKEU/K-L	prosodical	
 PROS/TKEU/KWRAL	prosodial	
 PROS/TKOPBT/EUBG	prosthodontic	
-PROS/TPEPLS	process{.}	
 PROS/TRAEUT	prostrate	𐑐𐑮𐑪𐑕𐑑𐑮𐑱𐑑
 PROT	property	𐑐𐑮𐑪𐑐𐑼𐑑𐑦
 PROT/STAPBT	Protestant	𐑐𐑮𐑪𐑑𐑦𐑕𐑑𐑩𐑯𐑑
@@ -30379,7 +30252,6 @@ PW-BG/HREU	becomingly	𐑚𐑦𐑒𐑳𐑥𐑦𐑙𐑤𐑦
 PW-BGS	becomes	𐑚𐑦𐑒𐑳𐑥𐑟
 PW-DZ	besides	𐑚𐑦𐑕𐑲𐑛𐑟
 PW-FD	Boulevard	𐑚𐑵𐑤𐑩𐑝𐑸𐑛
-PW-FPLT	about{.}	
 PW-FPLT/KR-FPLT	B.C.	
 PW-FPLT/KR-FPLT/EFPLT	B.C.E.	
 PW-FPLT/T*U	btu	
@@ -30401,7 +30273,6 @@ PW-PBLGD	bandaged	𐑚𐑨𐑯𐑛𐑦𐑡𐑛
 PW-PBLGS	bandages	𐑚𐑨𐑯𐑛𐑦𐑡𐑩𐑟
 PW-PL	bedroom	𐑚𐑧𐑛𐑮𐑵𐑥
 PW-PLS	bedrooms	𐑚𐑧𐑛𐑮𐑵𐑥𐑟
-PW-RBGS	about{,}	
 PW-RBGS/HR*T	BLT	
 PW-RBGS/PW*S	BBS	
 PW-RBGS/T*U	Btu	
@@ -30483,7 +30354,6 @@ PWA/HAOE/KWRA	Bahia
 PWA/HRAEU	ballet	𐑚𐑨𐑤𐑱
 PWA/HRAOU	Ballew	
 PWA/HRAPL	Balaam	
-PWA/HUPL/PWUG	bah{,}humbug	
 PWA/KAOU	Baku	𐑚𐑨𐑒𐑵
 PWA/KAR/TKEU	Bacardi	
 PWA/KHRA/SRA	baclava	
@@ -30565,7 +30435,6 @@ PWABG/STEUFP	backstitch
 PWABG/STEUFP/-S	backstitches	
 PWABG/STOP	backstop	
 PWABG/STROEBG	backstroke	𐑚𐑨𐑒𐑕𐑑𐑮𐑴𐑒
-PWABG/TAOER/KWRAFP	bacteria{.}	
 PWABG/TER	bacter	
 PWABG/TKPWAPL/PHOPB	backgammon	𐑚𐑨𐑒𐑜𐑨𐑥𐑩𐑯
 PWABG/TKROP	backdrop	𐑚𐑨𐑒𐑛𐑮𐑪𐑐
@@ -30763,8 +30632,6 @@ PWAFP	batch	𐑚𐑨𐑗
 PWAFP/HROR	bachelor	𐑚𐑨𐑗𐑩𐑤𐑼
 PWAFP/HROR/ET	bachelorette	
 PWAFP/HRORS	bachelors	𐑚𐑨𐑗𐑩𐑤𐑼𐑟
-PWAFPBLGT	back{.}	
-PWAFPLTD	bad{.}	
 PWAFPS	batches	𐑚𐑨𐑗𐑩𐑟
 PWAFR	barf	
 PWAFT/ARD	bastard	𐑚𐑭𐑕𐑑𐑼𐑛
@@ -31852,7 +31719,6 @@ PWEUFBG	bisque
 PWEUFBGT	biscuit	𐑚𐑦𐑕𐑒𐑦𐑑
 PWEUFP	bitch	𐑚𐑦𐑗
 PWEUFP/-S	bitches	𐑚𐑦𐑗𐑩𐑟
-PWEUFPLT	bit{.}	
 PWEUFRPB	birch	𐑚𐑻𐑗
 PWEUFT/ROE/-S	bistros	𐑚𐑰𐑕𐑑𐑮𐑴𐑟
 PWEUG	big	𐑚𐑦𐑜
@@ -32018,7 +31884,6 @@ PWHRA	blah	𐑚𐑤𐑭
 PWHRA*BG	Black	𐑚𐑤𐑨𐑒
 PWHRA*BG/PWAORD	Blackboard	𐑚𐑤𐑨𐑒𐑚𐑹𐑛
 PWHRA*BG/PWER/REU	Blackberry	𐑚𐑤𐑨𐑒𐑚𐑼𐑦
-PWHRA*FPBLGT	blank{.}	
 PWHRA*FRPB	Blanche	
 PWHRA*PB	blanc	
 PWHRA*PBG	blank	𐑚𐑤𐑨𐑙𐑒
@@ -32149,7 +32014,6 @@ PWHRAOE/REU	bleary	𐑚𐑤𐑽𐑦
 PWHRAOED	bleed	𐑚𐑤𐑰𐑛
 PWHRAOEDZ	bleeds	𐑚𐑤𐑰𐑛𐑟
 PWHRAOEF	belief	𐑚𐑦𐑤𐑰𐑓
-PWHRAOEFPLT	belief{.}	
 PWHRAOEFR	believer	𐑚𐑦𐑤𐑰𐑝𐑼
 PWHRAOEFS	beliefs	𐑚𐑦𐑤𐑰𐑓𐑕
 PWHRAOEGD	bleeding	𐑚𐑤𐑰𐑛𐑦𐑙
@@ -32219,7 +32083,6 @@ PWHRAPBT	ambulant
 PWHRAPL	blam	
 PWHRAR	burglar	𐑚𐑻𐑜𐑤𐑼
 PWHRAR/TPHAOE	blarney	𐑚𐑤𐑸𐑯𐑦
-PWHRARBGS	black{,}	
 PWHRARG	blargh	
 PWHRAS/TO/PHA	blastoma	
 PWHRAS/TPAOEPL	blaspheme	𐑚𐑤𐑨𐑕𐑓𐑰𐑥
@@ -32378,7 +32241,6 @@ PWHRUB/ER	blubber	𐑚𐑤𐑳𐑚𐑼
 PWHRUBG	blue-collar	𐑚𐑤𐑵-𐑒𐑪𐑤𐑼
 PWHRUF	bluff	𐑚𐑤𐑳𐑓
 PWHRUFG	bluffing	𐑚𐑤𐑳𐑓𐑦𐑙
-PWHRUFPLT	blue{.}	
 PWHRUFR	bluffer	𐑚𐑤𐑳𐑓𐑼
 PWHRUFS	bluffs	𐑚𐑤𐑳𐑓𐑕
 PWHRUFT/REU	blustery	𐑚𐑤𐑳𐑕𐑑𐑼𐑦
@@ -32629,7 +32491,6 @@ PWOEUPB/SEU	buoyancy	𐑚𐑶𐑩𐑯𐑕𐑦
 PWOEUPB/SEU/-S	buoyancies	
 PWOEUPBG	boing	𐑚𐑶𐑙
 PWOEUPBT	buoyant	𐑚𐑶𐑩𐑯𐑑
-PWOEURBGS	boy{,}	
 PWOEURL	boiler	𐑚𐑶𐑤𐑼
 PWOEURL/PHRAEUT	boilerplate	
 PWOEUS	boys	𐑚𐑶𐑟
@@ -32647,7 +32508,6 @@ PWOFP/-S	botches	𐑚𐑪𐑗𐑩𐑟
 PWOFP/KHAEU	bocce	
 PWOFP/TKAL/EBG	Bochdalek	
 PWOFPB	boffin	𐑚𐑪𐑓𐑦𐑯
-PWOFPBLGTS	box{.}	
 PWOFPD	botched	𐑚𐑪𐑗𐑑
 PWOFRPB/PHA*PB	Borchman	
 PWOFRT	borscht	
@@ -33267,7 +33127,6 @@ PWROEBG/RAPBLG	brokerage	𐑚𐑮𐑴𐑒𐑼𐑦𐑡
 PWROEF/TPHABG	bromfenac	
 PWROEFP	broach	𐑚𐑮𐑴𐑗
 PWROEFP/-S	broaches	𐑚𐑮𐑴𐑗𐑩𐑟
-PWROEFRPLT	brother{.}	
 PWROEG	brogue	𐑚𐑮𐑴𐑜
 PWROEPB	broken	𐑚𐑮𐑴𐑒𐑩𐑯
 PWROEPB/HART/-D	brokenhearted	
@@ -33725,7 +33584,6 @@ R-8	VIII
 R-9	IX	
 R-BGS	Rx	
 R-D	ready	𐑮𐑧𐑛𐑦
-R-FPBLTS	reason{,}	
 R-FRGS	reservation	𐑮𐑧𐑟𐑼𐑝𐑱𐑖𐑩𐑯
 R-FRPL/TOEUR	reformatory	𐑮𐑦𐑓𐑹𐑥𐑩𐑑𐑼𐑦
 R-FRPL/TOEUR/-S	reformatories	𐑮𐑦𐑓𐑹𐑥𐑩𐑑𐑼𐑦𐑟
@@ -33758,7 +33616,6 @@ R-PT/PWHREU	respectably	𐑮𐑦𐑕𐑐𐑧𐑒𐑑𐑩𐑚𐑤𐑦
 R-PT/TPHREU	respectfully	𐑮𐑦𐑕𐑐𐑧𐑒𐑑𐑓𐑩𐑤𐑦
 R-PTD	respected	𐑮𐑦𐑕𐑐𐑧𐑒𐑑𐑩𐑛
 R-PTS	respects	𐑮𐑦𐑕𐑐𐑧𐑒𐑑𐑕
-R-RBGS	are{,}	
 R-RBGS/P*R	RPR	
 R-RBGS/PH*R	RMR	
 R-RBGS/PW*EU	RBI	
@@ -34068,7 +33925,6 @@ RAEUR/TPEU	rarefy	𐑮𐑺𐑦𐑓𐑲
 RAEUR/TPEU/-S	rarefies	𐑮𐑺𐑦𐑓𐑲𐑟
 RAEURB/HREU	racially	𐑮𐑱𐑖𐑩𐑤𐑦
 RAEURB/KWRALT	raciality	
-RAEURBGTS	rate{,}	
 RAEURBL	racial	𐑮𐑱𐑖𐑩𐑤
 RAEURBL/EUFT	racialist	𐑮𐑱𐑖𐑩𐑤𐑦𐑕𐑑
 RAEURBL/EURBS	Racialicious	
@@ -34601,7 +34457,6 @@ RAOEUFL/REUS	rivalries	𐑮𐑲𐑝𐑩𐑤𐑮𐑦𐑟
 RAOEUFLD	rifled	𐑮𐑲𐑓𐑩𐑤𐑛
 RAOEUFLS	rivals	𐑮𐑲𐑝𐑩𐑤𐑟
 RAOEUFPB/KWRA	hryvnia	
-RAOEUFPT	right{.}	
 RAOEUFR/SAO*EUD	Riverside	𐑮𐑦𐑝𐑼𐑕𐑲𐑛
 RAOEUGS	righteous	𐑮𐑲𐑗𐑩𐑕
 RAOEUGS/-PBS	righteousness	𐑮𐑲𐑗𐑩𐑕𐑯𐑩𐑕
@@ -34748,7 +34603,6 @@ RAOUFP	rupture	𐑮𐑳𐑐𐑗𐑼
 RAOUFPB	revenue	𐑮𐑧𐑝𐑩𐑯𐑿
 RAOUFPBS	revenues	𐑮𐑧𐑝𐑩𐑯𐑿𐑟
 RAOUFPD	ruptured	𐑮𐑳𐑐𐑗𐑼𐑛
-RAOUFPLT	rule{.}	
 RAOUFPS	ruptures	𐑮𐑳𐑐𐑗𐑼𐑟
 RAOUFS	reduces	𐑮𐑦𐑛𐑿𐑕𐑩𐑟
 RAOUG/HRAFP	rugelach	
@@ -36048,7 +35902,6 @@ REL/SRAPB/SEU	relevancy	𐑮𐑧𐑤𐑩𐑝𐑩𐑯𐑕𐑦
 REL/SRAPB/SEU/-S	relevancies	
 REL/SRAPBS	relevance	𐑮𐑧𐑤𐑩𐑝𐑩𐑯𐑕
 REL/SRAPBT/HREU	relevantly	𐑮𐑧𐑤𐑩𐑝𐑩𐑯𐑑𐑤𐑦
-REL/STPHRAPBT	relevant{?}	
 REL/TEUF	relative	𐑮𐑧𐑤𐑩𐑑𐑦𐑝
 REL/TEUFS	relatives	𐑮𐑧𐑤𐑩𐑑𐑦𐑝𐑟
 REL/TEUFT	relativity	𐑮𐑧𐑤𐑩𐑑𐑦𐑝𐑦𐑑𐑦
@@ -36592,7 +36445,6 @@ ROE/HREBGS	Rolex
 ROE/HROE/TKEBGS	rolodex	
 ROE/KHEL	Rochelle	
 ROE/PHAEUPB	romaine	
-ROE/PHAEUPB/KWRABG	Romania{,}	
 ROE/PHAPB/KWRAPB	Romanian	𐑮𐑩𐑥𐑱𐑯𐑾𐑯
 ROE/PHAPB/TPHOE	Romano	
 ROE/PHAPBLT/EUBG	Romantic	𐑮𐑴𐑥𐑨𐑯𐑑𐑦𐑒
@@ -36699,7 +36551,6 @@ ROES/PHAER	Rosemary	𐑮𐑴𐑟𐑥𐑼𐑦
 ROES/PWUD	rosebud	𐑮𐑴𐑟𐑚𐑳𐑛
 ROES/REU	rosary	𐑮𐑴𐑟𐑼𐑦
 ROES/REU/-S	rosaries	𐑮𐑴𐑟𐑼𐑦𐑟
-ROES/SA/-RBGS	Rosa{,}	
 ROES/TER	roaster	𐑮𐑴𐑕𐑑𐑼
 ROES/WAO*D	rosewood	𐑮𐑴𐑟𐑢𐑫𐑛
 ROET	rote	𐑮𐑴𐑑
@@ -37119,7 +36970,6 @@ S*EUPBG/PAEUT	syncopate	𐑕𐑦𐑙𐑒𐑩𐑐𐑱𐑑
 S*EUPBG/TPHAG/*L	Zinkernagel	
 S*EUPBLD	spindle	𐑕𐑐𐑦𐑯𐑛𐑩𐑤
 S*EUPBLG	zinc	𐑟𐑦𐑙𐑒
-S*EUPBT/KWRARBGS	Cynthia{,}	
 S*EUPBT/ROEUD	Synthroid	
 S*EUPBT/S*EUS	synthesist	𐑕𐑦𐑯𐑔𐑩𐑕𐑦𐑕𐑑
 S*EUPBT/SAOEUS	synthesise	𐑕𐑦𐑯𐑔𐑩𐑕𐑲𐑟
@@ -37203,7 +37053,6 @@ S-DZ	suicide	𐑕𐑵𐑦𐑕𐑲𐑛
 S-DZ/-Z	suicides	𐑕𐑵𐑦𐑕𐑲𐑛𐑟
 S-DZ/TKAL	suicidal	𐑕𐑵𐑦𐑕𐑲𐑛𐑩𐑤
 S-FG	SVG	
-S-FP	is{.}	
 S-FPLT	{.}is	
 S-FR	SVR	
 S-FS	service	𐑕𐑻𐑝𐑦𐑕
@@ -37243,7 +37092,6 @@ S-PLS	systems	𐑕𐑦𐑕𐑑𐑩𐑥𐑟
 S-PTD	suspected	𐑕𐑩𐑕𐑐𐑧𐑒𐑑𐑩𐑛
 S-PTS	suspects	𐑕𐑩𐑕𐑐𐑧𐑒𐑑𐑕
 S-R	Sr.	
-S-RBGS	is{,}	
 S-RBGS/*EBG	SEC	𐑕𐑧𐑒
 S-RBGS/PWA*	SBA	
 S-RBGS/RO*	SRO	
@@ -37879,7 +37727,6 @@ SAOER/KWRAEL	serially	𐑕𐑽𐑾𐑤𐑦
 SAOER/RA	Sierra	𐑕𐑦𐑺𐑩
 SAOER/RA/*EPB	Sierran	
 SAOERBG/-S	seekers	𐑕𐑰𐑒𐑼𐑟
-SAOERBGS	see{,}	
 SAOERL	serial	𐑕𐑽𐑾𐑤
 SAOERL/EUFT	serialist	
 SAOERL/TEU	seriality	
@@ -38090,7 +37937,6 @@ SAOEUPBS	signs	𐑕𐑲𐑯𐑟
 SAOEUPBS/AOEUTS	sinusitis	𐑕𐑲𐑯𐑩𐑕𐑲𐑑𐑦𐑕
 SAOEUPBS/AOEUTS/-S	sinusitises	
 SAOEUPL/O*PB	Simon	𐑕𐑲𐑥𐑩𐑯
-SAOEUPL/STPHO*PB	Simon{?}	
 SAOEUPLT	assignment	𐑩𐑕𐑲𐑯𐑥𐑩𐑯𐑑
 SAOEUR	sire	𐑕𐑲𐑼
 SAOEURPB	siren	𐑕𐑲𐑮𐑩𐑯
@@ -38496,7 +38342,6 @@ SAUB/SKWRUG/SAEUGS	subjugation	𐑕𐑳𐑚𐑡𐑩𐑜𐑱𐑖𐑩𐑯
 SAUB/SKWRUPBG/TEUF	subjunctive	𐑕𐑩𐑚𐑡𐑳𐑙𐑒𐑑𐑦𐑝
 SAUB/SOEUL	subsoil	𐑕𐑳𐑚𐑕𐑶𐑤
 SAUB/SRERT	subvert	𐑕𐑳𐑚𐑝𐑻𐑑
-SAUB/STRAEUFPT	substrate{.}	
 SAUB/STRAEUT	substrate	𐑕𐑳𐑚𐑕𐑑𐑮𐑱𐑑
 SAUB/TAOEULT/-S	subtitles	𐑕𐑳𐑚𐑑𐑲𐑑𐑩𐑤𐑟
 SAUB/TER/TPAOUPBLG	subterfuge	𐑕𐑳𐑚𐑑𐑼𐑓𐑿𐑡
@@ -39312,7 +39157,6 @@ SEUL/PWAOEU/TPAOEUD	syllabified	𐑕𐑦𐑤𐑨𐑚𐑦𐑓𐑲𐑛
 SEUL/PWAOEU/TPAOEUG	syllabifying	𐑕𐑦𐑤𐑨𐑚𐑦𐑓𐑲𐑦𐑙
 SEUL/PWAOEUZ	syllabise	𐑕𐑦𐑤𐑩𐑚𐑲𐑟
 SEUL/PWEU/TPA*EUBGS	syllabification	𐑕𐑦𐑤𐑨𐑚𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯
-SEUL/PWURBGS	syllabus{,}	
 SEUL/SET	silicet	
 SEUL/SKWREUFPL	syllogism	𐑕𐑦𐑤𐑩𐑡𐑦𐑟𐑩𐑥
 SEUL/SOFT	SilSoft	
@@ -39849,7 +39693,6 @@ SHAOU/PHA*EURBG	shoemaker	𐑖𐑵𐑥𐑱𐑒𐑼
 SHAOU/PWERT	Schubert	
 SHAOUPBLG/KWREU	Shuji	
 SHAOUPL/*ER	Schumer	
-SHAOURBGS	sure{,}	
 SHAOURG/KA*EUPB	Sugarcaine	
 SHAOURG/PHRUPL	sugarplum	
 SHAOURG/PHRUPLS	sugarplums	
@@ -40542,7 +40385,6 @@ SHREUPL/-PG	shrimping	𐑖𐑮𐑦𐑥𐑐𐑦𐑙
 SHREUPL/-PS	shrimps	𐑖𐑮𐑦𐑥𐑐𐑕
 SHREUPL/ER	slimmer	𐑕𐑤𐑦𐑥𐑼
 SHREUPS	slips	𐑕𐑤𐑦𐑐𐑕
-SHREURPL/P-PL	similar{.}	
 SHREUS/EUTS	solicits	𐑕𐑩𐑤𐑦𐑕𐑦𐑑𐑕
 SHREUS/TAEUGS	solicitation	𐑕𐑩𐑤𐑦𐑕𐑦𐑑𐑱𐑖𐑩𐑯
 SHREUS/TAOUD	solicitude	𐑕𐑩𐑤𐑦𐑕𐑦𐑑𐑿𐑛
@@ -40865,7 +40707,6 @@ SKAOEU/TKAOEUFG	skydiving
 SKAOEU/WARD	skyward	𐑕𐑒𐑲𐑢𐑼𐑛
 SKAOEU/WARDZ	skywards	𐑕𐑒𐑲𐑢𐑼𐑛𐑟
 SKAOEU/WRAOEUT/-G	skywriting	𐑕𐑒𐑲𐑮𐑲𐑑𐑦𐑙
-SKAOEUFPLT	sky{.}	
 SKAOEUL/*ER	Skyler	
 SKAOEULGT	skylight	𐑕𐑒𐑲𐑤𐑲𐑑
 SKAOEUP	Skype	
@@ -42038,7 +41879,6 @@ SKWRAUPBT/HREU	jauntily	𐑡𐑷𐑯𐑑𐑦𐑤𐑦
 SKWRAUPL	Jaume	
 SKWRAURB	josh	𐑡𐑪𐑖
 SKWRAURB/-S	joshes	
-SKWRAURBGS/HRAO*EUBG	like{,}	
 SKWRAUS	jaws	𐑡𐑷𐑟
 SKWRAZ	jazz	𐑡𐑨𐑟
 SKWRAZ/*PBS	jazziness	
@@ -42425,7 +42265,6 @@ SKWROEF	Jove	𐑡𐑴𐑝
 SKWROEF/KWRAL	jovial	𐑡𐑴𐑝𐑾𐑤
 SKWROEF/KWRAL/TEU	joviality	𐑡𐑴𐑝𐑦𐑨𐑤𐑦𐑑𐑦
 SKWROEF/KWRAL/TEU/-S	jovialities	𐑡𐑴𐑝𐑦𐑨𐑤𐑦𐑑𐑦𐑟
-SKWROEFPBLGT	joke{.}	
 SKWROEG	joking	𐑡𐑴𐑒𐑦𐑙
 SKWROEL	Joel	
 SKWROEL/AO*E	Jolie	
@@ -42470,7 +42309,6 @@ SKWROEUPLT	enjoyment	𐑦𐑯𐑡𐑶𐑥𐑩𐑯𐑑
 SKWROEUS	Joyce	𐑡𐑶𐑕
 SKWROEUZ	joys	𐑡𐑶𐑟
 SKWROFL	jostle	𐑡𐑪𐑕𐑩𐑤
-SKWROFPBLT	job{.}	
 SKWROG	jog	𐑡𐑪𐑜
 SKWROG/-G	jogging	𐑡𐑪𐑜𐑦𐑙
 SKWROG/-L	joggle	𐑡𐑪𐑜𐑩𐑤
@@ -43033,7 +42871,6 @@ SORL	sorely	𐑕𐑹𐑤𐑦
 SORPB	southern	𐑕𐑳𐑞𐑼𐑯
 SORPB/PHO*ES	southernmost	𐑕𐑳𐑞𐑼𐑯𐑥𐑴𐑕𐑑
 SORPB/SO*PB	Sorenson	
-SORPBLGS	some{,}	
 SORS/*ER	sorcerer	𐑕𐑹𐑕𐑼𐑼
 SORS/REU	sorcery	𐑕𐑹𐑕𐑼𐑦
 SORS/REU/-S	sorceries	𐑕𐑹𐑕𐑼𐑦𐑟
@@ -43586,7 +43423,6 @@ SPHAEUBGS	mistakes	𐑥𐑦𐑕𐑑𐑱𐑒𐑕
 SPHAEUGS	summation	𐑕𐑩𐑥𐑱𐑖𐑩𐑯
 SPHAEUGS/-S	summations	𐑕𐑩𐑥𐑱𐑖𐑩𐑯𐑟
 SPHAEURPB	Samaritan	𐑕𐑩𐑥𐑨𐑮𐑦𐑑𐑩𐑯
-SPHAFP	asthma{,}	
 SPHAL	small	𐑕𐑥𐑷𐑤
 SPHAL/KWRA	Somalia	𐑕𐑩𐑥𐑭𐑤𐑾
 SPHAL/KWRAPB	Somalian	𐑕𐑩𐑥𐑭𐑤𐑾𐑯
@@ -43662,7 +43498,6 @@ SPHAUL/SKAEUL	small-scale
 SPHAURL	smaller	𐑕𐑥𐑷𐑤𐑼
 SPHEBG	systemic	
 SPHEBGSZ	sexes	𐑕𐑧𐑒𐑕𐑩𐑟
-SPHEFRPLT	semester{.}	
 SPHEFRTS	semesters	𐑕𐑦𐑥𐑧𐑕𐑑𐑼𐑟
 SPHEFT	semester	𐑕𐑦𐑥𐑧𐑕𐑑𐑼
 SPHEG/PHA	smegma	
@@ -44426,7 +44261,6 @@ SR-G	having	𐑣𐑨𐑝𐑦𐑙
 SR-PB	haven't	𐑣𐑨𐑝𐑩𐑯𐑑
 SR-R	very	𐑝𐑧𐑮𐑦
 SR-R/EUFT	verist	
-SR-RBGS	have{,}	
 SR-RBGS/KR*R	VCR	
 SR-RBGS/T*R	VTR	
 SR-RBGS/TK*T	VDT	
@@ -44736,7 +44570,6 @@ SRAOEPB/OG/TPEU	venography
 SRAOEPB/OG/TPEU/-S	venographies	
 SRAOEPB/SEU	conveniency	
 SRAOEPB/SEU/-S	conveniencies	
-SRAOEPB/SRAOED/SRAOEFP	veni{,}vidi{,}vici	
 SRAOEPB/TPHA	Vienna	𐑝𐑦𐑧𐑯𐑩
 SRAOEPBL	conveniently	𐑒𐑩𐑯𐑝𐑰𐑯𐑾𐑯𐑑𐑤𐑦
 SRAOEPBS	convenience	𐑒𐑩𐑯𐑝𐑰𐑯𐑾𐑯𐑕
@@ -44871,7 +44704,6 @@ SRAOUPB	venue	𐑝𐑧𐑯𐑿
 SRAOUPBD/-G	surroundings	𐑕𐑼𐑬𐑯𐑛𐑦𐑙𐑟
 SRAOUPT	viewpoint	𐑝𐑿𐑐𐑶𐑯𐑑
 SRAOUR	viewer	𐑝𐑿𐑼
-SRAOURBGS	view{,}	
 SRAOURS	viewers	𐑝𐑿𐑼𐑟
 SRAOURT	virtue	𐑝𐑻𐑗𐑵
 SRAOUS	views	𐑝𐑿𐑟
@@ -45319,7 +45151,6 @@ SREUD/AOEUZ	individualise	𐑦𐑯𐑛𐑦𐑝𐑦𐑡𐑫𐑩𐑤𐑲𐑟
 SREUD/AOEUZ/-D	individualised	𐑦𐑯𐑛𐑦𐑝𐑦𐑡𐑫𐑩𐑤𐑲𐑟𐑛
 SREUD/AOEUZ/A*U	individualise	𐑦𐑯𐑛𐑦𐑝𐑦𐑡𐑫𐑩𐑤𐑲𐑟
 SREUD/EUFPL	individualism	𐑦𐑯𐑛𐑦𐑝𐑦𐑡𐑫𐑩𐑤𐑦𐑟𐑩𐑥
-SREUD/EUFT/KHREURBGS	individualistically{,}	
 SREUD/KWRAPB	vidian	
 SREUD/KWROG/TPER	videographer	
 SREUD/KWROG/TPEU	videography	
@@ -45798,7 +45629,6 @@ ST-PL/AOEUZ	systematise	𐑕𐑦𐑕𐑑𐑩𐑥𐑩𐑑𐑲𐑟
 ST-PL/AOEUZ/A*U	systematise	𐑕𐑦𐑕𐑑𐑩𐑥𐑩𐑑𐑲𐑟
 ST-PL/AT/KHREU	systematically	𐑕𐑦𐑕𐑑𐑩𐑥𐑨𐑑𐑦𐑒𐑤𐑦
 ST-R	sister	𐑕𐑦𐑕𐑑𐑼
-ST-RBGS	sister{,}	
 ST-RPBL	sister-in-law	𐑕𐑦𐑕𐑑𐑼-𐑦𐑯-𐑤𐑷
 ST-RPBLS	sisters-in-law	𐑕𐑦𐑕𐑑𐑼𐑟-𐑦𐑯-𐑤𐑷
 ST-RS	sisters	𐑕𐑦𐑕𐑑𐑼𐑟
@@ -45948,7 +45778,6 @@ STAEUR/WAEU	stairway	𐑕𐑑𐑺𐑢𐑱
 STAEUR/WAEUS	stairways	𐑕𐑑𐑺𐑢𐑱𐑟
 STAEUR/WEL	stairwell	𐑕𐑑𐑺𐑢𐑧𐑤
 STAEUR/WELS	stairwells	𐑕𐑑𐑺𐑢𐑧𐑤𐑟
-STAEURBLGS	stable{,}	
 STAEURS	stairs	𐑕𐑑𐑺𐑟
 STAEUS	stays	𐑕𐑑𐑱𐑟
 STAEUS/KWREU	Stacy	
@@ -46407,14 +46236,12 @@ STEUFPBS	stiffness	𐑕𐑑𐑦𐑓𐑯𐑩𐑕
 STEUFPBS/-S	stiffnesses	
 STEUFPD	stitched	𐑕𐑑𐑦𐑗𐑑
 STEUFPG	stitching	𐑕𐑑𐑦𐑗𐑦𐑙
-STEUFPLT	city{.}	
 STEUFPS	stitches	𐑕𐑑𐑦𐑗𐑩𐑟
 STEUFR	stiffer	𐑕𐑑𐑦𐑓𐑼
 STEUG	sticking	𐑕𐑑𐑦𐑒𐑦𐑙
 STEUG/PHA	stigma	𐑕𐑑𐑦𐑜𐑥𐑩
 STEUG/PHA/TA	stigmata	
 STEUG/PHA/TAOEUZ	stigmatise	𐑕𐑑𐑦𐑜𐑥𐑩𐑑𐑲𐑟
-STEUG/PHAFPLT	stigma{.}	
 STEUG/PHAT	astigmat	
 STEUG/TEUFL	astigmatism	𐑩𐑕𐑑𐑦𐑜𐑥𐑩𐑑𐑦𐑟𐑩𐑥
 STEUL	still	𐑕𐑑𐑦𐑤
@@ -46531,7 +46358,6 @@ STKAOEUD	decide	𐑛𐑦𐑕𐑲𐑛
 STKAOEUD/-D	decided	𐑛𐑦𐑕𐑲𐑛𐑩𐑛
 STKAOEUD/-D/HREU	decidedly	𐑛𐑦𐑕𐑲𐑛𐑩𐑛𐑤𐑦
 STKAOEUDZ	decides	𐑛𐑦𐑕𐑲𐑛𐑟
-STKAOEUFRPLT	desire{.}	
 STKAOEUGD	deciding	𐑛𐑦𐑕𐑲𐑛𐑦𐑙
 STKAOEUPB	design	𐑛𐑦𐑟𐑲𐑯
 STKAOEUPB/KWREU	designy	
@@ -46585,15 +46411,10 @@ STKPAOEUZ	despise	𐑛𐑦𐑕𐑐𐑲𐑟
 STKPAOUT	dispute	𐑛𐑦𐑕𐑐𐑿𐑑
 STKPAOUT/EUF	disputative	
 STKPHA*BLGD/	Professor,0	
-STKPHAEUPBG	change{?}	
 STKPHAOERPB	misdemeanor	
 STKPHAOEURPB/A*U	misdemeanour	𐑥𐑦𐑕𐑛𐑦𐑥𐑰𐑯𐑼
-STKPHEUFRPB	different{?}	
 STKPHEUS	dismiss	𐑛𐑦𐑕𐑥𐑦𐑕
 STKPHEUS/A*L	dismissal	𐑛𐑦𐑕𐑥𐑦𐑕𐑩𐑤
-STKPHO*EP	copy{?}	
-STKPHRAOEPL	dream{?}	
-STKPHREBGT	correct{?}	
 STKPW*	{>}{&z}	
 STKPW*P	{&Z}	
 STKPW*P/HRAOEUPB	Z-line	
@@ -46611,14 +46432,11 @@ STKPWAR	cigar	𐑕𐑦𐑜𐑸
 STKPWAS/TEU	sagacity	𐑕𐑩𐑜𐑨𐑕𐑦𐑑𐑦
 STKPWAS/TEU/-S	sagacities	
 STKPWEFR	zephyr	𐑟𐑧𐑓𐑼
-STKPWERPBGS	again{,}	
 STKPWEURL	salesgirl	
-STKPWHAEUPB	gain{?}	
 STKPWHR*ARD	JD	
 STKPWHR-FPLT/KW-TS	!”	
 STKPWHR-FPLT/SKW-TS	{!'}	
 STKPWHR-FPLT/STPH-FPLD	{!})	
-STKPWHRET	yet{?}	
 STKPWO*E	 CEUs On The Go	
 STKPWRA/TPEUT/TOE	sgraffito	
 STKPWRET	cigarette	𐑕𐑦𐑜𐑼𐑧𐑑
@@ -46632,7 +46450,6 @@ STKRES	distress	𐑛𐑦𐑕𐑑𐑮𐑧𐑕
 STKREU	dentistry	𐑛𐑧𐑯𐑑𐑦𐑕𐑑𐑮𐑦
 STKREU/-S	dentistries	
 STKRO*EPB	dihydrotestosterone	
-STKROEFPLT	syndrome{.}	
 STKROEPLS	syndromes	𐑕𐑦𐑯𐑛𐑮𐑴𐑥𐑟
 STKROEU	destroy	𐑛𐑦𐑕𐑑𐑮𐑶
 STKROEUD	destroyed	𐑛𐑦𐑕𐑑𐑮𐑶𐑛
@@ -46769,7 +46586,6 @@ STOPG	stopping	𐑕𐑑𐑪𐑐𐑦𐑙
 STOPL/-PD	stomped	𐑕𐑑𐑪𐑥𐑐𐑑
 STOPL/-PG	stomping	𐑕𐑑𐑪𐑥𐑐𐑦𐑙
 STOPL/-PS	stomps	𐑕𐑑𐑪𐑥𐑐𐑕
-STOPL/ARBGS	stomach{,}	
 STOPL/PER	stomper	
 STOPS	stops	𐑕𐑑𐑪𐑐𐑕
 STOR	store	𐑕𐑑𐑹
@@ -46833,7 +46649,6 @@ STPH*EUBG/ERS	Snickers	𐑕𐑯𐑦𐑒𐑼𐑟
 STPH*EUFL	sniffle	𐑕𐑯𐑦𐑓𐑩𐑤
 STPH*EUFT	sensitivity	𐑕𐑧𐑯𐑕𐑦𐑑𐑦𐑝𐑦𐑑𐑦
 STPH*EUFT/-S	sensitivities	𐑕𐑧𐑯𐑕𐑦𐑑𐑦𐑝𐑦𐑑𐑦𐑟
-STPH*EURB	issue{?}	
 STPH*FPL	{;}	
 STPH-PBD	sentenced	𐑕𐑧𐑯𐑑𐑩𐑯𐑕𐑑
 STPH-PBG	sentencing	𐑕𐑧𐑯𐑑𐑩𐑯𐑕𐑦𐑙
@@ -46846,8 +46661,6 @@ STPHABG/-G	snacking
 STPHABGD	snacked	
 STPHABGS	snacks	𐑕𐑯𐑨𐑒𐑕
 STPHAEBG	sneak	𐑕𐑯𐑰𐑒
-STPHAEPBS	answer{?}	
-STPHAERT	matter{?}	
 STPHAEUBG	snake	𐑕𐑯𐑱𐑒
 STPHAEUBG/-G	snaking	𐑕𐑯𐑱𐑒𐑦𐑙
 STPHAEUBG/TK-LS/PWAOEPB	snakebean	
@@ -46859,10 +46672,8 @@ STPHAEUDZ	NSAIDs
 STPHAEUGS	sensation	𐑕𐑧𐑯𐑕𐑱𐑖𐑩𐑯
 STPHAEUL	snail	𐑕𐑯𐑱𐑤
 STPHAEUPB	insane	𐑦𐑯𐑕𐑱𐑯
-STPHAEUPBLG	major{?}	
 STPHAEUPBLS	instantaneously	𐑦𐑯𐑕𐑑𐑩𐑯𐑑𐑱𐑯𐑾𐑕𐑤𐑦
 STPHAEUR	snare	𐑕𐑯𐑺
-STPHAEURBZ	patients{?}	
 STPHAEURD	snared	𐑕𐑯𐑺𐑛
 STPHAEURG	snaring	𐑕𐑯𐑺𐑦𐑙
 STPHAEURS	snares	𐑕𐑯𐑺𐑟
@@ -46880,7 +46691,6 @@ STPHAL	signal	𐑕𐑦𐑜𐑯𐑩𐑤
 STPHAL/AO*EUFD	signalised	𐑕𐑦𐑜𐑯𐑩𐑤𐑲𐑟𐑛
 STPHAO*EPB	E1	
 STPHAO*ET	E2	
-STPHAO*EUBG	mic{?}	
 STPHAO*EUD/*ER	Schneider	
 STPHAO*UGS	Institution	𐑦𐑯𐑕𐑑𐑦𐑑𐑿𐑖𐑩𐑯
 STPHAO*UPB	SN1	
@@ -46893,7 +46703,6 @@ STPHAOEBG/HREU	sneakily
 STPHAOEBG/KWRAOEU	synechiae	
 STPHAOEBGD	sneaked	𐑕𐑯𐑰𐑒𐑑
 STPHAOEBGS	sneaks	𐑕𐑯𐑰𐑒𐑕
-STPHAOED	need{?}	
 STPHAOER	sneer	𐑕𐑯𐑽
 STPHAOERS	sneers	𐑕𐑯𐑽𐑟
 STPHAOES/KWRA	anesthesia	
@@ -46906,7 +46715,6 @@ STPHAOEUFR	incisor	𐑦𐑯𐑕𐑲𐑟𐑼
 STPHAOEUFRS	incisors	𐑦𐑯𐑕𐑲𐑟𐑼𐑟
 STPHAOEUL	senile	𐑕𐑰𐑯𐑲𐑤
 STPHAOEUP/ER	sniper	𐑕𐑯𐑲𐑐𐑼
-STPHAOEUPBD	mind{?}	
 STPHAOEZ	sneeze	𐑕𐑯𐑰𐑟
 STPHAOEZ/-G	sneezing	𐑕𐑯𐑰𐑟𐑦𐑙
 STPHAOEZ/-Z	sneezes	𐑕𐑯𐑰𐑟𐑩𐑟
@@ -46923,7 +46731,6 @@ STPHAOUGS/A*L/EUFT	institutionalist
 STPHAOUGS/A*L/TEU	institutionality	
 STPHAOURD	insured	𐑦𐑯𐑖𐑫𐑼𐑛
 STPHAOURPBG	insuring	𐑦𐑯𐑖𐑫𐑼𐑦𐑙
-STPHAOUS	use{?}	
 STPHAOUT	institute	𐑦𐑯𐑕𐑑𐑦𐑑𐑿𐑑
 STPHAOUTD	instituted	𐑦𐑯𐑕𐑑𐑦𐑑𐑿𐑑𐑩𐑛
 STPHAOUTS	institutes	𐑦𐑯𐑕𐑑𐑦𐑑𐑿𐑑𐑕
@@ -46940,7 +46747,6 @@ STPHAP/PEU/*PBS/-S	snappinesses
 STPHAP/SHOT	snapshot	𐑕𐑯𐑨𐑐𐑖𐑪𐑑
 STPHAP/SHOTS	snapshots	𐑕𐑯𐑨𐑐𐑖𐑪𐑑𐑕
 STPHAP/TKRAG/O*PB	snapdragon	𐑕𐑯𐑨𐑐𐑛𐑮𐑨𐑜𐑩𐑯
-STPHAPBG	hang{?}	
 STPHAPBS	instance	𐑦𐑯𐑕𐑑𐑩𐑯𐑕
 STPHAPBT	instant	𐑦𐑯𐑕𐑑𐑩𐑯𐑑
 STPHAPBT/SEU	instancy	
@@ -46954,7 +46760,6 @@ STPHAPT/EUBG/HREU	synaptically
 STPHAPT/EUBG/KHREU	synaptically	
 STPHAPT/TPHAOEPL/A*L	synaptonemal	
 STPHARBG	snark	
-STPHARBGT	market{?}	
 STPHARL	snarl	𐑕𐑯𐑸𐑤
 STPHARLG	snarling	𐑕𐑯𐑸𐑤𐑦𐑙
 STPHARLS	snarls	𐑕𐑯𐑸𐑤𐑟
@@ -46968,24 +46773,15 @@ STPHAUR/-D	snored	𐑕𐑯𐑹𐑛
 STPHAUZ/*ER	Schnauser	
 STPHAZ	snazz	
 STPHAZ/SEU	snazzy	𐑕𐑯𐑨𐑟𐑦
-STPHE	he{?}	
 STPHEBG	anesthetic	𐑨𐑯𐑦𐑕𐑔𐑧𐑑𐑦𐑒
 STPHEBG/A*U	anaesthetic	𐑨𐑯𐑦𐑕𐑔𐑧𐑑𐑦𐑒
 STPHEBG/HREU	anesthetically	
 STPHEBG/KHREU	anesthetically	
-STPHEBGT	effect{?}	
 STPHED	instead	𐑦𐑯𐑕𐑑𐑧𐑛
-STPHEFRB	everybody{?}	
-STPHEFRPB	everyone{?}	
 STPHEFT/AOEUZ	anesthetise	𐑩𐑯𐑰𐑕𐑔𐑩𐑑𐑲𐑟
 STPHEL	Snell	
 STPHEL/-PB	Snellen	
-STPHELS	else{?}	
-STPHEPB	then{?}	
-STPHEPBD	end{?}	
-STPHEPBLG	message{?}	
 STPHERP	snRNP	
-STPHERPB	person{?}	
 STPHERPBLG	synergy	
 STPHERPBLG/-S	synergies	
 STPHERPBLG/EUFPL	synergism	
@@ -47028,18 +46824,12 @@ STPHEUP/PEU	snippy
 STPHEUP/PEU/*PBS	snippiness	
 STPHEUP/PEU/*PBS/-S	snippinesses	
 STPHEUP/TEU	snippety	
-STPHEUPB	anyone{?}	
-STPHEUPBG	thing{?}	
-STPHEUPBGS	things{?}	
 STPHEUPD	snipped	𐑕𐑯𐑦𐑐𐑑
 STPHEUPG	snipping	𐑕𐑯𐑦𐑐𐑦𐑙
 STPHEUPS	snips	𐑕𐑯𐑦𐑐𐑕
 STPHEUPT	snippet	𐑕𐑯𐑦𐑐𐑩𐑑
-STPHEURBGS	circumstances{?}	
 STPHEUT	snit	
 STPHEUTS/EL	schnitzel	𐑖𐑯𐑦𐑑𐑕𐑩𐑤
-STPHO*ES	knows{?}	
-STPHO*LD	model{?}	
 STPHO*R	Senator	𐑕𐑧𐑯𐑩𐑑𐑼
 STPHO*T	snot	𐑕𐑯𐑪𐑑
 STPHOB	snob	𐑕𐑯𐑪𐑚
@@ -47054,7 +46844,6 @@ STPHOB/REU	snobbery	𐑕𐑯𐑪𐑚𐑼𐑦
 STPHOB/REU/-S	snobberies	
 STPHOB/SH-PBS	snobbishness	𐑕𐑯𐑪𐑚𐑦𐑖𐑯𐑩𐑕
 STPHOB/SH-PBS/-S	snobbishnesses	
-STPHOBG	Okay{?}	
 STPHOE	snow	𐑕𐑯𐑴
 STPHOE/-S	snows	𐑕𐑯𐑴𐑟
 STPHOE/PHAPB	snowman	𐑕𐑯𐑴𐑥𐑨𐑯
@@ -47075,15 +46864,9 @@ STPHOEBL	snowball	𐑕𐑯𐑴𐑚𐑷𐑤
 STPHOED	snowed	𐑕𐑯𐑴𐑛
 STPHOEFL	snowfall	𐑕𐑯𐑴𐑓𐑷𐑤
 STPHOEG	snowing	𐑕𐑯𐑴𐑦𐑙
-STPHOEPB	own{?}	
-STPHOEPLT	moment{?}	
 STPHOER/ER	snorer	𐑕𐑯𐑹𐑼
 STPHOER/KEL/-D	snorkeled	
-STPHOERP	ownership{?}	
-STPHOERPB	owner{?}	
 STPHOERPBG	snoring	𐑕𐑯𐑹𐑦𐑙
-STPHOERS	others{?}	
-STPHOEUPBT	point{?}	
 STPHOEURS	scenarios	𐑕𐑦𐑯𐑸𐑦𐑴𐑟
 STPHOF/KWRA	synovia	
 STPHOFRG	stenographer	𐑕𐑑𐑩𐑯𐑪𐑜𐑮𐑩𐑓𐑼
@@ -47091,8 +46874,6 @@ STPHOG/TPEU	stenography	𐑕𐑑𐑩𐑯𐑪𐑜𐑮𐑩𐑓𐑦
 STPHOG/TPEU/-S	stenographies	
 STPHOG/TPEU/EUFT	stenographist	
 STPHOP/SAOEZ	synopses	𐑕𐑦𐑯𐑪𐑐𐑕𐑰𐑟
-STPHOPB	on{?}	
-STPHOPBT	tonight{?}	
 STPHOPS/EUS	synopsis	𐑕𐑦𐑯𐑪𐑐𐑕𐑦𐑕
 STPHOR	senator	𐑕𐑧𐑯𐑩𐑑𐑼
 STPHOR/-S/SREUL	snoresville	
@@ -47104,25 +46885,14 @@ STPHOR/TEU	sonority	𐑕𐑩𐑯𐑪𐑮𐑦𐑑𐑦
 STPHOR/TEU/-S	sonorities	𐑕𐑩𐑯𐑪𐑮𐑦𐑑𐑦𐑟
 STPHORBG/-LS	snorkles	
 STPHORL	senatorial	𐑕𐑧𐑯𐑩𐑑𐑹𐑾𐑤
-STPHORPB	important{?}	
-STPHORPBG	morning{?}	
 STPHORS	senators	𐑕𐑧𐑯𐑩𐑑𐑼𐑟
 STPHORT	snort	𐑕𐑯𐑹𐑑
 STPHORT/-D	snorted	𐑕𐑯𐑹𐑑𐑩𐑛
 STPHORT/-G	snorting	𐑕𐑯𐑹𐑑𐑦𐑙
 STPHORTS	snorts	𐑕𐑯𐑹𐑑𐑕
-STPHOUPBD	sound{?}	
 STPHOUT	snout	𐑕𐑯𐑬𐑑
 STPHOUZ/*ER	schnauzer	
 STPHR-RB	{^}?	
-STPHRAOEPBT	recent{?}	
-STPHRAOEURPLT	requirement{?}	
-STPHRAOEUT	right{?}	
-STPHRAPBD	land{?}	
-STPHREUPBT	print{?}	
-STPHROPBG	long{?}	
-STPHRULT	result{?}	
-STPHRURPB	return{?}	
 STPHUB	snub	𐑕𐑯𐑳𐑚
 STPHUB/TPHOES/-D	snub-nosed	𐑕𐑯𐑳𐑚-𐑯𐑴𐑟𐑛
 STPHUBG	snuck	𐑕𐑯𐑳𐑒
@@ -47130,7 +46900,6 @@ STPHUF	snuff	𐑕𐑯𐑳𐑓
 STPHUF/PWOBGS	snuffbox	𐑕𐑯𐑳𐑓𐑚𐑪𐑒𐑕
 STPHUF/PWOBGS/-S	snuffboxes	𐑕𐑯𐑳𐑓𐑚𐑪𐑒𐑕𐑩𐑟
 STPHUFL/UP/TKPWUS	snuffleupagus	
-STPHUFPD	purchased{?}	
 STPHUFR	snuffer	
 STPHUG	snug	𐑕𐑯𐑳𐑜
 STPHUG/*L	snuggle	𐑕𐑯𐑳𐑜𐑩𐑤
@@ -47138,15 +46907,12 @@ STPHUG/-LD	snuggled	𐑕𐑯𐑳𐑜𐑩𐑤𐑛
 STPHUG/-LG	snuggling	𐑕𐑯𐑳𐑜𐑤𐑦𐑙
 STPHUG/-LS	snuggles	𐑕𐑯𐑳𐑜𐑩𐑤𐑟
 STPHUG/HREU	snugly	𐑕𐑯𐑳𐑜𐑤𐑦
-STPHUP	up{?}	
 STPHUR	insure	𐑦𐑯𐑖𐑫𐑼
 STPHUR/*ER	insurer	𐑦𐑯𐑖𐑫𐑼𐑼
 STPHUR/AES	insurer's	
 STPHURBL	insurable	
 STPHURD/AES	insured's	
-STPHURPBD	understand{?}	
 STPHURPL	snurm	
-STPHUS	us{?}	
 STPHUT	snut	
 STPOEL/KWRAT/TEU	sfoliata	
 STPOEUR	satisfactory	𐑕𐑨𐑑𐑦𐑕𐑓𐑨𐑒𐑑𐑼𐑦
@@ -47156,14 +46922,8 @@ STPOPBS/EUFPBS	responsiveness	𐑮𐑦𐑕𐑐𐑪𐑯𐑕𐑦𐑝𐑯𐑩𐑕
 STPOPBS/EUFPBS/-S	responsivenesses	
 STPOPL	{.}so	
 STPRAPBLG	supercalifragilisticexpialidocious	
-STPUFPLTS	esophagus{.}	
 STPUS	esophagus	𐑦𐑕𐑪𐑓𐑩𐑜𐑩𐑕
 STPUS/A*U	oesophagus	𐑦𐑕𐑪𐑓𐑩𐑜𐑩𐑕
-STPWHA*PBG	bank{?}	
-STPWHAPBT	want{?}	
-STPWHEFPBT	benefit{?}	
-STPWHO*RT	worth{?}	
-STPWHUPB	one{?}	
 STPWROERBG	stockbroker	𐑕𐑑𐑪𐑒𐑚𐑮𐑴𐑒𐑼
 STR	center	𐑕𐑧𐑯𐑑𐑼
 STR*	Center	𐑕𐑧𐑯𐑑𐑼
@@ -47310,7 +47070,6 @@ STRAOUFPG	structuring
 STRAOUFPL	structural	𐑕𐑑𐑮𐑳𐑒𐑗𐑼𐑩𐑤
 STRAOUFPL/EUFT	structuralist	
 STRAOUFPS	structures	𐑕𐑑𐑮𐑳𐑒𐑗𐑼𐑟
-STRAOUFRPBLGT	structure{.}	
 STRAOUPB	strewn	𐑕𐑑𐑮𐑵𐑯
 STRAOUPLT/AL	instrumental	𐑦𐑯𐑕𐑑𐑮𐑩𐑥𐑧𐑯𐑑𐑩𐑤
 STRAOUPLT/EUFT	instrumentalist	𐑦𐑯𐑕𐑑𐑮𐑩𐑥𐑧𐑯𐑑𐑩𐑤𐑦𐑕𐑑
@@ -47349,7 +47108,6 @@ STRAT/STPAOERBG	stratospheric
 STRAT/STPAOERBG/HREU	stratospherically	
 STRAT/STPAOERBG/KHREU	stratospherically	
 STRAT/TPAOEU/-S	stratifies	𐑕𐑑𐑮𐑨𐑑𐑦𐑓𐑲𐑟
-STRAT/TPAOEU/STPH-D	stratified{?}	
 STRAT/TPAOEUD	stratified	𐑕𐑑𐑮𐑨𐑑𐑦𐑓𐑲𐑛
 STRAT/TPEU	stratify	𐑕𐑑𐑮𐑨𐑑𐑦𐑓𐑲
 STRAT/TPEUBGS	stratification	𐑕𐑑𐑮𐑨𐑑𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯
@@ -47457,7 +47215,6 @@ STROELG	strolling	𐑕𐑑𐑮𐑴𐑤𐑦𐑙
 STROELS	strolls	𐑕𐑑𐑮𐑴𐑤𐑟
 STROEPL	syndrome	𐑕𐑦𐑯𐑛𐑮𐑴𐑥
 STROEPL/A*L	stromal	
-STROEPL/KWRABG	stroma{,}	
 STROEUD/A*L	steroidal	
 STROL	stroll	𐑕𐑑𐑮𐑴𐑤
 STROL/ERS	strollers	𐑕𐑑𐑮𐑴𐑤𐑼𐑟
@@ -47518,7 +47275,6 @@ STUD	stud	𐑕𐑑𐑳𐑛
 STUD/KWRER	studier	𐑕𐑑𐑳𐑛𐑦𐑼
 STUDZ	studs	𐑕𐑑𐑳𐑛𐑟
 STUF	stuff	𐑕𐑑𐑳𐑓
-STUF/-FPLT	stuff{.}	
 STUF/TPEU	stuffy	𐑕𐑑𐑳𐑓𐑦
 STUF/TPEU/*PBS	stuffiness	𐑕𐑑𐑳𐑓𐑦𐑯𐑩𐑕
 STUF/TPEU/*PBS/-S	stuffinesses	
@@ -48408,7 +48164,6 @@ T-BGS/KOLG/-S	toxicologies
 T-BGS/KOLG/KHREU	toxicologically	
 T-BS	tablespoon	𐑑𐑱𐑚𐑩𐑤𐑕𐑐𐑵𐑯
 T-BS/-S	tablespoons	𐑑𐑱𐑚𐑩𐑤𐑕𐑐𐑵𐑯𐑟
-T-FP	it{.}	
 T-FPB/EUBG	telephonic	𐑑𐑧𐑤𐑦𐑓𐑪𐑯𐑦𐑒
 T-FPB/EUBG/HREU	telephonically	
 T-FPB/EUBG/KHREU	telephonically	
@@ -49019,7 +48774,6 @@ TAOEUT/TPHAEUT	titanate
 TAOEUT/WA*D	tightwad	
 TAOEUZ	ties	𐑑𐑲𐑟
 TAOEZ	tees	𐑑𐑰𐑟
-TAOFPLT	too{.}	
 TAOL	tool	𐑑𐑵𐑤
 TAOL/KHAEUPB	toolchain	
 TAOL/PWAR	toolbar	
@@ -49066,7 +48820,6 @@ TAOUBG	tubing	𐑑𐑿𐑚𐑦𐑙
 TAOUBL	tubal	
 TAOUBS	tubes	𐑑𐑿𐑚𐑟
 TAOUD/O*R	Tudor	
-TAOUFPLTS	Tuesday{.}	
 TAOUGS	constitution	𐑒𐑪𐑯𐑕𐑑𐑦𐑑𐑿𐑖𐑩𐑯
 TAOUGS/HREU	constitutionally	𐑒𐑪𐑯𐑕𐑑𐑦𐑑𐑿𐑖𐑩𐑯𐑩𐑤𐑦
 TAOUL/EUP	tulip	𐑑𐑿𐑤𐑦𐑐
@@ -49082,7 +48835,6 @@ TAOUPB/EUGS	Tunisian	𐑑𐑿𐑯𐑦𐑟𐑾𐑯
 TAOUPB/EUS	Tunis	𐑑𐑿𐑯𐑦𐑕
 TAOUPB/KA	tunica	
 TAOUPB/SKWRUP	tune-up	
-TAOUPB/STH-RPBGS	township{,}	
 TAOUPB/UFT/EUBG	opportunistic	
 TAOUPB/UFT/EUBG/HREU	opportunistically	
 TAOUPB/UFT/EUBG/KHREU	opportunistically	
@@ -49130,7 +48882,6 @@ TAPB/KERS	tankers	𐑑𐑨𐑙𐑒𐑼𐑟
 TAPB/KRAOEUT	tanycyte	
 TAPB/KRE/TKEU	Tancredi	
 TAPB/KWRA	Tanya	
-TAPB/KWRAFPLT	Tanya{.}	
 TAPB/REU	tannery	𐑑𐑨𐑯𐑼𐑦
 TAPB/REU/-S	tanneries	𐑑𐑨𐑯𐑼𐑦𐑟
 TAPB/SKWRAOER	Tangier	𐑑𐑨𐑙𐑦𐑼
@@ -49877,7 +49628,6 @@ TH*EUFT	therapist	𐑔𐑧𐑮𐑩𐑐𐑦𐑕𐑑
 TH*EURS/HREU	thirstily	𐑔𐑻𐑕𐑑𐑦𐑤𐑦
 TH*EURT	thither	𐑞𐑦𐑞𐑼
 TH-D	third-degree	
-TH-FP	this{.}	
 TH-FPLT	{.}this	
 TH-FR	therefore	𐑞𐑺𐑓𐑹
 TH-L	this'll	
@@ -49971,9 +49721,7 @@ THAPBGD	thanked	𐑔𐑨𐑙𐑒𐑑
 THAPBGS	thanks	𐑔𐑨𐑙𐑒𐑕
 THAPBGS/TKPWEUFG	Thanksgiving	𐑔𐑨𐑙𐑒𐑕𐑜𐑦𐑝𐑦𐑙
 THAPBLGS	Thanks	𐑔𐑨𐑙𐑒𐑕
-THAPL	that{.}	
 THAPLS	thalamus	
-THARBGS	that{,}	
 THAT	that	𐑞𐑨𐑑
 THATD	that'd	𐑞𐑨𐑑𐑩𐑛
 THATS	that's	𐑞𐑨𐑑𐑕
@@ -50013,7 +49761,6 @@ THER/PEUFTS	therapists	𐑔𐑧𐑮𐑩𐑐𐑦𐑕𐑑𐑕
 THER/PHOE	thermo	
 THERPL	therm	𐑔𐑻𐑥
 THERPL/HREUT/EUBG	thermolytic	
-THERPL/KWRA/TP-PL	thermia{.}	
 THERPL/OS	thermos	𐑔𐑻𐑥𐑩𐑕
 THERPL/OS/-S	thermoses	𐑔𐑻𐑥𐑩𐑕𐑩𐑟
 THERPL/PHRA*S/EUBG	thermoplastic	𐑔𐑻𐑥𐑴𐑐𐑤𐑨𐑕𐑑𐑦𐑒
@@ -50047,7 +49794,6 @@ THEUBGT	thicket	𐑔𐑦𐑒𐑩𐑑
 THEUBL	thinkable	𐑔𐑦𐑙𐑒𐑩𐑚𐑩𐑤
 THEUBL/HREU	thinkably	
 THEUFL	thistle	𐑔𐑦𐑕𐑩𐑤
-THEUFPBLGT	thing{.}	
 THEUFRT	thirst	𐑔𐑻𐑕𐑑
 THEUG	thinking	𐑔𐑦𐑙𐑒𐑦𐑙
 THEUPB	thin	𐑔𐑦𐑯
@@ -50106,7 +49852,6 @@ THO*R	Thor
 THO*U	thou	𐑞𐑬
 THO*UZ	{,^000}	
 THOE	though	𐑞𐑴
-THOEFPLTS	those{.}	
 THOER	author	𐑷𐑔𐑼
 THOER/EURB	authorish	
 THOERD	authored	
@@ -50167,7 +49912,6 @@ THR-BLG	T-cell
 THR-BT	thereabout	𐑞𐑺𐑩𐑚𐑬𐑑
 THR-BTS	thereabouts	𐑞𐑺𐑩𐑚𐑬𐑑𐑕
 THR-D	there'd	
-THR-FP	there{.}	
 THR-FRPL	therefrom	𐑞𐑺𐑓𐑮𐑪𐑥
 THR-L	there'll	
 THR-PB	therein	𐑞𐑺𐑦𐑯
@@ -50200,10 +49944,8 @@ THRAOE	three	𐑔𐑮𐑰
 THRAOE/HOEL	three-hole	
 THRAOE/SPH	threesome	𐑔𐑮𐑰𐑕𐑩𐑥
 THRAOE/TPOLD	threefold	𐑔𐑮𐑰𐑓𐑴𐑤𐑛
-THRAOEFP	three{.}	
 THRAOEPB	thirteen	𐑔𐑻𐑑𐑰𐑯
 THRAOEPBT	thirteenth	𐑔𐑻𐑑𐑰𐑯𐑔
-THRAOERBGS	three{,}	
 THRAOEUD	triglyceride	
 THRAOEUF	thrive	𐑔𐑮𐑲𐑝
 THRAOEUF/-D	thrived	𐑔𐑮𐑲𐑝𐑛
@@ -50366,7 +50108,6 @@ TK*EF/OPS	devops
 TK*EFBGS	defection	𐑛𐑦𐑓𐑧𐑒𐑖𐑩𐑯
 TK*EFLGS	devaluation	𐑛𐑰𐑝𐑨𐑤𐑘𐑫𐑱𐑖𐑩𐑯
 TK*EFLT	devaluate	𐑛𐑰𐑝𐑨𐑤𐑘𐑫𐑱𐑑
-TK*EFPT	death{.}	
 TK*EFT	deficit	𐑛𐑧𐑓𐑦𐑕𐑦𐑑
 TK*EFTS	deficits	𐑛𐑧𐑓𐑦𐑕𐑦𐑑𐑕
 TK*EP/HRAEUT	depilate	
@@ -50453,7 +50194,6 @@ TK-BGTS	detectives	𐑛𐑦𐑑𐑧𐑒𐑑𐑦𐑝𐑟
 TK-F	def	
 TK-F/OPS	DevOps	
 TK-FD/*ER	defender	𐑛𐑦𐑓𐑧𐑯𐑛𐑼
-TK-FP	did{.}	
 TK-FPLT	#M{.}	
 TK-FPLT/O*B	D.O.B.	
 TK-FPLT/TK*S	D.D.S.	
@@ -50495,7 +50235,6 @@ TK-PT/TAL	departmental	𐑛𐑰𐑐𐑸𐑑𐑥𐑧𐑯𐑑𐑩𐑤
 TK-PTS	departments	𐑛𐑦𐑐𐑸𐑑𐑥𐑩𐑯𐑑𐑕
 TK-PTS/AE	departments'	
 TK-R	--	
-TK-RBGS	did{,}	
 TK-RBGS/AO*	DOA	
 TK-RBGS/O*B	DOB	
 TK-RBGS/O*BG	DOC	
@@ -50590,9 +50329,6 @@ TKAEUD	Dade
 TKAEUD/SKWRO	dado	𐑛𐑱𐑛𐑴
 TKAEUF	Dave	𐑛𐑱𐑝
 TKAEUFD	David	𐑛𐑱𐑝𐑦𐑛
-TKAEUFP	day{.}	
-TKAEUFPBGS	education{.}	
-TKAEUFPLTS	days{.}	
 TKAEUFS	Davis	
 TKAEUGT	dating	𐑛𐑱𐑑𐑦𐑙
 TKAEUL	daily	𐑛𐑱𐑤𐑦
@@ -50622,7 +50358,6 @@ TKAEUR	dare	𐑛𐑺
 TKAEUR/TK-LS/SAEU	daresay	𐑛𐑺𐑕𐑱
 TKAEUR/TKEFL	daredevil	𐑛𐑺𐑛𐑧𐑝𐑩𐑤
 TKAEUR/TKPWHREU	daringly	𐑛𐑺𐑦𐑙𐑤𐑦
-TKAEURBGS	day{,}	
 TKAEURD	dared	𐑛𐑺𐑛
 TKAEURG	daring	𐑛𐑺𐑦𐑙
 TKAEURL	Daryl	
@@ -51030,7 +50765,6 @@ TKAOR/STOP	doorstop
 TKAOR/TPHOB	doorknob	𐑛𐑹𐑯𐑪𐑚
 TKAOR/WAEU	doorway	𐑛𐑹𐑢𐑱
 TKAOR/WAEUS	doorways	𐑛𐑹𐑢𐑱𐑟
-TKAORBGS	door{,}	
 TKAORS	doors	𐑛𐑹𐑟
 TKAOT	doot	
 TKAOU	due	𐑛𐑿
@@ -51827,7 +51561,6 @@ TKEPBS	dense	𐑛𐑧𐑯𐑕
 TKEPBS/*ES	densest	𐑛𐑧𐑯𐑕𐑩𐑕𐑑
 TKEPBS/HREU	densely	𐑛𐑧𐑯𐑕𐑤𐑦
 TKEPBS/TEU	density	𐑛𐑧𐑯𐑕𐑦𐑑𐑦
-TKEPBS/TEUFPLT	density{.}	
 TKEPBS/TEUS/-S	densities	𐑛𐑧𐑯𐑕𐑦𐑑𐑦𐑟
 TKEPBS/TOPL/TREU	densitometry	
 TKEPBS/TOPL/TREU/-S	densitometries	
@@ -52087,7 +51820,6 @@ TKEUF/KWREU	divvy	𐑛𐑦𐑝𐑦
 TKEUF/KWREU/-S	divvies	𐑛𐑦𐑝𐑦𐑟
 TKEUF/SEUL	difficile	
 TKEUF/THAOER/KWRA	diphtheria	𐑛𐑦𐑓𐑔𐑽𐑾
-TKEUF/THAOER/KWRARBGS	diphtheria{,}	
 TKEUF/TKEPBS	diffidence	𐑛𐑦𐑓𐑦𐑛𐑩𐑯𐑕
 TKEUF/TKEPBT	diffident	𐑛𐑦𐑓𐑦𐑛𐑩𐑯𐑑
 TKEUF/TPAOUS/*ER	diffuser	
@@ -52269,7 +52001,6 @@ TKEUS/AOEUPLTS	disciples	𐑛𐑦𐑕𐑲𐑐𐑩𐑤𐑟
 TKEUS/AOUPBT	disunity	𐑛𐑦𐑕𐑿𐑯𐑦𐑑𐑦
 TKEUS/AOUPBT/-S	disunities	
 TKEUS/AOUR/KWRA	dysuria	
-TKEUS/AOUR/KWRARBGS	dysuria{,}	
 TKEUS/ARP/PWAEUGS	disapprobation	𐑛𐑦𐑕𐑨𐑐𐑮𐑩𐑚𐑱𐑖𐑩𐑯
 TKEUS/ARPL	disarm	𐑛𐑦𐑕𐑸𐑥
 TKEUS/ARPL/*PLT	disarmament	𐑛𐑦𐑕𐑸𐑥𐑩𐑥𐑩𐑯𐑑
@@ -52510,7 +52241,6 @@ TKEUS/POES	dispose	𐑛𐑦𐑕𐑐𐑴𐑟
 TKEUS/POES/-D	disposed	𐑛𐑦𐑕𐑐𐑴𐑟𐑛
 TKEUS/POES/-G	disposing	𐑛𐑦𐑕𐑐𐑴𐑟𐑦𐑙
 TKEUS/POES/-S	disposes	𐑛𐑦𐑕𐑐𐑴𐑟𐑩𐑟
-TKEUS/POES/A*FPL	disposal{.}	
 TKEUS/POES/AL	disposal	𐑛𐑦𐑕𐑐𐑴𐑟𐑩𐑤
 TKEUS/POEUPBGT	disappointing	𐑛𐑦𐑕𐑩𐑐𐑶𐑯𐑑𐑦𐑙
 TKEUS/POEUPBT	disappoint	𐑛𐑦𐑕𐑩𐑐𐑶𐑯𐑑
@@ -52757,7 +52487,6 @@ TKHREUBGS	deliberation	𐑛𐑦𐑤𐑦𐑚𐑼𐑱𐑖𐑩𐑯
 TKHREUBT	deliberate	𐑛𐑦𐑤𐑦𐑚𐑼𐑩𐑑
 TKHREUFR	deliver	𐑛𐑦𐑤𐑦𐑝𐑼
 TKHREUFR/*ER	deliverer	𐑛𐑦𐑤𐑦𐑝𐑼𐑼
-TKHREUFR/KWREURBGS	deliveries{,}	
 TKHREUFRBL	deliverable	
 TKHREUFRD	delivered	𐑛𐑦𐑤𐑦𐑝𐑼𐑛
 TKHREUFRG	delivering	𐑛𐑦𐑤𐑦𐑝𐑼𐑦𐑙
@@ -52798,7 +52527,6 @@ TKO*ERS	Doris	𐑛𐑪𐑮𐑦𐑕
 TKO*EUBGS	digoxin	
 TKO*EUFL	Duyvil	
 TKO*EUPBG	doink	
-TKO*FPLGT	doing{.}	
 TKO*FR	Dorf	
 TKO*FR/HREUPBG/*ER	Doerflinger	
 TKO*FTD	deposited	𐑛𐑦𐑐𐑪𐑟𐑦𐑑𐑩𐑛
@@ -52939,7 +52667,6 @@ TKOF	dove	𐑛𐑳𐑝
 TKOF/TAEUL	dovetail	𐑛𐑳𐑝𐑑𐑱𐑤
 TKOF/TAEUL/-S	dovetails	𐑛𐑳𐑝𐑑𐑱𐑤𐑟
 TKOF/TAEULD	dovetailed	𐑛𐑳𐑝𐑑𐑱𐑤𐑛
-TKOFP	do{.}	
 TKOFRL	dorsal	𐑛𐑹𐑕𐑩𐑤
 TKOFS	doves	𐑛𐑳𐑝𐑟
 TKOFT/EF/SKEU	Dostoevsky	
@@ -53058,7 +52785,6 @@ TKOR/SO*EL/PHAOEUD	dorzolamide
 TKOR/SUPL	dorsum	
 TKOR/THEU	Dorothy	𐑛𐑪𐑮𐑩𐑔𐑦
 TKORBG	dork	
-TKORBGS	do{,}	
 TKORBGT	doctrine	𐑛𐑪𐑒𐑑𐑮𐑦𐑯
 TKORBGT/-S	doctrines	𐑛𐑪𐑒𐑑𐑮𐑦𐑯𐑟
 TKORD	disorder	𐑛𐑦𐑕𐑹𐑛𐑼
@@ -53260,7 +52986,6 @@ TKPREGS/-S	depressions	𐑛𐑦𐑐𐑮𐑧𐑖𐑩𐑯𐑟
 TKPREPBTS	depressants	
 TKPRES	depress	𐑛𐑦𐑐𐑮𐑧𐑕
 TKPRES/-D	depressed	𐑛𐑦𐑐𐑮𐑧𐑕𐑑
-TKPROEPL	control{.}	
 TKPW	go	𐑜𐑴
 TKPW*	{>}{&g}	
 TKPW*/PHAEUL	Gmail	
@@ -53296,7 +53021,6 @@ TKPW*UPBT/*ER	Gunther
 TKPW*UPL	Gump	
 TKPW*UT/REU	Guthrie	
 TKPW-B	goodbye	𐑜𐑫𐑛𐑚𐑲
-TKPW-FP	go{.}	
 TKPW-FPLT/O*P	G.O.P.	
 TKPW-FPLT/TK-FPLT/P-FPLT	G.D.P.	
 TKPW-FR	GFR	
@@ -53315,7 +53039,6 @@ TKPW-PB/SHAOEU	gun-shy
 TKPW-PB/SHREUPBG/*ER	gunslinger	
 TKPW-PBS	guns	𐑜𐑳𐑯𐑟
 TKPW-PS	GPS	
-TKPW-RBGS	go{,}	
 TKPW-RBGS/*ED	GED	
 TKPW-RBGS/AO*	GAO	
 TKPW-RBGS/O*P	GOP	
@@ -53433,7 +53156,6 @@ TKPWAEU/PHAOE	gamey
 TKPWAEU/SHA	geisha	𐑜𐑱𐑖𐑩
 TKPWAEU/TEU	gaiety	𐑜𐑱𐑦𐑑𐑦
 TKPWAEU/TEU/-S	gaieties	𐑜𐑱𐑦𐑑𐑦𐑟
-TKPWAEU/TP-F	gay{?}	
 TKPWAEUB	Gabe	
 TKPWAEUB/REL	Gabriel	
 TKPWAEUBL	gable	𐑜𐑱𐑚𐑩𐑤
@@ -53526,7 +53248,6 @@ TKPWAL/OP/-G	galloping	𐑜𐑨𐑤𐑩𐑐𐑦𐑙
 TKPWAL/PAL	galpal	
 TKPWAL/PWHRAD/ERS	gallbladders	
 TKPWAL/REU	gallery	𐑜𐑨𐑤𐑼𐑦
-TKPWAL/REUFPLT	gallery{.}	
 TKPWAL/REUS	galleries	𐑜𐑨𐑤𐑼𐑦𐑟
 TKPWAL/SRAPB/AOEUFD	galvanised	𐑜𐑨𐑤𐑝𐑩𐑯𐑲𐑟𐑛
 TKPWAL/SRAPB/EUBG	galvanic	𐑜𐑨𐑤𐑝𐑨𐑯𐑦𐑒
@@ -53595,7 +53316,6 @@ TKPWAOEUBG/SKWRO	Geico
 TKPWAOEUD	guide	𐑜𐑲𐑛
 TKPWAOEUD/-D	guided	𐑜𐑲𐑛𐑩𐑛
 TKPWAOEUDZ	guides	𐑜𐑲𐑛𐑟
-TKPWAOEUFPLT	guy{.}	
 TKPWAOEUG/*ER	Geiger	𐑜𐑲𐑜𐑼
 TKPWAOEUGD	guiding	𐑜𐑲𐑛𐑦𐑙
 TKPWAOEUL	guile	𐑜𐑲𐑤
@@ -53623,8 +53343,6 @@ TKPWAOF/HREU	goofily
 TKPWAOF/PWAUL	goofball	
 TKPWAOFD	goofed	𐑜𐑵𐑓𐑑
 TKPWAOFP	Gooch	
-TKPWAOFPD	good{.}	
-TKPWAOFPDZ	goods{.}	
 TKPWAOG/*L/-D	googled	
 TKPWAOG/HREU	googly	𐑜𐑵𐑜𐑤𐑦
 TKPWAOG/HREU/-S	googlies	𐑜𐑵𐑜𐑤𐑦𐑟
@@ -53768,7 +53486,6 @@ TKPWARD/KWRAPBS	guardians	𐑜𐑸𐑛𐑾𐑯𐑟
 TKPWARD/RAEUL	guardrail	𐑜𐑸𐑛𐑮𐑱𐑤
 TKPWARD/RAEULS	guardrails	𐑜𐑸𐑛𐑮𐑱𐑤𐑟
 TKPWARD/SEUL	Gardasil	
-TKPWARD/STPH*EPB	garden{?}	
 TKPWARD/TPHER	gardener	𐑜𐑸𐑛𐑩𐑯𐑼
 TKPWARD/TPHERS	gardeners	𐑜𐑸𐑛𐑩𐑯𐑼𐑟
 TKPWARDZ	guards	𐑜𐑸𐑛𐑟
@@ -53879,7 +53596,6 @@ TKPWEBG/KOE	Gecko	𐑜𐑧𐑒𐑴
 TKPWED/EUT	gedit	
 TKPWEFD	guessed	𐑜𐑧𐑕𐑑
 TKPWEFG	guessing	𐑜𐑧𐑕𐑦𐑙
-TKPWEFPS	guess{.}	
 TKPWEFS	guesses	𐑜𐑧𐑕𐑩𐑟
 TKPWEFT	guest	𐑜𐑧𐑕𐑑
 TKPWEFT/PHAT	guesstimate	𐑜𐑧𐑕𐑑𐑦𐑥𐑩𐑑
@@ -53899,7 +53615,6 @@ TKPWER/KEUPB	gherkin	𐑜𐑻𐑒𐑦𐑯
 TKPWER/KWREU	Gehry	
 TKPWER/TRAOUD	Gertrude	𐑜𐑻𐑑𐑮𐑵𐑛
 TKPWERB/ER	Gerber	
-TKPWERBGS	guess{,}	
 TKPWERD	GERD	
 TKPWERPB/SAOE	Guernsey	
 TKPWERS/WEUPB	Gershwin	
@@ -54058,7 +53773,6 @@ TKPWHRAEU/SHER	glacier	𐑜𐑤𐑨𐑕𐑽
 TKPWHRAEUD	glade	𐑜𐑤𐑱𐑛
 TKPWHRAEUDZ	glades	𐑜𐑤𐑱𐑛𐑟
 TKPWHRAEUDZ/*EPB	glandes	
-TKPWHRAEUFPGS	obligation{.}	
 TKPWHRAEUGZ/-G	glazing	𐑜𐑤𐑱𐑟𐑦𐑙
 TKPWHRAEUR	glare	𐑜𐑤𐑺
 TKPWHRAEURBL	glacial	𐑜𐑤𐑱𐑖𐑩𐑤
@@ -54071,7 +53785,6 @@ TKPWHRAEUS/*ER	Glaser
 TKPWHRAEUT	obligate	𐑪𐑚𐑤𐑦𐑜𐑱𐑑
 TKPWHRAEUTD	obligated	𐑪𐑚𐑤𐑦𐑜𐑱𐑑𐑩𐑛
 TKPWHRAEUZ	glaze	𐑜𐑤𐑱𐑟
-TKPWHRAFPLD	glad{.}	
 TKPWHRAFS	glasses	𐑜𐑤𐑭𐑕𐑩𐑟
 TKPWHRAO*EG	glycemic	
 TKPWHRAO*EPB	glycoprotein	
@@ -54174,7 +53887,6 @@ TKPWHRAPL	glam
 TKPWHRAPL/RAOEUZ	glamorise	𐑜𐑤𐑨𐑥𐑼𐑲𐑟
 TKPWHRAPL/RAOEUZ/A*U	glamorise	𐑜𐑤𐑨𐑥𐑼𐑲𐑟
 TKPWHRAR/SKWRAOEUPB	glargine	
-TKPWHRARBGS	glass{,}	
 TKPWHRARG	glaring	𐑜𐑤𐑺𐑦𐑙
 TKPWHRAS	glass	𐑜𐑤𐑭𐑕
 TKPWHRAS/KOE	Glasgow	𐑜𐑤𐑨𐑟𐑜𐑴
@@ -54191,7 +53903,6 @@ TKPWHRAUBG/O*PB	Glaucon
 TKPWHRAUBG/OS	Glaucos	
 TKPWHRAUBGS	glaucomas	
 TKPWHRAUGS	obligation	𐑪𐑚𐑤𐑦𐑜𐑱𐑖𐑩𐑯
-TKPWHRAURBGS	glaucoma{,}	
 TKPWHREPB	Glen	𐑜𐑤𐑧𐑯
 TKPWHREPB/OEUD	glenoid	
 TKPWHREPB/TKA	Glenda	
@@ -54270,7 +53981,6 @@ TKPWHROEPL	gloam
 TKPWHROEPL/SKWRUS	glomus	
 TKPWHROER	glory	𐑜𐑤𐑹𐑦
 TKPWHROER/KWREU/-S	glories	𐑜𐑤𐑹𐑦𐑟
-TKPWHROERBLGS	global{,}	
 TKPWHROES	glucose	𐑜𐑤𐑵𐑒𐑴𐑕
 TKPWHROET	gloat	𐑜𐑤𐑴𐑑
 TKPWHROET/-G	gloating	𐑜𐑤𐑴𐑑𐑦𐑙
@@ -54455,14 +54165,12 @@ TKPWOFP/KHA	gotcha
 TKPWOFPB/APBS	governance	𐑜𐑳𐑝𐑼𐑯𐑩𐑯𐑕
 TKPWOFPB/O*R	governor	𐑜𐑳𐑝𐑼𐑯𐑼
 TKPWOFPBS	governs	𐑜𐑳𐑝𐑼𐑯𐑟
-TKPWOFPLTD	god{.}	
 TKPWOFR	golfer	𐑜𐑪𐑤𐑓𐑼
 TKPWOFRPB	govern	𐑜𐑳𐑝𐑼𐑯
 TKPWOFRPB/ORS	governors	𐑜𐑳𐑝𐑼𐑯𐑼𐑟
 TKPWOFRPB/ORS/AE	governor's	
 TKPWOFRPBD	governed	𐑜𐑳𐑝𐑼𐑯𐑛
 TKPWOFRPBG	governing	𐑜𐑳𐑝𐑼𐑯𐑦𐑙
-TKPWOFRPBLGTS	government{,}	
 TKPWOFT	government	𐑜𐑳𐑝𐑼𐑯𐑥𐑩𐑯𐑑
 TKPWOFT/AL	governmental	𐑜𐑳𐑝𐑼𐑯𐑥𐑧𐑯𐑑𐑩𐑤
 TKPWOFT/AL/EUFT	governmentalist	
@@ -54491,7 +54199,6 @@ TKPWOPB/KOBG/US	gonococcus
 TKPWOPB/OBG/A*L	gonoccal	
 TKPWOPB/RAE/KWRA	gonorrhea	𐑜𐑪𐑯𐑼𐑾
 TKPWOPB/RAOE/AOEU	gonorrheae	
-TKPWOPB/RAOE/KWRAFPLT	gonorrhea{.}	
 TKPWOPB/RAOE/KWRAL	gonorrheal	
 TKPWOPB/SA*L/EZ	Gonzalez	
 TKPWOPB/SO*E	gonzo	
@@ -54517,7 +54224,6 @@ TKPWORB	gosh	𐑜𐑪𐑖
 TKPWORB/-S	goshes	
 TKPWORB/TKARPB	gosh-darn	
 TKPWORBG/KWREU	Gorky	𐑜𐑹𐑒𐑦
-TKPWORBGS	gosh{,}	
 TKPWORBS	gorgeous	𐑜𐑹𐑡𐑩𐑕
 TKPWORBS/HREU	gorgeously	𐑜𐑹𐑡𐑩𐑕𐑤𐑦
 TKPWORD	gourd	𐑜𐑫𐑼𐑛
@@ -54655,8 +54361,6 @@ TKPWRAE/SEU/-S	greasies
 TKPWRAED	agreed	𐑩𐑜𐑮𐑰𐑛
 TKPWRAEF	gravy	𐑜𐑮𐑱𐑝𐑦
 TKPWRAEF/-S	gravies	
-TKPWRAEFP	agree{.}	
-TKPWRAEFPT	great{.}	
 TKPWRAEG	agreeing	𐑩𐑜𐑮𐑰𐑦𐑙
 TKPWRAELT	greatly	𐑜𐑮𐑱𐑑𐑤𐑦
 TKPWRAERT	greater	𐑜𐑮𐑱𐑑𐑼
@@ -54867,14 +54571,12 @@ TKPWRAOU/KWRAEUR	gruyere
 TKPWRAOU/SPH	gruesome	𐑜𐑮𐑵𐑕𐑩𐑥
 TKPWRAOU/SPH*PBS	gruesomeness	𐑜𐑮𐑵𐑕𐑩𐑥𐑯𐑩𐑕
 TKPWRAOU/SPH*PBS/-S	gruesomenesses	
-TKPWRAOUFPLT	group{.}	
 TKPWRAOUL	gruel	𐑜𐑮𐑵𐑩𐑤
 TKPWRAOUP/O*PB	Groupon	
 TKPWRAOUP/TH*EU	groupthink	
 TKPWRAOUPD	grouped	𐑜𐑮𐑵𐑐𐑑
 TKPWRAOUPGS	groupings	𐑜𐑮𐑵𐑐𐑦𐑙𐑟
 TKPWRAOUPS	groups	𐑜𐑮𐑵𐑐𐑕
-TKPWRAOURPBGS	group{,}	
 TKPWRAP/*L	grapple	𐑜𐑮𐑨𐑐𐑩𐑤
 TKPWRAP/-LG	grappling	𐑜𐑮𐑨𐑐𐑤𐑦𐑙
 TKPWRAP/-LS	grapples	𐑜𐑮𐑨𐑐𐑩𐑤𐑟
@@ -55014,7 +54716,6 @@ TKPWREUFP	gritch
 TKPWREUFPB	Griffin	𐑜𐑮𐑦𐑓𐑦𐑯
 TKPWREUFPL	organism	𐑹𐑜𐑩𐑯𐑦𐑟𐑩𐑥
 TKPWREUFPLS	organisms	𐑹𐑜𐑩𐑯𐑦𐑟𐑩𐑥𐑟
-TKPWREUFPLTD	grid{.}	
 TKPWREUFRPB	Grinch	
 TKPWREUFT	grift	
 TKPWREUG/TPHARD	Grignard	
@@ -55065,7 +54766,6 @@ TKPWROE/SHEPB	groschen
 TKPWROE/TEFBG	grotesque	𐑜𐑮𐑴𐑑𐑧𐑕𐑒
 TKPWROED/KWREU	grody	
 TKPWROEF	grove	𐑜𐑮𐑴𐑝
-TKPWROEFPLT	grow{.}	
 TKPWROEFR	Grover	
 TKPWROEFS	groves	𐑜𐑮𐑴𐑝𐑟
 TKPWROEG	growing	𐑜𐑮𐑴𐑦𐑙
@@ -55271,7 +54971,6 @@ TKR*EUF	derivative	𐑛𐑦𐑮𐑦𐑝𐑩𐑑𐑦𐑝
 TKR*EUFL	drivel	𐑛𐑮𐑦𐑝𐑩𐑤
 TKR*EUFS	derivatives	𐑛𐑦𐑮𐑦𐑝𐑩𐑑𐑦𐑝𐑟
 TKR*FPLT	Dr.{-|}	
-TKR*RBGS	Doctor{,}	
 TKR*T	District	𐑛𐑦𐑕𐑑𐑮𐑦𐑒𐑑
 TKR*UF	destructive	𐑛𐑦𐑕𐑑𐑮𐑳𐑒𐑑𐑦𐑝
 TKR*UPBG	drunk	𐑛𐑮𐑳𐑙𐑒
@@ -55290,10 +54989,8 @@ TKR-BT/O*R	distributor	𐑛𐑦𐑕𐑑𐑮𐑦𐑚𐑘𐑩𐑑𐑼
 TKR-BT/O*RS	distributors	𐑛𐑦𐑕𐑑𐑮𐑦𐑚𐑘𐑩𐑑𐑼𐑟
 TKR-BTD	distributed	𐑛𐑦𐑕𐑑𐑮𐑦𐑚𐑿𐑑𐑩𐑛
 TKR-D	doctored	𐑛𐑪𐑒𐑑𐑼𐑛
-TKR-FP	doctor{.}	
 TKR-FPLT	Dr.	
 TKR-G	doctoring	𐑛𐑪𐑒𐑑𐑼𐑦𐑙
-TKR-RBGS	doctor{,}	
 TKR-S	doctors	𐑛𐑪𐑒𐑑𐑼𐑟
 TKR-S/*ER	dresser	𐑛𐑮𐑧𐑕𐑼
 TKR/AES	doctor's	
@@ -55317,7 +55014,6 @@ TKRABG/PHA	drachma	𐑛𐑮𐑨𐑒𐑥𐑩
 TKRABGS	transaction	𐑑𐑮𐑨𐑯𐑟𐑨𐑒𐑖𐑩𐑯
 TKRABLS	drabbles	
 TKRAE/PHA*ED	ready-made	𐑮𐑧𐑛𐑦-𐑥𐑱𐑛
-TKRAEFPLT	ready{.}	
 TKRAEPBG	drainage	𐑛𐑮𐑱𐑯𐑦𐑡
 TKRAEUBG	drake	𐑛𐑮𐑱𐑒
 TKRAEUD/*L	dreidel	
@@ -55405,7 +55101,6 @@ TKRAOEUF/WAEUS	driveways	𐑛𐑮𐑲𐑝𐑢𐑱𐑟
 TKRAOEUFBL	drivable	
 TKRAOEUFD	derived	𐑛𐑦𐑮𐑲𐑝𐑛
 TKRAOEUFG	driving	𐑛𐑮𐑲𐑝𐑦𐑙
-TKRAOEUFPLT	drive{.}	
 TKRAOEUFR/AES	driver's	
 TKRAOEUFRS	drivers	𐑛𐑮𐑲𐑝𐑼𐑟
 TKRAOEUG	drying	𐑛𐑮𐑲𐑦𐑙
@@ -55933,7 +55628,6 @@ TOBGS	tox
 TOBGS/EPL/KWRA	toxemia	
 TOBGS/EUPBS	toxins	𐑑𐑪𐑒𐑕𐑦𐑯𐑟
 TOBGS/EUS/TEUS	toxicities	
-TOBGS/EUS/TPEUPL	toxicity{.}	
 TOBGS/KAPBT	toxicant	
 TOBGS/KO*LGS	toxicologist	𐑑𐑪𐑒𐑕𐑦𐑒𐑪𐑤𐑩𐑡𐑦𐑕𐑑
 TOBGS/KO/HR-LG	toxicological	
@@ -56309,7 +56003,6 @@ TP*EUPBG/TPHOT/OL	Finknottle
 TP*EUPLT	figment	𐑓𐑦𐑜𐑥𐑩𐑯𐑑
 TP*EURB	finish	𐑓𐑦𐑯𐑦𐑖
 TP*EURB/ER	Fisher	𐑓𐑦𐑖𐑼
-TP*EURB/TP-PLD	finished{.}	
 TP*EURBD	finished	𐑓𐑦𐑯𐑦𐑖𐑑
 TP*EURBG	finishing	𐑓𐑦𐑯𐑦𐑖𐑦𐑙
 TP*EURBS	finishes	𐑓𐑦𐑯𐑦𐑖𐑩𐑟
@@ -56496,8 +56189,6 @@ TPAD/EURB	faddish
 TPADZ	fads	𐑓𐑨𐑛𐑟
 TPAE/TAL/A*U	foetal	𐑓𐑰𐑑𐑩𐑤
 TPAE/TUS/A*U	foetus	𐑓𐑰𐑑𐑩𐑕
-TPAEFRPBLT	pharmacist{.}	
-TPAEFRPLT	pharmacy{.}	
 TPAEFT	fifty	𐑓𐑦𐑓𐑑𐑦
 TPAEFT/-S	fifties	𐑓𐑦𐑓𐑑𐑦𐑟
 TPAEFT/AET	fifty-eight	
@@ -56654,7 +56345,6 @@ TPAFP/WOUS	fatuous	𐑓𐑨𐑗𐑫𐑩𐑕
 TPAFPB	fasten	𐑓𐑭𐑕𐑩𐑯
 TPAFR	pharmacist	𐑓𐑸𐑥𐑩𐑕𐑦𐑕𐑑
 TPAFR/TPHAOUPBG	Fahrvergnugen	
-TPAFRP	far{.}	
 TPAFRTS	pharmacists	𐑓𐑸𐑥𐑩𐑕𐑦𐑕𐑑𐑕
 TPAFT	fast	𐑓𐑭𐑕𐑑
 TPAFT/-G	fasting	𐑓𐑭𐑕𐑑𐑦𐑙
@@ -56788,7 +56478,6 @@ TPAOEPBDZ	fiends	𐑓𐑰𐑯𐑛𐑟
 TPAOEPBGS	Phoenix	𐑓𐑰𐑯𐑦𐑒𐑕
 TPAOEPBGS/-S	Phoenixes	𐑓𐑰𐑯𐑦𐑒𐑕𐑩𐑟
 TPAOEPBL/EF/REUPB	phenylephrine	
-TPAOEPBL/EF/STPHREUPB	phenylephrine{?}	
 TPAOEPBS	Philippines	𐑓𐑦𐑤𐑦𐑐𐑰𐑯𐑟
 TPAOEPL/PHA	FEMA	
 TPAOER	fear	𐑓𐑽
@@ -57325,7 +57014,6 @@ TPEFP	fetch	𐑓𐑧𐑗
 TPEFP/-S	fetches	𐑓𐑧𐑗𐑩𐑟
 TPEFPBS	effectiveness	𐑦𐑓𐑧𐑒𐑑𐑦𐑝𐑯𐑩𐑕
 TPEFPBS/-S	effectivenesses	
-TPEFPLT	effective{.}	
 TPEFRB/EPBT	fervent	𐑓𐑻𐑝𐑩𐑯𐑑
 TPEFRB/EPBT/HREU	fervently	𐑓𐑻𐑝𐑩𐑯𐑑𐑤𐑦
 TPEFRB/EPBT/SEU	fervency	𐑓𐑻𐑝𐑩𐑯𐑕𐑦
@@ -57550,7 +57238,6 @@ TPEUFRT	first	𐑓𐑻𐑕𐑑
 TPEUFT	fist	𐑓𐑦𐑕𐑑
 TPEUFT/-FL	fistful	𐑓𐑦𐑕𐑑𐑓𐑫𐑤
 TPEUFT/HRA	fistula	𐑓𐑦𐑕𐑗𐑩𐑤𐑩
-TPEUFT/HRAFPLT	fistula{.}	
 TPEUFT/HRAOEUZ	fistulise	
 TPEUFT/KWR*ET	fiftieth	𐑓𐑦𐑓𐑑𐑾𐑔
 TPEUFT/TPAOEUT	fistfight	
@@ -57857,9 +57544,7 @@ TPH-FL	envelope	𐑧𐑯𐑝𐑩𐑤𐑴𐑐
 TPH-FLD	enveloped	𐑦𐑯𐑝𐑧𐑤𐑩𐑐𐑑
 TPH-FLS	envelopes	𐑧𐑯𐑝𐑩𐑤𐑴𐑐𐑕
 TPH-FP	inch	𐑦𐑯𐑗
-TPH-FPBLGT	income{.}	
 TPH-FPBT	infinite	𐑦𐑯𐑓𐑦𐑯𐑦𐑑
-TPH-FPLT	in{.}	
 TPH-FPLT/KWR*BG	N.Y.C.	
 TPH-FPLT/KWR-FPLT/S-FPLT	N.Y.S.	
 TPH-FPLT/KWR-FPLT/UFPLT	N.Y.U.	
@@ -58022,13 +57707,11 @@ TPHAEF/AEUGS	inactivation
 TPHAEFL	nasal	𐑯𐑱𐑟𐑩𐑤
 TPHAEFL/TEU	nasality	
 TPHAEFL/TEU/-S	nasalities	
-TPHAEFPLT	anyway{.}	
 TPHAEPBT	Independent	𐑦𐑯𐑛𐑦𐑐𐑧𐑯𐑛𐑩𐑯𐑑
 TPHAEPBT/SEU	Independency	
 TPHAEPBT/SEU/-S	Independencies	
 TPHAEPL	enemy	𐑧𐑯𐑩𐑥𐑦
 TPHAEPLS	enemies	𐑧𐑯𐑩𐑥𐑦𐑟
-TPHAERBGS	anyway{,}	
 TPHAEU	nay	𐑯𐑱
 TPHAEU/PAPL	napalm	𐑯𐑱𐑐𐑭𐑥
 TPHAEU/PWOB	nabob	𐑯𐑱𐑚𐑪𐑚
@@ -58298,7 +57981,6 @@ TPHAOEUF	knife	𐑯𐑲𐑓
 TPHAOEUF/TAEU	naivete	𐑯𐑲𐑰𐑝𐑦𐑑𐑦
 TPHAOEUFD	knifed	𐑯𐑲𐑓𐑑
 TPHAOEUFG	knifing	𐑯𐑲𐑓𐑦𐑙
-TPHAOEUFPLTS	nice{.}	
 TPHAOEUFS	knives	𐑯𐑲𐑝𐑟
 TPHAOEUG/*EL	Nigel	𐑯𐑲𐑡𐑩𐑤
 TPHAOEUG/RA	Niagara	𐑯𐑲𐑨𐑜𐑼𐑩
@@ -58498,7 +58180,6 @@ TPHAOURPBTS	nutrients	𐑯𐑿𐑑𐑮𐑾𐑯𐑑𐑕
 TPHAOURT	nurture	𐑯𐑻𐑗𐑼
 TPHAOURT/PAOEBG	neutropenic	
 TPHAOURT/PAOEPB/KWRA	neutropenia	
-TPHAOURT/PAOEPB/KWRARBGS	neutropenia{,}	
 TPHAOURT/TP*EULG	neutrophilic	
 TPHAOURT/TPEUL	neutrophil	
 TPHAOURT/TPEULS	neutrophils	
@@ -58822,7 +58503,6 @@ TPHEPBLG	negligent	𐑯𐑧𐑜𐑤𐑦𐑡𐑩𐑯𐑑
 TPHEPBLG/-BL	negligable	
 TPHEPBLGS	negligence	𐑯𐑧𐑜𐑤𐑦𐑡𐑩𐑯𐑕
 TPHEPBS	innocence	𐑦𐑯𐑩𐑕𐑩𐑯𐑕
-TPHEPL	them{.}	
 TPHEPL/SAOES	nemeses	𐑯𐑧𐑥𐑩𐑕𐑰𐑟
 TPHEPL/SEUS	nemesis	𐑯𐑧𐑥𐑩𐑕𐑦𐑕
 TPHEPL/TPHEPL	neminem	
@@ -58928,7 +58608,6 @@ TPHEUD/SKWRUS	nidus
 TPHEUD/SKWRUS/-S	niduses	
 TPHEUFP	niche	𐑯𐑰𐑖
 TPHEUFPBT	inefficient	𐑦𐑯𐑦𐑓𐑦𐑖𐑩𐑯𐑑
-TPHEUFPG	anything{.}	
 TPHEUFRP	nymph	𐑯𐑦𐑥𐑓
 TPHEUFRP/PHAEUPB/KWRA	nymphomania	𐑯𐑦𐑥𐑓𐑩𐑥𐑱𐑯𐑾
 TPHEUFT/KWREU	nifty	𐑯𐑦𐑓𐑑𐑦
@@ -59003,7 +58682,6 @@ TPHO*ED	Node	𐑯𐑴𐑛
 TPHO*EF/KAEUPB	Novocain	
 TPHO*EFS	noses	𐑯𐑴𐑟𐑩𐑟
 TPHO*EL	Knoll	𐑯𐑴𐑤
-TPHO*EPL	no{.}	
 TPHO*ERT	nother	
 TPHO*EU/KHRA*L	Neoclassical	
 TPHO*EU/PHAOEUS/*EUPB	neomycin	
@@ -59036,7 +58714,6 @@ TPHO*L/SA*EUGS	normalisation	𐑯𐑹𐑥𐑩𐑤𐑲𐑟𐑱𐑖𐑩𐑯
 TPHO*L/SA*EUGS/A*U	normalisation	𐑯𐑹𐑥𐑩𐑤𐑲𐑟𐑱𐑖𐑩𐑯
 TPHO*PB	non	𐑯𐑪𐑯
 TPHO*PB/STOP	nonstop	𐑯𐑪𐑯𐑕𐑑𐑪𐑐
-TPHO*PL	no{,}ma'am	
 TPHO*RLT/AOEFT	Northeast	𐑯𐑹𐑔𐑰𐑕𐑑
 TPHO*RPLS	enormous	𐑦𐑯𐑹𐑥𐑩𐑕
 TPHO*RT/AO*ES/TPHER	northeasterner	
@@ -59131,7 +58808,6 @@ TPHOEF/KWRA	nova	𐑯𐑴𐑝𐑩
 TPHOEFBGS	notification	𐑯𐑴𐑑𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯
 TPHOEFD	nosed	𐑯𐑴𐑟𐑛
 TPHOEFPLT	know.	
-TPHOEFRPLT	another{.}	
 TPHOEG	knowing	𐑯𐑴𐑦𐑙
 TPHOEG/HREU	knowingly	𐑯𐑴𐑦𐑙𐑤𐑦
 TPHOEGS	notion	𐑯𐑴𐑖𐑩𐑯
@@ -59231,7 +58907,6 @@ TPHOFLT	novelty	𐑯𐑪𐑝𐑩𐑤𐑑𐑦
 TPHOFLT/-S	novelties	𐑯𐑪𐑝𐑩𐑤𐑑𐑦𐑟
 TPHOFP	notch	𐑯𐑪𐑗
 TPHOFPD	notched	𐑯𐑪𐑗𐑑
-TPHOFPLT	No{.}	
 TPHOFPLTS	Nos.	
 TPHOFPS	notches	𐑯𐑪𐑗𐑩𐑟
 TPHOFS	novice	𐑯𐑪𐑝𐑦𐑕
@@ -59301,7 +58976,6 @@ TPHOR/TREUPT/HRAOEUPB	nortriptyline
 TPHOR/WAEU	Norway	𐑯𐑹𐑢𐑱
 TPHOR/WAOEGS	Norwegian	𐑯𐑹𐑢𐑰𐑡𐑩𐑯
 TPHOR/WAUBG	Norwalk	
-TPHORBGS	no{,}	
 TPHORBS	noxious	𐑯𐑪𐑒𐑖𐑩𐑕
 TPHORD/EUBG	Nordic	𐑯𐑹𐑛𐑦𐑒
 TPHORD/STROPL	Nordstrom	
@@ -59340,11 +59014,9 @@ TPHOT/TEU	knotty	𐑯𐑪𐑑𐑦
 TPHOU	now	𐑯𐑬
 TPHOU/AUBG/SHOT	Nouakchott	
 TPHOU/TKAEUS	nowadays	𐑯𐑬𐑩𐑛𐑱𐑟
-TPHOUFPLT	now{.}	
 TPHOUPB	noun	𐑯𐑬𐑯
 TPHOUPBS	announce	𐑩𐑯𐑬𐑯𐑕
 TPHOUPLT	announcement	𐑩𐑯𐑬𐑯𐑕𐑥𐑩𐑯𐑑
-TPHOURBGS	now{,}	
 TPHOUZ	1,000	
 TPHOZ/*L	nozzle	𐑯𐑪𐑟𐑩𐑤
 TPHOZ/-LS	nozzles	𐑯𐑪𐑟𐑩𐑤𐑟
@@ -59376,7 +59048,6 @@ TPHRA/KWRAPB	Floridian
 TPHRA/PHEPB/KOE	flamenco	
 TPHRA/PHEUPBG/O*	flamingo	𐑓𐑤𐑩𐑥𐑦𐑙𐑜𐑴
 TPHRA/SKWREL/HRA	flagella	
-TPHRA/SKWREL/HRARBGS	flagella{,}	
 TPHRA/SKWREL/UPL	flagellum	
 TPHRA/TKPWRAPB/TAOE	flagrante	
 TPHRAB	flab	
@@ -59419,7 +59090,6 @@ TPHRAEUBGS	flakes	𐑓𐑤𐑱𐑒𐑕
 TPHRAEUF/KWRAPB	Flavian	
 TPHRAEUF/OEPB	flavone	
 TPHRAEUF/SKWRUPL	flavum	
-TPHRAEUFPGS	inflammation{.}	
 TPHRAEUFR	flavor	
 TPHRAEUFR/-FL	flavorful	
 TPHRAEUFR/-LS	flavorless	
@@ -59814,7 +59484,6 @@ TPHROPB/SHREU	feloniously
 TPHROPBLG/STOPB	phlogiston	
 TPHROPD	flopped	𐑓𐑤𐑪𐑐𐑑
 TPHROPG	flopping	𐑓𐑤𐑪𐑐𐑦𐑙
-TPHROPLT	lot{.}	
 TPHROPS	flops	𐑓𐑤𐑪𐑐𐑕
 TPHROR	Flor	
 TPHROR/AOEUDZ	fluorides	𐑓𐑤𐑫𐑼𐑲𐑛𐑟
@@ -59830,7 +59499,6 @@ TPHROR/EURB/-D	flourished	𐑓𐑤𐑳𐑮𐑦𐑖𐑑
 TPHROR/EZ	Florez	
 TPHROR/KWROE	Florio	
 TPHROR/OES/EUS	fluorosis	
-TPHROR/SKWRARBGS	flora{,}	
 TPHROR/TKAEUGS	fluoridation	𐑓𐑤𐑫𐑼𐑦𐑛𐑱𐑖𐑩𐑯
 TPHROR/TKAEUT	fluoridate	𐑓𐑤𐑫𐑼𐑦𐑛𐑱𐑑
 TPHROR/TPHAEUT	fluorinate	
@@ -60424,12 +60092,10 @@ TPORPL/HRAEUBG/HREU	formulaically
 TPORPL/HRAEUBG/KHREU	formulaically	
 TPORPL/HRAEUT/-G	formulating	𐑓𐑹𐑥𐑘𐑩𐑤𐑱𐑑𐑦𐑙
 TPORPL/HRAEUTS	formulates	𐑓𐑹𐑥𐑘𐑩𐑤𐑱𐑑𐑕
-TPORPL/HRAFPLT	formula{.}	
 TPORPL/HRAOEUZ	formalise	𐑓𐑹𐑥𐑩𐑤𐑲𐑟
 TPORPL/HRAOEUZ/-D	formalised	𐑓𐑹𐑥𐑩𐑤𐑲𐑟𐑛
 TPORPL/HRAOEUZ/-G	formalising	𐑓𐑹𐑥𐑩𐑤𐑲𐑟𐑦𐑙
 TPORPL/HRAOEUZ/A*U	formalise	𐑓𐑹𐑥𐑩𐑤𐑲𐑟
-TPORPL/HRARBGS	formula{,}	
 TPORPL/HREU	formally	𐑓𐑹𐑥𐑩𐑤𐑦
 TPORPL/HREU/SA*EUGS	formalisation	
 TPORPL/HREUPB	formalin	𐑓𐑹𐑥𐑩𐑤𐑦𐑯
@@ -60478,7 +60144,6 @@ TPOS/TA	phospha
 TPOS/TO/TPHAEUT	phosphonate	
 TPOS/TPA/PHAOEUD	phosphamide	
 TPOS/TPA/TAEUS	phosphatase	
-TPOS/TPAEUPLT	phosphate{.}	
 TPOS/TPAEUT	phosphate	𐑓𐑪𐑕𐑓𐑱𐑑
 TPOS/TPAEUTS	phosphates	𐑓𐑪𐑕𐑓𐑱𐑑𐑕
 TPOS/TPAT/TKAEUT	phosphatidate	
@@ -60700,7 +60365,6 @@ TPRAOEUFPB	frighten	𐑓𐑮𐑲𐑑𐑩𐑯
 TPRAOEUFPBD	frightened	𐑓𐑮𐑲𐑑𐑩𐑯𐑛
 TPRAOEUPBG	frying	𐑓𐑮𐑲𐑦𐑙
 TPRAOEUR	fryer	𐑓𐑮𐑲𐑼
-TPRAOEURBGS	fry{,}	
 TPRAOEUS	fries	𐑓𐑮𐑲𐑟
 TPRAOEUT	fright	𐑓𐑮𐑲𐑑
 TPRAOEUT/-FL	frightful	𐑓𐑮𐑲𐑑𐑓𐑩𐑤
@@ -61193,7 +60857,6 @@ TR-BT	attribute	𐑨𐑑𐑮𐑦𐑚𐑿𐑑
 TR-BTD	attributed	𐑩𐑑𐑮𐑦𐑚𐑘𐑩𐑑𐑩𐑛
 TR-BTS	attributes	𐑨𐑑𐑮𐑦𐑚𐑿𐑑𐑕
 TR-D	interested	𐑦𐑯𐑑𐑮𐑩𐑕𐑑𐑩𐑛
-TR-FPG	interesting{.}	
 TR-FR/ER	transferrer	
 TR-FR/RAOE	transferee	
 TR-FR/ROR	transferor	
@@ -62152,7 +61815,6 @@ TUR/EUFT	tourist	𐑑𐑫𐑼𐑦𐑕𐑑
 TUR/KAE	turkey	𐑑𐑻𐑒𐑦
 TUR/KEURB	Turkish	𐑑𐑻𐑒𐑦𐑖
 TUR/KOEUS	turquoise	𐑑𐑻𐑒𐑢𐑶𐑟
-TUR/KWOEUFPLTS	turquoise{.}	
 TUR/PHOEUL	turmoil	𐑑𐑻𐑥𐑶𐑤
 TUR/PWAPB	turban	𐑑𐑻𐑚𐑩𐑯
 TUR/PWOT	turbot	𐑑𐑻𐑚𐑩𐑑
@@ -62327,9 +61989,7 @@ TWO/TPOLD	twofold	𐑑𐑵𐑓𐑴𐑤𐑛
 TWO/WA*E	two-way	𐑑𐑵-𐑢𐑱
 TWOD	'twould	𐑑𐑢𐑫𐑛
 TWOEL/TKO	well-to-do	𐑢𐑧𐑤-𐑑-𐑛𐑵
-TWOFPLT	two{.}	
 TWOL	toile	
-TWORBGS	two{,}	
 TWOUPB/10	2010	
 TWOUPB/7	2007	
 TWREU	typewrite	𐑑𐑲𐑐𐑮𐑲𐑑
@@ -62372,7 +62032,6 @@ UG/HREU/TPAOEU	uglify	𐑳𐑜𐑤𐑦𐑓𐑲
 UG/HREU/TPAOEU/-S	uglifies	𐑳𐑜𐑤𐑦𐑓𐑲𐑟
 UG/TPAOEU	Uglify	𐑳𐑜𐑤𐑦𐑓𐑲
 UG/TPAOEU/SKWR-S	UglifyJS	
-UG/TPHREUPL	ugly{.}	
 UL	you'll	𐑿𐑤
 UL/TPHA	ulna	𐑳𐑤𐑯𐑩
 UL/TPHAR	ulnar	
@@ -63309,7 +62968,6 @@ WAEUF/ERD	wafered
 WAEUF/ERG	wafering	
 WAEUF/TEBG	WaveTec	
 WAEUF/TEFP	WaveTech	
-WAEUFP	way{.}	
 WAEUFR	waiver	𐑢𐑱𐑝𐑼
 WAEUFR/HREU	Waverly	
 WAEUFRD	waivered	
@@ -63531,7 +63189,6 @@ WAOER/KWR*ES	weariest	𐑢𐑽𐑦𐑩𐑕𐑑
 WAOER/KWRER	wearier	𐑢𐑽𐑦𐑼
 WAOER/REU/-PBS	weariness	𐑢𐑽𐑦𐑯𐑩𐑕
 WAOER/REU/-PBS/-S	wearinesses	
-WAOERBGS	week{,}	
 WAOERD	weird	𐑢𐑽𐑛
 WAOERD/HREU	weirdly	𐑢𐑽𐑛𐑤𐑦
 WAOERD/SKWRO	weirdo	
@@ -63702,7 +63359,6 @@ WARB/PWAEUS/*EUPB	washbasin	𐑢𐑪𐑖𐑚𐑱𐑕𐑩𐑯
 WARB/PWURPB	Washburn	
 WARB/RAOPL	washroom	𐑢𐑪𐑖𐑮𐑵𐑥
 WARB/STAPBD	washstand	𐑢𐑪𐑖𐑕𐑑𐑨𐑯𐑛
-WARB/WARB	Washington{,}D.C.{,}	
 WARBD	washed	𐑢𐑪𐑖𐑑
 WARBG	washing	𐑢𐑪𐑖𐑦𐑙
 WARBGS	washings	
@@ -63822,8 +63478,6 @@ WAUR/TKPAET	Watergate
 WAUR/TPOUL	waterfowl	𐑢𐑷𐑑𐑼𐑓𐑬𐑤
 WAUR/TPROPBT	waterfront	𐑢𐑷𐑑𐑼𐑓𐑮𐑳𐑯𐑑
 WAUR/WA*ES	waterways	𐑢𐑷𐑑𐑼𐑢𐑱𐑟
-WAURBG	Washington{,}D.C.	
-WAURBGS	water{,}	
 WAURD	watered	𐑢𐑷𐑑𐑼𐑛
 WAURPBG	watering	𐑢𐑷𐑑𐑼𐑦𐑙
 WAURS	waters	𐑢𐑷𐑑𐑼𐑟
@@ -63938,7 +63592,6 @@ WEPS	weapons	𐑢𐑧𐑐𐑩𐑯𐑟
 WEPT	wept	𐑢𐑧𐑐𐑑
 WER	were	𐑢𐑻
 WERB	Welsh	𐑢𐑧𐑤𐑖
-WERBLGS	well{,}	
 WERGS	inversion	𐑦𐑯𐑝𐑻𐑠𐑩𐑯
 WERGT	inverting	𐑦𐑯𐑝𐑻𐑑𐑦𐑙
 WERL	westerly	𐑢𐑧𐑕𐑑𐑼𐑤𐑦
@@ -64058,7 +63711,6 @@ WEUPB/TKEU	windy	𐑢𐑦𐑯𐑛𐑦
 WEUPB/TKEU/*PBS	windiness	𐑢𐑦𐑯𐑛𐑦𐑯𐑩𐑕
 WEUPB/TKEU/*PBS/-S	windinesses	
 WEUPB/TKOE/PAEPB	windowpane	𐑢𐑦𐑯𐑛𐑴𐑐𐑱𐑯
-WEUPB/TKOEFPLT	window{.}	
 WEUPB/TKPWAET	Wingate	𐑢𐑦𐑯𐑜𐑱𐑑
 WEUPB/TPHOE/-G	winnowing	𐑢𐑦𐑯𐑴𐑦𐑙
 WEUPB/TPRED	Winifred	𐑢𐑦𐑯𐑦𐑓𐑮𐑦𐑛
@@ -64521,7 +64173,6 @@ WOUPBD	wound	𐑢𐑬𐑯𐑛
 WOUPBD/-D	wounded	𐑢𐑵𐑯𐑛𐑩𐑛
 WOUPBD/-G	wounding	𐑢𐑵𐑯𐑛𐑦𐑙
 WOUPBDZ	wounds	𐑢𐑵𐑯𐑛𐑟
-WOURBGS	wow{,}	
 WOUT	without	𐑢𐑦𐑞𐑬𐑑
 WOZ/TPHEU/ABG	Wozniak	
 WR	were	𐑢𐑻
@@ -64640,7 +64291,6 @@ WROPBG/TKOG	wrongdoing	𐑮𐑪𐑙𐑛𐑵𐑦𐑙
 WROPBG/TPHREU	wrongfully	𐑮𐑪𐑙𐑓𐑩𐑤𐑦
 WROPBGS	wrongs	𐑮𐑪𐑙𐑟
 WRORBG	worker	𐑢𐑻𐑒𐑼
-WRORPBGS	wrong{,}	
 WROUS	warehouse	𐑢𐑺𐑣𐑬𐑕
 WROUS/PHAPB	warehouseman	
 WROUS/PHEPB	warehousemen	
