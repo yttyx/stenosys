@@ -48,7 +48,6 @@ namespace stenosys
 
 extern C_config   cfg;
 extern C_log      log;
-//extern C_keyboard kbd;
 
 const char * VERSION = "0.10";
 
@@ -92,7 +91,7 @@ C_stenosys::run( int argc, char *argv[] )
         
         bool worked = true;
 
-        //worked = worked && x11_output->initialise();
+        worked = worked && x11_output->initialise();
 
         if ( ! worked )
         {
@@ -102,32 +101,30 @@ C_stenosys::run( int argc, char *argv[] )
         // Allow time for the keyup event when enter is pressed to execute the program
         delay( 1000 );
 
-        //worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
-        //worked = worked && steno_keyboard.start();
+        worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
+        worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
         
         worked = worked && translator.initialise( cfg.c().file_dict );
 
-        //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
-        worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
+        worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
+        //worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
 
         if ( worked )
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ready" );
         
-            //TEMP
-            //while ( ! kbd.abort() )
-            while ( false )
+            while ( ! kbd.abort() )
             {
                 std::string       stroke;
                 std::string       steno;
                 std::string       translation;
                 S_geminipr_packet packet;
 
-                if ( stroke_feed.get_steno( steno ) )
-                {
-                    translator.translate( steno, translation );
-                }
+                //if ( stroke_feed.get_steno( steno ) )
+                //{
+                    //translator.translate( steno, translation );
+                //}
                 
                 // Stenographic chord input
                 if ( steno_keyboard.read( packet ) )
@@ -158,8 +155,7 @@ C_stenosys::run( int argc, char *argv[] )
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
             
             //serial.stop();
-            //TEMP
-            //steno_keyboard.stop();
+            steno_keyboard.stop();
 
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Devices closed down" );
         }
