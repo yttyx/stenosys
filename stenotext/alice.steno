@@ -16,7 +16,7 @@ ST-R            // sister
 OPB             // on
 -T              // the
 PWA*PBG         // bank
-KW-BG           // ,
+SKHWOBF           // ,
 SKP             // and
 -F              // of
 SR-G            // having
@@ -37,7 +37,7 @@ HER
 ST-R
 WAS
 RAEGD
-KW-BG
+SKHWOBF
 PWUT
 EUT
 H
@@ -48,8 +48,8 @@ K-FRGS
 -S
 TPH
 EUT
-KW-BG
-KW-GS
+SKHWOBF
+SKHWAFP
 SKP
 WHA
 S
@@ -58,19 +58,19 @@ AOUS
 -F
 AEU
 PWAOBG
-KW-BG
-KR-GS
+SKHWOBF
+SKHWOFP
 THAUT           // thought
 AL              // Alice
 EUS
-KW-GS
+SKHWAFP
 WOUT            // without
 P*EUFPS         // pictures
 OR              // or
 K-FRGS          // conversations
 -S
 STPHR-RB        // question mark
-KR-GS           // close quotes
+SKHWOFP           // close quotes
 SKWRAURBGS      // new para
 SO
 SHE
@@ -86,7 +86,7 @@ WEL
 AS
 SHE
 K-D
-KW-BG
+SKHWOBF
 TPOR
 -T
 HOT
@@ -100,7 +100,7 @@ PEU
 SKP
 STAOUPD         // stupid
 P*PBT
-KW-BG
+SKHWOBF
 WHR
 -T
 PHRERB
@@ -125,7 +125,7 @@ P*EUG
 TKAEUS          // daisies
 SEU
 -S
-KW-BG
+SKHWOBF
 WHEPB
 SULD
 AEU
@@ -173,8 +173,8 @@ SAEU
 TO
 T           // itself
 SEFL
-KW-BG       // ,
-KW-GS       // "
+SKHWOBF       // ,
+SKHWAFP       // "
 KP          // uppercase next word
 O*ERBGS     // Oh
 TKAER       // dear
@@ -189,7 +189,7 @@ SHAL
 TAO
 HRAEUT
 SKHRAPL
-KR-GS
+SKHWOFP
 P*PB
 WHEPB
 SHE
@@ -197,7 +197,7 @@ THAUT
 EUT
 OEFR
 A*FRDZ
-KW-BG
+SKHWOBF
 EUT
 KROEURD
 TO
@@ -211,7 +211,7 @@ WOPBD
 -D
 AT
 THEUS
-KW-BG
+SKHWOBF
 PWUT
 AT
 -T
@@ -239,25 +239,25 @@ WA*EUS
 KOET
 H-PB
 POBGT
-KW-BG
+SKHWOBF
 SKP
 HRAOBGD
 AT
 EUT
-KW-BG
+SKHWOBF
 SKP
 THEPB
 HUR
 EUD
 OPB
-KW-BG
+SKHWOBF
 AL
 EUS
 STARTD
 TO
 HER
 TPAOET
-KW-BG
+SKHWOBF
 TPOR
 EUT
 TPHRARBD
@@ -279,7 +279,7 @@ WA*EUS          // waistcoat
 KOET
 H-PB            // -
 POBGT           // pocket
-KW-BG           // ,
+SKHWOBF           // ,
 OR
 AEU
 WAFP            // watch
@@ -288,13 +288,13 @@ TAEUBG          // take
 OUT
 -F
 EUT
-KW-BG           // ,
+SKHWOBF           // ,
 SKP
 PWURPBG
 W
 KAOURS
 TEU
-KW-BG
+SKHWOBF
 SHE
 RAPB
 KRAOS
@@ -302,7 +302,7 @@ KRAOS
 TPAOELD
 AF
 EUT
-KW-BG
+SKHWOBF
 SKP
 TP-RPBL
 WAS
@@ -333,7 +333,7 @@ AL
 EUS
 AF
 EUT
-KW-BG
+SKHWOBF
 TPHEFR
 WUPBS
 KR-G
