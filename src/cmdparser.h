@@ -20,6 +20,8 @@ class C_cmd_parser
 {
     friend class C_st_init;
     friend class C_st_in_text;
+    friend class C_st_escaped_char;
+    friend class C_st_raw_command;
     friend class C_st_got_command;
     friend class C_st_got_command_2;
     friend class C_st_get_command_end;

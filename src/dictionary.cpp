@@ -62,22 +62,21 @@ C_dictionary::read( const std::string & path )
 
                 uint16_t latin_flags   = 0;
                 uint16_t shavian_flags = 0;
-
+                        
                 // Check for valid CSV entry
                 if ( parse_line( line, REGEX_DICTIONARY, steno, latin, shavian ) )
                 {
                     std::string parsed_latin;
                     std::string parsed_shavian;
 
-                    // Parse the dictionary text for a subset of Plover commands and set steno flags
                     bool latin_ok   = parser_->parse( latin, parsed_latin, latin_flags );
                     bool shavian_ok = parser_->parse( shavian, parsed_shavian, shavian_flags );
-
-                    //if ( latin.find( CMD_DELIMITER ) != std::string::npos )
+                    
+                    //if ( steno.find( "SKWRAURBGS" ) != std::string::npos )
                     //{
                         //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "latin: %s, parsed latin: %s, latin flags:%04x"
                                                                    //, ctrl_to_text( latin ).c_str()
-                                                                   //, parsed_latin.c_str()
+                                                                   //, ctrl_to_text( parsed_latin ).c_str()
                                                                    //, latin_flags );
 
                         //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%04x"

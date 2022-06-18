@@ -52,13 +52,18 @@ STATE_DEFINITION( C_st_in_text, C_cmd_parser )
 {
     std::string ch;
 
-    // If there is a character, fetch it. It's a UTF-8 character so it's returned as a string.
+    // If there is a character, fetch it. It's a UTF-8 character so we handle it as a string.
     if ( p->input_.get_next( ch ) )
     {
         if ( ch[ 0 ] == CMD_DELIMITER )
         {
             // Found start of command
             set_state( p, C_st_got_command::s.instance(), "C_st_got_command" );
+        }
+        else if ( ch[ 0 ] == '\\' )
+        {
+            // Got escaped character
+            set_state( p, C_st_escaped_char::s.instance(), "C_st_escaped_char" );
         }
         else
         {
@@ -230,6 +235,56 @@ STATE_DEFINITION( C_st_got_command_2, C_cmd_parser )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Incomplete command: %s", p->input_.c_str() );
         set_state( p, C_st_end::s.instance(), "C_st_end" );
     }
+}
+
+STATE_DEFINITION( C_st_escaped_char, C_cmd_parser )
+{
+    // Handle escape sequences
+    std::string ch;
+
+    if ( p->input_.get_next( ch ) )
+    {
+        switch ( ch[ 0 ] )
+        {
+            case 'n':
+                p->output_ += '\n';
+                break;
+            
+            case 'r':
+                p->output_ += 0x0d;
+                //p->output_ += '\r';
+                break;
+            
+            case 't':
+                p->output_ += '\t';
+                break;
+        
+            default:
+                p->parsed_ok_ = false;
+                break;
+        } 
+
+        if ( p->parsed_ok_ )
+        {
+            set_state( p, C_st_in_text::s.instance(), "C_st_in_text" );
+        }
+        else
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid escape sequence: %s", p->input_.c_str() );
+            set_state( p, C_st_end::s.instance(), "C_st_end" );
+        }
+    }
+    else
+    {
+        p->parsed_ok_ = false;
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Missing character in escape sequence: %s", p->input_.c_str() );
+        set_state( p, C_st_end::s.instance(), "C_st_end" );
+    }
+}
+
+//TODO
+STATE_DEFINITION( C_st_raw_command, C_cmd_parser )
+{
 }
 
 // Search for valid command, whilst copying to the output any text which is not a command
