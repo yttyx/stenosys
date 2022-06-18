@@ -18296,7 +18296,7 @@ KR-FPLT/P-FPLT/R-FPLT	CPR
 KR-FPLT/PA*	C.P.A.	
 KR-FS	CSF	
 KR-G	considering	𐑒𐑩𐑯𐑕𐑦𐑛𐑼𐑦𐑙
-KR-GS	^"	
+KR-GS	"-|^	
 KR-GS/AOEUF	I've	𐑲𐑝
 KR-GS/H*UFRP/KW-RBGTS	Humph,	
 KR-GS/KPA*/R-PBT	Aren't	𐑸𐑯𐑑
@@ -19494,10 +19494,10 @@ KW-FBL	qualifiable
 KW-FGS	qualification	𐑒𐑢𐑪𐑤𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯
 KW-FRS	qualifiers	𐑒𐑢𐑪𐑤𐑦𐑓𐑲𐑼𐑟
 KW-G	requesting	𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑦𐑙
-KW-GS	"-|^	
+KW-GS	^"	
 KW-L/KAEUGS/-S	qualifications	𐑒𐑢𐑪𐑤𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯𐑟
 KW-R	inquire	𐑦𐑯𐑒𐑢𐑲𐑼
-KW-RBGTS	,\"	
+KW-RBGTS	,"	
 KW-RBGTS/KW-RBGTS	,”	
 KW-RS	requesters	
 KW-S	requests	𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑕
@@ -32703,14 +32703,14 @@ PWR*EUPBG	brink	𐑚𐑮𐑦𐑙𐑒
 PWR*EUPBG/HREU	Brinkley	
 PWR*EUS	bris	
 PWR*EUT/TPHEU	Britney	
-PWR*S	\	
+PWR*S	\	
 PWR-BG	[	
 PWR-BGS	]	
 PWR-PL	bathroom	𐑚𐑭𐑔𐑮𐑵𐑥
 PWR-PLS	bathrooms	𐑚𐑭𐑔𐑮𐑵𐑥𐑟
 PWR-RBG	BCR	
 PWR-RBGS	B-	
-PWR-S	\	
+PWR-S	\	
 PWRA	bra	𐑚𐑮𐑭
 PWRA*BG	^<^	
 PWRA*BGS	<>	
@@ -36275,7 +36275,6 @@ REUPL	rim	𐑮𐑦𐑥
 REUPL/SKWR*E	rime	𐑮𐑲𐑥
 REUPLS	rims	𐑮𐑦𐑥𐑟
 REUPS	rips	𐑮𐑦𐑐𐑕
-REUPT	raw_input(\"	
 REUS/APB/EBG	Rysanek	
 REUS/K-G	risking	𐑮𐑦𐑕𐑒𐑦𐑙
 REUS/KAEU	risque	𐑮𐑰𐑕𐑒𐑱
@@ -60169,7 +60168,7 @@ TPOURT/TPHAOEUPB	forty-nine
 TPOURT/TPOUR	forty-four	
 TPOURT/TWO	forty-two	
 TPOURT/WUPB	forty-one	
-TPR*BGT	^\^	
+TPR*BGT	^\\^	
 TPR*EBGS	frequency	𐑓𐑮𐑰𐑒𐑢𐑩𐑯𐑕𐑦
 TPR*EBGS/-S	frequencies	𐑓𐑮𐑰𐑒𐑢𐑩𐑯𐑕𐑦𐑟
 TPR*EUFL/SHREU	frivolously	𐑓𐑮𐑦𐑝𐑩𐑤𐑩𐑕𐑤𐑦

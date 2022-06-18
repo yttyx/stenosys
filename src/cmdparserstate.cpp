@@ -64,6 +64,13 @@ STATE_DEFINITION( C_st_in_text, C_cmd_parser )
         {
             // Got escaped character
             set_state( p, C_st_escaped_char::s.instance(), "C_st_escaped_char" );
+            
+            // Encountering text cancels the following flags
+            p->flags_ &= ( ~ ATTACH_TO_NEXT );
+            p->flags_ &= ( ~ CAPITALISE_NEXT );
+            p->flags_ &= ( ~ UPPERCASE_NEXT_WORD );
+
+            p->got_text_ = true;
         }
         else
         {
@@ -74,6 +81,8 @@ STATE_DEFINITION( C_st_in_text, C_cmd_parser )
             p->flags_ &= ( ~ ATTACH_TO_NEXT );
             p->flags_ &= ( ~ CAPITALISE_NEXT );
             p->flags_ &= ( ~ UPPERCASE_NEXT_WORD );
+            
+            p->got_text_ = true;
         }
     }
     else
@@ -258,7 +267,11 @@ STATE_DEFINITION( C_st_escaped_char, C_cmd_parser )
             case 't':
                 p->output_ += '\t';
                 break;
-        
+
+            case '\\':
+                p->output_ += '\\';
+                break;
+
             default:
                 p->parsed_ok_ = false;
                 break;
