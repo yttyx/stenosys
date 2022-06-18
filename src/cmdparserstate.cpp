@@ -66,7 +66,6 @@ STATE_DEFINITION( C_st_in_text, C_cmd_parser )
             p->output_ += ch;
            
             // Encountering text cancels the following flags
-            p->flags_ &= ( ~ ATTACH_TO_PREVIOUS );
             p->flags_ &= ( ~ ATTACH_TO_NEXT );
             p->flags_ &= ( ~ CAPITALISE_NEXT );
             p->flags_ &= ( ~ UPPERCASE_NEXT_WORD );
