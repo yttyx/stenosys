@@ -36,6 +36,11 @@ public:
 
 private:
     
+    bool
+    get_next( std::string & str );
+
+private:
+    
     std::shared_ptr< C_state > state_;
 
     C_utf8      input_;

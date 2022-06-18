@@ -53,7 +53,7 @@ STATE_DEFINITION( C_st_in_text, C_cmd_parser )
     std::string ch;
 
     // If there is a character, fetch it. It's a UTF-8 character so it's returned as a string.
-    if ( p->input_.get_next( ch ) )
+    if ( p->get_next( ch ) )
     {
         if ( ch[ 0 ] == '{' )
         {
@@ -97,7 +97,7 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
 
     bool two_char_cmd = false;
 
-    if ( p->input_.get_next( ch ) )
+    if ( p->get_next( ch ) )
     {
         switch ( ch[ 0 ] )
         {
@@ -108,6 +108,14 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
                 }
 
                 p->flags_ |= ATTACH_TO_NEXT;
+                break;
+
+            case ';':
+            case ':':
+            case '[':
+            case ']':
+                p->output_ += ch;
+                p->output_ += ' ';
                 break;
 
             case '.':
@@ -128,7 +136,7 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
                 break;
 
             case '&':
-                if ( p->input_.get_next( ch ) )
+                if ( p->get_next( ch ) )
                 {
                     p->output_ += ch;
                     p->flags_  |= GLUE;
@@ -188,7 +196,7 @@ STATE_DEFINITION( C_st_got_command_2, C_cmd_parser )
     //
     std::string ch;
 
-    if ( p->input_.get_next( ch ) )
+    if ( p->get_next( ch ) )
     {
         switch ( ch[ 0 ] )
         {
@@ -220,7 +228,7 @@ STATE_DEFINITION( C_st_get_command_end, C_cmd_parser )
     // We're now expected the end of the command
     std::string ch;
 
-    if ( p->input_.get_next( ch ) )
+    if ( p->get_next( ch ) )
     {
         if ( ch[ 0 ] == '}' )
         {

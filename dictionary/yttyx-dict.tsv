@@ -284,7 +284,7 @@
 0EU8S	80s	
 0EU9	90	
 0EU9/PERS	90%	
-0Z	{&00}	
+0Z	{^}00{^}	
 1*D	one-dimensional	
 1-9	19	
 1-9/50	1950	
@@ -4671,7 +4671,7 @@ AS/HRAEUGS	acylation
 AS/KAPBS	askance	𐑩𐑕𐑒𐑨𐑯𐑕
 AS/KAR	ascar	
 AS/KEU	ASCII	𐑨𐑕𐑒𐑦
-AS/KEU/TAB	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~	
+AS/KEU/TAB	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz\{|\}~	
 AS/KOT	ascot	𐑨𐑕𐑒𐑩𐑑
 AS/KWRAG/TKPWOE	asiago	
 AS/PAOEUR	aspire	𐑩𐑕𐑐𐑲𐑼
@@ -10613,7 +10613,6 @@ HR-PLT/AL	elemental	𐑧𐑤𐑦𐑥𐑧𐑯𐑑𐑩𐑤
 HR-PLT/REU	elementary	𐑧𐑤𐑦𐑥𐑧𐑯𐑑𐑼𐑦
 HR-PLT/REU/*PBS	elementariness	
 HR-PLT/REU/*PBS/-S	elementarinesses	
-HR-PS/-FPLT/SKW-TS	...{.}{'}	
 HR-R	already	𐑷𐑤𐑮𐑧𐑛𐑦
 HR-RBGS/P*PB	LPN	
 HR-RBGS/P*PL	LPM	
@@ -12869,7 +12868,6 @@ K*P/PHART	K-Mart
 K*PB	Kentucky	𐑒𐑩𐑯𐑑𐑳𐑒𐑦
 K*PBG	##CANONICAL##	
 K*PBS	kilonewtons	
-K*RPBS	{*($c)}	
 K*S	Kansas	𐑒𐑨𐑯𐑟𐑩𐑕
 K*S/*EPB	Kansans	
 K*T	Connecticut	𐑒𐑩𐑯𐑧𐑑𐑦𐑒𐑩𐑑
@@ -19485,8 +19483,7 @@ KW*R	inquiry	𐑦𐑯𐑒𐑢𐑲𐑼𐑦
 KW*RS	inquires	𐑦𐑯𐑒𐑢𐑲𐑼𐑟
 KW*S	QS	
 KW-BG	{^},	
-KW-BG/SKWR-RBGS	{^}...{-|}	
-KW-BG/SKWRORBGS	{...}	
+KW-BG/SKWR-RBGS	{^}... {-|}	
 KW-BG/SKWRORPBLGS	Georges	𐑠𐑹𐑠
 KW-D	requested	𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑩𐑛
 KW-F	qualify	𐑒𐑢𐑪𐑤𐑦𐑓𐑲
@@ -21395,7 +21392,6 @@ P-R/7	superon7n
 P-RB	punish	𐑐𐑳𐑯𐑦𐑖
 P-RB/-BL	punishable	𐑐𐑳𐑯𐑦𐑖𐑩𐑚𐑩𐑤
 P-RBG	punishing	𐑐𐑳𐑯𐑦𐑖𐑦𐑙
-P-RBGS/H-RBGS/TK-RBGS	P{l+}h{l-}.D	
 P-RBGS/HRO*	PLO	
 P-RBGS/PW*S	PBS	
 P-RBGS/TK*R	PDR	
@@ -23861,7 +23857,7 @@ PH-RPBD/AOEUZ	Mirandise
 PH-S	manslaughter	𐑥𐑨𐑯𐑕𐑤𐑷𐑑𐑼
 PH-S/TKO*S	MS-DOS	
 PH-T	Mt.	
-PH-Z	Ms.{ }{-|} 	
+PH-Z	Ms. {-|} 	
 PHA	ma	𐑥𐑭
 PHA*	Massachusetts	𐑥𐑨𐑕𐑩𐑗𐑵𐑕𐑦𐑑𐑕
 PHA*/KAU	Macao	
@@ -27080,7 +27076,7 @@ PHR-F/AES	plaintiff's
 PHR-FBG	plastic	𐑐𐑤𐑨𐑕𐑑𐑦𐑒
 PHR-FBG/HREU	plastically	
 PHR-FBG/KHREU	plastically	
-PHR-FPL	Mr.{ }{-|} 	
+PHR-FPL	Mr. {-|} 	
 PHR-FPLT	Mr.	𐑥𐑼
 PHR-FPLTS	Messrs.	
 PHR-FS	plaintiffs	𐑐𐑤𐑱𐑯𐑑𐑦𐑓𐑕
@@ -32705,14 +32701,14 @@ PWR*EUPBG	brink	𐑚𐑮𐑦𐑙𐑒
 PWR*EUPBG/HREU	Brinkley	
 PWR*EUS	bris	
 PWR*EUT/TPHEU	Britney	
-PWR*S	\\}	
+PWR*S	\}	
 PWR-BG	{[}	
 PWR-BGS	{]}	
 PWR-PL	bathroom	𐑚𐑭𐑔𐑮𐑵𐑥
 PWR-PLS	bathrooms	𐑚𐑭𐑔𐑮𐑵𐑥𐑟
 PWR-RBG	BCR	
 PWR-RBGS	B-	
-PWR-S	\\{	
+PWR-S	\{	
 PWRA	bra	𐑚𐑮𐑭
 PWRA*BG	{^}<{^}	
 PWRA*BGS	<>	
@@ -48166,7 +48162,7 @@ T-PLS	testimonies	𐑑𐑧𐑕𐑑𐑦𐑥𐑩𐑯𐑦𐑟
 T-PLT/PWOEPB	T-bone	
 T-PLT/SHEURT/-S	T-shirts	𐑑𐑰-𐑖𐑻𐑑𐑕
 T-PLZ	x	𐑧𐑒𐑕
-T-RB	{--}	
+T-RB	{^}--{^}	
 T-RBGS	{,}it	
 T-RBGS/-S	{,}it's	
 T-RBGS/H-PB/REBGS	T-Rex	
@@ -60169,7 +60165,7 @@ TPOURT/TPHAOEUPB	forty-nine
 TPOURT/TPOUR	forty-four	
 TPOURT/TWO	forty-two	
 TPOURT/WUPB	forty-one	
-TPR*BGT	{^}\\}{^}	
+TPR*BGT	{^}\}{^}	
 TPR*EBGS	frequency	𐑓𐑮𐑰𐑒𐑢𐑩𐑯𐑕𐑦
 TPR*EBGS/-S	frequencies	𐑓𐑮𐑰𐑒𐑢𐑩𐑯𐑕𐑦𐑟
 TPR*EUFL/SHREU	frivolously	𐑓𐑮𐑦𐑝𐑩𐑤𐑩𐑕𐑤𐑦
@@ -60180,9 +60176,9 @@ TPR*EUPBLG/-G	refrigerating	𐑮𐑦𐑓𐑮𐑦𐑡𐑼𐑱𐑑𐑦𐑙
 TPR*EUPS	friendships	𐑓𐑮𐑧𐑯𐑛𐑖𐑦𐑐𐑕
 TPR*UPL	frump	𐑓𐑮𐑳𐑥𐑐
 TPR-BG	FRC	
-TPR-BGT	{^}\\{{^}	
-TPR-BGT/-S	\\{\\}	
-TPR-BGTS	{^}\\{\\}{^}	
+TPR-BGT	{^}\{{^}	
+TPR-BGT/-S	\{\}	
+TPR-BGTS	{^}\{\}{^}	
 TPR-FRS	forevers	
 TPR/TERPBL	fraternal	𐑓𐑮𐑩𐑑𐑻𐑯𐑩𐑤
 TPRA	Fra	
