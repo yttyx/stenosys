@@ -45,6 +45,9 @@ public:
     bool
     find( const std::string & str );
 
+    bool
+    find( char ch );
+    
     size_t
     length();
 

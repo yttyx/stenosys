@@ -14,6 +14,8 @@ using namespace stenosys;
 namespace stenosys
 {
 
+const char  CMD_DELIMITER = 0x0b;   // Vertical tab
+
 class C_cmd_parser
 {
     friend class C_st_init;
@@ -33,11 +35,6 @@ public:
 
     bool
     parse( const std::string & input, std::string & output, uint16_t & flags );
-
-private:
-    
-    bool
-    get_next( std::string & str );
 
 private:
     

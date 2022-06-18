@@ -113,6 +113,12 @@ C_utf8::find( const std::string & s )
     return str_.find( s ) != std::string::npos;
 }
 
+bool
+C_utf8::find( char ch )
+{
+    return str_.find( ch ) != std::string::npos;
+}
+
 size_t
 C_utf8::length()
 {

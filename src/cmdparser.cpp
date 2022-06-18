@@ -47,21 +47,4 @@ C_cmd_parser::parse( const std::string & input, std::string & output, uint16_t &
     return parsed_ok_;
 }
 
-bool
-C_cmd_parser::get_next( std::string & str )
-{
-    if ( input_.get_next( str ) )
-    {
-        // Check for escaped characters
-        if ( str[ 0 ] == '\\' )
-        {
-            return input_.get_next( str );
-        }
-    
-        return true;
-    }
-    
-    return false;
-}
-
 }

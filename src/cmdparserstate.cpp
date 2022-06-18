@@ -34,7 +34,7 @@ STATE_DEFINITION( C_st_init, C_cmd_parser )
     C_state::done_ = false;
 
     // Check if the string contains a command start character
-    if ( p->input_.find( "{" ) )
+    if ( p->input_.find( CMD_DELIMITER ) )
     {
         set_state( p, C_st_in_text::s.instance(), "C_st_in_text" );
     }
@@ -53,9 +53,9 @@ STATE_DEFINITION( C_st_in_text, C_cmd_parser )
     std::string ch;
 
     // If there is a character, fetch it. It's a UTF-8 character so it's returned as a string.
-    if ( p->get_next( ch ) )
+    if ( p->input_.get_next( ch ) )
     {
-        if ( ch[ 0 ] == '{' )
+        if ( ch[ 0 ] == CMD_DELIMITER )
         {
             // Found start of command
             set_state( p, C_st_got_command::s.instance(), "C_st_got_command" );
@@ -97,10 +97,17 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
 
     bool two_char_cmd = false;
 
-    if ( p->get_next( ch ) )
+    if ( p->input_.get_next( ch ) )
     {
         switch ( ch[ 0 ] )
         {
+            case CMD_DELIMITER:
+                // End of command
+                p->parsed_ok_ = false;
+                
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Empty command: %s", p->input_.c_str() );
+                break;
+        
             case '^':
                 if ( ! p->got_text_ )
                 {
@@ -114,6 +121,8 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
             case ':':
             case '[':
             case ']':
+            case '{':
+            case '}':
                 p->output_ += ch;
                 p->output_ += ' ';
                 break;
@@ -136,7 +145,7 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
                 break;
 
             case '&':
-                if ( p->get_next( ch ) )
+                if ( p->input_.get_next( ch ) )
                 {
                     p->output_ += ch;
                     p->flags_  |= GLUE;
@@ -154,13 +163,6 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
                 two_char_cmd = true;
                 break;
 
-            case '}':
-                // End of command
-                p->parsed_ok_ = false;
-                
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Empty command: %s", p->input_.c_str() );
-                break;
-        
             default:
                 p->parsed_ok_ = false;
                 
@@ -196,7 +198,7 @@ STATE_DEFINITION( C_st_got_command_2, C_cmd_parser )
     //
     std::string ch;
 
-    if ( p->get_next( ch ) )
+    if ( p->input_.get_next( ch ) )
     {
         switch ( ch[ 0 ] )
         {
@@ -228,9 +230,9 @@ STATE_DEFINITION( C_st_get_command_end, C_cmd_parser )
     // We're now expected the end of the command
     std::string ch;
 
-    if ( p->get_next( ch ) )
+    if ( p->input_.get_next( ch ) )
     {
-        if ( ch[ 0 ] == '}' )
+        if ( ch[ 0 ] == CMD_DELIMITER )
         {
             set_state( p, C_st_in_text::s.instance(), "C_st_in_text" );
         }

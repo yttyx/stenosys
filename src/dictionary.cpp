@@ -83,6 +83,12 @@ C_dictionary::read( const std::string & path )
                                                                //, parsed_shavian.c_str()
                                                                //, shavian_flags );
 
+                    if ( ( ! latin_ok ) || ( ! shavian_ok ) )
+                    {
+                        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Command error, dictionary entry %u", entry_count );
+                    }
+
+
                     if ( latin_ok && shavian_ok )
                     {
                         STENO_ENTRY * steno_entry = new STENO_ENTRY();
