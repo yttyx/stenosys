@@ -153,7 +153,7 @@ C_dictionary::lookup( const std::string & steno
 
     if ( result == dictionary_->end() )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s not found", steno.c_str() );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s not found", steno.c_str() );
         return false;
     }
     else
@@ -161,10 +161,10 @@ C_dictionary::lookup( const std::string & steno
         std::string latin   = result->second.latin;
         std::string shavian = result->second.shavian;
 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s found: %s, %s"
-                                                     , steno.c_str()
-                                                     , text.c_str()
-                                                     , shavian.c_str( ) );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s found: %s, %s"
+                                                     //, steno.c_str()
+                                                     //, text.c_str()
+                                                     //, shavian.c_str( ) );
 
         // If configured for Shavian, use the Shavian entry if it's not empty; otherwise use
         // the Latin entry.

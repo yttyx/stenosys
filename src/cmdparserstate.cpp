@@ -115,7 +115,21 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
 
                 p->flags_ |= ATTACH_TO_NEXT;
                 break;
+            
+            case '.':
+            case '?':
+            case '!':
+                p->output_ += ch;
 
+                if ( ! p->got_text_ )
+                {
+                    p->flags_ |= ATTACH_TO_PREVIOUS;
+                }
+
+                p->flags_  |= CAPITALISE_NEXT;
+                break;
+
+            case ',':
             case ';':
             case ':':
             case '[':
@@ -123,16 +137,11 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
             case '{':
             case '}':
                 p->output_ += ch;
-                p->output_ += ' ';
-                break;
-
-            case '.':
-            case ',':
-            case '?':
-            case '!':
-                p->output_ += ch;
-                p->output_ += ' ';
-                p->flags_  |= CAPITALISE_NEXT;
+                
+                if ( ! p->got_text_ )
+                {
+                    p->flags_ |= ATTACH_TO_PREVIOUS;
+                }
                 break;
 
             case '<':
