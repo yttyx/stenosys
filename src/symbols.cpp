@@ -61,7 +61,7 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     flags = 0; 
    
     // Check for unique starter
-    if ( steno.find( "SKWH" ) == std::string::npos )
+    if ( steno.find( "UNIQUE_STARTER" ) == std::string::npos )
     {
         return false;
     }
@@ -70,8 +70,8 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
 
     // Extract symbol variant from steno string
 
-    size_t start = steno.find_first_of( "FRPBLG" );
-    size_t end   = steno.find_last_of( "FRPBLG" );
+    size_t start = steno.find_first_of( PUNCTUATION_VARIANTS );
+    size_t end   = steno.find_last_of( PUNCTUATION_VARIANTS );
     
     std::string variants;
 

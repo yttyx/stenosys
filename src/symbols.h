@@ -11,6 +11,10 @@
 namespace stenosys
 {
 
+
+#define PUNCTUATION_STARTER  "SKWH"
+#define PUNCTUATION_VARIANTS ""
+
 class C_symbols
 {
 public:
