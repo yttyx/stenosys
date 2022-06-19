@@ -1,7 +1,6 @@
 // x11output.h
 #pragma once
 
-#include "keyevent.h"
 #include "stdarg.h"
 #include <cstdint>
 #include <memory>
@@ -16,6 +15,7 @@
 #include <vector>
 
 #include "outputter.h"
+#include "keyevent.h"
 
 namespace stenosys
 {

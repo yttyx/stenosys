@@ -9,7 +9,7 @@
 #include <istream>
 #include <linux/input.h>
 #include <linux/input-event-codes.h>
-#include <memory.h>
+#include <memory>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

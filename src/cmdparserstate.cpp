@@ -260,8 +260,7 @@ STATE_DEFINITION( C_st_escaped_char, C_cmd_parser )
                 break;
             
             case 'r':
-                p->output_ += 0x0d;
-                //p->output_ += '\r';
+                p->output_ += '\r';
                 break;
             
             case 't':

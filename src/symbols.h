@@ -1,7 +1,10 @@
 #pragma once
 
-#include <memory>
+#include <string>
 #include <stdio.h>
+
+#include <memory>
+#include <unordered_map>
 
 //using namespace stenosys;
 
@@ -23,6 +26,8 @@ public:
 protected:
 
 private:
+
+    std::unique_ptr< std::unordered_map< std::string, std::string > > symbol_map_;
 
 };
 
