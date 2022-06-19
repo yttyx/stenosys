@@ -33,9 +33,6 @@ private:
     bool
     parse_line( const std::string & line, const char * regex, std::string & param );
     
-    bool
-    convert();
-
 private:
 
     std::unique_ptr< std::vector< S_geminipr_packet > > packets_; 

@@ -18,6 +18,8 @@
 
 #define LOG_SOURCE "DICT "
 
+using namespace stenosys;
+
 namespace stenosys
 {
 
@@ -29,10 +31,8 @@ C_dictionary::C_dictionary()
     : initialised_( false )
 {
     parser_     = std::make_unique< C_cmd_parser >();
+    symbols_    = std::make_unique< C_symbols >();
     dictionary_ = std::make_unique< std::unordered_map< std::string, STENO_ENTRY > >();
-
-    //TODO Remove dict_vector_: it was used when merging the Shavian dictionary into the base dictionary
-    dict_vector_ = std::make_unique< std::vector< STENO_ENTRY_2 > >();
 }
 
 C_dictionary::~C_dictionary()
@@ -179,36 +179,6 @@ C_dictionary::lookup( const std::string & steno
     }
 
     return true;
-}
-
-bool
-C_dictionary::get_first( STENO_ENTRY_2 & entry )
-{
-    it_ = dict_vector_->begin();
-
-    if ( it_ != dict_vector_->end() )
-    {
-        entry = *it_;
-
-        return true;
-    }
-
-    return true;
-}
-
-bool
-C_dictionary::get_next( STENO_ENTRY_2 & entry )
-{
-    it_++;
-
-    if ( it_ != dict_vector_->end() )
-    {
-        entry = *it_;
-
-        return true;
-    }
-
-    return false;
 }
 
 bool

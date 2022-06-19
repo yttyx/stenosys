@@ -9,7 +9,10 @@
 #include "cmdparser.h"
 #include "dictionary.h"
 #include "stenoflags.h"
+#include "symbols.h"
 #include "textfile.h"
+
+using namespace stenosys;
 
 namespace stenosys
 {
@@ -24,13 +27,9 @@ typedef struct
     uint16_t    shavian_flags;
 } STENO_ENTRY;
 
-typedef struct {
-    std::string steno;
-    std::string text;
-} STENO_ENTRY_2;
-
 class C_dictionary : C_text_file
 {
+
 public:
 
     C_dictionary();
@@ -44,12 +43,6 @@ public:
           , alphabet_type       alphabet  
           , std::string &       text
           , uint16_t &          flags );
-
-    bool
-    get_first( STENO_ENTRY_2 & entry );
-
-    bool
-    get_next( STENO_ENTRY_2 & entry );
 
 private:
 
@@ -74,9 +67,7 @@ private:
     
     std::unique_ptr< std::unordered_map< std::string, STENO_ENTRY > >  dictionary_;
     std::unique_ptr< C_cmd_parser >                                    parser_;
-
-    std::unique_ptr< std::vector< STENO_ENTRY_2 > >  dict_vector_;
-    std::vector< STENO_ENTRY_2 >::iterator           it_;
+    std::unique_ptr< C_symbols >                                       symbols_;
 };
 
 }
