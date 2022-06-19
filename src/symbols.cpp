@@ -61,7 +61,7 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     flags = 0; 
    
     // Check for unique starter
-    if ( steno.find( "UNIQUE_STARTER" ) == std::string::npos )
+    if ( steno.find( PUNCTUATION_STARTER ) == std::string::npos )
     {
         return false;
     }
@@ -69,7 +69,6 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     // Steno order: STKPWHRAO*EUFRPBLGTSDZ
 
     // Extract symbol variant from steno string
-
     size_t start = steno.find_first_of( PUNCTUATION_VARIANTS );
     size_t end   = steno.find_last_of( PUNCTUATION_VARIANTS );
     
@@ -94,6 +93,7 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
         return false;
     }
 
+    // Find symbol variant
     bool got_e = ( steno.find_first_of( "E" ) != std::string::npos );
     bool got_u = ( steno.find_first_of( "U" ) != std::string::npos );
 
@@ -118,8 +118,7 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
 
     text = variants[ variant_index ];
 
-    // Set some flags
-
+    // Set attachment and capitalisation flags as required
     if ( steno.find( "*" ) != std::string::npos )
     {
         flags |= CAPITALISE_NEXT;

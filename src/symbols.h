@@ -11,9 +11,8 @@
 namespace stenosys
 {
 
-
 #define PUNCTUATION_STARTER  "SKWH"
-#define PUNCTUATION_VARIANTS ""
+#define PUNCTUATION_VARIANTS "FRPBLG"
 
 class C_symbols
 {
