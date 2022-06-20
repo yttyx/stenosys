@@ -116,7 +116,21 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
         variant_index = 3;
     }
 
-    text = variants[ variant_index ];
+    char variant = variants[ variant_index ];
+
+    // Set multiplier value
+    int multiplier = 1;
+
+    if ( steno.find( "T" ) != std::string::npos )
+    {
+        multiplier = ( steno.find( "S" ) != std::string::npos ) ? 4 : 3;
+    }
+    else
+    {
+        multiplier = ( steno.find( "S" ) != std::string::npos ) ? 2 : 1;
+    }
+
+    text = std::string( multiplier, variant );
 
     // Set attachment and capitalisation flags as required
     if ( steno.find( "*" ) != std::string::npos )
