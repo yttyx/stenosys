@@ -12,6 +12,7 @@
 #include "miscellaneous.h"
 #include "stenoflags.h"
 #include "strokes.h"
+#include "symbols.h"
 
 #define LOG_SOURCE "STRKS"
 
@@ -22,8 +23,9 @@ namespace stenosys
 
 extern C_log log;
 
-C_strokes::C_strokes( C_dictionary & dictionary )
+C_strokes::C_strokes( C_dictionary & dictionary, C_symbols & symbols )
     : dictionary_( dictionary )
+    , symbols_( symbols )
 {
     history_ = std::make_unique< C_history< C_stroke, 10 > >();
 }
@@ -46,14 +48,15 @@ C_strokes::initialise()
     return true;
 }
 
-// Add a steno stroke and find the best match
+// Add a steno stroke and look back through the stroke history
+// to find the best dictionary match.
 void
-C_strokes::find_best_match( const std::string & steno
-                          , alphabet_type       alphabet
-                          , std::string &       text
-                          , uint16_t &          flags
-                          , uint16_t &          flags_prev
-                          , bool &              extends )
+C_strokes::add_stroke( const std::string & steno
+                     , alphabet_type       alphabet
+                     , std::string &       text
+                     , uint16_t &          flags
+                     , uint16_t &          flags_prev
+                     , bool &              extends )
 {
     C_stroke new_stroke( steno );
 
@@ -114,6 +117,22 @@ C_strokes::find_best_match( const std::string & steno
     
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "history_->curr()->extends(): %d"
                                                //, history_->curr()->extends() );
+}
+
+// Add symbol stroke and process the chord in code instead
+// of doing a dictionary lookup, to find the selected
+// punctuation or symbol.
+void
+C_strokes::add_stroke( const std::string & steno
+                     , std::string &       text
+                     , uint16_t &          flags
+                     , uint16_t &          flags_prev )
+{
+    C_stroke new_stroke( steno );
+
+    history_->add( new_stroke );
+    
+    // symbol.lookup( steno .....
 }
 
 void

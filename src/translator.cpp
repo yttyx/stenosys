@@ -79,7 +79,20 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
 
     std::string text;
 
-    strokes_->find_best_match( steno, alphabet_, text, flags_curr, flags_prev, extends );
+    //TODO Check for symbol stroke
+    // if ( steno.find( "SKWH" not found )... (use #define)
+    //
+    //  strokes_->add_stroke( ...  (rename method from find_best_match)
+    strokes_->add_stroke( steno, alphabet_, text, flags_curr, flags_prev, extends );
+
+    // else  (no alphabet param for symbols)
+    // strokes_->add_stroke( steno, text, flags_curr, flags_prev )
+    //   this C_strokes::add_stroke() method 
+    //   - adds the stroke to history
+    //   - no best find_search
+    //   - calls C_symbols::lookup() to populate text & flags_curr
+    //   - fetches prev flags
+    }
 
     std::string curr = formatter_->format( alphabet_, text, flags_curr, flags_prev, extends );
 

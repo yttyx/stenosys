@@ -9,6 +9,7 @@
 #include "history.h"
 #include "stenoflags.h"
 #include "stroke.h"
+#include "symbols.h"
 
 using namespace stenosys;
 
@@ -23,20 +24,26 @@ class C_strokes
 
 public:
 
-    C_strokes( C_dictionary & dictionary );
+    C_strokes( C_dictionary & dictionary, C_symbols & symbols );
     ~C_strokes();
 
     bool
     initialise();
 
     void
-    find_best_match( const std::string & steno
-                   , alphabet_type       alphabet
-                   , std::string &       text
-                   , uint16_t &          flags
-                   , uint16_t &          flags_prev 
-                   , bool &              extends );
+    add_stroke( const std::string & steno
+              , alphabet_type       alphabet
+              , std::string &       text
+              , uint16_t &          flags
+              , uint16_t &          flags_prev 
+              , bool &              extends );
 
+    void
+    add_stroke( const std::string & steno
+              , std::string &       text
+              , uint16_t &          flags
+              , uint16_t &          flags_prev );
+    
     void
     undo();
 
@@ -75,6 +82,7 @@ private:
 private:
 
     C_dictionary & dictionary_;
+    C_symbols    & symbols_;
 
     std::unique_ptr< C_history< C_stroke, 10 > > history_;
 };
