@@ -132,7 +132,9 @@ C_strokes::add_stroke( const std::string & steno
 
     history_->add( new_stroke );
     
-    // symbol.lookup( steno .....
+    symbols_.lookup( steno, text, flags );
+    
+    flags_prev = history_->bookmark_prev()->flags();
 }
 
 void

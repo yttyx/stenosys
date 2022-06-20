@@ -13,6 +13,7 @@
 #include "miscellaneous.h"
 #include "stenoflags.h"
 #include "strokes.h"
+#include "symbols.h"
 #include "translator.h"
 
 #define LOG_SOURCE "TRAN "
@@ -28,7 +29,8 @@ C_translator::C_translator( alphabet_type alphabet)
     : alphabet_( alphabet)
 {
     dictionary_ = std::make_unique< C_dictionary >();
-    strokes_    = std::make_unique< C_strokes >( *dictionary_.get() );
+    symbols_    = std::make_unique< C_symbols >();
+    strokes_    = std::make_unique< C_strokes >( *dictionary_.get(), *symbols_.get() );
     formatter_  = std::make_unique< C_formatter >();
 }
 
@@ -79,19 +81,15 @@ C_translator::add_stroke( const std::string & steno, std::string & output )
 
     std::string text;
 
-    //TODO Check for symbol stroke
-    // if ( steno.find( "SKWH" not found )... (use #define)
-    //
-    //  strokes_->add_stroke( ...  (rename method from find_best_match)
-    strokes_->add_stroke( steno, alphabet_, text, flags_curr, flags_prev, extends );
-
-    // else  (no alphabet param for symbols)
-    // strokes_->add_stroke( steno, text, flags_curr, flags_prev )
-    //   this C_strokes::add_stroke() method 
-    //   - adds the stroke to history
-    //   - no best find_search
-    //   - calls C_symbols::lookup() to populate text & flags_curr
-    //   - fetches prev flags
+    if ( steno.find( PUNCTUATION_STARTER ) == std::string::npos  )
+    {
+        // Normal stroke
+        strokes_->add_stroke( steno, alphabet_, text, flags_curr, flags_prev, extends );
+    }
+    else
+    {
+        // Punctuation stroke
+        strokes_->add_stroke( steno, text, flags_curr, flags_prev );
     }
 
     std::string curr = formatter_->format( alphabet_, text, flags_curr, flags_prev, extends );

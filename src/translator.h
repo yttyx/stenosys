@@ -49,7 +49,7 @@ private:
     alphabet_type alphabet_;
 
     std::unique_ptr< C_dictionary > dictionary_;
-    std::unique_ptr< C_symbols >    symbols;
+    std::unique_ptr< C_symbols >    symbols_;
     std::unique_ptr< C_strokes >    strokes_;
     std::unique_ptr< C_formatter >  formatter_;
 
