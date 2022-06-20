@@ -130,6 +130,8 @@ C_strokes::add_stroke( const std::string & steno
 {
     C_stroke new_stroke( steno );
 
+    new_stroke.seqnum( 1 );
+    
     history_->add( new_stroke );
     
     symbols_.lookup( steno, text, flags );
