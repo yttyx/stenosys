@@ -58,6 +58,9 @@ public:
     append( const std::string & str );
 
     std::string
+    at( int pos );
+ 
+    std::string
     substr( int pos );
  
     const std::string

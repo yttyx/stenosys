@@ -161,7 +161,26 @@ C_utf8::differs_at( const std::string & str1, const std::string & str2 )
 
     return ( ( count < s1.length() ) && ( count < s2.length() ) ) ? count : -1;     
 }
-    
+
+// Returns the *remainder* of the string starting at UTF-8 character position pos
+std::string
+C_utf8::at( int pos )
+{
+    int utf8_len = length();
+
+    if ( ( utf8_len == 0 ) || ( pos > utf8_len ) )
+    {
+        return std::string( "" );
+    }
+
+    int offset = to_offset( pos );
+
+    size_t len = length( str_[ offset ] );
+
+    return str_.substr( offset, len );
+}
+
+// Returns the single UTF-8 character at position pos
 std::string
 C_utf8::substr( int pos )
 {
@@ -176,6 +195,7 @@ C_utf8::substr( int pos )
 
     return str_.substr( offset );
 }
+
 
 void
 C_utf8::append( const std::string & str )

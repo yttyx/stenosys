@@ -104,9 +104,12 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
         return false;
     }
 
+    // The first character position after the punctuation starter
+    int params_start = end + 1;
+
     // Find symbol variant
-    bool got_e = ( steno.find_first_of( "E" ) != std::string::npos );
-    bool got_u = ( steno.find_first_of( "U" ) != std::string::npos );
+    bool got_e = ( steno.find_first_of( "E", params_start ) != std::string::npos );
+    bool got_u = ( steno.find_first_of( "U", params_start ) != std::string::npos );
 
     int variant_index = 0; 
 
@@ -127,7 +130,7 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
         variant_index = 3;
     }
 
-    std::string variant = variants.substr( variant_index );
+    std::string variant = variants.at( variant_index );
 
     //TEMP
     fprintf( stdout, "variant_index: %d  variant: %s\n", variant_index, variant.c_str() );
@@ -135,14 +138,17 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     // Set multiplier value
     int multiplier = 1;
 
-    if ( steno.find( "T" ) != std::string::npos )
+    if ( steno.find( "T", params_start) != std::string::npos )
     {
-        multiplier = ( steno.find( "S" ) != std::string::npos ) ? 4 : 3;
+        multiplier = ( steno.find( "S", params_start ) != std::string::npos ) ? 4 : 3;
     }
     else
     {
-        multiplier = ( steno.find( "S" ) != std::string::npos ) ? 2 : 1;
+        multiplier = ( steno.find( "S", params_start ) != std::string::npos ) ? 2 : 1;
     }
+    
+    //TEMP
+    fprintf( stdout, "multiplier: %d\n", multiplier );
 
     while ( multiplier-- )
     {
@@ -150,17 +156,17 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     }
 
     // Set attachment and capitalisation flags as required
-    if ( steno.find( "*" ) != std::string::npos )
+    if ( steno.find( "*", params_start ) != std::string::npos )
     {
         flags |= CAPITALISE_NEXT;
     }
 
-    if ( steno.find( "A" ) != std::string::npos )
+    if ( steno.find( "A", params_start ) != std::string::npos )
     {
         flags |= ATTACH_TO_PREVIOUS;
     }
 
-    if ( steno.find( "O" ) != std::string::npos )
+    if ( steno.find( "O", params_start ) != std::string::npos )
     {
         flags |= ATTACH_TO_NEXT;
     }
