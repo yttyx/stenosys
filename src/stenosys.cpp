@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 /*! \file stenosys.cpp
     \brief Top-level code
  */
+#include <cstdio>
 #include <linux/types.h>
 
 #include <memory>
@@ -107,7 +108,7 @@ C_stenosys::run( int argc, char *argv[] )
         
         worked = worked && translator.initialise( cfg.c().file_dict );
 
-        worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
+        //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
         //worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
 
         if ( worked )
@@ -136,7 +137,7 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( translation.length() > 0 )
                 {
-                      x11_output->send( translation );
+                    x11_output->send( translation );
                 }
 
                 // Key event input

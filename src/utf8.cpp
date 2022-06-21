@@ -10,6 +10,7 @@
 
 #include "common.h"
 #include "log.h"
+#include "miscellaneous.h"
 #include "utf8.h"
 
 #define LOG_SOURCE "STRK "
@@ -194,7 +195,7 @@ C_utf8::decode( uint32_t & code, bool update_index )
         uint8_t b1 = *( str_p_ + index_ );
 
         int utf8_length = length( b1 );
-
+        
         code = unpack( str_p_ + index_);
 
         if ( update_index )
@@ -312,6 +313,19 @@ C_utf8::unpack( const char * data )
     }
 
     return code;
+}
+
+
+void
+C_utf8::dump()
+{
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_utf8::dump()" );
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  str_    : %s", ctrl_to_text( str_ ).c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  index_  : %d", index_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  length_ : %d", length_ );
+    
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "sizeof( char): %d", sizeof( char ) );
 }
 
 void

@@ -3,6 +3,7 @@
 
 #include "stenoflags.h"
 #include "symbols.h"
+#include "utf8.h"
 
 // This class implements a subset of Emily's symbols
 //  Ref: https://github.com/EPLHREU/emily-symbols
@@ -72,17 +73,25 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     size_t start = steno.find_first_of( PUNCTUATION_VARIANTS );
     size_t end   = steno.find_last_of( PUNCTUATION_VARIANTS );
     
-    std::string variants;
+    //TEMP
+    fprintf( stdout, "symbols start: %ld end: %ld\n", start, end );
+    
+    C_utf8 variants;
 
     if  ( ( start != std::string::npos ) && ( end != std::string::npos ) )
     {
-        std::string variant_steno = steno.substr( start, end );
+        std::string variant_steno = steno.substr( start, end - start + 1 );
+    
+        //TEMP
+        fprintf( stdout, "variant_steno: %s\n", variant_steno.c_str() );
 
         // Look up variant
         auto result = symbol_map_->find( variant_steno );
 
         if ( result == symbol_map_->end() )
         {
+            //TEMP
+            fprintf( stdout, "symbols return: 1\n" );
             return false;
         }
 
@@ -90,6 +99,8 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     }
     else
     {
+        //TEMP
+        fprintf( stdout, "symbols return: 2\n" );
         return false;
     }
 
@@ -116,8 +127,11 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
         variant_index = 3;
     }
 
-    char variant = variants[ variant_index ];
+    std::string variant = variants.substr( variant_index );
 
+    //TEMP
+    fprintf( stdout, "variant_index: %d  variant: %s\n", variant_index, variant.c_str() );
+    
     // Set multiplier value
     int multiplier = 1;
 
@@ -130,7 +144,10 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
         multiplier = ( steno.find( "S" ) != std::string::npos ) ? 2 : 1;
     }
 
-    text = std::string( multiplier, variant );
+    while ( multiplier-- )
+    {
+        text += variant;
+    }
 
     // Set attachment and capitalisation flags as required
     if ( steno.find( "*" ) != std::string::npos )

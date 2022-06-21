@@ -38,7 +38,6 @@ bool
 C_strokes::initialise()
 {
     // Add a dummy stroke
-   
     C_stroke new_stroke( "" );
 
     new_stroke.flags( ATTACH_TO_NEXT );
@@ -87,7 +86,7 @@ C_strokes::add_stroke( const std::string & steno
             // Set best match so far
             history_->set_bookmark();
         }
-        
+
     } while ( history_->go_back( stroke ) );
 
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bookmark: steno: %s, seqnum %u"
@@ -128,13 +127,15 @@ C_strokes::add_stroke( const std::string & steno
                      , uint16_t &          flags
                      , uint16_t &          flags_prev )
 {
+    symbols_.lookup( steno, text, flags );
+    
     C_stroke new_stroke( steno );
 
+    new_stroke.flags( flags );
+    new_stroke.translation( text );
     new_stroke.seqnum( 1 );
     
     history_->add( new_stroke );
-    
-    symbols_.lookup( steno, text, flags );
     
     flags_prev = history_->bookmark_prev()->flags();
 }

@@ -66,6 +66,9 @@ public:
     const char *
     c_str() { return str_p_; }
 
+    void
+    dump();
+
     static void
     test();
 

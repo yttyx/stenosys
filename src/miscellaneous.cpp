@@ -2,6 +2,7 @@
 
 #include <assert.h>
 
+#include <cstring>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -109,18 +110,20 @@ ctrl_to_text( const std::string & text )
 {
     std::string output;
 
-    for ( size_t ii = 0; ii < text.length(); ii++ )
-    {
-        if ( iscntrl( text[ ii ] ) )
-        {
-            char buffer[ 10 ];
+    const uint8_t  * p = ( const uint8_t * ) text.c_str();
 
-            snprintf( buffer, sizeof( buffer ), "[%02x]", text[ ii ] );
+    for ( size_t ii = 0; ii < strlen( text.c_str() ); ii++, p++ )
+    {
+        if ( ( *p < 0x20 ) || ( *p > 0x7f ) )
+        {
+            char buffer[ 64 ];
+
+            snprintf( buffer, sizeof( buffer ), "[%02x]", *p );
             output += buffer;
         }
         else
         {
-            output += text[ ii ];
+            output += *p;
         }
     }
 

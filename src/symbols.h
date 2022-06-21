@@ -1,5 +1,6 @@
 #pragma once
 
+#include "utf8.h"
 #include <string>
 #include <stdio.h>
 
