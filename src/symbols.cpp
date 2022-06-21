@@ -57,7 +57,11 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     // - Capitalisation : *
     // - Variant select : EU
     // - Repetition     : TS (out of scope for Stenosys)
-    
+   
+
+    //TEMP
+    fprintf( stdout, "steno: %s\n", steno.c_str() );
+
     text  = "";
     flags = 0; 
    
@@ -107,6 +111,9 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     // The first character position after the punctuation starter
     int params_start = end + 1;
 
+    //TEMP
+    fprintf( stdout, "params_start: %d\n", params_start );
+    
     // Find symbol variant
     bool got_e = ( steno.find_first_of( "E", params_start ) != std::string::npos );
     bool got_u = ( steno.find_first_of( "U", params_start ) != std::string::npos );
@@ -155,21 +162,27 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
         text += variant;
     }
 
+    //TEMP
+    fprintf( stdout, "steno.substr( params_start): %s\n", steno.substr( params_start ).c_str() );
+    
     // Set attachment and capitalisation flags as required
-    if ( steno.find( "*", params_start ) != std::string::npos )
+    if ( steno.find( "*" ) != std::string::npos )
     {
         flags |= CAPITALISE_NEXT;
     }
 
-    if ( steno.find( "A", params_start ) != std::string::npos )
+    if ( steno.find( "A" ) != std::string::npos )
     {
         flags |= ATTACH_TO_PREVIOUS;
     }
 
-    if ( steno.find( "O", params_start ) != std::string::npos )
+    if ( steno.find( "O" ) != std::string::npos )
     {
         flags |= ATTACH_TO_NEXT;
     }
+
+    //TEMP
+    fprintf( stdout, "flags: %04xh\n", flags );
 
     return true;
 }
