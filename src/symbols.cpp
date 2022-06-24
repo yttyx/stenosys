@@ -278,9 +278,14 @@ C_symbols::test_entries[] =
 ,   { "SKWHUFP",     "”",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
 ,   { "SKWHEUFP",    "„",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
 
+// spacing
 
-
-,   { "",           "",     0                                   }
+,   { "SKWH-FR",     "!",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWHAFR",     "!",    ATTACH_TO_NEXT                      }
+,   { "SKWHOFR",     "!",    ATTACH_TO_PREVIOUS                  }
+,   { "SKWHAOFR",    "!",    0                                   }
+   
+,   { "",           "",     0                                    }
 };
 
 }
