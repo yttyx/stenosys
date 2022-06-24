@@ -81,25 +81,17 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     size_t start = steno.find_first_of( PUNCTUATION_VARIANTS, STARTER_LEN );
     size_t end   = steno.find_last_of( PUNCTUATION_VARIANTS );
     
-    //TEMP
-    fprintf( stdout, "symbols start: %ld end: %ld\n", start, end );
-    
     C_utf8 variants;
 
     if  ( ( start != std::string::npos ) && ( end != std::string::npos ) )
     {
         std::string variant_steno = steno.substr( start, end - start + 1 );
     
-        //TEMP
-        fprintf( stdout, "variant_steno: %s\n", variant_steno.c_str() );
-
         // Look up variant
         auto result = symbol_map_->find( variant_steno );
 
         if ( result == symbol_map_->end() )
         {
-            //TEMP
-            fprintf( stdout, "symbols return: 1\n" );
             return false;
         }
 
@@ -107,8 +99,6 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
     }
     else
     {
-        //TEMP
-        fprintf( stdout, "symbols return: 2\n" );
         return false;
     }
 
@@ -137,9 +127,6 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
 
     std::string variant = variants.at( variant_index );
 
-    //TEMP
-    fprintf( stdout, "variant_index: %d  variant: %s\n", variant_index, variant.c_str() );
-    
     // Set multiplier value
     int multiplier = 1;
 
@@ -152,19 +139,10 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
         multiplier = ( steno.find( "S", STARTER_LEN ) != std::string::npos ) ? 2 : 1;
     }
     
-    //TEMP
-    fprintf( stdout, "multiplier: %d\n", multiplier );
-
     while ( multiplier-- )
     {
         text += variant;
     }
-
-    //TEMP
-    fprintf( stdout, "text: %s\n", text.c_str() );
-    
-    //TEMP
-    fprintf( stdout, "steno.substr( STARTER_LEN): %s\n", steno.substr( STARTER_LEN ).c_str() );
     
     // Set attachment and capitalisation flags as required
     if ( steno.find( "*", STARTER_LEN ) != std::string::npos )
@@ -184,16 +162,13 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
         flags &= ( ~ATTACH_TO_NEXT );
     }
 
-    //TEMP
-    fprintf( stdout, "flags: %04xh\n", flags );
-
     return true;
 }
 
 void
 C_symbols::tests()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Symbols tests" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Running symbols tests" );
 
     for ( S_test_entry * entry = &test_entries[ 0 ]; strlen( entry->steno ) > 0; entry++ )
     {
@@ -210,8 +185,6 @@ C_symbols::test( const std::string & steno
     
     uint16_t flags = 0;
     
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "--------------------" );
-
     bool worked      = lookup( steno, text, flags );
     bool text_match  = ( expected_text == text );
     bool flags_match = ( expected_flags == flags );
