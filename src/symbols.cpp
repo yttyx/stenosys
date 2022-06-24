@@ -237,12 +237,33 @@ C_symbols::test( const std::string & steno
 
 S_test_entry
 C_symbols::test_entries[] = 
-{
-    { "SKHWOEUF", "\"", ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "", "", 0 }
-,   { "", "", 0 }
-,   { "", "", 0 }
-,   { "", "", 0 }
+{   // steno        expected_text expected_flags
+    { "SKHWFR",     "!",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWFRLG",   "#",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWRPBG",   "$",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWFRPB",   "%",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWFBG",    "&",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWF",      "'",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWFPL",    "(",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWRBB",    ")",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWL",      "*",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWG",      "+",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWB",      ",",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWPL",     "-",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWR",      ".",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWRP",     "/",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWLG",     ":",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWRB",     ";",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWPBLG",   "=",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWFPB",    "?",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWFRPBLG", "@",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWFB",     "\\",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWRPG",    "^",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWBG",     "_",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWP",      "`",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWPB",     "|",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKHWFPBG",   "~",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "",           "",     0                                   }
 };
 
 }
