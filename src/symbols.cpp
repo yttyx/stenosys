@@ -284,7 +284,14 @@ C_symbols::test_entries[] =
 ,   { "SKWHAFR",     "!",    ATTACH_TO_NEXT                      }
 ,   { "SKWHOFR",     "!",    ATTACH_TO_PREVIOUS                  }
 ,   { "SKWHAOFR",    "!",    0                                   }
-   
+
+// repetition
+
+,   { "SKWH-FR",     "!",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FRS",    "!!",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FRT",    "!!!",  ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FRTS",   "!!!!", ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+
 ,   { "",           "",     0                                    }
 };
 
