@@ -72,6 +72,82 @@ K-FRGS          // conversations
 SKWH-FPB        // ?
 SKWHOFP         // "
 SKWRAURBGS      // new para
+#A              // switch to Shavian
+R-R
+AL              // Alice
+EUS             //
+WAS             // was
+TKPWEUPB        // beginning
+-G              //
+TO              // to
+TKPWET          // get
+SR-R            // very
+TAOEURD         // tired
+-F              // of
+SEUGT           // sitting
+PWEU            // by
+HER             // her
+ST-R            // sister
+OPB             // on
+-T              // the
+PWA*PBG         // bank
+SKWHOB          // ,
+SKP             // and
+-F              // of
+SR-G            // having
+TPHOG           // nothing
+TO              // to
+TKO             // do
+SKWHOLG         // :
+WUPBS
+OR
+TWAOEUS
+SHE
+H
+PAOEPD
+TPH-T
+-T
+PWAOBG
+HER
+ST-R
+WAS
+RAEGD
+SKWHOB
+PWUT
+EUT
+H
+TPHO
+P*EUFPS
+OR
+K-FRGS
+-S
+TPH
+EUT
+SKWHOB          // ,
+SKWHAFP         // "
+SKP             // and
+WHA             // what
+S               // is
+-T              // the
+AOUS            // use 
+-F
+AEU
+PWAOBG
+SKWHOB
+SKWHOFP
+THAUT           // thought
+AL              // Alice
+EUS
+SKWHAFP
+WOUT            // without
+P*EUFPS         // pictures
+OR              // or
+K-FRGS          // conversations
+-S
+SKWH-FPB        // ?
+SKWHOFP         // "
+SKWRAURBGS      // new para
+#A              // switch back to Latin
 SO
 SHE
 WAS
@@ -174,7 +250,7 @@ TO
 T           // itself
 SEFL
 SKWHOB      // ,
-SKWHA*FP     // " + capitalise next
+SKWHA*FP    // " + capitalise next
 O*ERBGS     // oh
 TKAER       // dear
 SKWHO*FR    // !
@@ -185,6 +261,8 @@ EU
 SHAL
 -B
 HRAEUT
+SKWHOFR     // !
+SKWHOFP     // "
 SKWHAFPL    // ( 
 WHEPB
 SHE
