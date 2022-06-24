@@ -85,7 +85,7 @@ C_stroke_feed::get_steno( std::string & steno )
         steno = *strokes_it_;
         strokes_it_++;
 
-        delay( 200 );
+        delay( 100 );
 
         return true;
     }
