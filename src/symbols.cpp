@@ -245,6 +245,7 @@ S_test_entry
 C_symbols::test_entries[] = 
 {   // steno        expected_text expected_flags
     { "SKWH-FR",     "!",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FP",     "\"",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
 ,   { "SKWH-FRLG",   "#",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
 ,   { "SKWH-RPBL",   "$",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
 ,   { "SKWH-FRPB",   "%",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
@@ -269,6 +270,15 @@ C_symbols::test_entries[] =
 ,   { "SKWH-P",      "`",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
 ,   { "SKWH-PB",     "|",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
 ,   { "SKWH-FPBG",   "~",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+
+// variants
+
+,   { "SKWH-FP",     "\"",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWHEFP",     "“",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWHUFP",     "”",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWHEUFP",    "„",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+
+
 
 ,   { "",           "",     0                                   }
 };
