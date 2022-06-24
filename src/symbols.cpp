@@ -209,16 +209,22 @@ C_symbols::test( const std::string & steno
     std::string text;
     
     uint16_t flags = 0;
+    
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "--------------------" );
 
-    lookup( steno, text, flags );
-   
+    bool worked      = lookup( steno, text, flags );
     bool text_match  = ( expected_text == text );
     bool flags_match = ( expected_flags == flags );
 
-    if ( ( ! text_match ) || ( ! flags_match ) )
+    if ( ( ! worked ) || ( ! text_match ) || ( ! flags_match ) )
     {
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s", steno.c_str() );
-        
+       
+        if ( ! worked )
+        {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "  lookup failed - invalid steno leader?" );
+        }
+
         if ( ! text_match )
         {
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  expected %s, got %s"
@@ -229,8 +235,8 @@ C_symbols::test( const std::string & steno
         if ( ! flags_match )
         {
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  expected %04xh, got %04xh"
-                                                         , flags
-                                                         , expected_flags );
+                                                         , expected_flags
+                                                         , flags );
         }
     }
 }
@@ -238,31 +244,32 @@ C_symbols::test( const std::string & steno
 S_test_entry
 C_symbols::test_entries[] = 
 {   // steno        expected_text expected_flags
-    { "SKHWFR",     "!",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWFRLG",   "#",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWRPBG",   "$",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWFRPB",   "%",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWFBG",    "&",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWF",      "'",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWFPL",    "(",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWRBB",    ")",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWL",      "*",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWG",      "+",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWB",      ",",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWPL",     "-",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWR",      ".",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWRP",     "/",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWLG",     ":",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWRB",     ";",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWPBLG",   "=",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWFPB",    "?",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWFRPBLG", "@",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWFB",     "\\",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWRPG",    "^",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWBG",     "_",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWP",      "`",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWPB",     "|",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKHWFPBG",   "~",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+    { "SKWH-FR",     "!",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FRLG",   "#",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-RPBL",   "$",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FRPB",   "%",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FBG",    "&",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-F",      "'",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FPL",    "(",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-RBG",    ")",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-L",      "*",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-G",      "+",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-B",      ",",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-PL",     "-",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-R",      ".",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-RP",     "/",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-LG",     ":",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-RB",     ";",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-PBLG",   "=",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FPB",    "?",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FRPBLG", "@",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FB",     "\\",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-RPG",    "^",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-BG",     "_",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-P",      "`",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-PB",     "|",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+,   { "SKWH-FPBG",   "~",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+
 ,   { "",           "",     0                                   }
 };
 
