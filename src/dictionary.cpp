@@ -233,4 +233,10 @@ C_dictionary::escape_characters( std::string & str )
     }
 }
 
+void
+C_dictionary::tests()
+{
+    symbols_->tests();
+}
+
 }

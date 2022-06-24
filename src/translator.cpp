@@ -41,6 +41,8 @@ C_translator::~C_translator()
 bool
 C_translator::initialise( const std::string & dictionary_path )
 {
+    dictionary_->tests();
+
     return strokes_->initialise() && dictionary_->read( dictionary_path );
 }
 

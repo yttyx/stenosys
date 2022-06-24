@@ -1,6 +1,7 @@
 #pragma once
 
 #include "utf8.h"
+#include <cstdint>
 #include <string>
 #include <stdio.h>
 
@@ -14,6 +15,15 @@ namespace stenosys
 
 #define PUNCTUATION_STARTER  "SKWH"
 #define PUNCTUATION_VARIANTS "FRPBLG"
+#define STARTER_LEN          4
+
+struct S_test_entry
+{
+    const char * steno;
+    std::string expected_text;
+    uint16_t expected_flags;
+};
+
 
 class C_symbols
 {
@@ -27,12 +37,22 @@ public:
     bool
     lookup( const std::string & steno, std::string & text, uint16_t & flags );
 
-protected:
+
+    void
+    tests();
+
+private:
+
+    void
+    test( const std::string & steno
+        , const std::string & expected_text
+        , uint16_t            expected_flags );
 
 private:
 
     std::unique_ptr< std::unordered_map< std::string, std::string > > symbol_map_;
 
+    static S_test_entry test_entries[];
 };
 
 }

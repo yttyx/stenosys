@@ -43,6 +43,8 @@ public:
           , alphabet_type       alphabet  
           , std::string &       text
           , uint16_t &          flags );
+    void
+    tests();
 
 private:
 
@@ -59,7 +61,7 @@ private:
     bool
     parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 );
 
-    private:
+private:
 
     bool        initialised_;
 
