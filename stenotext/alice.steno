@@ -16,14 +16,14 @@ ST-R            // sister
 OPB             // on
 -T              // the
 PWA*PBG         // bank
-SKHWOBF           // ,
+SKWHOB          // ,
 SKP             // and
 -F              // of
 SR-G            // having
 TPHOG           // nothing
 TO              // to
 TKO             // do
--FRPLT          // :
+SKWHOLG         // :
 WUPBS
 OR
 TWAOEUS
@@ -48,13 +48,13 @@ K-FRGS
 -S
 TPH
 EUT
-SKHWOBF
-SKHWAFP
-SKP
-WHA
-S
--T
-AOUS
+SKWHOB          // ,
+SKWHAFP         // "
+SKP             // and
+WHA             // what
+S               // is
+-T              // the
+AOUS            // use 
 -F
 AEU
 PWAOBG
@@ -69,8 +69,8 @@ P*EUFPS         // pictures
 OR              // or
 K-FRGS          // conversations
 -S
-STPHR-RB        // question mark
-SKHWOFP           // close quotes
+SKWH-FPB        // ?
+SKWHOFP         // "
 SKWRAURBGS      // new para
 SO
 SHE
@@ -80,13 +80,13 @@ TPH
 HER
 OEPB            // own
 PHAOEUPBD       // mind
-P*PB
+SKWHAFPL        // ( 
 AS
 WEL
 AS
 SHE
 K-D
-SKHWOBF
+SKWHOB          // ,
 TPOR
 -T
 HOT
@@ -99,8 +99,8 @@ SHRAOE
 PEU
 SKP
 STAOUPD         // stupid
-P*PBT
-SKHWOBF
+SWKHORBG        // )
+SKHWOB          // ,
 WHR
 -T
 PHRERB
@@ -139,7 +139,7 @@ RAPB
 KHROES
 PWEU
 HER
-TP-PL
+SKWHOR
 SKWRAURBGS
 THER
 WAS
@@ -150,7 +150,7 @@ RARBG
 -BL
 TPH
 THA
-STPH*FPL
+SKWHORB     // ;
 TPH-R
 TK
 AL
@@ -173,13 +173,11 @@ SAEU
 TO
 T           // itself
 SEFL
-SKHWOBF       // ,
-SKHWAFP       // "
-KP          // uppercase next word
+SKHWOBF     // ,
+SKHW*FP     // " + capitalise next
 O*ERBGS     // Oh
 TKAER       // dear
-SKHRAPL     // !
-KP
+SKHRA*PL    // !
 O*ERBGS     // Oh
 TKAER       // dear
 SKHRAPL     // !

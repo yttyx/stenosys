@@ -253,10 +253,10 @@ C_symbols::test_entries[] =
 
 // spacing
 
-,   { "SKWH-FR",     "!",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
-,   { "SKWHAFR",     "!",    ATTACH_TO_NEXT                      }
-,   { "SKWHOFR",     "!",    ATTACH_TO_PREVIOUS                  }
-,   { "SKWHAOFR",    "!",    0                                   }
+,   { "SKWH-FR",     "!",    ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }  // x.x
+,   { "SKWHAFR",     "!",    ATTACH_TO_NEXT                      }  // x .x
+,   { "SKWHOFR",     "!",    ATTACH_TO_PREVIOUS                  }  // x. x
+,   { "SKWHAOFR",    "!",    0                                   }  // x . x
 
 // repetition
 
@@ -264,6 +264,9 @@ C_symbols::test_entries[] =
 ,   { "SKWH-FRS",    "!!",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
 ,   { "SKWH-FRT",    "!!!",  ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
 ,   { "SKWH-FRTS",   "!!!!", ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT }
+
+// capitalise after
+,   { "SKWH*FP",     "\"",   ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT | CAPITALISE_NEXT }
 
 ,   { "",           "",     0                                    }
 };

@@ -122,10 +122,10 @@ C_stenosys::run( int argc, char *argv[] )
                 std::string       translation;
                 S_geminipr_packet packet;
 
-                //if ( stroke_feed.get_steno( steno ) )
-                //{
-                    //translator.translate( steno, translation );
-                //}
+                if ( stroke_feed.get_steno( steno ) )
+                {
+                    translator.translate( steno, translation );
+                }
                 
                 // Stenographic chord input
                 //if ( steno_keyboard.read( packet ) )
