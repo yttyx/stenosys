@@ -31,7 +31,7 @@ void
 rtrim_string( std::string & s );
 
 int
-ctrl_to_text( const std::string & input, std::string output );
+ctrl_to_text( const std::string & input, std::string & output );
 
 void
 delay( unsigned int milliseconds);

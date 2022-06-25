@@ -199,26 +199,22 @@ C_strokes::dump()
     do
     {
         std::string trans_field;
+        std::string formatted;
+        
         std::string translation = stroke->translation();
         
         int formatted_length = 0;
 
-        if ( translation.length() > 0 )
-        {
-            std::string formatted;
+        formatted_length = ctrl_to_text( translation, formatted );
 
-            formatted_length = ctrl_to_text( translation, formatted );
-
-            trans_field = std::string( "|" ) + formatted + std::string( "|" );
-        }
+        trans_field = std::string( "|" ) + formatted + std::string( "|" );
 
         char line[ 2048 ];
 
         snprintf( line, sizeof( line ), "%-12.12s  %-s%*s  %04x  %2d"
                                       , stroke->steno().c_str()
                                       , trans_field.c_str()
-                                      , 30 - formatted_length
-                                      , ""
+                                      , 28 - formatted_length, ""
                                       , stroke->flags()
                                       , stroke->seqnum() );
    

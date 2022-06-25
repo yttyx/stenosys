@@ -108,7 +108,7 @@ find_and_replace( std::string & source, std::string const & find, std::string co
 // For example, "\n" becomes [0a]"
 // Returns the length of the string required to format it for example in a fprintf() call.
 int
-ctrl_to_text( const std::string & input, std::string output )
+ctrl_to_text( const std::string & input, std::string & output )
 {
     C_utf8 utf8_text( input );
 
