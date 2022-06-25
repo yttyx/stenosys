@@ -77,7 +77,7 @@ C_strokes::add_stroke( const std::string & steno
         {
             //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, flags: %u"
                                                        //, key.c_str()
-                                                       //, output.c_str()
+                                                       //, text.c_str()
                                                        //, flags );
 
             history_->curr()->translation( text );

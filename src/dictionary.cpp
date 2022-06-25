@@ -73,30 +73,36 @@ C_dictionary::read( const std::string & path )
                     bool shavian_ok = parser_->parse( shavian, parsed_shavian, shavian_flags );
                     
                     //TEMP
-                    if ( steno == "TPH-D" )
-                    {
-                        std::string latin_formatted; 
-                        std::string parsed_latin_formatted; 
+                    //if ( steno == "TPH-D" )
+                    //{
+                        ////TEMP
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%04x"
+                                                                   //, shavian.c_str()
+                                                                   //, parsed_shavian.c_str()
+                                                                   //, shavian_flags );
 
-                        ctrl_to_text( latin, latin_formatted );
-                        ctrl_to_text( parsed_latin, parsed_latin_formatted );
+                        //std::string latin_formatted; 
+                        //std::string parsed_latin_formatted; 
 
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "latin: %s, parsed latin: %s, latin flags:%04x"
-                                                                   , latin_formatted.c_str()
-                                                                   , parsed_latin_formatted.c_str()
-                                                                   , latin_flags );
+                        //ctrl_to_text( latin, latin_formatted );
+                        //ctrl_to_text( parsed_latin, parsed_latin_formatted );
 
-                        std::string shavian_formatted; 
-                        std::string parsed_shavian_formatted; 
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "latin: %s, parsed latin: %s, latin flags:%04x"
+                                                                   //, latin_formatted.c_str()
+                                                                   //, parsed_latin_formatted.c_str()
+                                                                   //, latin_flags );
+
+                        //std::string shavian_formatted; 
+                        //std::string parsed_shavian_formatted; 
                         
-                        ctrl_to_text( shavian, shavian_formatted );
-                        ctrl_to_text( parsed_shavian, parsed_shavian_formatted );
+                        //ctrl_to_text( shavian, shavian_formatted );
+                        //ctrl_to_text( parsed_shavian, parsed_shavian_formatted );
                         
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%04x"
-                                                                   , shavian_formatted.c_str()
-                                                                   , parsed_shavian_formatted.c_str()
-                                                                   , shavian_flags );
-                    }
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%04x"
+                                                                   //, shavian_formatted.c_str()
+                                                                   //, parsed_shavian_formatted.c_str()
+                                                                   //, shavian_flags );
+                    //}
 
                     if ( ( ! latin_ok ) || ( ! shavian_ok ) )
                     {
@@ -109,7 +115,7 @@ C_dictionary::read( const std::string & path )
                         STENO_ENTRY * steno_entry = new STENO_ENTRY();
                         
                         steno_entry->latin         = parsed_latin;
-                        steno_entry->shavian       = shavian;
+                        steno_entry->shavian       = parsed_shavian;
                         steno_entry->latin_flags   = latin_flags;
                         steno_entry->shavian_flags = shavian_flags;
 
@@ -165,10 +171,10 @@ C_dictionary::lookup( const std::string & steno
         std::string latin   = result->second.latin;
         std::string shavian = result->second.shavian;
 
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s found: %s, %s"
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s found: shavian: %s, shavian flags: %04xh"
                                                      //, steno.c_str()
-                                                     //, text.c_str()
-                                                     //, shavian.c_str( ) );
+                                                     //, result->second.shavian.c_str()
+                                                     //, result->second.shavian_flags );
 
         // If configured for Shavian, use the Shavian entry if it's not empty; otherwise use
         // the Latin entry.
