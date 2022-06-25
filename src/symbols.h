@@ -48,6 +48,18 @@ private:
         , const std::string & expected_text
         , uint16_t            expected_flags );
 
+    bool
+    get_symbols( const std::string & steno, C_utf8 & text );
+
+    int
+    get_symbol_variant( const std::string & steno );
+
+    int
+    get_multiplier( const std::string & steno );
+
+    void
+    set_flags( const std::string & steno, uint16_t & flags );
+
 private:
 
     std::unique_ptr< std::unordered_map< std::string, std::string > > symbol_map_;

@@ -77,90 +77,23 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
 
     // Steno order: STKPWHRAO*EUFRPBLGTSDZ
 
-    // Extract symbol variant from steno string
-    size_t start = steno.find_first_of( PUNCTUATION_VARIANTS, STARTER_LEN );
-    size_t end   = steno.find_last_of( PUNCTUATION_VARIANTS );
-    
     C_utf8 variants;
 
-    if  ( ( start != std::string::npos ) && ( end != std::string::npos ) )
-    {
-        std::string variant_steno = steno.substr( start, end - start + 1 );
-    
-        // Look up variant
-        auto result = symbol_map_->find( variant_steno );
-
-        if ( result == symbol_map_->end() )
-        {
-            return false;
-        }
-
-        variants = result->second;
-    }
-    else
+    if ( ! get_symbols( steno, variants ) )
     {
         return false;
     }
 
-    // Find symbol variant
-    bool got_e = ( steno.find_first_of( "E", STARTER_LEN ) != std::string::npos );
-    bool got_u = ( steno.find_first_of( "U", STARTER_LEN ) != std::string::npos );
+    std::string variant = variants.at( get_symbol_variant( steno ) );
 
-    int variant_index = 0; 
-
-    if ( ( ! got_e ) && ( ! got_u ) )
-    {
-        variant_index = 0;
-    }
-    else if ( got_e && ( ! got_u ) )
-    {
-        variant_index = 1;
-    }
-    else if ( ( ! got_e ) && got_u )
-    {
-        variant_index = 2;
-    }
-    else
-    {
-        variant_index = 3;
-    }
-
-    std::string variant = variants.at( variant_index );
-
-    // Set multiplier value
-    int multiplier = 1;
-
-    if ( steno.find( "T", STARTER_LEN) != std::string::npos )
-    {
-        multiplier = ( steno.find( "S", STARTER_LEN ) != std::string::npos ) ? 4 : 3;
-    }
-    else
-    {
-        multiplier = ( steno.find( "S", STARTER_LEN ) != std::string::npos ) ? 2 : 1;
-    }
+    int multiplier = get_multiplier( steno );
     
     while ( multiplier-- )
     {
         text += variant;
     }
-    
-    // Set attachment and capitalisation flags as required
-    if ( steno.find( "*", STARTER_LEN ) != std::string::npos )
-    {
-        flags |= CAPITALISE_NEXT;
-    }
 
-    flags |= ( ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT );
-
-    if ( steno.find( "A", STARTER_LEN ) != std::string::npos )
-    {
-        flags &= ( ~ATTACH_TO_PREVIOUS );
-    }
-
-    if ( steno.find( "O", STARTER_LEN ) != std::string::npos )
-    {
-        flags &= ( ~ATTACH_TO_NEXT );
-    }
+    set_flags( steno, flags );
 
     return true;
 }
@@ -201,7 +134,7 @@ C_symbols::test( const std::string & steno
         if ( ! text_match )
         {
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  expected %s, got %s"
-                                                         , ctrl_to_text( expected_text ).c_str()
+                                                         , expected_text.c_str()
                                                          , text.c_str() );
         }
 
@@ -211,6 +144,100 @@ C_symbols::test( const std::string & steno
                                                          , expected_flags
                                                          , flags );
         }
+    }
+}
+
+bool
+C_symbols::get_symbols( const std::string & steno, C_utf8 & variants )
+{
+    // Extract symbol variant from steno string
+    size_t start = steno.find_first_of( PUNCTUATION_VARIANTS, STARTER_LEN );
+    size_t end   = steno.find_last_of( PUNCTUATION_VARIANTS );
+    
+    if ( ( start != std::string::npos ) && ( end != std::string::npos ) )
+    {
+        std::string variant_steno = steno.substr( start, end - start + 1 );
+    
+        // Look up variant
+        auto result = symbol_map_->find( variant_steno );
+
+        if ( ! ( result == symbol_map_->end() ) )
+        {
+            variants = result->second;
+        
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int
+C_symbols::get_symbol_variant( const std::string & steno )
+{
+    // Find symbol variant
+    bool got_e = ( steno.find_first_of( "E", STARTER_LEN ) != std::string::npos );
+    bool got_u = ( steno.find_first_of( "U", STARTER_LEN ) != std::string::npos );
+
+    int variant_index = 0; 
+
+    if ( ( ! got_e ) && ( ! got_u ) )
+    {
+        variant_index = 0;
+    }
+    else if ( got_e && ( ! got_u ) )
+    {
+        variant_index = 1;
+    }
+    else if ( ( ! got_e ) && got_u )
+    {
+        variant_index = 2;
+    }
+    else
+    {
+        variant_index = 3;
+    }
+
+    return variant_index;
+}
+
+int
+C_symbols::get_multiplier( const std::string & steno )
+{
+    // Set multiplier value
+    int multiplier = 1;
+
+    if ( steno.find( "T", STARTER_LEN) != std::string::npos )
+    {
+        multiplier = ( steno.find( "S", STARTER_LEN ) != std::string::npos ) ? 4 : 3;
+    }
+    else
+    {
+        multiplier = ( steno.find( "S", STARTER_LEN ) != std::string::npos ) ? 2 : 1;
+    }
+
+    return multiplier;
+}
+    
+void
+C_symbols::set_flags( const std::string & steno, uint16_t & flags )
+{
+    // Set attachment and capitalisation flags as required
+    if ( steno.find( "*", STARTER_LEN ) != std::string::npos )
+    {
+        flags |= CAPITALISE_NEXT;
+    }
+
+    flags |= ( ATTACH_TO_PREVIOUS | ATTACH_TO_NEXT );
+
+    if ( steno.find( "A", STARTER_LEN ) != std::string::npos )
+    {
+        flags &= ( ~ATTACH_TO_PREVIOUS );
+    }
+
+    if ( steno.find( "O", STARTER_LEN ) != std::string::npos )
+    {
+        flags &= ( ~ATTACH_TO_NEXT );
     }
 }
 

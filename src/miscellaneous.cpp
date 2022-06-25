@@ -12,6 +12,7 @@
 
 #include "miscellaneous.h"
 #include "mutex.h"
+#include "utf8.h"
 
 namespace stenosys
 {
@@ -103,31 +104,41 @@ find_and_replace( std::string & source, std::string const & find, std::string co
     }
 }
 
-// Convert control characters in a string to text
+// Format control characters in a utf-8 string
 // For example, "\n" becomes [0a]"
-std::string
-ctrl_to_text( const std::string & text )
+// Returns the length of the string required to format it for example in a fprintf() call.
+int
+ctrl_to_text( const std::string & input, std::string output )
 {
-    std::string output;
+    C_utf8 utf8_text( input );
 
-    const uint8_t  * p = ( const uint8_t * ) text.c_str();
+    int formatted_length = 0;
 
-    for ( size_t ii = 0; ii < strlen( text.c_str() ); ii++, p++ )
+    for ( size_t ii = 0; ii < utf8_text.length(); ii++ )
     {
-        if ( ( *p < 0x20 ) || ( *p > 0x7f ) )
+        std::string ch = utf8_text.at( ii );
+
+        if ( ch.length() == 0 )
+        {
+            break;
+        }
+
+        if ( ( ch.length() == 1 ) && ( ch[ 0 ] < 0x20 ) )
         {
             char buffer[ 64 ];
 
-            snprintf( buffer, sizeof( buffer ), "[%02x]", *p );
+            snprintf( buffer, sizeof( buffer ), "[%02x]", ch[ 0 ] );
             output += buffer;
+            formatted_length += 4;
         }
         else
         {
-            output += *p;
+            output += ch;
+            formatted_length++;
         }
     }
 
-    return output;
+    return formatted_length;
 }
 
 void

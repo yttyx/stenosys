@@ -272,7 +272,7 @@
 -RLD	recalled	𐑮𐑦𐑒𐑷𐑤𐑛
 -RLG	recalling	𐑮𐑦𐑒𐑷𐑤𐑦𐑙
 -RLS	recalls	𐑮𐑦𐑒𐑷𐑤𐑟
--S	^s	𐑞
+-S	^s	^𐑟
 -T	the	𐑞
 06Z	6000	
 07Z	7000	
@@ -12868,13 +12868,8 @@ K*P/KAL	Kcal
 K*P/KALS	Kcals	
 K*P/PHART	K-Mart	
 K*PB	Kentucky	𐑒𐑩𐑯𐑑𐑳𐑒𐑦
-K*PBG	##CANONICAL##	
 K*PBS	kilonewtons	
-K*S	Kansas	𐑒𐑨𐑯𐑟𐑩𐑕
-K*S/*EPB	Kansans	
 K*T	Connecticut	𐑒𐑩𐑯𐑧𐑑𐑦𐑒𐑩𐑑
-K*UFP	Kutcher	
-K*UFPL/SRAOU	CustomVue	
 K*ULT	cult	𐑒𐑳𐑤𐑑
 K*UPBT	cunt	𐑒𐑳𐑯𐑑
 K*URB	cush	
@@ -52482,7 +52477,7 @@ TKHROEUFRS	deliveries	𐑛𐑦𐑤𐑦𐑝𐑼𐑦𐑟
 TKHROG	dialogue	𐑛𐑲𐑩𐑤𐑪𐑜
 TKHRORS	Dolores	
 TKHRUBGS	deluxe	
-TKO	do	𐑛𐑴
+TKO	do	𐑛𐑵
 TKO*/TPHUT	donut	
 TKO*BG	doc	
 TKO*BGS	docs	
@@ -57490,6 +57485,7 @@ TPH*US	News	𐑯𐑿𐑟
 TPH-BG	income	𐑦𐑯𐑒𐑳𐑥
 TPH-BGS	incomes	𐑦𐑯𐑒𐑳𐑥𐑟
 TPH-BL	uncomfortable	𐑳𐑯𐑒𐑳𐑥𐑓𐑼𐑑𐑩𐑚𐑩𐑤
+TPH-D	-!	
 TPH-DZ	inside	𐑦𐑯𐑕𐑲𐑛
 TPH-DZ/-Z	insides	𐑦𐑯𐑕𐑲𐑛𐑟
 TPH-F	inform	𐑦𐑯𐑓𐑹𐑥

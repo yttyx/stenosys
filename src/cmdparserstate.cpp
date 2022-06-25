@@ -228,6 +228,12 @@ STATE_DEFINITION( C_st_got_command_2, C_cmd_parser )
                 p->flags_ |= CAPITALISE_NEXT;
                 set_state( p, C_st_get_command_end::s.instance(), "C_st_get_command_end" );
                 break;
+            
+            case '!':
+                p->flags_ |= NAMING_DOT;
+                set_state( p, C_st_get_command_end::s.instance(), "C_st_get_command_end" );
+                break;
+
 
             default:
                 p->parsed_ok_ = false;

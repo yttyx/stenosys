@@ -30,8 +30,8 @@ ltrim_string( std::string & s );
 void
 rtrim_string( std::string & s );
 
-std::string
-ctrl_to_text( const std::string & text );
+int
+ctrl_to_text( const std::string & input, std::string output );
 
 void
 delay( unsigned int milliseconds);

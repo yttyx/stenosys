@@ -67,7 +67,7 @@ C_formatter::format( alphabet_type     alphabet_mode
         }
         else  // Shavian alphabet
         {
-            if ( flags_prev & CAPITALISE_NEXT )
+            if ( flags_prev & NAMING_DOT )
             {
                 // Prefix shavian with a naming dot
                 formatted = std::string( "·" ) + formatted;

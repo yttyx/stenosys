@@ -85,7 +85,7 @@ C_stenosys::run( int argc, char *argv[] )
 
         std::unique_ptr< C_outputter > x11_output = std::make_unique< C_x11_output>();
 
-        //C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard */
+        C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard */
         // C_serial       serial;               // Serial output to the Pro Micro
         C_stroke_feed    stroke_feed;
         C_translator     translator( AT_LATIN );
@@ -102,14 +102,14 @@ C_stenosys::run( int argc, char *argv[] )
         // Allow time for the keyup event when enter is pressed to execute the program
         delay( 1000 );
 
-        //worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
-        //worked = worked && steno_keyboard.start();
+        worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
+        worked = worked && steno_keyboard.start();
         //worked = worked && serial.initialise( cfg.c().device_output ); 
         
         worked = worked && translator.initialise( cfg.c().file_dict );
 
-        worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
-        //worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
+        //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
+        worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
 
         if ( worked )
         {
@@ -128,12 +128,12 @@ C_stenosys::run( int argc, char *argv[] )
                 }
                 
                 // Stenographic chord input
-                //if ( steno_keyboard.read( packet ) )
-                //{
-                    //steno = C_gemini_pr::decode( packet );
+                if ( steno_keyboard.read( packet ) )
+                {
+                    steno = C_gemini_pr::decode( packet );
                     
-                    //translator.translate( steno, translation );
-                //}
+                    translator.translate( steno, translation );
+                }
 
                 if ( translation.length() > 0 )
                 {
@@ -144,11 +144,11 @@ C_stenosys::run( int argc, char *argv[] )
                 key_event_t key_event = KEY_EV_UNKNOWN;
                 uint8_t     scancode  = 0;
 
-                //if ( steno_keyboard.read( key_event, scancode ) )
-                //{
-                    //x11_output->send( key_event, scancode );
-                    ////serial.send( key_code );
-                //}
+                if ( steno_keyboard.read( key_event, scancode ) )
+                {
+                    x11_output->send( key_event, scancode );
+                    //serial.send( key_code );
+                }
 
                 delay( 1 );
             }
@@ -156,7 +156,7 @@ C_stenosys::run( int argc, char *argv[] )
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
             
             //serial.stop();
-            //steno_keyboard.stop();
+            steno_keyboard.stop();
 
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Devices closed down" );
         }

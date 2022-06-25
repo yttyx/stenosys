@@ -341,7 +341,15 @@ C_utf8::dump()
 {
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_utf8::dump()" );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  str_    : %s", ctrl_to_text( str_ ).c_str() );
+    //TODO byte dump of string (ctrl_to_text was modified to make it friendlier
+    //     for doing the strokes dump (see C_strokes) but this isn't what we want
+    //     here.
+
+    std::string formatted;
+
+    ctrl_to_text( str_, formatted );
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  str_    : %s", formatted.c_str() );
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  index_  : %d", index_ );
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  length_ : %d", length_ );
     
