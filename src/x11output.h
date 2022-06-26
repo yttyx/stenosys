@@ -1,6 +1,8 @@
 // x11output.h
 #pragma once
 
+#ifdef X11
+
 #include "stdarg.h"
 #include <cstdint>
 #include <memory>
@@ -73,7 +75,13 @@ public:
     send( key_event_t key_event, uint8_t scancode );
 
     virtual void
+    send( uint16_t key_code );
+    
+    virtual void
     test();
+    
+    virtual void
+    stop();
 
 private:
 
@@ -121,3 +129,5 @@ private:
 };
 
 }
+
+#endif // X11

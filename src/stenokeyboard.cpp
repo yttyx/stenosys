@@ -17,7 +17,7 @@
 #include "kbdsteno.h"
 #include "keyevent.h"
 #include "log.h"
-#include "promicro.h"
+//#include "promicro.h"
 #include "stenokeyboard.h"
 
 #define LOG_SOURCE "STKBD"

@@ -21,7 +21,7 @@
 #include "kbdsteno.h"
 #include "log.h"
 #include "miscellaneous.h"
-#include "promicro.h"
+//#include "promicro.h"
 
 #define BITS_PER_LONG (sizeof(long) * 8)
 #define NBITS( x )    ( ( ( ( x ) - 1 ) / BITS_PER_LONG ) + 1 )

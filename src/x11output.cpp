@@ -1,5 +1,6 @@
 // x11output.cpp
-//
+
+#ifdef X11
 
 #include <X11/X.h>
 #include <algorithm>
@@ -176,6 +177,17 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             XTestGrabControl( display_, False );
         }
     }
+}
+
+void
+C_x11_output::send( uint16_t key_code )
+{
+    //TODO?
+}
+
+void
+C_x11_output::stop()
+{
 }
 
 void
@@ -789,3 +801,5 @@ C_x11_output::test()
 }
 
 }
+
+#endif // X11

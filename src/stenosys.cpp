@@ -34,11 +34,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "keyevent.h"
 #include "log.h"
 #include "miscellaneous.h"
+#include "promicrooutput.h"
 #include "stenokeyboard.h"
 #include "stenosys.h"
 #include "strokefeed.h"
 #include "translator.h"
+
+#ifdef X11_
 #include "x11output.h"
+#endif
 
 #define LOG_SOURCE "STSYS"
 
@@ -83,7 +87,13 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", cfg.c().device_raw.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
 
-        std::unique_ptr< C_outputter > x11_output = std::make_unique< C_x11_output>();
+        // If X11 is specified, use the x11 output code; otherwise use the serial output
+        // to Pro Micro.
+#ifdef X11
+        std::unique_ptr< C_outputter > outputter = std::make_unique< C_x11_output>();
+#else
+        std::unique_ptr< C_outputter > outputter = std::make_unique< C_pro_micro_output >();
+#endif
 
         C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard */
         // C_serial       serial;               // Serial output to the Pro Micro
@@ -92,7 +102,7 @@ C_stenosys::run( int argc, char *argv[] )
         
         bool worked = true;
 
-        worked = worked && x11_output->initialise();
+        worked = worked && outputter->initialise();
 
         if ( ! worked )
         {
@@ -137,7 +147,7 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( translation.length() > 0 )
                 {
-                    x11_output->send( translation );
+                    outputter->send( translation );
                 }
 
                 // Key event input
@@ -146,7 +156,7 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( steno_keyboard.read( key_event, scancode ) )
                 {
-                    x11_output->send( key_event, scancode );
+                    outputter->send( key_event, scancode );
                     //serial.send( key_code );
                 }
 

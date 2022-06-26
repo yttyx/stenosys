@@ -3,35 +3,42 @@
 #include <stdint.h>
 
 #include "miscellaneous.h"
-#include "promicro.h"
+#include "promicrooutput.h"
 
 using namespace stenosys;
 
 namespace stenosys
 {
 
-bool
-C_pro_micro::send( uint16_t key_code )
+C_pro_micro_output::C_pro_micro_output()
 {
-    bool worked = true;
+}
     
-    {
-        uint8_t ch = ( key_code >> 8 );
-
-        worked = worked && serial_.send( ch );
-    }
-    {
-        uint8_t ch = ( key_code & 0xff );
-
-        worked = worked && serial_.send( ch );
-    }
-
-    return worked;
+C_pro_micro_output::~C_pro_micro_output()
+{
 }
 
-// This method is used only for sending steno output strings
+bool
+C_pro_micro_output::initialise()
+{
+    //TODO
+    return false;
+}
+
 void
-C_pro_micro::send( std::string & str )
+C_pro_micro_output::send( uint16_t key_code )
+{
+    uint8_t ch = ( key_code >> 8 );
+
+    serial_.send( ch );
+   
+    ch = ( key_code & 0xff );
+
+    serial_.send( ch );
+}
+
+void
+C_pro_micro_output::send( const std::string & str )
 {
     for ( unsigned int ii = 0; ii < str.size(); ii++ )
     {
@@ -41,7 +48,19 @@ C_pro_micro::send( std::string & str )
 }
 
 void
-C_pro_micro::stop()
+C_pro_micro_output::toggle_shavian()
+{
+    //TODO?
+}
+
+void
+C_pro_micro_output::test()
+{
+    //TODO?
+}
+
+void
+C_pro_micro_output::stop()
 {
     uint16_t command = ( EV_KEY_RELEASE_ALL << 8 ) + EV_KEY_NOOP;
 
@@ -58,7 +77,7 @@ C_pro_micro::stop()
 // Ctrl-Alt-S etc can work).
 
 unsigned char
-C_pro_micro::keytable[] =
+C_pro_micro_output::keytable[] =
 {
     '?'                         // KEY_RESERVED              0
 ,   ARDUINO_KEY_ESC             // KEY_ESC                   1

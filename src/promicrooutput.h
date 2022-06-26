@@ -1,5 +1,7 @@
 #pragma once
 
+#include "keyevent.h"
+#include "outputter.h"
 #include "serial.h"
 
 using namespace stenosys;
@@ -50,26 +52,33 @@ namespace stenosys
 #define ARDUINO_KEY_F11             0xCC
 #define ARDUINO_KEY_F12             0xCD
 
-class C_pro_micro
+class C_pro_micro_output : public C_outputter
 {
 public:
 
-    C_pro_micro()
-    {
-    }
+    C_pro_micro_output();
+    ~C_pro_micro_output();
+    
+    virtual bool    
+    initialise();
 
-    ~C_pro_micro()
-    {
-    }
-
-    void
-    stop();
-
-    bool 
+    virtual void
+    send( const std::string & str );
+    
+    virtual void
     send( uint16_t key_code );
 
-    void
-    send( std::string & str );
+    virtual void
+    send( key_event_t key_event, uint8_t scancode );
+
+    virtual void
+    toggle_shavian();
+    
+    virtual void
+    test();
+
+    virtual void
+    stop();
 
 public:
 

@@ -12,7 +12,7 @@
 #include "mutex.h"
 #include "thread.h"
 
-#include "promicro.h"
+//#include "promicro.h"
 
 namespace stenosys
 {
