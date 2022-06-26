@@ -48,6 +48,12 @@ C_pro_micro_output::send( const std::string & str )
 }
 
 void
+C_pro_micro_output::send( key_event_t key_event, uint8_t scancode )
+{
+    //TODO?
+}
+
+void
 C_pro_micro_output::toggle_shavian()
 {
     //TODO?
