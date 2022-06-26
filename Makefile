@@ -18,7 +18,7 @@ INC			:= -I/usr/include
 
 # -O0       No optimisation
 # -Wall		All warnings
-CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe
+CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe -D X11
 LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lconfig++ -lm -lX11 -lXtst
 
 SOURCES 	:= $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')

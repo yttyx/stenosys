@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "strokefeed.h"
 #include "translator.h"
 
-#ifdef X11_
+#ifdef X11
 #include "x11output.h"
 #endif
 
@@ -90,8 +90,10 @@ C_stenosys::run( int argc, char *argv[] )
         // If X11 is specified, use the x11 output code; otherwise use the serial output
         // to Pro Micro.
 #ifdef X11
-        std::unique_ptr< C_outputter > outputter = std::make_unique< C_x11_output>();
+#pragma message( "Building for X11" )
+        std::unique_ptr< C_outputter > outputter = std::make_unique< C_x11_output >();
 #else
+#pragma message( "Building for Pro Micro" )
         std::unique_ptr< C_outputter > outputter = std::make_unique< C_pro_micro_output >();
 #endif
 
