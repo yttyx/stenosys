@@ -1,6 +1,3 @@
-
-
-#include <X11/Intrinsic.h>
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
