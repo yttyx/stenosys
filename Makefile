@@ -18,8 +18,16 @@ INC			:= -I/usr/include
 
 # -O0       No optimisation
 # -Wall		All warnings
-CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe -D X11
-LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lconfig++ -lm -lX11 -lXtst
+
+# Use "make OUTPUT=X11" to build with X11 support
+#     "make" alone builds for Pro Micro output (steno-in-the-middle)
+ifeq ($(strip $(OUTPUT)),)
+	CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe
+	LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lconfig++ -lm
+else
+	CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe -D X11
+	LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lconfig++ -lm -lX11 -lXtst
+endif
 
 SOURCES 	:= $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
 OBJECTS 	:= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
@@ -50,3 +58,4 @@ $(BUILDDIR)/%.$(OBJEXT):	$(SRCDIR)/%.$(SRCEXT)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 all             :       $(TARGET)
+	@echo ${X11}
