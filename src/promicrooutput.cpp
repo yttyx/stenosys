@@ -21,7 +21,12 @@ C_pro_micro_output::~C_pro_micro_output()
 bool
 C_pro_micro_output::initialise()
 {
-    //TODO
+    return false;
+}
+
+bool
+C_pro_micro_output::initialise( const std::string & output_device )
+{
     return false;
 }
 

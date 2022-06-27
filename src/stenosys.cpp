@@ -78,7 +78,6 @@ C_stenosys::run( int argc, char *argv[] )
 
     if ( cfg.read( argc, argv ) )
     {
-
         log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
  
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys version: %s", VERSION );
@@ -86,42 +85,43 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Dictionary path : %s", cfg.c().file_dict.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", cfg.c().device_raw.c_str() );
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
+#ifndef X11
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Output device   : %s", cfg.c().device_output.c_str() );
+#endif
 
-        // If X11 is specified, use the x11 output code; otherwise use the serial output
-        // to Pro Micro.
+        // Allow time for the keyup event when enter is pressed to execute the program
+        delay( 1000 );
+        
+        bool worked = true;
+        
+        // If X11 is specified, use the x11 output code; otherwise use the serial output to Pro Micro.
 #ifdef X11
 #pragma message( "Building for X11" )
         std::unique_ptr< C_outputter > outputter = std::make_unique< C_x11_output >();
+        
+        worked = worked && outputter->initialise();
 #else
 #pragma message( "Building for Pro Micro" )
         std::unique_ptr< C_outputter > outputter = std::make_unique< C_pro_micro_output >();
-#endif
-
-        C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard */
-        // C_serial       serial;               // Serial output to the Pro Micro
-        C_stroke_feed    stroke_feed;
-        C_translator     translator( AT_LATIN );
         
-        bool worked = true;
-
-        worked = worked && outputter->initialise();
+        worked = worked && outputter->initialise( cfg.c().device_output );
+#endif
 
         if ( ! worked )
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "X initialisation failed (running locally?)" );
         }
 
-        // Allow time for the keyup event when enter is pressed to execute the program
-        delay( 1000 );
-
-        worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
-        worked = worked && steno_keyboard.start();
-        //worked = worked && serial.initialise( cfg.c().device_output ); 
+        C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard
+        C_stroke_feed    stroke_feed;
+        C_translator     translator( AT_LATIN );
         
-        worked = worked && translator.initialise( cfg.c().file_dict );
+        worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
 
         //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
-        worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );    //TEST
+        worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );       //TEST
+        worked = worked && steno_keyboard.start();
+        worked = worked && translator.initialise( cfg.c().file_dict );
 
         if ( worked )
         {

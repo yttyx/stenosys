@@ -18,6 +18,9 @@ public:
 
     virtual bool
     initialise() = 0;
+    
+    virtual bool
+    initialise( const std::string & output_device ) = 0;
 
     virtual void
     send( const std::string & text ) = 0;

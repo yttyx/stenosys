@@ -68,6 +68,9 @@ public:
     virtual bool    
     initialise();
 
+    virtual bool    
+    initialise( const std::string & output_device );
+    
     virtual void
     send( const std::string & str );
 

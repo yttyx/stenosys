@@ -61,6 +61,12 @@ C_x11_output::initialise()
     return display_ != NULL;
 }
 
+bool
+C_x11_output::initialise( const std::string & output_device )
+{
+    return false;
+}
+
 void
 C_x11_output::toggle_shavian()
 {
