@@ -3,14 +3,19 @@
 #include <stdint.h>
 
 #include "keyevent.h"
+#include "log.h"
 #include "miscellaneous.h"
 #include "promicrooutput.h"
 #include "utf8.h"
+
+#define LOG_SOURCE "PROMO"
 
 using namespace stenosys;
 
 namespace stenosys
 {
+
+extern C_log log;
 
 C_pro_micro_output::C_pro_micro_output()
 {
@@ -39,12 +44,18 @@ C_pro_micro_output::send( const std::string & str )
     C_utf8      utf8_str;
     std::string utf8_ch;
 
+    //TEMP
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_pro_micro_output::send() - STRING" );
+
     if ( utf8_str.get_first( utf8_ch ) )
     {
         do
         {
             // Only ASCII characters are supported when sending to the remote Pro Micro
             char ch = ( utf8_ch.length() == 1 ) ? utf8_ch[ 0 ] : '?'; 
+
+            //TEMP
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  %c (%02xh)", ch, ch );
 
             send( KEY_EV_DOWN, ch );
             send( KEY_EV_UP, ch );
@@ -56,6 +67,13 @@ C_pro_micro_output::send( const std::string & str )
 void
 C_pro_micro_output::send( key_event_t key_event, uint8_t scancode )
 {
+    //TEMP
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_pro_micro_output::send() - KEY EVENT" );
+    
+    //TEMP
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, " key_event     : %d",    key_event );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, " scancode      : %02xh", scancode );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, " keytable entry: %02xh", keytable[ scancode & 0x7f ] );
 
     if ( key_event == KEY_EV_DOWN )
     {
