@@ -77,12 +77,15 @@ public:
     virtual void
     test();
 
-    virtual void
-    stop();
-
 public:
 
-    static unsigned char keytable[];
+    static unsigned char
+    keytable[];
+
+private:
+
+    virtual void
+    stop();
 
 private:
 
