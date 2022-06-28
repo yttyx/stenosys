@@ -50,6 +50,8 @@ C_translator::initialise( const std::string & dictionary_path )
 void
 C_translator::translate( const std::string & steno, std::string & output )
 {
+    output.clear();
+
     if ( steno[ 0 ] == '#' )
     {
         if ( steno == "#A" )

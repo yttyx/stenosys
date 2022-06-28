@@ -141,21 +141,21 @@ C_stenosys::run( int argc, char *argv[] )
                 //{
                     //translator.translate( steno, translation );
                 //}
-                
+
                 // Stenographic chord input
                 if ( steno_keyboard.read( packet ) )
                 {
                     steno = C_gemini_pr::decode( packet );
                     
                     translator.translate( steno, translation );
-                }
 
-                if ( translation.length() > 0 )
-                {
-                    //TEMP
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation.c_str(): %s", translation.c_str() );
-                
-                    outputter->send( translation );
+                    if ( translation.length() > 0 )
+                    {
+                        //TEMP
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation.c_str(): %s", translation.c_str() );
+                    
+                        outputter->send( translation );
+                    }
                 }
 
                 // Key event input
