@@ -78,9 +78,6 @@ public:
     send( key_event_t key_event, uint8_t scancode );
 
     virtual void
-    send( uint16_t key_code );
-    
-    virtual void
     test();
     
     virtual void

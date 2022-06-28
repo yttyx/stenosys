@@ -186,12 +186,6 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
 }
 
 void
-C_x11_output::send( uint16_t key_code )
-{
-    //TODO?
-}
-
-void
 C_x11_output::stop()
 {
 }

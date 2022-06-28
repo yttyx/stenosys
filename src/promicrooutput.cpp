@@ -2,8 +2,10 @@
 
 #include <stdint.h>
 
+#include "keyevent.h"
 #include "miscellaneous.h"
 #include "promicrooutput.h"
+#include "utf8.h"
 
 using namespace stenosys;
 
@@ -27,56 +29,63 @@ C_pro_micro_output::initialise()
 bool
 C_pro_micro_output::initialise( const std::string & output_device )
 {
-    return false;
+    return serial_.initialise( output_device );
 }
 
-void
-C_pro_micro_output::send( uint16_t key_code )
-{
-    uint8_t ch = ( key_code >> 8 );
-
-    serial_.send( ch );
-   
-    ch = ( key_code & 0xff );
-
-    serial_.send( ch );
-}
-
+// str might contain UTF-8 characters
 void
 C_pro_micro_output::send( const std::string & str )
 {
-    for ( unsigned int ii = 0; ii < str.size(); ii++ )
+    C_utf8      utf8_str;
+    std::string utf8_ch;
+
+    if ( utf8_str.get_first( utf8_ch ) )
     {
-        send( ( uint16_t ) ( ( EV_KEY_DOWN << 8 ) + str[ ii ] ) );
-        send( ( uint16_t ) ( ( EV_KEY_UP   << 8 ) + str[ ii ] ) );
+        do
+        {
+            // Only ASCII characters are supported when sending to the remote Pro Micro
+            char ch = ( utf8_ch.length() == 1 ) ? utf8_ch[ 0 ] : '?'; 
+
+            send( KEY_EV_DOWN, ch );
+            send( KEY_EV_UP, ch );
+        
+        } while ( utf8_str.get_next( utf8_ch ) );
     }
 }
 
 void
 C_pro_micro_output::send( key_event_t key_event, uint8_t scancode )
 {
-    //TODO?
+
+    if ( key_event == KEY_EV_DOWN )
+    {
+        serial_.send( EV_KEY_DOWN );
+        serial_.send( keytable[ scancode & 0x7f ] );
+    }
+    else if ( key_event == KEY_EV_UP )
+    {
+        serial_.send( EV_KEY_UP );
+        serial_.send( keytable[ scancode & 0x7f ] );
+    }
 }
 
 void
 C_pro_micro_output::toggle_shavian()
 {
-    //TODO?
+    // Shavian is not supported in Pro Micro output
 }
 
 void
 C_pro_micro_output::test()
 {
-    //TODO?
 }
 
 void
 C_pro_micro_output::stop()
 {
-    uint16_t command = ( EV_KEY_RELEASE_ALL << 8 ) + EV_KEY_NOOP;
-
-    send( command );
-
+    serial_.send( EV_KEY_RELEASE_ALL );
+    serial_.send( EV_KEY_NOOP );
+    
     // Wait enough time for the two bytes to be sent (2mS at 9600bps)
     delay( 5 );
 }

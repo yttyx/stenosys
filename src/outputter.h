@@ -29,9 +29,6 @@ public:
     send( key_event_t key_event, uint8_t scancode ) = 0;
     
     virtual void
-    send( uint16_t key_code ) = 0;
-
-    virtual void
     toggle_shavian() = 0;
     
     virtual void
@@ -39,11 +36,6 @@ public:
 
     virtual void
     stop() = 0;
-
-private:
-
-    //virtual std::string
-    //format( const std::string & text ) = 0;
 
 private:
 

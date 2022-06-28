@@ -69,9 +69,6 @@ public:
     send( const std::string & str );
     
     virtual void
-    send( uint16_t key_code );
-
-    virtual void
     send( key_event_t key_event, uint8_t scancode );
 
     virtual void
