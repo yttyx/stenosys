@@ -53,7 +53,7 @@ C_pro_micro_output::send( const std::string & str )
         do
         {
             // Only ASCII characters are supported when sending to the remote Pro Micro
-            char ch = ( utf8_ch.length() == 1 ) ? utf8_ch[ 0 ] : '?'; 
+            char ch = ( utf8_ch.length() == 1 ) ? keytable[ utf8_ch[ 0 ] & 0x7f ] : '?'; 
 
             //TEMP
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  %c (%02xh)", ch, ch );
