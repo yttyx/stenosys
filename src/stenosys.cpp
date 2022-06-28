@@ -150,7 +150,7 @@ C_stenosys::run( int argc, char *argv[] )
                 if ( translation.length() > 0 )
                 {
                     //TEMP
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation.c_str(): %s", translation.c_str() );
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation.c_str(): %s", translation.c_str() );
                 
                     outputter->send( translation );
                 }
@@ -162,7 +162,6 @@ C_stenosys::run( int argc, char *argv[] )
                 if ( steno_keyboard.read( key_event, scancode ) )
                 {
                     outputter->send( key_event, scancode );
-                    //serial.send( key_code );
                 }
 
                 delay( 1 );
@@ -170,7 +169,6 @@ C_stenosys::run( int argc, char *argv[] )
 
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
             
-            //serial.stop();
             steno_keyboard.stop();
 
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Devices closed down" );
