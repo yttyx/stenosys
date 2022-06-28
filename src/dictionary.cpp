@@ -1,3 +1,4 @@
+#include <exception>
 #include <fcntl.h>
 #include <fstream>
 #include <iomanip>
@@ -191,21 +192,28 @@ C_dictionary::parse_line( const std::string & line
                         , std::string & field2
                         , std::string & field3 )
 {
-    std::regex regex_entry( regex );
-
-    std::smatch matches;
-
-    if ( std::regex_search( line, matches, regex_entry ) )
+    try
     {
-        std::ssub_match match1 = matches[ 1 ];
-        std::ssub_match match2 = matches[ 2 ];
-        std::ssub_match match3 = matches[ 3 ];
+        std::regex regex_entry( regex );
 
-        field1 = match1.str();
-        field2 = match2.str();
-        field3 = match3.str();
+        std::smatch matches;
 
-        return true;
+        if ( std::regex_search( line, matches, regex_entry ) )
+        {
+            std::ssub_match match1 = matches[ 1 ];
+            std::ssub_match match2 = matches[ 2 ];
+            std::ssub_match match3 = matches[ 3 ];
+
+            field1 = match1.str();
+            field2 = match2.str();
+            field3 = match3.str();
+
+            return true;
+        }
+    }
+    catch ( std::exception & ex )
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "exception, dictionary line: %s: %s", line.c_str(), ex.what() );
     }
 
     return false;
