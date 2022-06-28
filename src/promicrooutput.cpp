@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <stdint.h>
 
 #include "keyevent.h"
@@ -40,8 +41,9 @@ C_pro_micro_output::initialise( const std::string & output_device )
 void
 C_pro_micro_output::send( const std::string & str )
 {
-    C_utf8      utf8_str( str );
-    std::string utf8_ch;
+    C_utf8 utf8_str( str );
+
+    uint32_t code = 0;
 
     //TEMP
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_pro_micro_output::send()" );
@@ -49,12 +51,12 @@ C_pro_micro_output::send( const std::string & str )
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  utf8_str.c_str() : %s", utf8_str.c_str() );
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  utf8_str.length(): %d", utf8_str.length() );
 
-    if ( utf8_str.get_first( utf8_ch ) )
+    if ( utf8_str.get_first( code ) )
     {
         do
         {
             // Only ASCII characters are supported when sending to the remote Pro Micro
-            char ch = ( utf8_ch.length() == 1 ) ? utf8_ch[ 0 ] : '?'; 
+            char ch = ( code < 0x7f ) ? ( char ) code : '?'; 
 
             //TEMP
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  %c (%02xh)", ch, ch );
@@ -65,7 +67,7 @@ C_pro_micro_output::send( const std::string & str )
             serial_.send( EV_KEY_UP );
             serial_.send( ch );
         
-        } while ( utf8_str.get_next( utf8_ch ) );
+        } while ( utf8_str.get_next( code ) );
     }
 }
 
