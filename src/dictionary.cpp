@@ -213,7 +213,7 @@ C_dictionary::parse_line( const std::string & line
     }
     catch ( std::exception & ex )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "exception, dictionary line: %s: %s", line.c_str(), ex.what() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Exception, dictionary line: %s: %s", line.c_str(), ex.what() );
     }
 
     return false;

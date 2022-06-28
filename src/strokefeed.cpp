@@ -1,5 +1,6 @@
 // strokefeed.cpp
 
+#include <exception>
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -96,18 +97,25 @@ C_stroke_feed::get_steno( std::string & steno )
 bool
 C_stroke_feed::parse_line( const std::string & line, const char * regex, std::string & param )
 {
-    std::regex regex_entry( regex );
-
-    std::smatch matches;
-
-    if ( std::regex_search( line, matches, regex_entry ) )
+    try
     {
-        std::ssub_match match = matches[ 1 ];
+        std::regex regex_entry( regex );
 
-        param = match.str();
+        std::smatch matches;
 
-        return true;
+        if ( std::regex_search( line, matches, regex_entry ) )
+        {
+            std::ssub_match match = matches[ 1 ];
+
+            param = match.str();
+
+            return true;
+        }
     }
+    catch ( std::exception & ex )
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stroke feed: exception parsing line %s: %s ", line.c_str(), ex.what() );
+    }    
 
     return false;
 }
