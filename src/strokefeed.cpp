@@ -24,7 +24,8 @@ extern C_log log;
 // Sample line:
 //   SR-R     // very
 //   TAOEURD  // tired
-const char * REGEX_STROKE = "\\s*([#STKPWHRAO*EUFBLGDZ\\-*]+)";
+//const char * REGEX_STROKE = "\\s*([#STKPWHRAO*EUFBLGDZ\\-*]+)";
+const char * REGEX_STROKE = "\\s*([#STKPWHRAO*EUFBLGDZ*-]+)";
 
 C_stroke_feed::C_stroke_feed()
 {
