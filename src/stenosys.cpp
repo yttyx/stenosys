@@ -149,6 +149,9 @@ C_stenosys::run( int argc, char *argv[] )
 
                 if ( translation.length() > 0 )
                 {
+                    //TEMP
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation.c_str(): %s", translation.c_str() );
+                
                     outputter->send( translation );
                 }
 

@@ -55,11 +55,14 @@ C_pro_micro_output::send( const std::string & str )
     {
         do
         {
+            //TEMP
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  code: %04xh", code );
+
             // Only ASCII characters are supported when sending to the remote Pro Micro
             char ch = ( code < 0x7f ) ? ( char ) code : '?'; 
-
+            
             //TEMP
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  %c (%02xh)", ch, ch );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  ch: %c (%02xh)", ch, ch );
 
             serial_.send( EV_KEY_DOWN );
             serial_.send( ch );
