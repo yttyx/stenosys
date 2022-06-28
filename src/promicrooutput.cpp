@@ -1,5 +1,3 @@
-// promicro.cpp
-
 #include <stdint.h>
 
 #include "keyevent.h"
@@ -45,7 +43,10 @@ C_pro_micro_output::send( const std::string & str )
     std::string utf8_ch;
 
     //TEMP
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_pro_micro_output::send() - STRING" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_pro_micro_output::send()" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  str              : %s", str.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  utf8_str.c_str() : %s", utf8_str.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  utf8_str.length(): %d", utf8_str.length() );
 
     if ( utf8_str.get_first( utf8_ch ) )
     {
