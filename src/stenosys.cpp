@@ -126,18 +126,21 @@ C_stenosys::run( int argc, char *argv[] )
         if ( worked )
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ready" );
-        
+                
+            std::string       stroke;
+            std::string       steno;
+            std::string       translation;
+            S_geminipr_packet packet;
+
+            uint8_t           scancode  = 0;
+            key_event_t       key_event = KEY_EV_UNKNOWN;
+            
             while ( ! kbd.abort() )
             {
-                std::string       stroke;
-                std::string       steno;
-                std::string       translation;
-                S_geminipr_packet packet;
-
-                if ( stroke_feed.get_steno( steno ) )
-                {
-                    translator.translate( steno, translation );
-                }
+                //if ( stroke_feed.get_steno( steno ) )
+                //{
+                    //translator.translate( steno, translation );
+                //}
                 
                 // Stenographic chord input
                 if ( steno_keyboard.read( packet ) )
@@ -156,8 +159,6 @@ C_stenosys::run( int argc, char *argv[] )
                 }
 
                 // Key event input
-                key_event_t key_event = KEY_EV_UNKNOWN;
-                uint8_t     scancode  = 0;
 
                 if ( steno_keyboard.read( key_event, scancode ) )
                 {
