@@ -41,7 +41,7 @@ C_pro_micro_output::initialise( const std::string & output_device )
 void
 C_pro_micro_output::send( const std::string & str )
 {
-    C_utf8      utf8_str;
+    C_utf8      utf8_str( str );
     std::string utf8_ch;
 
     //TEMP
