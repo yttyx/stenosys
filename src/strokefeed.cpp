@@ -24,7 +24,9 @@ extern C_log log;
 // Sample line:
 //   SR-R     // very
 //   TAOEURD  // tired
-//const char * REGEX_STROKE = "\\s*([#STKPWHRAO*EUFBLGDZ\\-*]+)";
+//
+// '-' in REGEX_STROKE must be at the beginning or end of the [] section so it's not 
+// interpreted as a range (and gives the error "Invalid range in bracket expression")
 const char * REGEX_STROKE = "\\s*([#STKPWHRAO*EUFBLGDZ*-]+)";
 
 C_stroke_feed::C_stroke_feed()
