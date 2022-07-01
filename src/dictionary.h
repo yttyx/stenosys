@@ -133,7 +133,7 @@ private:
     uint32_t hash_duplicate_count_;
     uint32_t hash_hit_capacity_count_;
 
-    std::unique_ptr< C_distribution > hash_collision_distribution_;
+    std::unique_ptr< C_distribution > distribution_;
 
 };
 

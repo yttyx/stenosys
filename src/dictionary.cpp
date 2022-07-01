@@ -39,6 +39,9 @@ C_dictionary::C_dictionary()
     parser_     = std::make_unique< C_cmd_parser >();
     symbols_    = std::make_unique< C_symbols >();
     dictionary_ = std::make_unique< std::unordered_map< std::string, STENO_ENTRY_PREV > >();
+
+    // Analyse hash map collision distribution across 50 buckets
+    distribution_ = std::make_unique< C_distribution >( "Collisions", 50, 1 );
 }
 
 C_dictionary::~C_dictionary()
@@ -78,7 +81,7 @@ C_dictionary::hash_map_build()
         
             if ( hash_insert( key, entry, collisions ) )
             {
-                hash_collision_distribution_->add( collisions );
+                distribution_->add( collisions );
             }
             else
             {
@@ -264,7 +267,7 @@ C_dictionary::hash_map_report()
     std::cout << std::setw( 6 ) << "  wrap_count_        : " << hash_wrap_count_ << std::endl;
     std::cout << std::endl;
 
-    //std::string report = hash_collision_distribution_->report();
+    //std::string report = distribution_->report();
     //std::cout << report.c_str();
 
     return true;
@@ -489,7 +492,7 @@ C_dictionary::read( const std::string & path )
                 uint16_t latin_flags   = 0;
                 uint16_t shavian_flags = 0;
                         
-                // Check for valid CSV entry
+                // Check for valid tab-separated-value entry
                 if ( parse_line( line, REGEX_DICTIONARY, steno, latin, shavian ) )
                 {
                     std::string parsed_latin;
