@@ -207,7 +207,7 @@ C_strokes::dump()
 
         formatted_length = ctrl_to_text( translation, formatted );
 
-        trans_field = std::string( "|" ) + formatted + std::string( "|" );
+        trans_field = std::string( "|" ) + formatted + std::string( "<" );
 
         char line[ 2048 ];
 

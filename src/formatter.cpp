@@ -162,6 +162,12 @@ C_formatter::transition_to( const std::string & prev
         }
         else
         {
+            // Do we need to reverse out the trailing space from the previous stroke?
+            if ( ( space_mode_ == SP_AFTER ) && attach( flags_prev, flags_curr ) )
+            {
+                backspaces.assign( 1, '\b' );
+            }
+
             // Send the current translation
             difference = curr;
         }

@@ -74,10 +74,6 @@ C_stenosys::~C_stenosys()
 void
 C_stenosys::run( int argc, char *argv[] )
 {
-
-    const char * test = u8"testing";
-    const char * test2 = u8"𐑨𐑒𐑖𐑩𐑯";
-
     C_keyboard kbd;
 
     if ( cfg.read( argc, argv ) )
@@ -113,7 +109,7 @@ C_stenosys::run( int argc, char *argv[] )
 
         if ( ! worked )
         {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "X initialisation failed (running locally?)" );
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Outputter initialisation failed" );
         }
 
         C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard
