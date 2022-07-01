@@ -44,9 +44,13 @@ private:
     void
     toggle_alphabet_mode();
 
+    void
+    toggle_space_mode();
+
 private:
     
     alphabet_type alphabet_;
+    space_type    space_mode_;
 
     std::unique_ptr< C_dictionary > dictionary_;
     std::unique_ptr< C_symbols >    symbols_;

@@ -35,15 +35,17 @@ C_formatter::format( alphabet_type     alphabet_mode
                    , uint16_t          flags_prev 
                    , bool              extends )
 {
-    std::string space;
+    std::string space_before;
+    std::string space_after;
+
     std::string formatted = text;
     
     if ( formatted.length() > 0 )
     {
-        if ( ! attach( flags_prev, flags_curr ) )
+        if ( ( space_mode_ == SP_BEFORE ) && ( ! attach( flags_prev, flags_curr ) ) )
         {
             // Insert a space
-            space = " ";
+            space_before = " ";
         }
 
         if ( alphabet_mode == AT_LATIN )
@@ -73,9 +75,16 @@ C_formatter::format( alphabet_type     alphabet_mode
                 formatted = std::string( "·" ) + formatted;
             }
         }
+    
+        if ( space_mode_ == SP_AFTER )
+        {
+            // Always insert a space. If the following stroke turns out to be attached
+            // to this one, the space will need to be removed (backspaced over).
+            space_after = " ";
+        }
     }
     
-    return space + formatted;
+    return space_before + formatted + space_after;
 }
 
 std::string
@@ -182,6 +191,12 @@ C_formatter::find_point_of_difference( const std::string & from, const std::stri
     return -1;
 }
 
+
+void
+C_formatter::space_mode( space_type space_mode )
+{
+    space_mode_ = space_mode;
+}
 
 // Attach to the previous stroke's output?
 bool

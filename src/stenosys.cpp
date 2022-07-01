@@ -74,6 +74,10 @@ C_stenosys::~C_stenosys()
 void
 C_stenosys::run( int argc, char *argv[] )
 {
+
+    const char * test = u8"testing";
+    const char * test2 = u8"𐑨𐑒𐑖𐑩𐑯";
+
     C_keyboard kbd;
 
     if ( cfg.read( argc, argv ) )

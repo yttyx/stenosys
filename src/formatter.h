@@ -38,7 +38,11 @@ public:
                  , uint16_t            flags_prev 
                  , bool                extends
                  , bool                undo );
-    
+
+
+    void
+    space_mode( space_type space_mode );
+
 private:
     
     int 
@@ -48,6 +52,8 @@ private:
     attach( uint16_t flags_prev, uint16_t flags_curr );
 
 private:
+
+    space_type space_mode_;
 
 };
 

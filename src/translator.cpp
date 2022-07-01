@@ -27,6 +27,7 @@ extern C_log log;
 
 C_translator::C_translator( alphabet_type alphabet)
     : alphabet_( alphabet)
+    , space_mode_( SP_BEFORE )
 {
     dictionary_ = std::make_unique< C_dictionary >();
     symbols_    = std::make_unique< C_symbols >();
@@ -43,6 +44,8 @@ C_translator::initialise( const std::string & dictionary_path )
 {
     dictionary_->tests();
 
+    formatter_->space_mode( space_mode_ );
+
     return strokes_->initialise() && dictionary_->read( dictionary_path );
 }
 
@@ -57,6 +60,10 @@ C_translator::translate( const std::string & steno, std::string & output )
         if ( steno == "#A" )
         {
             toggle_alphabet_mode();
+        }
+        else if ( steno == "#S" )
+        {
+            toggle_space_mode();
         }
         else if ( steno == "#-D" )
         {
@@ -131,6 +138,16 @@ C_translator::toggle_alphabet_mode()
     alphabet_= ( alphabet_== AT_LATIN ) ? AT_SHAVIAN : AT_LATIN;
 
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s alphabet active", ( alphabet_== AT_LATIN ) ? "Latin" : "Shavian" );
+}
+
+void
+C_translator::toggle_space_mode()
+{
+    space_mode_= ( space_mode_ == SP_BEFORE ) ? SP_AFTER : SP_BEFORE;
+
+    formatter_->space_mode( space_mode_ );
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Space %s", ( space_mode_ == SP_BEFORE ) ? "before" : "after" );
 }
 
 }
