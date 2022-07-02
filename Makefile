@@ -29,7 +29,6 @@ else
 	LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lconfig++ -lm -lX11 -lXtst
 endif
 
-#SOURCES 	:= $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
 STENOSYS_SOURCES := \
 	cmdparser.cpp \
 	cmdparserstate.cpp \
@@ -57,12 +56,15 @@ STENOSYS_SOURCES := \
 	utf8.cpp \
 	x11output.cpp
 
-#STENOSYS_OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(STENOSYS_SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+# Precede each source file with the source directory
+STENOSYS_SOURCES_DIR := $(patsubst %,$(SRCDIR)/%,$(STENOSYS_SOURCES))
+# Create a list of object files with their paths
+STENOSYS_OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(STENOSYS_SOURCES_DIR:.$(SRCEXT)=.$(OBJEXT)))
 
-
-STENOSYS_SOURCES_2 := $(patsubst %,$(SRCDIR)/%,$(STENOSYS_SOURCES))
-
-STENOSYS_OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(STENOSYS_SOURCES_2:.$(SRCEXT)=.$(OBJEXT)))
+#TBW
+#DICTBUILD_SOURCES :=
+#DICTBUILD_SOURCES_DIR := \
+#DICTBUILD_OBJECTS := \
 
 .DEFAULT_GOAL := $(TARGET)
 
