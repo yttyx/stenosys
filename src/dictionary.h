@@ -23,16 +23,15 @@ namespace stenosys
 // Used by direct lookup mechanism (which will be replaced)
 typedef struct
 {
+    std::string steno;
     std::string latin;
-    uint16_t    latin_flags;
     std::string shavian;
-    uint16_t    shavian_flags;
-} STENO_ENTRY_PREV;
-
-typedef struct {
-    std::string chord;
-    std::string text;
 } STENO_ENTRY;
+
+//typedef struct {
+    //std::string chord;
+    //std::string text;
+//} STENO_ENTRY;
 
 
 class C_dictionary : C_text_file
@@ -49,11 +48,13 @@ public:
     bool
     read( const std::string & path );
 
-    bool
-    lookup( const std::string & steno
-          , alphabet_type       alphabet  
-          , std::string &       text
-          , uint16_t &          flags );
+    //TODO Superceded by hash table lookup
+    //bool
+    //lookup( const std::string & steno
+          //, alphabet_type       alphabet  
+          //, std::string &       text
+          //, uint16_t &          flags );
+
     void
     tests();
 
@@ -79,7 +80,8 @@ private:
     hash_find( const std::string & key, std::string & value );  
     
     bool
-    get_dictionary_entry( uint32_t entry, std::string & steno, std::string & text );
+    get_dictionary_entry( uint32_t      index
+                        , STENO_ENTRY & data );
 
     uint32_t
     generate_hash( const char * key );
@@ -114,15 +116,13 @@ private:
 
 private:
 
-    bool        initialised_;
+    bool initialised_;
 
-    std::string error_message_;
-    
-    std::unique_ptr< std::unordered_map< std::string, STENO_ENTRY_PREV > >  dictionary_;
-    std::unique_ptr< C_cmd_parser >                                         parser_;
-    std::unique_ptr< C_symbols >                                            symbols_;
+    std::unique_ptr< C_cmd_parser > parser_;
+    std::unique_ptr< C_symbols >    symbols_;
 
-    std::vector< STENO_ENTRY > dictionary_array_;
+    std::unique_ptr< std::vector< STENO_ENTRY > > dictionary_;
+    std::unique_ptr< C_distribution >             distribution_;
 
     uint32_t * hashmap_;
 
@@ -133,7 +133,6 @@ private:
     uint32_t hash_duplicate_count_;
     uint32_t hash_hit_capacity_count_;
 
-    std::unique_ptr< C_distribution > distribution_;
 
 };
 

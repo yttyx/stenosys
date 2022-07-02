@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <exception>
 #include <fcntl.h>
 #include <fstream>
@@ -38,7 +39,7 @@ C_dictionary::C_dictionary()
 {
     parser_     = std::make_unique< C_cmd_parser >();
     symbols_    = std::make_unique< C_symbols >();
-    dictionary_ = std::make_unique< std::unordered_map< std::string, STENO_ENTRY_PREV > >();
+    dictionary_ = std::make_unique< std::vector< STENO_ENTRY >();
 
     // Analyse hash map collision distribution across 50 buckets
     distribution_ = std::make_unique< C_distribution >( "Collisions", 50, 1 );
@@ -66,29 +67,25 @@ C_dictionary::build( const std::string & dictionary_path, const std::string & ou
 bool
 C_dictionary::hash_map_build()
 {
-    std::cout << "Building hash map" << std::endl;
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Building hash map" );
+    
+    hash_map_initialise( dictionary_->size() );
 
-    hash_map_initialise( dictionary_array_.size() );
-
-    std::string key;
-    std::string text;
-
-    for ( uint32_t entry = 0; entry < dictionary_array_.size(); entry++ )
+    for ( uint32_t index = 0; index < dictionary_->size(); index++ )
     {
-        if ( get_dictionary_entry( entry, key, text ) )
+        STENO_ENTRY entry;
+
+        if ( get_dictionary_entry( index, entry ) )
         {
             uint32_t collisions = 0;
         
-            if ( hash_insert( key, entry, collisions ) )
+            if ( hash_insert( entry.steno, index, collisions ) )
             {
                 distribution_->add( collisions );
             }
             else
             {
-                error_message_ = "Key: ";
-                error_message_ += key;
-                error_message_ += " insertion failure";
-
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Key '%s' insertion failure", key.c_str() );
                 return false;
             }
         }
@@ -102,15 +99,15 @@ C_dictionary::hash_map_initialise( uint32_t dictionary_count )
 {
     if ( ! initialised_ )
     {
-        // Multiply number of dictionary entrie by 1.75 to reduce the chance of
+        // Multiply number of dictionary entries by 1.75 to reduce the chance of
         // hash collisions. Trade-off is some wasted space vs reduced lookup times.
         hash_capacity_ = ( uint32_t ) ( (double ) dictionary_count * 1.75 );
         hashmap_       = new uint32_t[ hash_capacity_ ];
     
         // Initialise array
-        for ( uint32_t ii = 0; ii < hash_capacity_; ii++ )
+        for ( uint32_t index = 0; index < hash_capacity_; index++ )
         {
-            hashmap_[ ii ] = EMPTY;
+            hashmap_[ index ] = EMPTY;
         }
 
         initialised_ = true;
@@ -119,7 +116,7 @@ C_dictionary::hash_map_initialise( uint32_t dictionary_count )
 
 // Add key/value pair
 bool
-C_dictionary::hash_insert( const std::string & key, uint32_t dictionary_entry, uint32_t & collisions )
+C_dictionary::hash_insert( const std::string & key, uint32_t dictionary_index, uint32_t & collisions )
 {
     if ( hash_entry_count_ >= hash_capacity_ )
     {
@@ -138,9 +135,11 @@ C_dictionary::hash_insert( const std::string & key, uint32_t dictionary_entry, u
         std::string map_key;
         std::string value;
 
-        get_dictionary_entry( hashmap_[ hash_index ], map_key, value );
+        STENO_ENTRY entry;
+
+        get_dictionary_entry( hashmap_[ hash_index ], entry );
         
-        if ( map_key != key )
+        if ( entry.steno != key )
         {
             collisions++;
             hash_index++;
@@ -166,7 +165,7 @@ C_dictionary::hash_insert( const std::string & key, uint32_t dictionary_entry, u
         hash_entry_count_++;
     }
     
-    hashmap_[ hash_index ] = dictionary_entry;
+    hashmap_[ hash_index ] = dictionary_index;
 
     return true;
 }
@@ -177,23 +176,25 @@ C_dictionary::hash_map_test()
     std::cout << "Testing hash map" << std::endl;
 
     // Read sequentially through dictionary looking up each dictionary's entry using
-    // the hash table: compare the sequential read against the hash read.
+    // the hash table; compare the sequential read against the hash read.
     uint32_t key_not_found            = 0;
     uint32_t value_mismatch           = 0;
     uint32_t dictionary_lookup_failed = 0;
 
-    for ( uint32_t entry = 0; entry < dictionary_array_.size(); entry ++ )
+    for ( uint32_t index = 0; index < dictionary_->size(); index++ )
     {
         std::string seq_key;
         std::string seq_value;
 
-        if ( get_dictionary_entry( entry, seq_key, seq_value ) )
-        {
-            std::string lookup_value;
+        STENO_ENTRY dict_entry;
 
-            if ( hash_find( seq_key, lookup_value ) )
+        if ( get_dictionary_entry( index, dict_entry ) )
+        {
+            std::string hash_latin;
+
+            if ( hash_find( dict_entry.steno, hash_latin ) )
             {
-                if ( seq_value != lookup_value )
+                if ( dict_entry.latin != hash_latin )
                 {
                     value_mismatch++;
                 }
@@ -211,10 +212,10 @@ C_dictionary::hash_map_test()
 
     bool passed = ( key_not_found == 0 ) && ( dictionary_lookup_failed == 0 )  && ( value_mismatch == 0 );
 
-    std::cout << "  Keys not found            : " << key_not_found            << std::endl;
-    std::cout << "  Dictionary lookup failures: " << dictionary_lookup_failed << std::endl;
-    std::cout << "  Value mismatches          : " << value_mismatch           << std::endl;
-    std::cout << "  Hash index test " << ( passed ? "passed" : "** failed" ) << std::endl;
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Keys not found            : %u", key_not_found );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Dictionary lookup failures: %u", dictionary_lookup_failed );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Value mismatches          : %u", value_mismatch );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Hash index test           : %s ", ( passed ? "passed" : "FAILED" ) );
 
     return passed;
 }
@@ -235,12 +236,12 @@ C_dictionary::hash_find( const std::string & key, std::string & value )
             return false;
         }
         
-        std::string map_key;
-        
-        get_dictionary_entry( hashmap_[ hash_index ], map_key, value );
+        STENO_ENTRY dict_entry;
+
+        get_dictionary_entry( hashmap_[ hash_index ], dict_entry );
 
         // If key found return its value
-        if ( map_key == key )
+        if ( dict_entry.steno == key )
         {
             return true;
         }
@@ -256,33 +257,32 @@ C_dictionary::hash_find( const std::string & key, std::string & value )
 bool
 C_dictionary::hash_map_report()
 {
-    std::cout << std::endl;
-    std::cout << "Hash map report" << std::endl;
-    std::cout << "---------------" << std::endl;
-    std::cout << std::fixed << std::setprecision(6) << std::setfill(' ');
-    std::cout << std::setw( 6 ) << "  hash_capacity_     : " << hash_capacity_ << std::endl;
-    std::cout << std::setw( 6 ) << "  duplicate_count_   : " << hash_duplicate_count_ << std::endl;
-    std::cout << std::setw( 6 ) << "  hash_entry_count_  : " << hash_entry_count_ << std::endl;
-    std::cout << std::setw( 6 ) << "  hit_capacity_count_: " << hash_hit_capacity_count_ << std::endl;
-    std::cout << std::setw( 6 ) << "  wrap_count_        : " << hash_wrap_count_ << std::endl;
-    std::cout << std::endl;
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Hash map report" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "---------------" );
 
-    //std::string report = distribution_->report();
-    //std::cout << report.c_str();
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  hash_capacity_     : %6u", hash_capacity_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  duplicate_count_   : %6u", hash_duplicate_count_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  hash_entry_count_  : %6u", hash_entry_count_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  hit_capacity_count_: %6u", hash_hit_capacity_count_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  wrap_count_        : %6u", hash_wrap_count_ );
+    
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "" );
+
+    std::string report = distribution_->report();
+
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", report.c_str()_ );
 
     return true;
 }
 
-
 bool
-C_dictionary::get_dictionary_entry( uint32_t entry, std::string & steno, std::string & text )
+C_dictionary::get_dictionary_entry( uint32_t      index
+                                  , STENO_ENTRY & data )
 {
-    if ( entry < dictionary_array_.size() )
+    if ( index < dictionary_->size() )
     {
-        STENO_ENTRY steno_entry = dictionary_array_[ entry ];
-
-        steno = steno_entry.chord;
-        text  = steno_entry.text;
+        data = dictionary_->at( index );
 
         return true;
     }
@@ -342,59 +342,53 @@ C_dictionary::write( FILE * output_stream )
     fprintf( output_stream, "struct dictionary_entry\n" );
     fprintf( output_stream, "{\n" );
     fprintf( output_stream, "    const char * const steno;\n" );
-    fprintf( output_stream, "    const char * const text;\n" );
-    fprintf( output_stream, "    const uint16_t     flags;\n" );
+    fprintf( output_stream, "    const char * const latin;\n" );
+    fprintf( output_stream, "    const uint16_t     latin_flags;\n" );
+    fprintf( output_stream, "    const char * const shavian;\n" );
+    fprintf( output_stream, "    const uint16_t     shavian_flags;\n" );
     fprintf( output_stream, "};\n\n" );
     
     fprintf( output_stream, "static const dictionary_entry steno_dictionary_hashed[] =\n" );
     fprintf( output_stream, "{\n" );
 
-    for ( uint32_t entry = 0; entry < hash_capacity_; entry ++ )
+    for ( uint32_t index = 0; index < hash_capacity_; index++ )
     {
-        if ( hashmap_[ entry ] != EMPTY )
+        if ( hashmap_[ index ] != EMPTY )
         {
-            std::string steno;
-            std::string text;
-           
-            uint16_t flags = 0x0000;
-
-            if ( get_dictionary_entry( hashmap_[ entry ], steno, text ) )
+            STENO_ENTRY entry; 
+            
+            if ( get_dictionary_entry( hashmap_[ index ], entry ) )
             {
-                std::string text_in( text );
-                std::string text_out;
+                std::string parsed_latin;
+                std::string parsed_shavian;
 
-                // Parse the dictionary text for Plover commands
-                //parser_.parse( text_in, text_out, flags );
+                uint16_t latin_flags   = 0;
+                uint16_t shavian_flags = 0;
+
+                // Parse the dictionary text for Plover-style commands
+                bool latin_ok   = parser_->parse( entry.latin,   parsed_latin,   latin_flags );
+                bool shavian_ok = parser_->parse( entry.shavian, parsed_shavian, shavian_flags );
+
                 //TODO
-                //bool latin_ok   = parser_->parse( latin, parsed_latin, latin_flags );
-                //bool shavian_ok = parser_->parse( shavian, parsed_shavian, shavian_flags );
+                //escape_characters( xxx )
 
-                //TEMP
-                if ( ( steno == "KW-GS" ) || ( steno == "R-R" ) || ( steno == "TPR-BGT" ) )
-                {
-                    int xxx = 666;
-                    xxx++;
-                }
-
-                escape_characters( text_out );
-
-                fprintf( output_stream, "    { \"%s\", \"%s\", 0x%04x },\n", steno.c_str(), text_out.c_str(), flags );
+                fprintf( output_stream, "    { \"%s\", u8\"%s\", 0x%04x, u8\"%s\", 0x%04x },\n"
+                                      , entry.steno.c_str()
+                                      , parsed_latin.c_str()
+                                      , latin_flags
+                                      , parsed_shavian.c_str()
+                                      , shavian_flags );
             }
         }
         else
         {
-            fprintf( output_stream, "    { nullptr, nullptr, 0x0000 },\n" );
-        }
-
-        if ( ( entry % 400 ) == 0 )
-        {
-            std::cout << "\r" << entry << " entries written     ";
+            fprintf( output_stream, "    { nullptr, nullptr, 0x0000, nullptr, 0x0000 },\n" );
         }
     }
 
-    std::cout << "\r" << hash_capacity_ << " entries written      \n";
-
     fprintf( output_stream, "};\n\n" );
+    
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u entries written",  hash_capacity_ );
 }
 
 void
@@ -425,7 +419,11 @@ const char * support_functions[] =
     "",
     "// Function to find the value for a given key",
     "bool",
-    "dictionary_lookup( const char * key, const char * & value, const uint16_t * & flags )",
+    "dictionary_lookup( const char *       key",
+    "                 , const char * &     latin",
+    "                 , const uint16_t * & latin_flags",
+    "                 , const char * &     shavian",
+    "                 , const uint16_t * & shavian_flags )",
     "{",
     "    // Apply hash function to find index for given key",
     "    uint32_t hash_index = generate_hash( key );",
@@ -442,8 +440,10 @@ const char * support_functions[] =
 
     "        if ( strcmp( map_key, key ) == 0 )",
     "        {",
-    "            value = steno_dictionary_hashed[ hash_index ].text;",
-    "            flags = &steno_dictionary_hashed[ hash_index ].flags;",
+    "            latin         = steno_dictionary_hashed[ hash_index ].latin;",
+    "            latin_flags   = &steno_dictionary_hashed[ hash_index ].latin_flags;",
+    "            shavian       = steno_dictionary_hashed[ hash_index ].shavian;",
+    "            shavian_flags = &steno_dictionary_hashed[ hash_index ].shavian_flags;",
     "            return true;",
     "        }",
 
@@ -468,7 +468,7 @@ C_dictionary::tail( FILE * output_stream )
     }
 }
 
-// Read in JSON-format dictionary (Plover format) into an array of dictionary entries
+// Read in tab-separated-value format dictionary (derived from Plover format) into an array of dictionary entries
 bool
 C_dictionary::read( const std::string & path )
 {
@@ -477,7 +477,7 @@ C_dictionary::read( const std::string & path )
         if ( C_text_file::read( path ) )
         {
             uint32_t entry_count    = 0;
-            uint32_t non_data_count = 0;
+            uint32_t bad_entry_count = 0;
             
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Reading dictionary" );
             
@@ -487,80 +487,29 @@ C_dictionary::read( const std::string & path )
             {
                 std::string steno;
                 std::string latin;      // Latin alphabet
-                std::string shavian;    // Shavian
+                std::string shavian;    // Shavian alphabet
 
-                uint16_t latin_flags   = 0;
-                uint16_t shavian_flags = 0;
-                        
                 // Check for valid tab-separated-value entry
                 if ( parse_line( line, REGEX_DICTIONARY, steno, latin, shavian ) )
                 {
-                    std::string parsed_latin;
-                    std::string parsed_shavian;
-
-                    bool latin_ok   = parser_->parse( latin, parsed_latin, latin_flags );
-                    bool shavian_ok = parser_->parse( shavian, parsed_shavian, shavian_flags );
-                    
-                    //TEMP
-                    //if ( steno == "TPH-D" )
-                    //{
-                        ////TEMP
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%04x"
-                                                                   //, shavian.c_str()
-                                                                   //, parsed_shavian.c_str()
-                                                                   //, shavian_flags );
-
-                        //std::string latin_formatted; 
-                        //std::string parsed_latin_formatted; 
-
-                        //ctrl_to_text( latin, latin_formatted );
-                        //ctrl_to_text( parsed_latin, parsed_latin_formatted );
-
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "latin: %s, parsed latin: %s, latin flags:%04x"
-                                                                   //, latin_formatted.c_str()
-                                                                   //, parsed_latin_formatted.c_str()
-                                                                   //, latin_flags );
-
-                        //std::string shavian_formatted; 
-                        //std::string parsed_shavian_formatted; 
+                    STENO_ENTRY * dict_entry = new STENO_ENTRY();
                         
-                        //ctrl_to_text( shavian, shavian_formatted );
-                        //ctrl_to_text( parsed_shavian, parsed_shavian_formatted );
-                        
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "shavian: %s, parsed shavian: %s, shavian flags:%04x"
-                                                                   //, shavian_formatted.c_str()
-                                                                   //, parsed_shavian_formatted.c_str()
-                                                                   //, shavian_flags );
-                    //}
+                    dict_entry->steno   = steno;
+                    dict_entry->latin   = latin;
+                    dict_entry->shavian = shavian;
 
-                    if ( ( ! latin_ok ) || ( ! shavian_ok ) )
-                    {
-                        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Command error, dictionary entry %u", entry_count );
-                    }
+                    dictionary_->push_back( *dict_entry );
 
-
-                    if ( latin_ok && shavian_ok )
-                    {
-                        STENO_ENTRY_PREV * steno_entry = new STENO_ENTRY_PREV();
-                        
-                        steno_entry->latin         = parsed_latin;
-                        steno_entry->shavian       = parsed_shavian;
-                        steno_entry->latin_flags   = latin_flags;
-                        steno_entry->shavian_flags = shavian_flags;
-
-                        dictionary_->insert( std::make_pair( steno, * steno_entry ) );
-
-                        entry_count++;
-                    }
+                    entry_count++;
                 }
                 else
                 {
-                    non_data_count++;
+                    bad_entry_count++;
                 }
             }
 
             log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "%u entries loaded", entry_count );
-            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "%u non-data", non_data_count );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "%u non-data", bad_entry_count );
 
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u dictionary entries", dictionary_->size() );
         }
@@ -569,50 +518,50 @@ C_dictionary::read( const std::string & path )
     }
     catch ( std::exception & ex )
     {
-        error_message_ = ex.what();
-        
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Expection: %s", ex.what() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Dictionary read exception: %s", ex.what() );
     }
     catch( ... )
     {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Dictionary read exception" );
     }
 
     return false;
 }
 
 
+// TODO - superceded by hashad dictionary lookup
 // Output: text, shavian and flags are only set if the dictionary entry is found
-bool
-C_dictionary::lookup( const std::string & steno
-                    , alphabet_type       alphabet
-                    , std::string &       text
-                    , uint16_t &          flags )
-{
-    auto result = dictionary_->find( steno );
+//bool
+//C_dictionary::lookup( const std::string & steno
+                    //, alphabet_type       alphabet
+                    //, std::string &       text
+                    //, uint16_t &          flags )
+//{
+    //auto result = dictionary_->find( steno );
 
-    if ( result == dictionary_->end() )
-    {
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s not found", steno.c_str() );
-        return false;
-    }
-    else
-    {
-        std::string latin   = result->second.latin;
-        std::string shavian = result->second.shavian;
+    //if ( result == dictionary_->end() )
+    //{
+        ////log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s not found", steno.c_str() );
+        //return false;
+    //}
+    //else
+    //{
+        //std::string latin   = result->second.latin;
+        //std::string shavian = result->second.shavian;
 
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s found: shavian: %s, shavian flags: %04xh"
-                                                     //, steno.c_str()
-                                                     //, result->second.shavian.c_str()
-                                                     //, result->second.shavian_flags );
+        ////log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s found: shavian: %s, shavian flags: %04xh"
+                                                     ////, steno.c_str()
+                                                     ////, result->second.shavian.c_str()
+                                                     ////, result->second.shavian_flags );
 
-        // If configured for Shavian, use the Shavian entry if it's not empty; otherwise use
-        // the Latin entry.
-        text  = ( alphabet == AT_SHAVIAN ) ? ( ( shavian.length() > 0 ) ? shavian : latin ) : latin;
-        flags = ( alphabet == AT_SHAVIAN ) ? result->second.shavian_flags : result->second.latin_flags;
-    }
+        //// If configured for Shavian, use the Shavian entry if it's not empty; otherwise use
+        //// the Latin entry.
+        //text  = ( alphabet == AT_SHAVIAN ) ? ( ( shavian.length() > 0 ) ? shavian : latin ) : latin;
+        //flags = ( alphabet == AT_SHAVIAN ) ? result->second.shavian_flags : result->second.latin_flags;
+    //}
 
-    return true;
-}
+    //return true;
+//}
 
 bool
 C_dictionary::parse_line( const std::string & line
