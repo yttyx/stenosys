@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #define LOG_SOURCE "DICTB"
 
-const char * VERSION = "0.10";
+const char * VERSION = "0.666";
 
 using namespace stenosys;
 
@@ -55,13 +55,10 @@ int main( int argc, char *argv[] )
     try
     {
         log.initialise( C_log::LL_INFO, true );
-        
-        
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys version: %s", VERSION );
-        
-        C_dictionary dictionary;
-    
 
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "dictbuild version: %s", VERSION );
+
+        C_dictionary dictionary;
     }
     catch ( std::exception & ex )
     {
