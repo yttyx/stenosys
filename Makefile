@@ -38,6 +38,7 @@ STENOSYS_SOURCES := \
 	cmdparser.cpp \
 	cmdparserstate.cpp \
 	config.cpp \
+	dictionary_i.cpp \
 	distribution.cpp \
 	formatter.cpp \
 	geminipr.cpp \
@@ -97,10 +98,8 @@ clean:
 	@$(RM) -rf $(EXEDIR)
 	@$(RM) -rf $(LOGDIR)
 
-#$(DICTBUILD):	$(DICTIONARY)
-
 # Link
-$(DICTBUILD):	$(DICTBUILD_OBJECTS) $(DICTIONARY)
+$(DICTBUILD):	$(DICTBUILD_OBJECTS)
 	@echo [link]
 	@mkdir -p $(SRCDIR)
 	$(CC) -o $(EXEDIR)/$(DICTBUILD) $(DICTBUILD_OBJECTS) $(LDLIBS)
@@ -109,7 +108,7 @@ $(DICTBUILD):	$(DICTBUILD_OBJECTS) $(DICTIONARY)
 $(DICTHASHED):	$(DICTBUILD) $(DICTIONARY)
 	@$(EXEDIR)/dictbuild
 
-$(STENOSYS):	directories $(STENOSYS_OBJECTS) $(DICTHASHED) $(DICTBUILD)
+$(STENOSYS):	directories $(STENOSYS_OBJECTS) $(DICTHASHED)
 	@echo [link]
 	@mkdir -p $(EXEDIR)
 	$(CC) -o $(EXEDIR)/$(STENOSYS) $(STENOSYS_OBJECTS) $(LDLIBS)
