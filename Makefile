@@ -7,7 +7,7 @@ TARGET		:= stenosys
 
 SRCDIR		:= ./src
 INCDIR		:= ./src
-BUILDDIR	:= ./obj
+OBJDIR		:= ./obj
 LOGDIR	    := ./log
 TARGETDIR	:= ./bin
 
@@ -29,31 +29,63 @@ else
 	LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lconfig++ -lm -lX11 -lXtst
 endif
 
-SOURCES 	:= $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
-OBJECTS 	:= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+#SOURCES 	:= $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
+STENOSYS_SOURCES := \
+	cmdparser.cpp \
+	cmdparserstate.cpp \
+	config.cpp \
+	dictionary.cpp \
+	distribution.cpp \
+	formatter.cpp \
+	geminipr.cpp \
+	kbdraw.cpp \
+	kbdsteno.cpp \
+	keyboard.cpp \
+	log.cpp \
+	miscellaneous.cpp \
+	promicrooutput.cpp \
+	serial.cpp \
+	state.cpp \
+	stenokeyboard.cpp \
+	stenosys.cpp \
+	stroke.cpp \
+	strokefeed.cpp \
+	strokes.cpp \
+	symbols.cpp \
+	textfile.cpp \
+	translator.cpp \
+	utf8.cpp \
+	x11output.cpp
+
+#STENOSYS_OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(STENOSYS_SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+
+
+STENOSYS_SOURCES_2 := $(patsubst %,$(SRCDIR)/%,$(STENOSYS_SOURCES))
+
+STENOSYS_OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(STENOSYS_SOURCES_2:.$(SRCEXT)=.$(OBJEXT)))
 
 .DEFAULT_GOAL := $(TARGET)
 
 # Make the directories
 directories:
 	@mkdir -p $(TARGETDIR)
-	@mkdir -p $(BUILDDIR)
+	@mkdir -p $(OBJDIR)
 	@mkdir -p $(LOGDIR)
 
 # Clean only object files
 clean:
-	@$(RM) -rf $(BUILDDIR)
+	@$(RM) -rf $(OBJDIR)
 	@$(RM) -rf $(TARGETDIR)
 	@$(RM) -rf $(LOGDIR)
 
 # Link
-$(TARGET):	$(OBJECTS)
+$(TARGET):	$(STENOSYS_OBJECTS)
 	@echo [link]
 	@mkdir -p $(TARGETDIR)
 	$(CC) -o $(TARGETDIR)/$(TARGET) $^ $(LDLIBS)
 
 # Compile
-$(BUILDDIR)/%.$(OBJEXT):	$(SRCDIR)/%.$(SRCEXT)
+$(OBJDIR)/%.$(OBJEXT):	$(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
