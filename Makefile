@@ -100,19 +100,19 @@ clean:
 #$(DICTBUILD):	$(DICTIONARY)
 
 # Link
-$(DICTBUILD):	$(DICTBUILD_OBJECTS)
+$(DICTBUILD):	$(DICTBUILD_OBJECTS) $(DICTIONARY)
 	@echo [link]
 	@mkdir -p $(SRCDIR)
-	$(CC) -o $(EXEDIR)/$(DICTBUILD) $^ $(LDLIBS)
+	$(CC) -o $(EXEDIR)/$(DICTBUILD) $(DICTBUILD_OBJECTS) $(LDLIBS)
 
 # Build the dictionary hash table for steno lookup
 $(DICTHASHED):	$(DICTBUILD) $(DICTIONARY)
 	@$(EXEDIR)/dictbuild
 
-$(STENOSYS):	$(STENOSYS_OBJECTS)
+$(STENOSYS):	directories $(STENOSYS_OBJECTS) $(DICTBUILD)
 	@echo [link]
 	@mkdir -p $(EXEDIR)
-	$(CC) -o $(EXEDIR)/$(STENOSYS) $^ $(LDLIBS)
+	$(CC) -o $(EXEDIR)/$(STENOSYS) $(STENOSYS_OBJECTS) $(LDLIBS)
 
 # Compile
 $(OBJDIR)/%.$(OBJEXT):	$(SRCDIR)/%.$(SRCEXT)
