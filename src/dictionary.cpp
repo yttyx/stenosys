@@ -39,7 +39,7 @@ C_dictionary::C_dictionary()
 {
     parser_     = std::make_unique< C_cmd_parser >();
     symbols_    = std::make_unique< C_symbols >();
-    dictionary_ = std::make_unique< std::vector< STENO_ENTRY >();
+    dictionary_ = std::make_unique< std::vector< STENO_ENTRY > >();
 
     // Analyse hash map collision distribution across 50 buckets
     distribution_ = std::make_unique< C_distribution >( "Collisions", 50, 1 );
@@ -85,7 +85,7 @@ C_dictionary::hash_map_build()
             }
             else
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Key '%s' insertion failure", key.c_str() );
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Key '%s' insertion failure", entry.steno.c_str() );
                 return false;
             }
         }
@@ -271,7 +271,7 @@ C_dictionary::hash_map_report()
 
     std::string report = distribution_->report();
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", report.c_str()_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", report.c_str() );
 
     return true;
 }
@@ -369,15 +369,24 @@ C_dictionary::write( FILE * output_stream )
                 bool latin_ok   = parser_->parse( entry.latin,   parsed_latin,   latin_flags );
                 bool shavian_ok = parser_->parse( entry.shavian, parsed_shavian, shavian_flags );
 
+
+                if ( latin_ok && shavian_ok )
+                {
+                         
                 //TODO
                 //escape_characters( xxx )
 
-                fprintf( output_stream, "    { \"%s\", u8\"%s\", 0x%04x, u8\"%s\", 0x%04x },\n"
-                                      , entry.steno.c_str()
-                                      , parsed_latin.c_str()
-                                      , latin_flags
-                                      , parsed_shavian.c_str()
-                                      , shavian_flags );
+                    fprintf( output_stream, "    { \"%s\", u8\"%s\", 0x%04x, u8\"%s\", 0x%04x },\n"
+                                          , entry.steno.c_str()
+                                          , parsed_latin.c_str()
+                                          , latin_flags
+                                          , parsed_shavian.c_str()
+                                          , shavian_flags );
+                }
+                else
+                {            
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid command in %s entry", entry.steno.c_str() );
+                }
             }
         }
         else

@@ -73,7 +73,8 @@ C_strokes::add_stroke( const std::string & steno
      
         std::string shavian;
 
-        if ( dictionary_.lookup( key, alphabet, text, flags) )
+        //TODO Read direct from hashed dictionary
+        //if ( dictionary_.lookup( key, alphabet, text, flags) )
         {
             //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, flags: %u"
                                                        //, key.c_str()
