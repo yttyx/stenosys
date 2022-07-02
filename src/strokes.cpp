@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "common.h"
-#include "dictionary.h"
 #include "log.h"
 #include "miscellaneous.h"
 #include "stenoflags.h"
@@ -23,9 +22,8 @@ namespace stenosys
 
 extern C_log log;
 
-C_strokes::C_strokes( C_dictionary & dictionary, C_symbols & symbols )
-    : dictionary_( dictionary )
-    , symbols_( symbols )
+C_strokes::C_strokes( C_symbols & symbols )
+    : symbols_( symbols )
 {
     history_ = std::make_unique< C_history< C_stroke, 10 > >();
 }

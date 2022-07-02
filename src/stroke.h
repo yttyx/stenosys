@@ -5,8 +5,6 @@
 #include <string>
 #include <memory>
 
-#include "dictionary.h"
-
 using namespace stenosys;
 
 namespace stenosys

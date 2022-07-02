@@ -29,9 +29,8 @@ C_translator::C_translator( alphabet_type alphabet)
     : alphabet_( alphabet)
     , space_mode_( SP_BEFORE )
 {
-    dictionary_ = std::make_unique< C_dictionary >();
     symbols_    = std::make_unique< C_symbols >();
-    strokes_    = std::make_unique< C_strokes >( *dictionary_.get(), *symbols_.get() );
+    strokes_    = std::make_unique< C_strokes >( *symbols_.get() );
     formatter_  = std::make_unique< C_formatter >();
 }
 
@@ -42,11 +41,9 @@ C_translator::~C_translator()
 bool
 C_translator::initialise( const std::string & dictionary_path )
 {
-    dictionary_->tests();
-
     formatter_->space_mode( space_mode_ );
 
-    return strokes_->initialise() && dictionary_->read( dictionary_path );
+    return strokes_->initialise();
 }
 
 // Returns true if a translation was made

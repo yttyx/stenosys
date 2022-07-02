@@ -5,7 +5,6 @@
 #include <string>
 #include <memory>
 
-#include "dictionary.h"
 #include "history.h"
 #include "stenoflags.h"
 #include "stroke.h"
@@ -24,7 +23,7 @@ class C_strokes
 
 public:
 
-    C_strokes( C_dictionary & dictionary, C_symbols & symbols );
+    C_strokes( C_symbols & symbols );
     ~C_strokes();
 
     bool
@@ -81,7 +80,6 @@ private:
 
 private:
 
-    C_dictionary & dictionary_;
     C_symbols    & symbols_;
 
     std::unique_ptr< C_history< C_stroke, 10 > > history_;
