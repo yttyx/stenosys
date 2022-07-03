@@ -394,8 +394,8 @@ C_dictionary::write_hash_table( FILE * output_stream )
     // Write the dictionary out in hash table order. This means that the dictionary is
     // effectively its own index and no separate hash table is required.
 
-    fprintf( output_stream, "static const dictionary_entry steno_dictionary_hashed[] =" );
-    fprintf( output_stream, "{" );
+    fprintf( output_stream, "static const dictionary_entry steno_dictionary_hashed[] =\n" );
+    fprintf( output_stream, "{\n" );
 
     for ( uint32_t index = 0; index < hash_capacity_; index++ )
     {
@@ -441,9 +441,8 @@ C_dictionary::write_hash_table( FILE * output_stream )
         }
     }
 
-    fflush( output_stream );
-    
     fprintf( output_stream, "};\n\n" );
+    fflush( output_stream );
     
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u entries written",  hash_capacity_ );
 }
