@@ -346,6 +346,8 @@ C_dictionary::write_h()
     if ( output_stream != nullptr )
     {
         write_h( output_stream );
+        
+        fclose( output_stream );
     }
     else
     {
@@ -383,6 +385,7 @@ C_dictionary::write_cpp_top( FILE * output_stream )
     }
     
     fprintf( output_stream, "static uint32_t hash_table_length = %u;\n\n", hash_capacity_ );
+    fflush( output_stream );
 }
 
 void
@@ -438,6 +441,8 @@ C_dictionary::write_hash_table( FILE * output_stream )
         }
     }
 
+    fflush( output_stream );
+    
     fprintf( output_stream, "};\n\n" );
     
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u entries written",  hash_capacity_ );
@@ -511,6 +516,8 @@ C_dictionary::write_cpp_tail( FILE * output_stream )
     {
         fprintf( output_stream, "%s\n", cpp_tail[ ii ] );
     }
+    
+    fflush( output_stream );
 }
 
 const char * h[] =
@@ -540,6 +547,8 @@ C_dictionary::write_h( FILE * output_stream )
     {
         fprintf( output_stream, "%s\n", h[ ii ] );
     }
+    
+    fflush( output_stream );
 }
 
 // Read in tab-separated-value format dictionary (derived from Plover format) into an array of dictionary entries
