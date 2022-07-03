@@ -600,41 +600,6 @@ C_dictionary::read( const std::string & path )
     return false;
 }
 
-
-// TODO - superceded by hashad dictionary lookup
-// Output: text, shavian and flags are only set if the dictionary entry is found
-//bool
-//C_dictionary::lookup( const std::string & steno
-                    //, alphabet_type       alphabet
-                    //, std::string &       text
-                    //, uint16_t &          flags )
-//{
-    //auto result = dictionary_->find( steno );
-
-    //if ( result == dictionary_->end() )
-    //{
-        ////log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s not found", steno.c_str() );
-        //return false;
-    //}
-    //else
-    //{
-        //std::string latin   = result->second.latin;
-        //std::string shavian = result->second.shavian;
-
-        ////log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "steno: %s found: shavian: %s, shavian flags: %04xh"
-                                                     ////, steno.c_str()
-                                                     ////, result->second.shavian.c_str()
-                                                     ////, result->second.shavian_flags );
-
-        //// If configured for Shavian, use the Shavian entry if it's not empty; otherwise use
-        //// the Latin entry.
-        //text  = ( alphabet == AT_SHAVIAN ) ? ( ( shavian.length() > 0 ) ? shavian : latin ) : latin;
-        //flags = ( alphabet == AT_SHAVIAN ) ? result->second.shavian_flags : result->second.latin_flags;
-    //}
-
-    //return true;
-//}
-
 bool
 C_dictionary::parse_line( const std::string & line
                         , const char * regex

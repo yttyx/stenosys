@@ -107,9 +107,6 @@ private:
               , std::string & field2
               , std::string & field3 );
 
-    //bool
-    //parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 );
-
     bool
     read( const std::string & path );
 

@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "common.h"
+#include "dictionary_i.h"
 #include "log.h"
 #include "miscellaneous.h"
 #include "stenoflags.h"
@@ -69,16 +70,12 @@ C_strokes::add_stroke( const std::string & steno
     {
         key = ( key.length() == 0 ) ? steno : stroke->steno() + std::string( "/" ) + key;
      
+        std::string latin;
         std::string shavian;
 
-        //TODO Read direct from hashed dictionary
-        //if ( dictionary_.lookup( key, alphabet, text, flags) )
+        // Do dictionary lookup
+        if ( lookup( key, alphabet, text, flags ) )
         {
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key %s FOUND, text: %s, flags: %u"
-                                                       //, key.c_str()
-                                                       //, text.c_str()
-                                                       //, flags );
-
             history_->curr()->translation( text );
             history_->curr()->flags( flags );
 
@@ -147,6 +144,31 @@ C_strokes::undo()
         history_->curr()->clear();
         history_->remove();
     }
+}
+
+// Output: text and flags are only set if the dictionary entry is found
+bool
+C_strokes::lookup( const std::string & steno
+                 , alphabet_type       alphabet
+                 , std::string &       text
+                 , uint16_t &          flags )
+{
+    const uint16_t * latin_flags   = nullptr;
+    const uint16_t * shavian_flags = nullptr;
+
+    const char * latin   = nullptr;
+    const char * shavian = nullptr;
+
+    // Look up entry in hashed dictionary
+    if ( dictionary_lookup( steno.c_str(), latin, latin_flags, shavian, shavian_flags ) )
+    {
+        // If configured for Shavian, use the Shavian entry if it's not empty; otherwise use
+        // the Latin entry.
+        text  = ( alphabet == AT_SHAVIAN ) ? ( ( strlen( shavian ) > 0 ) ? shavian : latin ) : latin;
+        flags = ( alphabet == AT_SHAVIAN ) ? *shavian_flags : *latin_flags;
+    }
+
+    return true;
 }
 
 void

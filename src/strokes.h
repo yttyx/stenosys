@@ -46,6 +46,12 @@ public:
     void
     undo();
 
+    bool
+    lookup( const std::string & steno
+          , alphabet_type       alphabet
+          , std::string &       text
+          , uint16_t &          flags );
+
     void
     translation( const std::string translation );
     
