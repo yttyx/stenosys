@@ -345,7 +345,7 @@ C_dictionary::write_h()
 
     if ( output_stream != nullptr )
     {
-        header( output_stream );
+        write_h( output_stream );
     }
     else
     {
@@ -356,32 +356,30 @@ C_dictionary::write_h()
     return true;
 }
 
-
-
 const char * cpp_top[] =
 {
-   "struct dictionary_entry",
-   "{",
-   "    const char *    const steno;" ,
-   "    const char *    const latin;" ,
-   "    const uint16_t  latin_flags;" ,
-   "    const char *    const shavian;",
-   "    const uint16_t  shavian_flags;",
-   "};",
-   "",
-   "static const dictionary_entry steno_dictionary_hashed[] =",
-   "{"
+    "#include \"dictionary_i.h\"",
+    "",
+    "struct dictionary_entry",
+    "{",
+    "    const char *    const steno;" ,
+    "    const char *    const latin;" ,
+    "    const uint16_t  latin_flags;" ,
+    "    const char *    const shavian;",
+    "    const uint16_t  shavian_flags;",
+    "};",
+    ""
 };
 
 void
 C_dictionary::write_cpp_top( FILE * output_stream )
 {
-    fprintf( output_stream, "static uint32_t hash_table_length = %u;\n\n", hash_capacity_ );
-    
     for ( uint32_t ii = 0;  cpp_top[ ii ]; ii++ ) 
     {
         fprintf( output_stream, "%s\n", cpp_top[ ii ] );
     }
+    
+    fprintf( output_stream, "static uint32_t hash_table_length = %u;\n\n", hash_capacity_ );
 }
 
 void
@@ -390,6 +388,8 @@ C_dictionary::write_hash_table( FILE * output_stream )
     // Write the dictionary out in hash table order. This means that the dictionary is
     // effectively its own index and no separate hash table is required.
 
+    fprintf( output_stream, "static const dictionary_entry steno_dictionary_hashed[] =" );
+    fprintf( output_stream, "{" );
 
     for ( uint32_t index = 0; index < hash_capacity_; index++ )
     {
@@ -440,8 +440,6 @@ C_dictionary::write_hash_table( FILE * output_stream )
 
 const char * cpp_tail[] =
 {
-    "#include \"dictionary_i.h\"",
-    "",
     "static uint32_t",
     "generate_hash( const char * key )",
     "{",
@@ -519,9 +517,7 @@ const char * h[] =
     "                 , const char * &     latin",
     "                 , const uint16_t * & latin_flags",
     "                 , const char * &     shavian",
-    "                 , const uint16_t * & shavian_flags )",
-    "{",
-    "};",
+    "                 , const uint16_t * & shavian_flags );",
     nullptr
 };
 
