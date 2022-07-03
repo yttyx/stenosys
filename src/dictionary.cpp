@@ -373,7 +373,8 @@ const char * cpp_top[] =
     "    const char *    const shavian;",
     "    const uint16_t  shavian_flags;",
     "};",
-    ""
+    "",
+    nullptr
 };
 
 void
