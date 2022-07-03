@@ -166,9 +166,11 @@ C_strokes::lookup( const std::string & steno
         // the Latin entry.
         text  = ( alphabet == AT_SHAVIAN ) ? ( ( strlen( shavian ) > 0 ) ? shavian : latin ) : latin;
         flags = ( alphabet == AT_SHAVIAN ) ? *shavian_flags : *latin_flags;
+    
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 void

@@ -478,7 +478,7 @@ const char * cpp_tail[] =
     "        }",
     "",
     "        const char * map_key = steno_dictionary_hashed[ hash_index ].steno;",
-
+    "",
     "        if ( strcmp( map_key, key ) == 0 )",
     "        {",
     "            latin         = steno_dictionary_hashed[ hash_index ].latin;",
