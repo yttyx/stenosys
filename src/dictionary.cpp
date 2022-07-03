@@ -379,7 +379,7 @@ const char * cpp_top[] =
 void
 C_dictionary::write_cpp_top( FILE * output_stream )
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "write_cpp_tail()" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "write_cpp_top()" );
     
     for ( uint32_t ii = 0;  cpp_top[ ii ]; ii++ ) 
     {
