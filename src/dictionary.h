@@ -92,7 +92,7 @@ private:
     write_cpp_tail( FILE * output_stream );
 
     void
-    write_h( FILE * output_stream );
+    write_header( FILE * output_stream );
 
     void
     escape_characters( std::string & str );
@@ -128,6 +128,12 @@ private:
     uint32_t hash_wrap_count_;
     uint32_t hash_duplicate_count_;
     uint32_t hash_hit_capacity_count_;
-};
+
+
+    static const char * cpp_top[];
+    static const char * cpp_tail[];
+    static const char * hdr[];
+
+    };
 
 }

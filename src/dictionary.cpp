@@ -345,7 +345,7 @@ C_dictionary::write_h()
 
     if ( output_stream != nullptr )
     {
-        write_h( output_stream );
+        write_header( output_stream );
         
         fclose( output_stream );
     }
@@ -357,25 +357,6 @@ C_dictionary::write_h()
     
     return true;
 }
-
-const char * cpp_top[] =
-{
-    "#include \"dictionary_i.h\"",
-    "",
-    "namespace stenosys",
-    "{",
-    "",
-    "struct dictionary_entry",
-    "{",
-    "    const char *    const steno;" ,
-    "    const char *    const latin;" ,
-    "    const uint16_t  latin_flags;" ,
-    "    const char *    const shavian;",
-    "    const uint16_t  shavian_flags;",
-    "};",
-    "",
-    nullptr
-};
 
 void
 C_dictionary::write_cpp_top( FILE * output_stream )
@@ -452,67 +433,6 @@ C_dictionary::write_hash_table( FILE * output_stream )
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u entries written",  hash_capacity_ );
 }
 
-const char * cpp_tail[] =
-{
-    "static uint32_t",
-    "generate_hash( const char * key )",
-    "{",
-    "    uint32_t hash = 5381;",
-     
-    "    int c;",
-
-    "    while ( ( c = *key++ ) != 0 )",
-    "    {",
-    "        hash = c + ( hash << 6 ) + ( hash << 16 ) - hash;",
-    "    }",
-
-    "    return hash % hash_table_length;",
-    "}",
-    "",
-    "// Function to find the value for a given key",
-    "bool",
-    "dictionary_lookup( const char *       key",
-    "                 , const char * &     latin",
-    "                 , const uint16_t * & latin_flags",
-    "                 , const char * &     shavian",
-    "                 , const uint16_t * & shavian_flags )",
-    "{",
-    "    // Apply hash function to find index for given key",
-    "    uint32_t hash_index = generate_hash( key );",
-    "    uint32_t counter    = 0;",
-    "",
-    "    while ( steno_dictionary_hashed[ hash_index ].steno != nullptr )",
-    "    {",
-    "        if ( counter++ > hash_table_length )",
-    "        {",
-    "            return false;",
-    "        }",
-    "",
-    "        const char * map_key = steno_dictionary_hashed[ hash_index ].steno;",
-    "",
-    "        if ( strcmp( map_key, key ) == 0 )",
-    "        {",
-    "            latin         = steno_dictionary_hashed[ hash_index ].latin;",
-    "            latin_flags   = &steno_dictionary_hashed[ hash_index ].latin_flags;",
-    "            shavian       = steno_dictionary_hashed[ hash_index ].shavian;",
-    "            shavian_flags = &steno_dictionary_hashed[ hash_index ].shavian_flags;",
-    "            return true;",
-    "        }",
-
-    "        hash_index++;",
-    "", 
-    "        // Wrap index if required",
-    "        hash_index %= hash_table_length;",
-    "    }",
-    "",
-    "    // Not found",
-    "    return false;",
-    "}",
-    "",
-    "}  // namespace stenosys",
-    nullptr
-};
-
 void
 C_dictionary::write_cpp_tail( FILE * output_stream )
 {
@@ -526,32 +446,12 @@ C_dictionary::write_cpp_tail( FILE * output_stream )
     fflush( output_stream );
 }
 
-const char * h[] =
-{
-    "#include <cstdint>",
-    "#include <cstring>",
-    "",
-    "namespace stenosys",
-    "{",
-    "",
-    "// Function to find the value for a given key",
-    "bool",
-    "dictionary_lookup( const char *       key",
-    "                 , const char * &     latin",
-    "                 , const uint16_t * & latin_flags",
-    "                 , const char * &     shavian",
-    "                 , const uint16_t * & shavian_flags );",
-    "",
-    "}",
-    nullptr
-};
-
 void
-C_dictionary::write_h( FILE * output_stream )
+C_dictionary::write_header( FILE * output_stream )
 {
-    for ( uint32_t ii = 0;  h[ ii ]; ii++ ) 
+    for ( uint32_t ii = 0;  hdr[ ii ]; ii++ ) 
     {
-        fprintf( output_stream, "%s\n", h[ ii ] );
+        fprintf( output_stream, "%s\n", hdr[ ii ] );
     }
     
     fflush( output_stream );
@@ -702,5 +602,105 @@ C_dictionary::tests()
 {
     symbols_->tests();
 }
+
+const char * C_dictionary::cpp_top[] =
+{
+    "#include \"dictionary_i.h\"",
+    "",
+    "namespace stenosys",
+    "{",
+    "",
+    "struct dictionary_entry",
+    "{",
+    "    const char *    const steno;" ,
+    "    const char *    const latin;" ,
+    "    const uint16_t  latin_flags;" ,
+    "    const char *    const shavian;",
+    "    const uint16_t  shavian_flags;",
+    "};",
+    "",
+    nullptr
+};
+
+const char * C_dictionary::cpp_tail[] =
+{
+    "static uint32_t",
+    "generate_hash( const char * key )",
+    "{",
+    "    uint32_t hash = 5381;",
+     
+    "    int c;",
+
+    "    while ( ( c = *key++ ) != 0 )",
+    "    {",
+    "        hash = c + ( hash << 6 ) + ( hash << 16 ) - hash;",
+    "    }",
+
+    "    return hash % hash_table_length;",
+    "}",
+    "",
+    "// Function to find the value for a given key",
+    "bool",
+    "dictionary_lookup( const char *       key",
+    "                 , const char * &     latin",
+    "                 , const uint16_t * & latin_flags",
+    "                 , const char * &     shavian",
+    "                 , const uint16_t * & shavian_flags )",
+    "{",
+    "    // Apply hash function to find index for given key",
+    "    uint32_t hash_index = generate_hash( key );",
+    "    uint32_t counter    = 0;",
+    "",
+    "    while ( steno_dictionary_hashed[ hash_index ].steno != nullptr )",
+    "    {",
+    "        if ( counter++ > hash_table_length )",
+    "        {",
+    "            return false;",
+    "        }",
+    "",
+    "        const dictionary_entry * entry = &steno_dictionary_hashed[ hash_index ];",
+    "",
+    "        if ( strcmp( entry->steno, key ) == 0 )",
+    "        {",
+    "            latin         = entry->latin;",
+    "            latin_flags   = &entry->latin_flags;",
+    "            shavian       = entry->shavian;",
+    "            shavian_flags = &entry->shavian_flags;",
+    "            return true;",
+    "        }",
+
+    "        hash_index++;",
+    "", 
+    "        // Wrap index if required",
+    "        hash_index %= hash_table_length;",
+    "    }",
+    "",
+    "    // Not found",
+    "    return false;",
+    "}",
+    "",
+    "}  // namespace stenosys",
+    nullptr
+};
+
+const char * C_dictionary::hdr[] =
+{
+    "#include <cstdint>",
+    "#include <cstring>",
+    "",
+    "namespace stenosys",
+    "{",
+    "",
+    "// Function to find the value for a given key",
+    "bool",
+    "dictionary_lookup( const char *       key",
+    "                 , const char * &     latin",
+    "                 , const uint16_t * & latin_flags",
+    "                 , const char * &     shavian",
+    "                 , const uint16_t * & shavian_flags );",
+    "",
+    "}",
+    nullptr
+};
 
 }
