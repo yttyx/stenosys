@@ -425,8 +425,10 @@ C_dictionary::write_hash_table( FILE * output_stream )
                                           , shavian_flags );
                 }
                 else
-                {            
+                {
                     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid command in %s entry", entry.steno.c_str() );
+                    //TEMP
+                    break;
                 }
             }
         }
@@ -638,16 +640,19 @@ C_dictionary::parse_line( const std::string & line
 // Reading from an array of strings will cause escaped characters to appear as the character itself
 // e.g. \\ becomes \
 //      \"         "
-// When writing these characters into new C string, they must be 're-escaped'
-// i.e. \ becomes \\
-//      " becomes \"
+// When writing these characters out into strings, they need to be 're-escaped'
+// i.e. before    after
+//      -----     ----
+//        \        \\
+//        "        \"
+//      0x0a       \n
+//      0x0d       \r
 */
 void
 C_dictionary::escape_characters( std::string & str )
 {
     // NB: the "\\" entry must be first in the list
-    const char * esc_chars[] = { "\\", "\"", "\n", nullptr };
-    //const char * esc_chars[] = { "\n", nullptr };
+    const char * esc_chars[] = { "\\", "\"", "\r", "\n", nullptr };
 
     for ( uint32_t entry = 0; esc_chars[ entry ]; entry++ )
     {
@@ -657,6 +662,10 @@ C_dictionary::escape_characters( std::string & str )
         if ( from == "\n" )
         {
             to = "\\n";
+        }
+        else if ( from == "\r" )
+        {
+            to = "\\r";
         }
         else
         {
