@@ -26,7 +26,7 @@ DICTHASHED	:= $(SRCDIR)/dictionary_i.cpp
 # Use "make OUTPUT=X11" to build with X11 support
 #     "make" alone builds for Pro Micro output (steno-in-the-middle)
 ifeq ($(strip $(OUTPUT)),)
-	CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe
+	CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe -Wfatal-errors
 	LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lconfig++ -lm
 else
 	CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe -D X11

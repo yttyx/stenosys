@@ -27,6 +27,9 @@ namespace stenosys
 extern C_log log;
 
 const char * REGEX_DICTIONARY = "^(.*?)\t(.*?)\t(.*?)$";
+const char * OUTPUT_FILE_CPP  = "src/dictionary_i.cpp";
+const char * OUTPUT_FILE_H    = "src/dictionary_i.h";
+
 
 C_dictionary::C_dictionary()
     : initialised_( false )
@@ -51,7 +54,7 @@ C_dictionary::~C_dictionary()
 }
 
 bool
-C_dictionary::build( const std::string & dictionary_path, const std::string & output_path )
+C_dictionary::build( const std::string & dictionary_path )
 {
     bool worked = true;
 
@@ -59,7 +62,8 @@ C_dictionary::build( const std::string & dictionary_path, const std::string & ou
     worked = worked && hash_map_build();
     worked = worked && hash_map_test();
     worked = worked && hash_map_report();
-    worked = worked && write( output_path );
+    worked = worked && write_cpp();
+    worked = worked && write_h();
     
     return  worked;
 }
@@ -243,6 +247,7 @@ C_dictionary::hash_find( const std::string & key, std::string & value )
         // If key found return its value
         if ( dict_entry.steno == key )
         {
+            value = dict_entry.latin;
             return true;
         }
 
@@ -269,9 +274,8 @@ C_dictionary::hash_map_report()
     
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "" );
 
-    std::string report = distribution_->report();
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", report.c_str() );
+    //std::string report = distribution_->report();
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", report.c_str() );
 
     return true;
 }
@@ -308,48 +312,84 @@ C_dictionary::generate_hash( const char * key )
 }
 
 bool
-C_dictionary::write( const std::string & output_path )
+C_dictionary::write_cpp()
 {
-    std::cout << "Writing out hashed dictionary to " << get_filename( output_path ) << std::endl;
+    std::cout << "Writing out hashed dictionary to " << OUTPUT_FILE_CPP << std::endl;
 
-    FILE * output_stream = fopen( output_path.c_str(), "w" );
+    FILE * output_stream = fopen( OUTPUT_FILE_CPP, "w" );
 
     if ( output_stream != nullptr )
     {
-        top( output_stream );
-        write( output_stream );
-        tail( output_stream );
 
-        fclose ( output_stream );
+        write_cpp_top( output_stream );
+        write_hash_table( output_stream );
+        write_cpp_tail( output_stream );
+
+        fclose( output_stream );
     }
     else
     {
-        std::cout << "Error accessing output file " << output_path.c_str() << std::endl;
+        std::cout << "Error accessing output file " << OUTPUT_FILE_CPP << std::endl;
         return false;
     }
     
     return true;
 }
 
-void
-C_dictionary::write( FILE * output_stream )
+bool
+C_dictionary::write_h()
 {
-    // Write the dictionary out in hash table order. This means that the dictionary is effectively
-    // its own index and no separate hash table is required.
+    std::cout << "Writing out hashed dictionary to " << OUTPUT_FILE_H << std::endl;
 
-    fprintf( output_stream, "static uint32_t hash_table_length = %u;\n\n", hash_capacity_ );
+    FILE * output_stream = fopen( OUTPUT_FILE_H, "w" );
 
-    fprintf( output_stream, "struct dictionary_entry\n" );
-    fprintf( output_stream, "{\n" );
-    fprintf( output_stream, "    const char * const steno;\n" );
-    fprintf( output_stream, "    const char * const latin;\n" );
-    fprintf( output_stream, "    const uint16_t     latin_flags;\n" );
-    fprintf( output_stream, "    const char * const shavian;\n" );
-    fprintf( output_stream, "    const uint16_t     shavian_flags;\n" );
-    fprintf( output_stream, "};\n\n" );
+    if ( output_stream != nullptr )
+    {
+        header( output_stream );
+    }
+    else
+    {
+        std::cout << "Error accessing output file " << OUTPUT_FILE_H << std::endl;
+        return false;
+    }
     
-    fprintf( output_stream, "static const dictionary_entry steno_dictionary_hashed[] =\n" );
-    fprintf( output_stream, "{\n" );
+    return true;
+}
+
+
+
+const char * cpp_top[] =
+{
+   "struct dictionary_entry",
+   "{",
+   "    const char *    const steno;" ,
+   "    const char *    const latin;" ,
+   "    const uint16_t  latin_flags;" ,
+   "    const char *    const shavian;",
+   "    const uint16_t  shavian_flags;",
+   "};",
+   "",
+   "static const dictionary_entry steno_dictionary_hashed[] =",
+   "{"
+};
+
+void
+C_dictionary::write_cpp_top( FILE * output_stream )
+{
+    fprintf( output_stream, "static uint32_t hash_table_length = %u;\n\n", hash_capacity_ );
+    
+    for ( uint32_t ii = 0;  cpp_top[ ii ]; ii++ ) 
+    {
+        fprintf( output_stream, "%s\n", cpp_top[ ii ] );
+    }
+}
+
+void
+C_dictionary::write_hash_table( FILE * output_stream )
+{
+    // Write the dictionary out in hash table order. This means that the dictionary is
+    // effectively its own index and no separate hash table is required.
+
 
     for ( uint32_t index = 0; index < hash_capacity_; index++ )
     {
@@ -369,12 +409,10 @@ C_dictionary::write( FILE * output_stream )
                 bool latin_ok   = parser_->parse( entry.latin,   parsed_latin,   latin_flags );
                 bool shavian_ok = parser_->parse( entry.shavian, parsed_shavian, shavian_flags );
 
-
                 if ( latin_ok && shavian_ok )
                 {
-                         
-                //TODO
-                //escape_characters( xxx )
+                    escape_characters( parsed_latin );
+                    escape_characters( parsed_shavian );
 
                     fprintf( output_stream, "    { \"%s\", u8\"%s\", 0x%04x, u8\"%s\", 0x%04x },\n"
                                           , entry.steno.c_str()
@@ -400,17 +438,10 @@ C_dictionary::write( FILE * output_stream )
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u entries written",  hash_capacity_ );
 }
 
-void
-C_dictionary::top( FILE * output_stream )
+const char * cpp_tail[] =
 {
-    fprintf( output_stream, "#include <cstdint>\n" );
-    fprintf( output_stream, "#include <cstring>\n\n" );
-}
-
-
-
-const char * support_functions[] =
-{
+    "#include \"dictionary_i.h\"",
+    "",
     "static uint32_t",
     "generate_hash( const char * key )",
     "{",
@@ -469,11 +500,37 @@ const char * support_functions[] =
 };
 
 void
-C_dictionary::tail( FILE * output_stream )
+C_dictionary::write_cpp_tail( FILE * output_stream )
 {
-    for ( uint32_t ii = 0;  support_functions[ ii ]; ii++ ) 
+    for ( uint32_t ii = 0;  cpp_tail[ ii ]; ii++ ) 
     {
-        fprintf( output_stream, "%s\n", support_functions[ ii ] );
+        fprintf( output_stream, "%s\n", cpp_tail[ ii ] );
+    }
+}
+
+const char * h[] =
+{
+    "#include <cstdint>",
+    "#include <cstring>",
+    "",
+    "// Function to find the value for a given key",
+    "bool",
+    "dictionary_lookup( const char *       key",
+    "                 , const char * &     latin",
+    "                 , const uint16_t * & latin_flags",
+    "                 , const char * &     shavian",
+    "                 , const uint16_t * & shavian_flags )",
+    "{",
+    "};",
+    nullptr
+};
+
+void
+C_dictionary::write_h( FILE * output_stream )
+{
+    for ( uint32_t ii = 0;  h[ ii ]; ii++ ) 
+    {
+        fprintf( output_stream, "%s\n", h[ ii ] );
     }
 }
 
@@ -618,8 +675,8 @@ void
 C_dictionary::escape_characters( std::string & str )
 {
     // NB: the "\\" entry must be first in the list
-    //const char * esc_chars[] = { "\\", "\"", "\n", nullptr };
-    const char * esc_chars[] = { "\n", nullptr };
+    const char * esc_chars[] = { "\\", "\"", "\n", nullptr };
+    //const char * esc_chars[] = { "\n", nullptr };
 
     for ( uint32_t entry = 0; esc_chars[ entry ]; entry++ )
     {
@@ -643,21 +700,6 @@ C_dictionary::escape_characters( std::string & str )
             pos += to.size();
         }
     }
-}
-
-std::string
-C_dictionary::get_filename( const std::string & path )
-{
-    //char filename[ _MAX_FNAME ];
-    //char fileext[ _MAX_EXT ];
-
-    //_splitpath_s( path.c_str(), nullptr, 0, nullptr, 0, filename, sizeof( filename ), fileext, sizeof( fileext ) );
-
-    //std::string out = filename;
-    //out += fileext;
-
-    //return out;
-    return "";
 }
 
 void

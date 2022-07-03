@@ -28,11 +28,6 @@ typedef struct
     std::string shavian;
 } STENO_ENTRY;
 
-//typedef struct {
-    //std::string chord;
-    //std::string text;
-//} STENO_ENTRY;
-
 
 class C_dictionary : C_text_file
 {
@@ -43,17 +38,7 @@ public:
     ~C_dictionary();
 
     bool
-    build( const std::string & dictionary_path,  const std::string & output_path );   
-
-    bool
-    read( const std::string & path );
-
-    //TODO Superceded by hash table lookup
-    //bool
-    //lookup( const std::string & steno
-          //, alphabet_type       alphabet  
-          //, std::string &       text
-          //, uint16_t &          flags );
+    build( const std::string & dictionary_path );   
 
     void
     tests();
@@ -65,7 +50,6 @@ private:
     
     bool
     hash_map_build();
-
 
     bool
     hash_insert( const std::string & key, uint32_t dictionary_entry, uint32_t & collisions );
@@ -87,16 +71,28 @@ private:
     generate_hash( const char * key );
 
     bool
-    write( const std::string & output_path );
+    write_cpp();
+    
+    bool
+    write_h();
+    
+    void 
+    header( FILE * output_stream );
 
     void
     top( FILE * output_stream );
+    
+    void
+    write_cpp_top( FILE * output_stream );
 
     void
-    write( FILE * output_stream );
+    write_hash_table( FILE * output_stream );
 
     void
-    tail( FILE * output_stream );
+    write_cpp_tail( FILE * output_stream );
+
+    void
+    write_h( FILE * output_stream );
 
     void
     escape_characters( std::string & str );
@@ -111,8 +107,11 @@ private:
               , std::string & field2
               , std::string & field3 );
 
+    //bool
+    //parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 );
+
     bool
-    parse_line( const std::string & line, const char * regex, std::string & param1, std::string & param2 );
+    read( const std::string & path );
 
 private:
 
@@ -132,8 +131,6 @@ private:
     uint32_t hash_wrap_count_;
     uint32_t hash_duplicate_count_;
     uint32_t hash_hit_capacity_count_;
-
-
 };
 
 }

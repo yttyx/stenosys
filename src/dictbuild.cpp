@@ -59,6 +59,8 @@ int main( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "dictbuild version: %s", VERSION );
 
         C_dictionary dictionary;
+
+        dictionary.build( "./dictionary/yttyx-dict.tsv" );
     }
     catch ( std::exception & ex )
     {
