@@ -379,6 +379,8 @@ const char * cpp_top[] =
 void
 C_dictionary::write_cpp_top( FILE * output_stream )
 {
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "write_cpp_tail()" );
+    
     for ( uint32_t ii = 0;  cpp_top[ ii ]; ii++ ) 
     {
         fprintf( output_stream, "%s\n", cpp_top[ ii ] );
@@ -391,6 +393,8 @@ C_dictionary::write_cpp_top( FILE * output_stream )
 void
 C_dictionary::write_hash_table( FILE * output_stream )
 {
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "write_hash_table()" );
+    
     // Write the dictionary out in hash table order. This means that the dictionary is
     // effectively its own index and no separate hash table is required.
 
@@ -511,6 +515,8 @@ const char * cpp_tail[] =
 void
 C_dictionary::write_cpp_tail( FILE * output_stream )
 {
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "write_cpp_tail()" );
+    
     for ( uint32_t ii = 0;  cpp_tail[ ii ]; ii++ ) 
     {
         fprintf( output_stream, "%s\n", cpp_tail[ ii ] );
