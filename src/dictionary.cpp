@@ -360,6 +360,9 @@ const char * cpp_top[] =
 {
     "#include \"dictionary_i.h\"",
     "",
+    "namespace stenosys",
+    "{",
+    "",
     "struct dictionary_entry",
     "{",
     "    const char *    const steno;" ,
@@ -494,6 +497,8 @@ const char * cpp_tail[] =
     "    // Not found",
     "    return false;",
     "}",
+    "",
+    "}  // namespace stenosys",
     nullptr
 };
 
@@ -511,6 +516,9 @@ const char * h[] =
     "#include <cstdint>",
     "#include <cstring>",
     "",
+    "namespace stenosys",
+    "{",
+    "",
     "// Function to find the value for a given key",
     "bool",
     "dictionary_lookup( const char *       key",
@@ -518,6 +526,8 @@ const char * h[] =
     "                 , const uint16_t * & latin_flags",
     "                 , const char * &     shavian",
     "                 , const uint16_t * & shavian_flags );",
+    "",
+    "}",
     nullptr
 };
 
