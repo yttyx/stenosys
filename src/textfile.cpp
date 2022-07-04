@@ -4,13 +4,17 @@
 #include <fstream>
 #include <stdio.h>
 
+#include "log.h"
 #include "textfile.h"
 
+#define LOG_SOURCE "READF"
 
 using namespace stenosys;
 
 namespace stenosys
 {
+
+extern C_log log;
 
 C_text_file::C_text_file()
 {
@@ -40,12 +44,12 @@ C_text_file::read( const std::string & path )
         }
         else
         {
-            error_message_ = "**Error reading file";
+            log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error reading file %s", path.c_str() );
         }
     }
     catch ( std::exception & ex )
     {
-        error_message_ = ex.what();
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**File read exception: %s", ex.what() );
     }
     catch( ... )
     {
