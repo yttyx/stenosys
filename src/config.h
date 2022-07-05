@@ -21,6 +21,14 @@ namespace stenosys
 #define OPT_STENO_DEVICE      "stenodevice"
 #define OPT_SERIAL_OUTPUT     "serialoutput"
 
+#define DEF_DISPLAY_VERBOSITY "3"
+#define DEF_DISPLAY_DATETIME  "true"
+#define DEF_FILE_STENOFILE    "TBD"
+#define DEF_DICTIONARY        "./dictionary/yttyx-dict.tsv"
+#define DEF_RAW_DEVICE        "/dev/input/event3"
+#define DEF_STENO_DEVICE      "/dev/ttyACM0"
+#define DEF_SERIAL_OUTPUT     "/dev/ttyAMA0"
+
 struct S_config
 {
     int  display_verbosity;
@@ -48,6 +56,12 @@ public:
     c() { return config_; }
 
 protected:
+
+    void
+    create_default_config( const std::string & config_path );
+    
+    bool
+    read_config( const std::string & config_path );
 
     bool
     check_params( int argc, char *argv[] );

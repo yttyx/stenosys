@@ -55,14 +55,23 @@ C_config::read( int argc, char *argv[] )
 
     if ( ! file_exists( CONFIG_PATH ) )
     {
-        //TODO write default parameters'
+        create_default_config( CONFIG_PATH );
     }
 
     // Open config file. If open fails, log a message and exit (return false)
-    //
-    // Read whole file
     
-    // Try to read the configuration file
+    if ( ! read_config( CONFIG_PATH ) )
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool
+C_config::read_config( const std::string & config_path )
+{
+    // Read in whole file
     if ( ! C_text_file::read( CONFIG_FILE ) )
     {
         log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Error loading configuration file" );
@@ -78,9 +87,30 @@ C_config::read( int argc, char *argv[] )
     // - For other lines
     //   - Ignore/report on invalid lines
 
-
-
     return true;
+}
+
+void
+C_config::create_default_config( const std::string & config_path )
+{
+    FILE * output_stream = fopen( config_path.c_str(), "w" );
+
+    if ( output_stream != nullptr )
+    {
+        fprintf( output_stream, OPT_DISPLAY_VERBOSITY "=%s", DEF_DISPLAY_VERBOSITY );
+        fprintf( output_stream, OPT_DISPLAY_DATETIME  "=%s", DEF_DISPLAY_DATETIME  );
+        fprintf( output_stream, OPT_FILE_STENOFILE    "=%s", DEF_FILE_STENOFILE    );
+        fprintf( output_stream, OPT_DICTIONARY        "=%s", DEF_DICTIONARY        );
+        fprintf( output_stream, OPT_RAW_DEVICE        "=%s", DEF_RAW_DEVICE        );
+        fprintf( output_stream, OPT_STENO_DEVICE      "=%s", DEF_STENO_DEVICE      );
+        fprintf( output_stream, OPT_SERIAL_OUTPUT     "=%s", DEF_SERIAL_OUTPUT     );
+
+        fclose( output_stream );
+    }
+    else
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Error accessing %s", config_path.c_str() );
+    }
 }
 
 bool
