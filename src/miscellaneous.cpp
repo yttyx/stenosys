@@ -8,6 +8,7 @@
 #include <stdarg.h>
 #include <string>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include "miscellaneous.h"
@@ -145,6 +146,38 @@ void
 delay( unsigned int milliseconds)
 {
     usleep( 1000 * milliseconds );
+}
+
+bool
+file_exists( const std::string & path )
+{
+    struct stat st;
+
+    return stat( path.c_str(), &st ) == 0;
+}
+
+bool
+directory_exists( const std::string & path )
+{
+    struct stat st;
+
+    if ( stat( path.c_str(), &st ) == 0 )
+    {
+        if ( S_ISDIR( st.st_mode ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool
+create_directory( const std::string & path )
+{
+    mode_t mode = 0755;
+
+    return mkdir( path.c_str(), mode ) == 0;
 }
 
 }

@@ -36,19 +36,49 @@ C_config::read( int argc, char *argv[] )
 {
     if ( ! check_params( argc, argv ) )
     {
-        usage();
         return false;
     }
 
-    // Try to read a configuration if one was supplied, otherwise use a default configuration
-    if ( got_config_file_ )
+    // The stenosys configuration is stored under the user's home directory
+    //
+    // If directory ~/.stenosys does not exist, create it
+
+    if ( ! directory_exists( CONFIG_DIR ) )
     {
-        if ( ! C_text_file::read( config_file_ ) )
-        {
-            log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Configuration error" );
-            return false;
-        }
+        create_directory( CONFIG_DIR );
     }
+
+    //
+    // If file ~/.stenosys/config does not exist, create it and write a set
+    // of default parameters to it.
+    //
+
+    if ( ! file_exists( CONFIG_PATH ) )
+    {
+        //TODO write default parameters'
+    }
+
+    // Open config file. If open fails, log a message and exit (return false)
+    //
+    // Read whole file
+    
+    // Try to read the configuration file
+    if ( ! C_text_file::read( CONFIG_FILE ) )
+    {
+        log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Error loading configuration file" );
+        return false;
+    }
+
+    // For each line in the file, parse it using a regexes
+    // - Detect comment lines
+    //   - ignore
+    // - Detect parameter lines
+    //   - Extract parameter & value from line
+    //   - Check for valid parameter; set cfg data member if so
+    // - For other lines
+    //   - Ignore/report on invalid lines
+
+
 
     return true;
 }
@@ -56,39 +86,18 @@ C_config::read( int argc, char *argv[] )
 bool
 C_config::check_params( int argc, char *argv[] )
 {
-    int opt;
-
-    while ( ( opt = getopt( argc, argv, "c:dh?" ) ) != -1 )
+    if ( argc > 1 )
     {
-        switch ( opt )
-        {
-            case 'c':
-                config_file_ = optarg;
-                got_config_file_ = true;
-                break;
+        // Program takes no parameters; show usage if any are supplied
 
-            case '?':
-            case 'h':
-            default:
-                return false;
-        }
-    }
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "stenosys - stenographic utility" );
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "  Its configuration file is stored at " CONFIG_FILE );
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "" );
 
-    if ( ! got_config_file_ )
-    {
         return false;
     }
 
     return true;
-}
-
-void
-C_config::usage()
-{
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "stenosys [-c <configuration file>] [-h] [-?]" );
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "where:" );
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "    -h: display valid options" );
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "    -?: display valid options" );
 }
 
 }

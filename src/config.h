@@ -9,6 +9,10 @@
 namespace stenosys
 {
 
+#define CONFIG_DIR            "~/.stenosys"
+#define CONFIG_FILE           "config"
+#define CONFIG_PATH           CONFIG_DIR "/" CONFIG_FILE
+
 #define OPT_DISPLAY_VERBOSITY "verbosity"
 #define OPT_DISPLAY_DATETIME  "datetime"
 #define OPT_FILE_STENOFILE    "stenofile"
@@ -48,17 +52,11 @@ protected:
     bool
     check_params( int argc, char *argv[] );
 
-    void
-    usage();
-
 private:
 
     S_config    config_;
 
     bool        got_config_file_;
-    bool        display_config_;
-
-    std::string config_file_;
 
 };
 

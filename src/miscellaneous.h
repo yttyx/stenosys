@@ -36,4 +36,13 @@ ctrl_to_text( const std::string & input, std::string & output );
 void
 delay( unsigned int milliseconds);
 
+bool
+file_exists( const std::string & path );
+
+bool
+directory_exists( const std::string & path );
+
+bool
+create_directory( const std::string & path );
+
 }
