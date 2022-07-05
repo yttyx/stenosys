@@ -1,8 +1,10 @@
 // config.cpp
 
 #include <assert.h>
+#include <cctype>
 #include <cstddef>
 #include <math.h>
+#include <regex>
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -86,6 +88,63 @@ C_config::read_config( const std::string & config_path )
     //   - Check for valid parameter; set cfg data member if so
     // - For other lines
     //   - Ignore/report on invalid lines
+
+    std::string line;
+
+    std::regex regex_comment( "" );     //TBW
+    std::regex regex_parameter( "" );   //TBW
+
+    while ( get_line( line ) )
+    {
+        std::smatch matches;
+
+        if ( std::regex_search( line, matches, regex_parameter ) )
+        {
+            std::ssub_match match1 = matches[ 1 ];
+            std::ssub_match match2 = matches[ 2 ];
+
+            std::string param = match1.str();
+            std::string value = match2.str();
+
+            std::transform( param.begin(), param.end(), param.begin(), ::tolower );
+
+            if ( param == OPT_DISPLAY_VERBOSITY )
+            {
+                config_.display_verbosity = atoi( value.c_str() );
+            }
+            else if ( param == OPT_DICTIONARY )
+            {
+                std::transform( value.begin(), value.end(), value.begin(), ::tolower );
+
+                config_.display_datetime = ( value == "true" ) ? true : false;
+            }
+            else if ( param == OPT_FILE_STENOFILE )
+            {
+                config_.file_steno = value;
+            }
+            else if ( param == OPT_DICTIONARY  )
+            {
+                config_.file_dict = value;
+            }
+            else if ( param == OPT_RAW_DEVICE )
+            {
+                config_.device_raw = value;
+            }
+            else if ( param == OPT_STENO_DEVICE )
+            {
+                config_.device_steno = value;
+            }
+            else if ( param == OPT_SERIAL_OUTPUT )
+            {
+                config_.device_output = value;
+            }
+            else
+            {
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid parameter %s", param.c_str() );
+                return false;
+            }
+        }
+    }
 
     return true;
 }
