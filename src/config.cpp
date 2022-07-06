@@ -53,18 +53,14 @@ C_config::read( int argc, char *argv[] )
         }
     }
 
-    //
     // If file ~/.stenosys/config does not exist, create it and write a set
     // of default parameters to it.
-    //
-
     if ( ! file_exists( CONFIG_PATH ) )
     {
         create_default_config( CONFIG_PATH );
     }
 
-    // Open config file. If open fails, log a message and exit (return false)
-    
+    // Open config file. If open fails, log a message and exit (return false).
     if ( ! read_config( CONFIG_PATH ) )
     {
         return false;
@@ -83,25 +79,15 @@ C_config::read_config( const std::string & config_path )
         return false;
     }
 
-    // For each line in the file, parse it using a regexes
-    // - Detect comment lines
-    //   - ignore
-    // - Detect parameter lines
-    //   - Extract parameter & value from line
-    //   - Check for valid parameter; set cfg data member if so
-    // - For other lines
-    //   - Ignore/report on invalid lines
-
-    std::string line;
-
     std::regex regex_parameter( "^\\s*(\\S+)\\s*=\\s*(\\S+)" );
+    
+    std::string line;
 
     while ( get_line( line ) )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "line: %s", line.c_str() );
-        
         std::smatch matches;
 
+        // Parse each line for a parameter and value
         if ( std::regex_search( line, matches, regex_parameter ) )
         {
             std::ssub_match match1 = matches[ 1 ];
@@ -112,9 +98,6 @@ C_config::read_config( const std::string & config_path )
 
             std::transform( param.begin(), param.end(), param.begin(), ::tolower );
         
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "param: %s, value: %s", param.c_str()
-                                                                               , value.c_str() );
-
             if ( param == OPT_DISPLAY_VERBOSITY )
             {
                 config_.display_verbosity = atoi( value.c_str() );
@@ -187,8 +170,7 @@ C_config::check_params( int argc, char *argv[] )
         // Program takes no parameters; show usage if any are supplied
 
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "stenosys - stenographic utility" );
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "  Its configuration file is stored at " CONFIG_PATH );
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "" );
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Configuration file is stored at " CONFIG_PATH );
 
         return false;
     }
