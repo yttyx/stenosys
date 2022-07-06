@@ -9,7 +9,8 @@
 namespace stenosys
 {
 
-#define CONFIG_DIR            "~/.stenosys"
+//#define CONFIG_DIR          "~/.stenosys"
+#define CONFIG_DIR            "./.stenosys"
 #define CONFIG_FILE           "config"
 #define CONFIG_PATH           CONFIG_DIR "/" CONFIG_FILE
 

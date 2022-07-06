@@ -175,9 +175,13 @@ directory_exists( const std::string & path )
 bool
 create_directory( const std::string & path )
 {
-    mode_t mode = 0755;
+    mode_t mode = 0555; // octal 755
 
-    return mkdir( path.c_str(), mode ) == 0;
+    int res = mkdir( path.c_str(), mode );
+
+    fprintf( stdout, "res = %d, errno = %d\n", res, errno );
+
+    return res == 0;
 }
 
 }
