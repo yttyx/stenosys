@@ -176,13 +176,11 @@ directory_exists( const std::string & path )
 bool
 create_directory( const std::string & path )
 {
-    bool result = std::filesystem::create_directory( path );
+    int res = mkdir( path.c_str(), 0755 );
 
-    //int res = mkdir( path.c_str(), 0755 );
+    fprintf( stdout, "res = %d, errno = %d\n", res, errno );
 
-    fprintf( stdout, "result = %d, errno = %d\n", result, errno );
-
-    return result == 0;
+    return res == 0;
 }
 
 }

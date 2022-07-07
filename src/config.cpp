@@ -43,7 +43,7 @@ C_config::read( int argc, char *argv[] )
     std::string config_dir_path = format_string( "%s/%s", home, CONFIG_DIR );
     std::string config_path     = config_dir_path;
     
-    config_path += "\\";
+    config_path += "/";
     config_path += CONFIG_FILE;
 
     if ( ! check_params( argc, argv, config_path ) )
@@ -51,19 +51,18 @@ C_config::read( int argc, char *argv[] )
         return false;
     }
 
-    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "config_dir_path: %s", config_dir_path.c_str() );
-    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "config_path: %s",     config_path.c_str() );
+    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "config_dir_path: %s", config_dir_path.c_str() );
+    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "config_path: %s",     config_path.c_str() );
 
     if ( ! directory_exists( config_dir_path ) )
     {
         if ( ! create_directory( config_dir_path ) )
         {
-            log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Error creating directory " CONFIG_DIR );
+            log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Error creating directory %s", config_dir_path.c_str() );
         }
     }
 
-    // If file ~/.stenosys/config does not exist, create it and write a set
-    // of default parameters to it.
+    // If config file does not exist, create it and write a set of default parameters to it
     if ( ! file_exists( config_path ) )
     {
         create_default_config( config_path );
@@ -105,7 +104,7 @@ C_config::read_config( const std::string & config_path )
             std::string param = match1.str();
             std::string value = match2.str();
         
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "param: %s, value: %s", param.c_str(), value.c_str() );
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "param: %s, value: %s", param.c_str(), value.c_str() );
 
             std::transform( param.begin(), param.end(), param.begin(), ::tolower );
         
@@ -179,9 +178,8 @@ C_config::check_params( int argc, char *argv[], std::string & cfg_path )
     if ( argc > 1 )
     {
         // Program takes no parameters; show usage if any are supplied
-
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "stenosys - stenographic utility" );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Configuration file is stored at %s", cfg_path.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Configuration path is: %s", cfg_path.c_str() );
 
         return false;
     }
