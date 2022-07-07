@@ -36,18 +36,27 @@ C_config::~C_config()
 bool
 C_config::read( int argc, char *argv[] )
 {
-    if ( ! check_params( argc, argv ) )
+
+    // The stenosys configuration is stored under the user's home directory
+    const char * home = std::getenv( "HOME" );
+
+    std::string config_dir_path = format_string( "%s/%s", home, CONFIG_DIR );
+    std::string config_path     = config_dir_path;
+    
+    config_path += "\\";
+    config_path += CONFIG_FILE;
+
+    if ( ! check_params( argc, argv, config_path ) )
     {
         return false;
     }
 
-    // The stenosys configuration is stored under the user's home directory
-    //
-    // If directory ~/.stenosys does not exist, create it
+    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "config_dir_path: %s", config_dir_path.c_str() );
+    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "config_path: %s",     config_path.c_str() );
 
-    if ( ! directory_exists( CONFIG_DIR ) )
+    if ( ! directory_exists( config_dir_path ) )
     {
-        if ( ! create_directory( CONFIG_DIR ) )
+        if ( ! create_directory( config_dir_path ) )
         {
             log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Error creating directory " CONFIG_DIR );
         }
@@ -55,13 +64,13 @@ C_config::read( int argc, char *argv[] )
 
     // If file ~/.stenosys/config does not exist, create it and write a set
     // of default parameters to it.
-    if ( ! file_exists( CONFIG_PATH ) )
+    if ( ! file_exists( config_path ) )
     {
-        create_default_config( CONFIG_PATH );
+        create_default_config( config_path );
     }
 
     // Open config file. If open fails, log a message and exit (return false).
-    if ( ! read_config( CONFIG_PATH ) )
+    if ( ! read_config( config_path ) )
     {
         return false;
     }
@@ -73,7 +82,7 @@ bool
 C_config::read_config( const std::string & config_path )
 {
     // Read in whole file
-    if ( ! C_text_file::read( CONFIG_PATH ) )
+    if ( ! C_text_file::read( config_path ) )
     {
         log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Error loading configuration file" );
         return false;
@@ -95,6 +104,8 @@ C_config::read_config( const std::string & config_path )
 
             std::string param = match1.str();
             std::string value = match2.str();
+        
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "param: %s, value: %s", param.c_str(), value.c_str() );
 
             std::transform( param.begin(), param.end(), param.begin(), ::tolower );
         
@@ -163,14 +174,14 @@ C_config::create_default_config( const std::string & config_path )
 }
 
 bool
-C_config::check_params( int argc, char *argv[] )
+C_config::check_params( int argc, char *argv[], std::string & cfg_path )
 {
     if ( argc > 1 )
     {
         // Program takes no parameters; show usage if any are supplied
 
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "stenosys - stenographic utility" );
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Configuration file is stored at " CONFIG_PATH );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Configuration file is stored at %s", cfg_path.c_str() );
 
         return false;
     }

@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include <cstring>
+#include <filesystem>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -175,13 +176,13 @@ directory_exists( const std::string & path )
 bool
 create_directory( const std::string & path )
 {
-    mode_t mode = 0555; // octal 755
+    bool result = std::filesystem::create_directory( path );
 
-    int res = mkdir( path.c_str(), mode );
+    //int res = mkdir( path.c_str(), 0755 );
 
-    fprintf( stdout, "res = %d, errno = %d\n", res, errno );
+    fprintf( stdout, "result = %d, errno = %d\n", result, errno );
 
-    return res == 0;
+    return result == 0;
 }
 
 }
