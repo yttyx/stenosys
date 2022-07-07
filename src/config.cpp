@@ -51,9 +51,6 @@ C_config::read( int argc, char *argv[] )
         return false;
     }
 
-    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "config_dir_path: %s", config_dir_path.c_str() );
-    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "config_path: %s",     config_path.c_str() );
-
     if ( ! directory_exists( config_dir_path ) )
     {
         if ( ! create_directory( config_dir_path ) )

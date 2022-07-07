@@ -3,7 +3,6 @@
 #include <assert.h>
 
 #include <cstring>
-#include <filesystem>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
