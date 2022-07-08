@@ -6,7 +6,6 @@
 #include <iostream>
 #include <memory>
 
-#include "common.h"
 #include "dictionary.h"
 #include "log.h"
 #include "stenoflags.h"

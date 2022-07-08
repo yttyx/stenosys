@@ -5,7 +5,6 @@
 #include <iostream>
 #include <memory>
 
-#include "common.h"
 #include "log.h"
 #include "miscellaneous.h"
 #include "utf8.h"

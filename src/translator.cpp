@@ -6,7 +6,6 @@
 #include <iostream>
 #include <memory>
 
-//#include <common.h>
 #include "dictionary.h"
 #include "formatter.h"
 #include "log.h"
