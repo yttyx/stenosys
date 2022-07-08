@@ -92,16 +92,19 @@ C_gemini_pr::decode( const S_geminipr_packet & packet )
         }
     }
 
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "stroke_lhs: %s,  stroke_rhs: %s"
-    //                                           , stroke_lhs.c_str()
-    //                                           , stroke_rhs.c_str() );
-
     if ( ! suppress_hyphen( stroke_lhs, stroke_rhs ) )
     {
         stroke_lhs += "-";
     }
 
     return stroke_lhs + stroke_rhs;
+}
+
+
+std::string
+C_gemini_pr::to_paper( const S_geminipr_packet & packet )
+{
+    return std::string ("HELLO WORLD");
 }
 
 bool

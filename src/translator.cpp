@@ -87,7 +87,7 @@ C_translator::translate( const S_geminipr_packet & steno_packet, std::string & o
 
     if ( paper_tape_ )
     {
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", C_gemini_pr::to_paper( steno_packet ).c_str() );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", C_gemini_pr::to_paper( steno_packet ).c_str() );
     }
 }
 

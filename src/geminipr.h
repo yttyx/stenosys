@@ -32,7 +32,8 @@ public:
     static S_geminipr_packet * 
     encode( const std::string & stroke );
 
-    static const char steno_key_chart[];
+    static std::string
+    to_paper( const S_geminipr_packet & packet );
 
 private:
 
@@ -41,6 +42,8 @@ private:
 
     static bool
     suppress_hyphen( const std::string & lhs, const std::string & rhs );
+    
+    static const char steno_key_chart[];
 };
 
 }
