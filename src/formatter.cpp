@@ -95,12 +95,6 @@ C_formatter::transition_to( const std::string & prev
                           , bool                extends
                           , bool                undo )
 {
-    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "transition_to()" );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  prev   : >%s<", ctrl_to_text( prev ).c_str() );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  curr   : >%s<", ctrl_to_text( curr).c_str() );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  extends: %d", extends );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  undo   : %d", undo );
-
     std::string output;
     std::string backspaces;
     std::string difference;
@@ -109,7 +103,6 @@ C_formatter::transition_to( const std::string & prev
     {
         // Minimise the number of characters required to move from one translation
         // to the next. Check for text common to both.
-
         int idx = C_utf8::differs_at( curr, prev );
         
         if ( idx >= 0 )

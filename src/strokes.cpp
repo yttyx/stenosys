@@ -84,12 +84,7 @@ C_strokes::add_stroke( const std::string & steno
 
     } while ( history_->go_back( stroke ) );
 
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bookmark: steno: %s, seqnum %u"
-                                               //, history_->bookmark()->steno().c_str()
-                                               //, history_->bookmark()->seqnum() );
-    
     // Work forward from the history bookmark (best match) and fix up the stroke sequence numbers
-  
     history_->goto_bookmark();
    
     flags_prev = history_->bookmark_prev()->flags();
@@ -101,16 +96,9 @@ C_strokes::add_stroke( const std::string & steno
     while ( history_->go_forward( stroke ) )
     {
         stroke->seqnum( ++seqnum );
-
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "go_forward: steno: %s, seqnum %u"
-                                                   //, history_->lookback()->steno().c_str()
-                                                   //, history_->lookback()->seqnum() );
     }
 
     extends = history_->curr()->extends();
-    
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "history_->curr()->extends(): %d"
-                                               //, history_->curr()->extends() );
 }
 
 // Add symbol stroke and process the chord in code instead

@@ -15,7 +15,8 @@
 #include "symbols.h"
 #include "translator.h"
 
-#define LOG_SOURCE "TRAN "
+#define LOG_SOURCE "TRANS"
+
 
 using namespace stenosys;
 
@@ -60,6 +61,10 @@ C_translator::translate( const std::string & steno, std::string & output )
         else if ( steno == "#S" )
         {
             toggle_space_mode();
+        }
+        else if ( steno == "#P" )
+        {
+            toggle_paper_mode();
         }
         else if ( steno == "#-D" )
         {
@@ -144,6 +149,12 @@ C_translator::toggle_space_mode()
     formatter_->space_mode( space_mode_ );
 
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Space %s", ( space_mode_ == SP_BEFORE ) ? "before" : "after" );
+}
+
+void
+C_translator::toggle_paper_mode()
+{
+    paper_tape_ = ! paper_tape_;
 }
 
 }

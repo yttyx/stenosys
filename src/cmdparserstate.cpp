@@ -20,10 +20,6 @@ extern C_log log;
 // Initialise parser variables
 STATE_DEFINITION( C_st_init, C_cmd_parser )
 {
-    //fprintf( stdout, "C_st_init\n" );
-    //fprintf( stdout, "  input_       : %s\n", p->input_.c_str() );
-    //fprintf( stdout, "  input_length_: %ld\n", p->input_.length() );
-
     p->output_         = "";
     p->input_length_   = p->input_.length();
     p->flags_          = 0;
@@ -94,18 +90,6 @@ STATE_DEFINITION( C_st_in_text, C_cmd_parser )
 // Search for valid command, whilst copying to the output any text which is not a command
 STATE_DEFINITION( C_st_got_command, C_cmd_parser )
 {
-    // 1 char command e.g. ^ > & < 
-    // {&} attach
-    // {>} 
-    // {.} output '.' <space> and uppercase next word
-    // {,} output '.' <space> and uppercase next word
-    // {?} output '?' <space> and uppercase next word
-    // {!} output '!' <space> and uppercase next word
-    //
-    // 2 char command e.g. -|
-    // no more chars
-    // end of command '}'
-    //
     std::string ch;
 
     bool two_char_cmd = false;
@@ -214,10 +198,6 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
 // Search for valid command, whilst copying to the output any text which is not a command
 STATE_DEFINITION( C_st_got_command_2, C_cmd_parser )
 {
-    // 2 character command e.g. -|
-    // no more chars
-    // end of command '}'
-    //
     std::string ch;
 
     if ( p->input_.get_next( ch ) )

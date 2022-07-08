@@ -46,11 +46,15 @@ private:
 
     void
     toggle_space_mode();
+    
+    void
+    toggle_paper_mode();
 
 private:
     
     alphabet_type alphabet_;
     space_type    space_mode_;
+    bool          paper_tape_;
 
     std::unique_ptr< C_symbols >    symbols_;
     std::unique_ptr< C_strokes >    strokes_;

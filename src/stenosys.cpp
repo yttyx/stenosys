@@ -89,12 +89,13 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Output device   : %s", cfg.c().device_output.c_str() );
 #endif
 
-        // Allow time for the keyup event when enter is pressed to execute the program
+        // Allow time for the key up event to occur when enter was pressed to execute this program
         delay( 1000 );
         
         bool worked = true;
         
-        // If X11 is specified, use the x11 output code; otherwise use the serial output to Pro Micro.
+        // If X11 is specified, use the x11 output mode; otherwise send key event data via a serial
+        // port to an externally-connected Pro Micro.
 #ifdef X11
 #pragma message( "Building for X11" )
         std::unique_ptr< C_outputter > outputter = std::make_unique< C_x11_output >();
@@ -137,11 +138,6 @@ C_stenosys::run( int argc, char *argv[] )
             
             while ( ! kbd.abort() )
             {
-                //if ( stroke_feed.get_steno( steno ) )
-                //{
-                    //translator.translate( steno, translation );
-                //}
-
                 // Stenographic chord input
                 if ( steno_keyboard.read( packet ) )
                 {
@@ -151,15 +147,11 @@ C_stenosys::run( int argc, char *argv[] )
 
                     if ( translation.length() > 0 )
                     {
-                        //TEMP
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation.c_str(): %s", translation.c_str() );
-                    
                         outputter->send( translation );
                     }
                 }
 
                 // Key event input
-
                 if ( steno_keyboard.read( key_event, scancode ) )
                 {
                     outputter->send( key_event, scancode );
