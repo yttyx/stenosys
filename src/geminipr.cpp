@@ -19,18 +19,18 @@ namespace stenosys
 
 extern C_log log;
 
-uint8_t & S_geminipr_packet::operator[]( std::size_t index )
+uint8_t & S_geminipr_packet::operator[]( std::size_t byte_index )
 {
-    assert( ( index >= 0 ) && ( index <= BYTES_PER_STROKE ) );
+    assert( ( byte_index >= 0 ) && ( byte_index <= BYTES_PER_STROKE ) );
 
-    return data[ index ];
+    return data[ byte_index ];
 }
 
-const uint8_t & S_geminipr_packet::operator[]( std::size_t index ) const
+const uint8_t & S_geminipr_packet::operator[]( std::size_t byte_index ) const
 {
-    assert( ( index >= 0 ) && ( index <= BYTES_PER_STROKE ) );
+    assert( ( byte_index >= 0 ) && ( byte_index <= BYTES_PER_STROKE ) );
 
-    return data[ index ];
+    return data[ byte_index ];
 }
 
 S_geminipr_packet *
@@ -42,7 +42,7 @@ S_geminipr_packet::get()
 S_geminipr_packet *
 C_gemini_pr::encode( const std::string & stroke )
 {
-    //TODO
+    //TODO (for unit test)
     return new S_geminipr_packet();
 }
 
@@ -56,19 +56,17 @@ C_gemini_pr::decode( const S_geminipr_packet & packet )
     std::string stroke_lhs;
     std::string stroke_rhs;
 
-    for ( unsigned int byte = 0; byte < BYTES_PER_STROKE; byte++ )
+    for ( unsigned int byte_index = 0; byte_index < BYTES_PER_STROKE; byte_index++ )
     {
-        uint8_t b = packet[ byte ];
+        uint8_t byte = packet[ byte_index ];
         
         for ( unsigned int bit = 1; bit <= 7; bit++ )
         {
-            if ( ( b << bit ) & 0x80 )
+            if ( ( byte << bit ) & 0x80 )
             {
-                const char key = steno_key_chart[ ( byte * 7 ) + bit - 1 ];
+                const char key = steno_key_chart[ ( byte_index * 7 ) + bit - 1 ];
 
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key: %c", key );
-
-                if ( byte <= 2 )
+                if ( byte_index <= 2 )
                 {
                     // LHS 'S' and '*' keys are effectively one ganged key, so suppress a second instance
                     if ( ( key == 'S' ) || ( key == '*' ) )
@@ -104,7 +102,25 @@ C_gemini_pr::decode( const S_geminipr_packet & packet )
 std::string
 C_gemini_pr::to_paper( const S_geminipr_packet & packet )
 {
-    return std::string ("HELLO WORLD");
+    std::string paper;
+
+    for ( unsigned int byte_index = 0; byte_index < BYTES_PER_STROKE; byte_index++ )
+    {
+        uint8_t byte = packet[ byte_index ];
+        
+        for ( unsigned int bit = 1; bit <= 7; bit++ )
+        {
+            if ( ( byte << bit ) & 0x80 )
+            {
+                paper += steno_key_chart[ ( byte_index * 7 ) + bit - 1 ];
+            }
+            else
+            {
+                paper += ' ';
+            }
+        }
+    }
+    return paper;
 }
 
 bool
