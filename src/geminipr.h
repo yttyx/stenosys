@@ -16,9 +16,6 @@ struct S_geminipr_packet
     uint8_t & operator[]( std::size_t index );
     const uint8_t & operator[]( std::size_t index ) const;
 
-//    void 
-//    put( uint16_t index, uint8_t b );
-
     S_geminipr_packet *
     get();
 };

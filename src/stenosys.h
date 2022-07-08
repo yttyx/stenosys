@@ -1,10 +1,6 @@
 // stenosys.h
 #pragma once
 
-#include <memory>
-
-#include "stenokeyboard.h"
-
 namespace stenosys
 {
 

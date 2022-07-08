@@ -7,6 +7,7 @@
 
 #include "dictionary.h"
 #include "formatter.h"
+#include "geminipr.h"
 #include "history.h"
 #include "stenoflags.h"
 #include "strokes.h"
@@ -29,7 +30,7 @@ public:
     initialise( const std::string & dictionary_path );
 
     void 
-    translate( const std::string & steno, std::string & output );
+    translate( const S_geminipr_packet & steno_packet, std::string & output );
     
 private:
     

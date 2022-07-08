@@ -48,9 +48,11 @@ C_translator::initialise( const std::string & dictionary_path )
 
 // Returns true if a translation was made
 void
-C_translator::translate( const std::string & steno, std::string & output )
+C_translator::translate( const S_geminipr_packet & steno_packet, std::string & output )
 {
     output.clear();
+
+    std::string steno = C_gemini_pr::decode( steno_packet );
 
     if ( steno[ 0 ] == '#' )
     {
@@ -81,6 +83,11 @@ C_translator::translate( const std::string & steno, std::string & output )
         {
             add_stroke( steno, output );
         }
+    }
+
+    if ( paper_tape_ )
+    {
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", C_gemini_pr::to_paper( steno_packet ).c_str() );
     }
 }
 
