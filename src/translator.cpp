@@ -28,6 +28,7 @@ extern C_log log;
 C_translator::C_translator( alphabet_type alphabet)
     : alphabet_( alphabet)
     , space_mode_( SP_BEFORE )
+    , paper_tape_( false )
 {
     symbols_    = std::make_unique< C_symbols >();
     strokes_    = std::make_unique< C_strokes >( *symbols_.get() );
@@ -87,7 +88,7 @@ C_translator::translate( const S_geminipr_packet & steno_packet, std::string & o
 
     if ( paper_tape_ )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", C_gemini_pr::to_paper( steno_packet ).c_str() );
+        log_writeln_fmt_raw( C_log::LL_INFO, "%s", C_gemini_pr::to_paper( steno_packet ).c_str() );
     }
 }
 
@@ -145,7 +146,7 @@ C_translator::toggle_alphabet_mode()
 {
     alphabet_= ( alphabet_== AT_LATIN ) ? AT_SHAVIAN : AT_LATIN;
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s alphabet active", ( alphabet_== AT_LATIN ) ? "Latin" : "Shavian" );
+    log_writeln_fmt_raw( C_log::LL_INFO, "%s", ( alphabet_== AT_LATIN ) ? "Roman" : "Shavian" );
 }
 
 void
@@ -155,13 +156,15 @@ C_translator::toggle_space_mode()
 
     formatter_->space_mode( space_mode_ );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Space %s", ( space_mode_ == SP_BEFORE ) ? "before" : "after" );
+    log_writeln_fmt_raw( C_log::LL_INFO, "Space %s", ( space_mode_ == SP_BEFORE ) ? "before" : "after" );
 }
 
 void
 C_translator::toggle_paper_mode()
 {
     paper_tape_ = ! paper_tape_;
+    
+    log_writeln_fmt_raw( C_log::LL_INFO, "Paper %s", paper_tape_ ? "on" : "off" );
 }
 
 }

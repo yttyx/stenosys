@@ -89,8 +89,11 @@ C_kbd_raw::initialise( const std::string & device )
     // Get device information
     ioctl( handle_, EVIOCGID, id );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Input device ID: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
-                                        , id[ ID_BUS ], id[ ID_VENDOR ], id[ ID_PRODUCT ], id[ ID_VERSION ] );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Input device ID: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
+                                               //, id[ ID_BUS ]
+                                               //, id[ ID_VENDOR ]
+                                               //, id[ ID_PRODUCT ]
+                                               //, id[ ID_VERSION ] );
 
     memset( bit, 0, sizeof( bit ) );
     ioctl( handle_, EVIOCGBIT( 0, EV_MAX ), bit[ 0 ] );

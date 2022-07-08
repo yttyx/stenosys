@@ -45,8 +45,6 @@ C_keyboard::abort()
 
     if ( got_keypress() )
     {
-        log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "got keypress" );
-
         ch = get_key();
     }
 
