@@ -133,6 +133,18 @@ C_strokes::undo()
     }
 }
 
+// Clear all strokes
+void
+C_strokes::clear()
+{
+    while ( ( history_->curr()->steno().length() > 0 ) )
+    {
+        history_->curr()->clear();
+        history_->remove();
+    }
+}
+
+
 // Output: text and flags are only set if the dictionary entry is found
 bool
 C_strokes::lookup( const std::string & steno

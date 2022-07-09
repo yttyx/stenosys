@@ -101,12 +101,6 @@ C_stroke::extends()
     return seqnum_ > 1;
 }
 
-//bool
-//C_stroke::superceded()
-//{
-    //return superceded_;
-//}
-
 void
 C_stroke::clear()
 {

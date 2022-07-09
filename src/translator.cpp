@@ -156,6 +156,10 @@ C_translator::toggle_space_mode()
 
     formatter_->space_mode( space_mode_ );
 
+    // Clear all strokes to get a clean start (avoids issues with undoing strokes across
+    // a space-before/space-after transition).
+    strokes_->clear();
+
     log_writeln_fmt_raw( C_log::LL_INFO, "Space %s", ( space_mode_ == SP_BEFORE ) ? "before" : "after" );
 }
 

@@ -51,9 +51,6 @@ public:
     bool
     extends();
 
-    bool
-    superceded();
-
     void
     clear();
 
