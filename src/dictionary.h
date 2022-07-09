@@ -24,7 +24,7 @@ namespace stenosys
 typedef struct
 {
     std::string steno;
-    std::string latin;
+    std::string roman;
     std::string shavian;
 } STENO_ENTRY;
 

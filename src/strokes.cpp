@@ -69,7 +69,7 @@ C_strokes::add_stroke( const std::string & steno
     {
         key = ( key.length() == 0 ) ? steno : stroke->steno() + std::string( "/" ) + key;
      
-        std::string latin;
+        std::string roman;
         std::string shavian;
 
         // Do dictionary lookup
@@ -152,19 +152,19 @@ C_strokes::lookup( const std::string & steno
                  , std::string &       text
                  , uint16_t &          flags )
 {
-    const uint16_t * latin_flags   = nullptr;
+    const uint16_t * roman_flags   = nullptr;
     const uint16_t * shavian_flags = nullptr;
 
-    const char * latin   = nullptr;
+    const char * roman   = nullptr;
     const char * shavian = nullptr;
 
     // Look up entry in hashed dictionary
-    if ( dictionary_lookup( steno.c_str(), latin, latin_flags, shavian, shavian_flags ) )
+    if ( dictionary_lookup( steno.c_str(), roman, roman_flags, shavian, shavian_flags ) )
     {
         // If configured for Shavian, use the Shavian entry if it's not empty; otherwise use
-        // the Latin entry.
-        text  = ( alphabet == AT_SHAVIAN ) ? ( ( strlen( shavian ) > 0 ) ? shavian : latin ) : latin;
-        flags = ( alphabet == AT_SHAVIAN ) ? *shavian_flags : *latin_flags;
+        // the Roman alphabet entry.
+        text  = ( alphabet == AT_SHAVIAN ) ? ( ( strlen( shavian ) > 0 ) ? shavian : roman ) : roman;
+        flags = ( alphabet == AT_SHAVIAN ) ? *shavian_flags : *roman_flags;
     
         return true;
     }

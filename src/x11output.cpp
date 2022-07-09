@@ -121,7 +121,7 @@ C_x11_output::send( const std::string & str )
 void
 C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
-    // Check for the scancode used for the Latin/Shavian alphabet switch
+    // Check for the scancode used for the Roman/Shavian alphabet switch
     if ( scancode == KC_EXECUTE )
     { 
         if ( key_event == KEY_EV_DOWN )

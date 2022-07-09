@@ -194,11 +194,11 @@ C_dictionary::hash_map_test()
 
         if ( get_dictionary_entry( index, dict_entry ) )
         {
-            std::string hash_latin;
+            std::string hash_roman;
 
-            if ( hash_find( dict_entry.steno, hash_latin ) )
+            if ( hash_find( dict_entry.steno, hash_roman ) )
             {
-                if ( dict_entry.latin != hash_latin )
+                if ( dict_entry.roman != hash_roman )
                 {
                     value_mismatch++;
                 }
@@ -247,7 +247,7 @@ C_dictionary::hash_find( const std::string & key, std::string & value )
         // If key found return its value
         if ( dict_entry.steno == key )
         {
-            value = dict_entry.latin;
+            value = dict_entry.roman;
             return true;
         }
 
@@ -391,25 +391,25 @@ C_dictionary::write_hash_table( FILE * output_stream )
             
             if ( get_dictionary_entry( hashmap_[ index ], entry ) )
             {
-                std::string parsed_latin;
+                std::string parsed_roman;
                 std::string parsed_shavian;
 
-                uint16_t latin_flags   = 0;
+                uint16_t roman_flags   = 0;
                 uint16_t shavian_flags = 0;
 
                 // Parse the dictionary text for Plover-style commands
-                bool latin_ok   = parser_->parse( entry.latin,   parsed_latin,   latin_flags );
+                bool roman_ok   = parser_->parse( entry.roman,   parsed_roman,   roman_flags );
                 bool shavian_ok = parser_->parse( entry.shavian, parsed_shavian, shavian_flags );
 
-                if ( latin_ok && shavian_ok )
+                if ( roman_ok && shavian_ok )
                 {
-                    escape_characters( parsed_latin );
+                    escape_characters( parsed_roman );
                     escape_characters( parsed_shavian );
 
                     fprintf( output_stream, "    { \"%s\", u8\"%s\", 0x%04x, u8\"%s\", 0x%04x },\n"
                                           , entry.steno.c_str()
-                                          , parsed_latin.c_str()
-                                          , latin_flags
+                                          , parsed_roman.c_str()
+                                          , roman_flags
                                           , parsed_shavian.c_str()
                                           , shavian_flags );
                 }
@@ -475,16 +475,16 @@ C_dictionary::read( const std::string & path )
             while ( get_line( line ) )
             {
                 std::string steno;
-                std::string latin;      // Latin alphabet
+                std::string roman;      // roman alphabet
                 std::string shavian;    // Shavian alphabet
 
                 // Check for valid tab-separated-value entry
-                if ( parse_line( line, REGEX_DICTIONARY, steno, latin, shavian ) )
+                if ( parse_line( line, REGEX_DICTIONARY, steno, roman, shavian ) )
                 {
                     STENO_ENTRY * dict_entry = new STENO_ENTRY();
                         
                     dict_entry->steno   = steno;
-                    dict_entry->latin   = latin;
+                    dict_entry->roman   = roman;
                     dict_entry->shavian = shavian;
 
                     dictionary_->push_back( *dict_entry );
@@ -613,8 +613,8 @@ const char * C_dictionary::cpp_top[] =
     "struct dictionary_entry",
     "{",
     "    const char *    const steno;" ,
-    "    const char *    const latin;" ,
-    "    const uint16_t  latin_flags;" ,
+    "    const char *    const roman;" ,
+    "    const uint16_t  roman_flags;" ,
     "    const char *    const shavian;",
     "    const uint16_t  shavian_flags;",
     "};",
@@ -642,8 +642,8 @@ const char * C_dictionary::cpp_tail[] =
     "// Function to find the value for a given key",
     "bool",
     "dictionary_lookup( const char *       key",
-    "                 , const char * &     latin",
-    "                 , const uint16_t * & latin_flags",
+    "                 , const char * &     roman",
+    "                 , const uint16_t * & roman_flags",
     "                 , const char * &     shavian",
     "                 , const uint16_t * & shavian_flags )",
     "{",
@@ -663,8 +663,8 @@ const char * C_dictionary::cpp_tail[] =
     "",
     "        if ( strcmp( entry->steno, key ) == 0 )",
     "        {",
-    "            latin         = entry->latin;",
-    "            latin_flags   = &entry->latin_flags;",
+    "            roman         = entry->roman;",
+    "            roman_flags   = &entry->roman_flags;",
     "            shavian       = entry->shavian;",
     "            shavian_flags = &entry->shavian_flags;",
     "", 
@@ -699,8 +699,8 @@ const char * C_dictionary::hdr[] =
     "// Function to find the value for a given key",
     "bool",
     "dictionary_lookup( const char *       key",
-    "                 , const char * &     latin",
-    "                 , const uint16_t * & latin_flags",
+    "                 , const char * &     roman",
+    "                 , const uint16_t * & roman_flags",
     "                 , const char * &     shavian",
     "                 , const uint16_t * & shavian_flags );",
     "",

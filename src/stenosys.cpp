@@ -114,7 +114,7 @@ C_stenosys::run( int argc, char *argv[] )
 
         C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard
         C_stroke_feed    stroke_feed;
-        C_translator     translator( AT_LATIN );
+        C_translator     translator( AT_ROMAN );
         
         worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
 
