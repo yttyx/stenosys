@@ -1,6 +1,9 @@
 
 #include <algorithm>
 
+//TEMP for dict lookup tests
+#include <chrono>
+
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -42,7 +45,26 @@ C_strokes::initialise()
 
     history_->add( new_stroke );
 
+    word_check( "being" );
+    word_check( "orang" );
+    //word_check( "ation" );
+
     return true;
+}
+
+//TEMP
+void
+C_strokes::word_check( const std::string & word )
+{
+    //TEMP Test speed of brute-force work lookup
+    auto start = std::chrono::steady_clock::now();
+    word_lookup( word.c_str() );
+    auto end = std::chrono::steady_clock::now();
+
+    auto duration_ms = std::chrono::duration_cast< std::chrono::milliseconds >( end - start ).count();
+
+    fprintf( stdout, "Elapsed: %lu mS\n", duration_ms );
+    fprintf( stdout, "----\n" );
 }
 
 // Add a steno stroke and look back through the stroke history

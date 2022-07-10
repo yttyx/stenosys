@@ -134,6 +134,6 @@ private:
     static const char * cpp_tail[];
     static const char * hdr[];
 
-    };
+};
 
 }

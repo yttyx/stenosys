@@ -84,6 +84,11 @@ private:
                    , std::string &                     text
                    , C_stroke * &                      best_match );
 
+
+    //TEMP
+    void
+    word_check( const std::string & word );
+
 private:
 
     C_symbols    & symbols_;

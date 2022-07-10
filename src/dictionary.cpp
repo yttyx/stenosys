@@ -605,6 +605,9 @@ C_dictionary::tests()
 
 const char * C_dictionary::cpp_top[] =
 {
+    "#include <cstdint>",
+    "#include <string>",
+    "",
     "#include \"dictionary_i.h\"",
     "",
     "namespace stenosys",
@@ -625,17 +628,18 @@ const char * C_dictionary::cpp_top[] =
 const char * C_dictionary::cpp_tail[] =
 {
     "static uint32_t",
+    "",
     "generate_hash( const char * key )",
     "{",
     "    uint32_t hash = 5381;",
-     
+    "",
     "    int c;",
-
+    "",
     "    while ( ( c = *key++ ) != 0 )",
     "    {",
     "        hash = c + ( hash << 6 ) + ( hash << 16 ) - hash;",
     "    }",
-
+    "",
     "    return hash % hash_table_length;",
     "}",
     "",
@@ -684,6 +688,30 @@ const char * C_dictionary::cpp_tail[] =
     "    return false;",
     "}",
     "",
+    "//TEMP: test brute force word lookup",
+    "void",
+    "word_lookup( const char * word )",
+    "{",
+    "",
+    "    fprintf( stdout, \"Find: %s:\\n\", word );",
+    "",
+    "    const dictionary_entry * entry = &steno_dictionary_hashed[ 0 ];",
+    "",
+    "    for ( size_t index = 0; index < hash_table_length; index++, entry++ )",
+    "    {",
+    "        if ( ( entry->steno != nullptr ) && ( entry->roman != nullptr ) )",
+    "        {",
+    "            std::string roman = entry->roman;",
+    "",
+    "            if ( roman.find( word ) != std::string::npos )",
+    "            {",
+    "                fprintf( stdout, \"Found: %*.*s: %s\\n\", 16, 16, entry->roman, entry->steno );",
+    "            }",
+    "        }",
+    "    }",
+    "",
+    "}",
+    "",
     "}  // namespace stenosys",
     nullptr
 };
@@ -703,6 +731,9 @@ const char * C_dictionary::hdr[] =
     "                 , const uint16_t * & roman_flags",
     "                 , const char * &     shavian",
     "                 , const uint16_t * & shavian_flags );",
+
+    "void",
+    "word_lookup( const char * word );",
     "",
     "}",
     nullptr
