@@ -108,7 +108,11 @@ C_stenosys::run( int argc, char *argv[] )
 #endif
 
         //TEMP
-        outputter->test();
+        for ( int ii = 0; ii < 10; ii++ )
+        {
+            outputter->test();
+            delay( 1000 );
+        }
 
         if ( ! worked )
         {

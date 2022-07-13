@@ -752,36 +752,16 @@ C_x11_output::test()
 {
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
 
-    Window focused = 0;
+    Window focused = None;
     int revert_to  = 0;
-
-    Window foo = 0;
-    //Window win = 0;
-    int bar = 0;
-    unsigned int mask = 0; 
-
-    Window wnd = window_from_name( "stenosys" );
-
-    //do
-    //{
-        //( void ) XQueryPointer( display_, DefaultRootWindow( display_ ), &foo, &win, &bar, &bar, &bar, &bar, &mask );
-    
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  win: %08lx", win );
-
-    //} while( win <= 0 );
 
     XGetInputFocus( display_, &focused, &revert_to );
 
-    if ( focused == None )
-    {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "  no window has focus" );
-    }
-    else
-    {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  focus: %08lx", focused );
-    }
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", ( wnd == focused ) ? "WE HAVE FOCUS!" : "we don't have focus" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "focused: %08lx", focused );
+    
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", find_window_handle( focused )
+                                                     //? "WE HAVE FOCUS!"
+                                                     //: "we don't have focus" );
 
 #if 0
     C_utf8 shav_test ( "·𐑢𐑣𐑩𐑤𐑴 ·𐑢𐑻𐑤𐑛" );
@@ -833,59 +813,44 @@ C_x11_output::test()
 #endif
 }
 
-Window
-C_x11_output::window_from_name( const char * name )
+bool
+C_x11_output::find_window_handle( Window search_wnd )
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "window_from_name" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "find_window_handle" );
 
-    Window w = window_from_name_search( XDefaultRootWindow( display_ ), name );
+    bool res = find_window_handle_2( XDefaultRootWindow( display_ ), search_wnd );
 
-    return w;
+    return res;
 }
 
-Window
-C_x11_output::window_from_name_search( Window current, const char * needle )
+bool
+C_x11_output::find_window_handle_2( Window current_wnd, Window search_wnd )
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "window_from_name_search" );
-    
-    Window   retval   = None;
     Window   root     = None;
     Window   parent   = None;
     Window * children = None;
  
     unsigned children_count = 0;
   
-    char * name = NULL;
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "current_wnd: %08lx, search_wnd: %08lx", current_wnd, search_wnd );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "current: %08lx", current );
-
-    // Check if this window has the name we seek
-    if ( XFetchName( display_, current, &name ) > 0 )
+    // Check if window handle matches
+    if ( current_wnd == search_wnd )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "needle: %s, name: %s", needle, name );
-        
-        int r = strcmp( needle, name );
-  
-        XFree( name );
-    
-        if ( r == 0 )
-        {
-            return current;
-        }
+        return true;
     }
 
-    retval = 0;
+    bool result = false;
     
-    // If it does not: check all subwindows recursively
-    if ( XQueryTree( display_, current, &root, &parent, &children, &children_count ) != 0 )
+    // If not, check all subwindows recursively
+    if ( XQueryTree( display_, current_wnd, &root, &parent, &children, &children_count ) != 0 )
     {
         for ( unsigned int ii = 0; ii < children_count; ii++ )
         {
-            Window win = window_from_name_search( children[ ii ], needle );
+            result = find_window_handle_2( children[ ii ], search_wnd );
             
-            if ( win != 0 )
+            if ( result )
             {
-                retval = win;
                 break;
             }
         }
@@ -893,7 +858,7 @@ C_x11_output::window_from_name_search( Window current, const char * needle )
         XFree( children );
     }
 
-    return retval;
+    return result;
 }
 
 }
