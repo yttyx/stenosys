@@ -103,6 +103,12 @@ private:
     virtual void
     toggle_shavian();
 
+    Window
+    window_from_name( const char * name );
+
+    Window
+    window_from_name_search( Window current, const char * needle );
+
 private:
     
     bool shavian_;      // mode for typed output:   

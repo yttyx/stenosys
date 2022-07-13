@@ -107,6 +107,9 @@ C_stenosys::run( int argc, char *argv[] )
         worked = worked && outputter->initialise( cfg.c().device_output );
 #endif
 
+        //TEMP
+        outputter->test();
+
         if ( ! worked )
         {
             log_writeln( C_log::LL_INFO, LOG_SOURCE, "Outputter initialisation failed" );
