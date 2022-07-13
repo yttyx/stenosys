@@ -756,20 +756,19 @@ C_x11_output::test()
     int revert_to  = 0;
 
     Window foo = 0;
-    Window win = 0;
+    //Window win = 0;
     int bar = 0;
     unsigned int mask = 0; 
 
-
     Window wnd = window_from_name( "stenosys" );
 
-    do
-    {
-        ( void ) XQueryPointer( display_, DefaultRootWindow( display_ ), &foo, &win, &bar, &bar, &bar, &bar, &mask );
+    //do
+    //{
+        //( void ) XQueryPointer( display_, DefaultRootWindow( display_ ), &foo, &win, &bar, &bar, &bar, &bar, &mask );
     
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  win: %p", win );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  win: %08lx", win );
 
-    } while( win <= 0 );
+    //} while( win <= 0 );
 
     XGetInputFocus( display_, &focused, &revert_to );
 
@@ -779,10 +778,10 @@ C_x11_output::test()
     }
     else
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  focus: %p", focused );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  focus: %08lx", focused );
     }
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", ( win == focused ) ? "we have focus" : "we don't have focus" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", ( wnd == focused ) ? "WE HAVE FOCUS!" : "we don't have focus" );
 
 #if 0
     C_utf8 shav_test ( "·𐑢𐑣𐑩𐑤𐑴 ·𐑢𐑻𐑤𐑛" );
@@ -858,7 +857,7 @@ C_x11_output::window_from_name_search( Window current, const char * needle )
   
     char * name = NULL;
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "current: %lu", current );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "current: %08lx", current );
 
     // Check if this window has the name we seek
     if ( XFetchName( display_, current, &name ) > 0 )
@@ -877,18 +876,12 @@ C_x11_output::window_from_name_search( Window current, const char * needle )
 
     retval = 0;
     
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "2" );
-
     // If it does not: check all subwindows recursively
     if ( XQueryTree( display_, current, &root, &parent, &children, &children_count ) != 0 )
     {
         for ( unsigned int ii = 0; ii < children_count; ii++ )
         {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "3" );
-            
             Window win = window_from_name_search( children[ ii ], needle );
-
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "4" );
             
             if ( win != 0 )
             {
