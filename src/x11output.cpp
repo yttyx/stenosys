@@ -2,7 +2,6 @@
 
 #ifdef X11
 
-#include <X11/X.h>
 #include <algorithm>
 #include <assert.h>
 
@@ -11,6 +10,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+
+#include <X11/X.h>
+#include <X11/Xatom.h>
 #include <X11/Xlib.h>
 
 #include "keyevent.h"
@@ -752,13 +754,31 @@ C_x11_output::test()
 {
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
 
-    Window focused = None;
-    int revert_to  = 0;
-
-    XGetInputFocus( display_, &focused, &revert_to );
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "focused: %08lx", focused );
+    unsigned long len;
+    char *        window_name;
     
+    Window * window_list = ( Window * ) list( display_, &len );
+
+
+    for ( int ii = 0; ii < ( int ) len; ii++ )
+    {
+        window_name = C_x11_output::name( display_, window_list[ ii ] );
+
+        fprintf( stdout, "%d: %s \n", ii, window_name );
+
+        free( window_name );
+    }
+
+
+
+
+    //Window focused = None;
+    //int revert_to  = 0;
+
+    //XGetInputFocus( display_, &focused, &revert_to );
+
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "focused: %08lx", focused );
+
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", find_window_handle( focused )
                                                      //? "WE HAVE FOCUS!"
                                                      //: "we don't have focus" );
@@ -859,6 +879,46 @@ C_x11_output::find_window_handle_2( Window current_wnd, Window search_wnd )
     }
 
     return result;
+}
+
+Window *
+C_x11_output::list( Display * disp, unsigned long * len )
+{
+    int             form;
+    unsigned long   remain;
+    unsigned char * list;
+    
+    Atom prop = XInternAtom( disp,"_NET_CLIENT_LIST", False );
+    Atom type;
+
+    if ( XGetWindowProperty( disp, XDefaultRootWindow( disp ), prop, 0, 1024, False, XA_WINDOW,
+                             &type, &form, len, &remain, &list) != Success )
+    {
+        return 0;
+    }
+
+    return ( Window * ) list;
+}
+
+char *
+C_x11_output::name( Display * disp, Window win )
+{
+    int             form;
+    unsigned long   len;
+    unsigned long   remain;
+    unsigned char * list;
+
+    Atom prop = XInternAtom( disp, "WM_NAME", False);
+    Atom type;
+
+    //if ( XGetWindowProperty( disp, win, prop, 0, 1024, False, XA_STRING,
+    if ( XGetWindowProperty( disp, win, prop, 0, 1024, False, AnyPropertyType,
+                             &type, &form, &len, &remain, &list) != Success )
+    {
+        return NULL;
+    }
+
+    return ( char * ) list;
 }
 
 }

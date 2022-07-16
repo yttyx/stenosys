@@ -109,6 +109,12 @@ private:
     bool
     find_window_handle_2( Window current_wnd, Window search_wnd );
 
+    Window *
+    list ( Display * disp, unsigned long * len );
+
+    char *
+    name( Display * disp, Window win );
+
 private:
     
     bool shavian_;      // mode for typed output:   
