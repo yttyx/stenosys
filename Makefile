@@ -61,6 +61,7 @@ STENOSYS_SOURCES := \
 	strokefeed.cpp \
 	strokes.cpp \
 	symbols.cpp \
+	tcpserver.cpp \
 	textfile.cpp \
 	translator.cpp \
 	utf8.cpp \
