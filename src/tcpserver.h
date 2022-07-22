@@ -28,7 +28,9 @@ protected:
 
 private:
 
-    uint16_t port_;
+    int socket_;
+    int client_;
+    int port_;
 
 };
 

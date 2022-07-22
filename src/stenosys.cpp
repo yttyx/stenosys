@@ -39,6 +39,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "strokefeed.h"
 #include "translator.h"
 
+//TEMP test
+#include "tcpserver.h"
+
 #ifdef X11
 #include "x11output.h"
 #endif
@@ -74,6 +77,22 @@ void
 C_stenosys::run( int argc, char *argv[] )
 {
     C_keyboard kbd;
+
+    //TEMP test
+    C_tcp_server tcp_server;
+
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
+
+    if ( tcp_server.initialise( 666 ) )
+    {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
+    }
+    else
+    {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
+    }
+    //TEMP end
+
 
     if ( cfg.read( argc, argv ) )
     {

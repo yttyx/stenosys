@@ -1,82 +1,88 @@
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #include <cstdint>
-#include <cstring>    // sizeof()
+#include <cstring>
 #include <iostream>
 #include <stdio.h>
-#include <string>   
 
-// headers for socket(), getaddrinfo() and friends
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-
-#include <unistd.h>    // close()
-
+#include "log.h"
 #include "tcpserver.h"
+
+#define LOG_SOURCE "TCPSV"
 
 using namespace  stenosys;
 
 namespace stenosys
 {
 
+extern C_log log;
+
 C_tcp_server::C_tcp_server()
-    : port_( 0 )
+    : socket_( 0 )
+    , client_( 0 )
+    , port_( 0 )
 {
 }
-
 
 bool
 C_tcp_server::initialise( int port )
 {
     port_ = port;
 
-    //int serverPort = 5000;
-    struct sockaddr_in serverSa;
+    struct sockaddr_in server_sockaddr;
 
-    int s  = socket( PF_INET,SOCK_STREAM, 0 );
+    int socket_ = socket( PF_INET,SOCK_STREAM, 0 );
    
-    int on = 1;
-    int rc = setsockopt( s, SOL_SOCKET, SO_REUSEADDR, &on, sizeof on );
-    
+    socklen_t option_length = 1;
+
+    int rc = setsockopt( socket_, SOL_SOCKET, SO_REUSEADDR, &option_length, sizeof option_length );
+   
     // initialize the server's sockaddr
-    memset( &serverSa, 0, sizeof( serverSa ) );
+    memset( &server_sockaddr, 0, sizeof( server_sockaddr ) );
 
-    serverSa.sin_family = AF_INET;
-    serverSa.sin_addr.s_addr = htonl(INADDR_ANY);
-    serverSa.sin_port = htons( port_ );
+    server_sockaddr.sin_family      = AF_INET;
+    server_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    server_sockaddr.sin_port        = htons( port_ );
   
-    rc = bind( s,( struct sockaddr * ) &serverSa, sizeof( serverSa ) );
+    rc = bind( socket_, ( struct sockaddr * ) &server_sockaddr, sizeof( server_sockaddr ) );
   
     if ( rc < 0 )
     {
-        perror( "bind failed" );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bind() failed, error %d", rc );
         return false;
     }
 
-    rc = listen( s, 10 );
+    rc = listen( socket_, 10 );
   
     if ( rc < 0 )
     {
-        perror("listen failed");
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "listen() failed, error %d", rc );
         return false;
     }
   
-    socklen_t          clientSaSize;
-    struct sockaddr_in clientSa;
+    socklen_t          client_sockaddr_size;
+    struct sockaddr_in client_sockaddr;
 
-    int c = accept( s,( struct sockaddr * ) &clientSa, &clientSaSize );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Waiting for incoming connection" );
+
+    int client_ = accept( socket_, ( struct sockaddr * ) &client_sockaddr, &client_sockaddr_size );
   
-    if ( c < 0 )
+    if ( client_ < 0 )
     {
-        perror( "accept failed" );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "accept() failed, error %d", rc );
         return false;
     }
-  
+
     //printf("Client address is: 
-    rc = write( c, "hello world\n", 12 );
+    rc = write( client_, "hello world\n", 12 );
   
-    close( c );
-    close( s );
+    close( client_ );
+    close( socket_ );
 
     return true;
 }
