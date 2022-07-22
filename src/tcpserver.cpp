@@ -26,6 +26,7 @@ C_tcp_server::C_tcp_server()
     : socket_( -1 )
     , client_( -1 )
     , port_( -1 )
+    , abort_( false )
 {
 }
 
@@ -88,79 +89,20 @@ C_tcp_server::initialise( int port )
         return false;
     }
   
-    struct sockaddr_in client_sockaddr;
-    socklen_t          client_sockaddr_size = sizeof( sockaddr_in );
-
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Waiting for incoming connection" );
-
-    int client_ = accept( socket_, ( struct sockaddr * ) &client_sockaddr, &client_sockaddr_size );
-  
-    if ( client_ == -1 )
-    {
-        errfn_ = "accept()";
-        errno_ = errno;
-        cleanup();
-        return false;
-    }
-
-    if ( ! send_text( "stenosys\r\n" ) )
-    {
-        return false;
-    }
-
-
-    char input = '\0';
-
-    while ( true )
-    {
-        rc = recv( client_, &input, 1, 0 );
-        
-        if ( rc == -1 )
-        {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "TCP recv error %d", errno );
-            break;
-        }
-
-        if ( input == 0x1b )
-        {
-            break;
-        }
-
-        if ( isprint( input ) )
-        {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received %c [%02x]", input, input );
-        }
-        else
-        {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received [%02x]", input );
-        }
-
-        rc = send( client_, &input, 1, 0 );
-        
-        if ( rc == -1 )
-        {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "TCP send error %d", errno );
-            break;
-        }
-    }
-
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "End of echo loop" );
-
-    rc = close( client_ );
-
-    if ( rc == -1 )
-    {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "close( client_ ) error %d", rc );
-    }
-
-    rc = close( socket_ );
-    
-    if ( rc == -1 )
-    {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "close( socket_ ) error %d", rc );
-    }
-
     return true;
+}
+
+bool
+C_tcp_server::start()
+{
+    return thread_start();
+}
+
+void
+C_tcp_server::stop()
+{
+    abort_ = true;
+    thread_await_exit();
 }
 
 bool
@@ -190,6 +132,108 @@ C_tcp_server::cleanup()
     {
         close( client_ );
     }
+}
+
+// -----------------------------------------------------------------------------------
+// Background thread code
+// -----------------------------------------------------------------------------------
+
+void
+C_tcp_server::thread_handler()
+{
+    if ( ! send_text( "stenosys\r\n" ) )
+    {
+        return;
+    }
+
+    while ( ! abort_ )
+    {
+        if ( ! got_client_connection() )
+        {
+            break;
+        }
+
+        if ( ! echo_characters() )
+        {
+            break;
+        }
+    }
+}
+
+bool
+C_tcp_server::got_client_connection()
+{
+    struct sockaddr_in client_sockaddr;
+    socklen_t          client_sockaddr_size = sizeof( sockaddr_in );
+
+    int client_ = accept( socket_, ( struct sockaddr * ) &client_sockaddr, &client_sockaddr_size );
+  
+    if ( client_ == -1 )
+    {
+        errfn_ = "accept()";
+        errno_ = errno;
+        cleanup();
+        return false;
+    }
+
+    return true;
+}
+
+bool 
+C_tcp_server::echo_characters()
+{
+
+    char input = '\0';
+    int  rc    = -1;
+
+    while ( true )
+    {
+        rc = recv( client_, &input, 1, 0 );
+        
+        if ( rc == -1 )
+        {
+            errfn_ = "recv()";
+            errno_ = errno;
+            break;
+        }
+
+        if ( input == 0x1b )
+        {
+            break;
+        }
+
+        if ( isprint( input ) )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received %c [%02x]", input, input );
+        }
+        else
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received [%02x]", input );
+        }
+
+        rc = send( client_, &input, 1, 0 );
+        
+        if ( rc == -1 )
+        {
+            errfn_ = "send()";
+            errno_ = errno;
+            break;
+        }
+    }
+
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "End of echo loop" );
+
+    int rc2 = close( client_ );
+
+    client_ = -1;
+
+    if ( ( rc != -1 ) && ( rc2 == -1 ) )
+    {
+        errfn_ = "close()";
+        errno_ = errno;
+    }
+
+    return ( rc != -1 ) && ( rc2 != -1 );
 }
 
 }
