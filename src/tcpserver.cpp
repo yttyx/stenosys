@@ -46,7 +46,7 @@ C_tcp_server::initialise( int port )
 
     socklen_t option_length = 1;
 
-    int rc = setsockopt( socket_, SOL_SOCKET, SO_REUSEADDR, &option_length, sizeof option_length );
+    int rc = setsockopt( socket_, SOL_SOCKET, SO_REUSEADDR, &option_length, sizeof( option_length ) );
     
     if ( rc == -1 )
     {
@@ -80,8 +80,8 @@ C_tcp_server::initialise( int port )
         return false;
     }
   
-    socklen_t          client_sockaddr_size;
     struct sockaddr_in client_sockaddr;
+    socklen_t          client_sockaddr_size = sizeof( sockaddr_in );
 
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "Waiting for incoming connection" );
 
@@ -109,9 +109,9 @@ C_tcp_server::initialise( int port )
     {
         rc = recv( client_, &input, 1, 0 );
         
-        if ( rc < 1 )
+        if ( rc == -1 )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "TCP read error %d", rc );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "TCP recv error %d", errno );
             break;
         }
 
@@ -120,13 +120,20 @@ C_tcp_server::initialise( int port )
             break;
         }
 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received %c [%04x]", input, input );
+        if ( isprint( input ) )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received %c [%02x]", input, input );
+        }
+        else
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received [%02x]", input );
+        }
 
         rc = send( client_, &input, 1, 0 );
         
-        if ( rc < 1 )
+        if ( rc == -1 )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "TCP write error %d", rc );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "TCP send error %d", errno );
             break;
         }
     }
