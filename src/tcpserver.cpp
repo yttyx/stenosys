@@ -141,20 +141,24 @@ C_tcp_server::cleanup()
 void
 C_tcp_server::thread_handler()
 {
-    if ( ! send_text( "stenosys\r\n" ) )
-    {
-        return;
-    }
 
     while ( ! abort_ )
     {
         if ( ! got_client_connection() )
         {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
             break;
+        }
+
+        if ( ! send_text( "stenosys\r\n" ) )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
+            return;
         }
 
         if ( ! echo_characters() )
         {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
             break;
         }
     }
@@ -166,7 +170,7 @@ C_tcp_server::got_client_connection()
     struct sockaddr_in client_sockaddr;
     socklen_t          client_sockaddr_size = sizeof( sockaddr_in );
 
-    int client_ = accept( socket_, ( struct sockaddr * ) &client_sockaddr, &client_sockaddr_size );
+    client_ = accept( socket_, ( struct sockaddr * ) &client_sockaddr, &client_sockaddr_size );
   
     if ( client_ == -1 )
     {
