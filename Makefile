@@ -104,14 +104,13 @@ clean:
 	@$(RM) -rf $(EXEDIR)
 	@$(RM) -rf $(LOGDIR)
 
-# Link
-$(DICTBUILD):	$(DICTBUILD_OBJECTS)
+# Build the dictionary builder utility. Run the dictionary builder to produce $(DICTHASHED),
+# a hashed dictionary source file used in the stenosys build
+$(DICTHASHED):	$(DICTBUILD_OBJECTS) $(DICTIONARY)
 	@echo [link]
 	@mkdir -p $(SRCDIR)
+	@mkdir -p $(EXEDIR)
 	$(CC) -o $(EXEDIR)/$(DICTBUILD) $(DICTBUILD_OBJECTS) $(LDLIBS)
-
-# Build the dictionary hash table for steno lookup
-$(DICTHASHED):	$(DICTBUILD) $(DICTIONARY)
 	@$(EXEDIR)/dictbuild
 
 $(STENOSYS):	directories $(STENOSYS_OBJECTS) $(DICTHASHED)
