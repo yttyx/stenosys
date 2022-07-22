@@ -1,12 +1,7 @@
 #pragma once
 
-//#include <memory>
-//#include <stdio.h>
+#include <string>
 
-
-//using namespace stenosys;
-
-#include <cstdint>
 namespace stenosys
 {
 
@@ -16,15 +11,19 @@ class C_tcp_server
 public:
 
     C_tcp_server();
-    
-    ~C_tcp_server() {}
+    ~C_tcp_server();
 
 
     bool
     initialise( int port );
 
-protected:
+    bool 
+    send_text( const std::string & message );
 
+private:
+
+    void
+    cleanup();
 
 private:
 
@@ -32,6 +31,8 @@ private:
     int client_;
     int port_;
 
+    std::string errfn_;
+    int         errno_;
 };
 
 }

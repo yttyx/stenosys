@@ -23,10 +23,15 @@ namespace stenosys
 extern C_log log;
 
 C_tcp_server::C_tcp_server()
-    : socket_( 0 )
-    , client_( 0 )
-    , port_( 0 )
+    : socket_( -1 )
+    , client_( -1 )
+    , port_( -1 )
 {
+}
+
+C_tcp_server::~C_tcp_server()
+{
+    cleanup();
 }
 
 bool
@@ -36,7 +41,7 @@ C_tcp_server::initialise( int port )
 
     struct sockaddr_in server_sockaddr;
 
-    int socket_ = socket( PF_INET,SOCK_STREAM, 0 );
+    socket_ = socket( PF_INET,SOCK_STREAM, 0 );
    
     if ( socket_ == -1 )
     {
@@ -50,8 +55,9 @@ C_tcp_server::initialise( int port )
     
     if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "setsocketopt() failed, error %d", errno );
-        close( socket_ );
+        errfn_ = "setsocketopt()";
+        errno_ = errno;
+        cleanup();
         return false;
     }
    
@@ -66,8 +72,9 @@ C_tcp_server::initialise( int port )
   
     if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bind() failed, error %d", errno );
-        close( socket_ );
+        errfn_ = "bind()";
+        errno_ = errno;
+        cleanup();
         return false;
     }
 
@@ -75,8 +82,9 @@ C_tcp_server::initialise( int port )
   
     if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "listen() failed, error %d", errno );
-        close( socket_ );
+        errfn_ = "listen()";
+        errno_ = errno;
+        cleanup();
         return false;
     }
   
@@ -89,19 +97,17 @@ C_tcp_server::initialise( int port )
   
     if ( client_ == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "accept() failed, error %d", errno );
-        close( socket_ );
+        errfn_ = "accept()";
+        errno_ = errno;
+        cleanup();
         return false;
     }
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection successful" );
-    
-    //printf("Client address is: 
-    std::string msg = "hello\r\n";
-    rc = send( client_, msg.c_str(), msg.length(), 0 );
+    if ( ! send_text( "stenosys\r\n" ) )
+    {
+        return false;
+    }
 
-    msg = "type characters; <esc> to exit\r\n";
-    rc  = send( client_, msg.c_str(), msg.length(), 0 );
 
     char input = '\0';
 
@@ -155,6 +161,35 @@ C_tcp_server::initialise( int port )
     }
 
     return true;
+}
+
+bool
+C_tcp_server::send_text( const std::string & message )
+{
+    int rc = send( client_, message.c_str(), message.length(), 0 );
+
+    if ( rc != -1 )
+    {
+        errfn_ = "send()";
+        errno_ = errno;
+        return false;
+    }
+
+    return true;
+}
+
+void
+C_tcp_server::cleanup()
+{
+    if ( socket_ != -1 )
+    {
+        close( socket_ );
+    }
+   
+    if ( client_ != -1 )
+    {
+        close( client_ );
+    }
 }
 
 }
