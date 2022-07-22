@@ -74,13 +74,47 @@ C_tcp_server::initialise( int port )
   
     if ( client_ < 0 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "accept() failed, error %d", rc );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "accept() failed, error %d", client_ );
         return false;
     }
 
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection successful" );
+    
     //printf("Client address is: 
-    rc = write( client_, "hello world\n", 12 );
-  
+    std::string msg = "hello\r\n";
+    rc = send( client_, msg.c_str(), msg.length(), 0 );
+
+    msg = "type characters; <esc> to exit\r\n";
+    rc  = send( client_, msg.c_str(), msg.length(), 0 );
+
+    char input = '\0';
+
+    while ( rc == 0 )
+    {
+        rc = recv( client_, &input, 1, 0 );
+        
+        if ( rc < 1 )
+        {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP read error" );
+            break;
+        }
+
+        if ( input == 0x1d )
+        {
+            break;
+        }
+
+        rc = send( client_, &input, 1, 0 );
+        
+        if ( rc < 1 )
+        {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP write error" );
+            break;
+        }
+    }
+
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP read error" );
+
     close( client_ );
     close( socket_ );
 

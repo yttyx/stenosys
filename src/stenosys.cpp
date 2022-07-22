@@ -83,7 +83,7 @@ C_stenosys::run( int argc, char *argv[] )
 
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
 
-    if ( tcp_server.initialise( 666 ) )
+    if ( tcp_server.initialise( 6666 ) )
     {
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
     }
