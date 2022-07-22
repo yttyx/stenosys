@@ -38,9 +38,22 @@ C_tcp_server::initialise( int port )
 
     int socket_ = socket( PF_INET,SOCK_STREAM, 0 );
    
+    if ( socket_ == -1 )
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "socket() failed, error %d", errno );
+        return false;
+    }
+
     socklen_t option_length = 1;
 
     int rc = setsockopt( socket_, SOL_SOCKET, SO_REUSEADDR, &option_length, sizeof option_length );
+    
+    if ( rc == -1 )
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "setsocketopt() failed, error %d", errno );
+        close( socket_ );
+        return false;
+    }
    
     // initialize the server's sockaddr
     memset( &server_sockaddr, 0, sizeof( server_sockaddr ) );
@@ -51,17 +64,19 @@ C_tcp_server::initialise( int port )
   
     rc = bind( socket_, ( struct sockaddr * ) &server_sockaddr, sizeof( server_sockaddr ) );
   
-    if ( rc < 0 )
+    if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bind() failed, error %d", rc );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bind() failed, error %d", errno );
+        close( socket_ );
         return false;
     }
 
     rc = listen( socket_, 10 );
   
-    if ( rc < 0 )
+    if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "listen() failed, error %d", rc );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "listen() failed, error %d", errno );
+        close( socket_ );
         return false;
     }
   
@@ -72,9 +87,10 @@ C_tcp_server::initialise( int port )
 
     int client_ = accept( socket_, ( struct sockaddr * ) &client_sockaddr, &client_sockaddr_size );
   
-    if ( client_ < 0 )
+    if ( client_ == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "accept() failed, error %d", client_ );
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "accept() failed, error %d", errno );
+        close( socket_ );
         return false;
     }
 
@@ -89,34 +105,47 @@ C_tcp_server::initialise( int port )
 
     char input = '\0';
 
-    while ( rc == 0 )
+    while ( true )
     {
         rc = recv( client_, &input, 1, 0 );
         
         if ( rc < 1 )
         {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP read error" );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "TCP read error %d", rc );
             break;
         }
 
-        if ( input == 0x1d )
+        if ( input == 0x1b )
         {
             break;
         }
+
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received %c [%04x]", input, input );
 
         rc = send( client_, &input, 1, 0 );
         
         if ( rc < 1 )
         {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP write error" );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "TCP write error %d", rc );
             break;
         }
     }
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP read error" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "End of echo loop" );
 
-    close( client_ );
-    close( socket_ );
+    rc = close( client_ );
+
+    if ( rc == -1 )
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "close( client_ ) error %d", rc );
+    }
+
+    rc = close( socket_ );
+    
+    if ( rc == -1 )
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "close( socket_ ) error %d", rc );
+    }
 
     return true;
 }
