@@ -1,8 +1,9 @@
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
+#include <fcntl.h>
+#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/socket.h>
 #include <unistd.h>
 
 #include <cstdint>
@@ -11,6 +12,7 @@
 #include <stdio.h>
 
 #include "log.h"
+#include "miscellaneous.h"
 #include "tcpserver.h"
 
 #define LOG_SOURCE "TCPSV"
@@ -29,6 +31,8 @@ C_tcp_server::C_tcp_server()
     , abort_( false )
     , running_( false )
 {
+    ip_buffer_ = std::make_unique< C_buffer< char > >();
+    op_buffer_ = std::make_unique< C_buffer< char > >();
 }
 
 C_tcp_server::~C_tcp_server()
@@ -43,11 +47,12 @@ C_tcp_server::initialise( int port )
 
     struct sockaddr_in server_sockaddr;
 
-    socket_ = socket( PF_INET,SOCK_STREAM, 0 );
+    socket_ = socket( PF_INET, SOCK_STREAM, 0 );
    
     if ( socket_ == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "socket() failed, error %d", errno );
+        errfn_ = "socket()";
+        errno_ = errno;
         return false;
     }
 
@@ -129,6 +134,32 @@ C_tcp_server::send_text( const std::string & message )
     return true;
 }
 
+bool
+C_tcp_server::get_line( std::string & line )
+{
+    //TEMP echo character via the ring buffers/thread handler
+   
+    char ch = '\0';
+
+    while ( true )
+    {
+        if ( ip_buffer_->get( ch ) )
+        {
+            if ( ch == 'q' )
+            {
+                // we're done
+                break;
+            }
+
+            op_buffer_->put( ch );
+        }
+
+        delay( 1 );
+    }
+
+    return false;
+}
+
 void
 C_tcp_server::cleanup()
 {
@@ -158,16 +189,53 @@ C_tcp_server::thread_handler()
             break;
         }
 
-        if ( ! send_text( "stenosys\r\n" ) )
+        if ( ! send_banner() )
         {
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
-            return;
         }
-        
-        if ( ! echo_characters() )
+      
+        int  rc    = -1;
+        char ip_ch = '\0';
+        char op_ch = '\0';
+
+        while ( true )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
-            break;
+            // Receive one character (non-blocking)
+            rc = recv( client_, &ip_ch, 1, 0 );
+            
+            // ( rc == -1 ) && ( ( errno == EAGAIN ) || ( rc == EWOULDBLOCK ) ) if no data is available
+            if (  rc != -1 )
+            {
+                if ( ip_ch == 0x04 )
+                {
+                    // EOT: terminate client connection
+                    int rc = close( client_ );
+
+                    client_ = -1;
+
+                    if ( rc != -1 )
+                    {
+                        errfn_ = "close()";
+                        errno_ = errno;
+                    }
+
+                    // Go back and wait for another incoming connection                    
+                    break;
+                }
+                else
+                {
+                    // A character is ready
+                    ip_buffer_->put( ip_ch );
+                }
+            }
+
+            // If any data is available in the output buffer, send it
+            if ( op_buffer_->get( op_ch ) )
+            {
+                rc = send( client_, &op_ch, 1, 0 );
+            }
+
+            delay( 1 );
         }
     }
     
@@ -188,61 +256,26 @@ C_tcp_server::got_client_connection()
         errno_ = errno;
         return false;
     }
-
+  
+    // Set client socket as non-blocking
+    fcntl( client_, F_SETFL, O_NONBLOCK );
+    
     return true;
 }
 
-bool 
-C_tcp_server::echo_characters()
+bool
+C_tcp_server::send_banner()
 {
+    int rc = send( client_, "stenosys\r\n", 10, 0 );
 
-    char input = '\0';
-    int  rc    = -1;
-
-    while ( true )
+    if ( ( rc == -1 ) || ( rc != 10 ) )
     {
-        rc = recv( client_, &input, 1, 0 );
-        
-        if ( rc == -1 )
-        {
-            errfn_ = "recv()";
-            errno_ = errno;
-            break;
-        }
-
-        // EOT (Ctrl-D) 
-        if ( input == 0x04 )
-        {
-            break;
-        }
-
-        if ( input == 'q' )
-        {
-            abort_ = true;
-            break;
-        }
-
-        rc = send( client_, &input, 1, 0 );
-        
-        if ( rc == -1 )
-        {
-            errfn_ = "send()";
-            errno_ = errno;
-            break;
-        }
-    }
-
-    int rc2 = close( client_ );
-
-    client_ = -1;
-
-    if ( ( rc != -1 ) && ( rc2 == -1 ) )
-    {
-        errfn_ = "close()";
+        errfn_ = "banner send()";
         errno_ = errno;
+        return false;
     }
 
-    return ( rc != -1 ) && ( rc2 != -1 );
+    return true;
 }
 
 }

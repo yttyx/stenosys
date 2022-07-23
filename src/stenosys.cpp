@@ -100,6 +100,9 @@ C_stenosys::run( int argc, char *argv[] )
 
     tcp_server.start();
 
+    std::string xxx;
+    tcp_server.get_line( xxx );
+
     while ( tcp_server.running() )
     {
         delay( 1 );

@@ -8,8 +8,6 @@
 #include "mutex.h"
 #include "thread.h"
 
-
-//TBW: don't hardcode buffer size: add a template parameter
 #define BUFFER_SIZE 256
 
 namespace stenosys
