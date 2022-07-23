@@ -210,7 +210,8 @@ C_tcp_server::echo_characters()
             break;
         }
 
-        if ( input == 'x' )
+        // EOT (Ctrl-D) 
+        if ( input == 0x04 )
         {
             break;
         }
