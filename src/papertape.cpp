@@ -28,7 +28,7 @@ C_paper_tape::initialise( int port )
 {
     tcpserver_ = std::make_unique< C_tcp_server >();
 
-    return tcpserver_->initialise( port, "Paper tape" );
+    return tcpserver_->initialise( port, "Paper Tape" );
 }
 
 bool

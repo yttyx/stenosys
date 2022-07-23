@@ -98,6 +98,8 @@ C_tcp_server::initialise( int port, const char * banner )
         return false;
     }
   
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s server listening on port %d", banner_.c_str(), port_ );
+    
     return true;
 }
 
@@ -129,6 +131,9 @@ C_tcp_server::send_text( const std::string & message )
     {
         op_buffer_->put( ch );
     }
+
+    op_buffer_->put( '\r' );
+    op_buffer_->put( '\n' );
 
     return true;
 }
@@ -216,14 +221,12 @@ C_tcp_server::thread_handler()
 
             delay( 1 );
         }
-        
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Out of thread handler loop" );
     }
 
     // Close client socket (if open) and server socket
     cleanup();
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ending background thread" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Shutting down %s socket server thread", banner_.c_str() );
     
     running_ = false;
 }
