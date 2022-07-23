@@ -46,8 +46,6 @@ C_tcp_server::initialise( int port, const char * banner )
     port_   = port;
     banner_ = banner;
 
-    banner_ += "\r\n";
-
     struct sockaddr_in server_sockaddr;
 
     socket_ = socket( PF_INET, SOCK_STREAM, 0 );
@@ -266,9 +264,10 @@ C_tcp_server::got_client_connection()
 bool
 C_tcp_server::send_banner()
 {
-    int rc = send( client_, banner_.c_str(), banner_.length(), 0 );
+    int rc  = send( client_, banner_.c_str(), banner_.length(), 0 );
+    int rc2 = send( client_, "\r\n", 2, 0 );
 
-    if ( ( rc == -1 ) || ( rc != 10 ) )
+    if ( ( rc == -1 ) || ( rc2 == -1 ) )
     {
         errfn_ = "banner send()";
         errno_ = errno;
