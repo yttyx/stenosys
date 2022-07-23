@@ -138,7 +138,6 @@ bool
 C_tcp_server::get_line( std::string & line )
 {
     //TEMP echo character via the ring buffers/thread handler
-   
     char ch = '\0';
 
     while ( true )
@@ -148,6 +147,7 @@ C_tcp_server::get_line( std::string & line )
             if ( ch == 'q' )
             {
                 // we're done
+                abort_ = true;
                 break;
             }
 
@@ -158,20 +158,6 @@ C_tcp_server::get_line( std::string & line )
     }
 
     return false;
-}
-
-void
-C_tcp_server::cleanup()
-{
-    if ( socket_ != -1 )
-    {
-        close( socket_ );
-    }
-   
-    if ( client_ != -1 )
-    {
-        close( client_ );
-    }
 }
 
 // -----------------------------------------------------------------------------------
@@ -198,7 +184,7 @@ C_tcp_server::thread_handler()
         char ip_ch = '\0';
         char op_ch = '\0';
 
-        while ( true )
+        while ( ! abort_ )
         {
             // Receive one character (non-blocking)
             rc = recv( client_, &ip_ch, 1, 0 );
@@ -209,15 +195,7 @@ C_tcp_server::thread_handler()
                 if ( ip_ch == 0x04 )
                 {
                     // EOT: terminate client connection
-                    int rc = close( client_ );
-
-                    client_ = -1;
-
-                    if ( rc != -1 )
-                    {
-                        errfn_ = "close()";
-                        errno_ = errno;
-                    }
+                    close_client();
 
                     // Go back and wait for another incoming connection                    
                     break;
@@ -237,7 +215,14 @@ C_tcp_server::thread_handler()
 
             delay( 1 );
         }
+        
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Out of echo loop" );
     }
+
+    // Close client socket (if open) and server socket
+    cleanup();
+
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ending background thread" );
     
     running_ = false;
 }
@@ -258,8 +243,19 @@ C_tcp_server::got_client_connection()
     }
   
     // Set client socket as non-blocking
-    fcntl( client_, F_SETFL, O_NONBLOCK );
-    
+    int rc = fcntl( client_, F_SETFL, O_NONBLOCK );
+   
+    if ( rc == -1 )
+    {
+        errfn_ = "fcntl()";
+        errno_ = errno;
+    }
+
+    if ( ( client_ == -1 ) || ( rc == -1 ) )
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
+    }
+
     return true;
 }
 
@@ -277,5 +273,33 @@ C_tcp_server::send_banner()
 
     return true;
 }
+
+void
+C_tcp_server::cleanup()
+{
+    if ( socket_ != -1 )
+    {
+        close( socket_ );
+        socket_ = -1;
+    }
+   
+    if ( client_ != -1 )
+    {
+        close( client_ );
+        client_ = -1;
+    }
+}
+
+
+void
+C_tcp_server::close_client()
+{
+    if ( client_ != -1 )
+    {
+        close( client_ );
+        client_ = -1;
+    }
+}
+
 
 }

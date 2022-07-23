@@ -35,6 +35,13 @@ public:
     bool
     get_line( std::string & line );
 
+// Foreground
+private:
+
+    void
+    cleanup();
+
+// Background thread
 private:
 
     void
@@ -47,7 +54,7 @@ private:
     send_banner();
 
     void
-    cleanup();
+    close_client();
 
 private:
 
