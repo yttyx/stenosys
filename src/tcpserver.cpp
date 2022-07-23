@@ -27,6 +27,7 @@ C_tcp_server::C_tcp_server()
     , client_( -1 )
     , port_( -1 )
     , abort_( false )
+    , running_( false )
 {
 }
 
@@ -95,6 +96,8 @@ C_tcp_server::initialise( int port )
 bool
 C_tcp_server::start()
 {
+    running_ = true;
+
     return thread_start();
 }
 
@@ -106,11 +109,17 @@ C_tcp_server::stop()
 }
 
 bool
+C_tcp_server::running()
+{
+    return running_;
+}
+
+bool
 C_tcp_server::send_text( const std::string & message )
 {
     int rc = send( client_, message.c_str(), message.length(), 0 );
 
-    if ( rc != -1 )
+    if ( rc == -1 )
     {
         errfn_ = "send()";
         errno_ = errno;
@@ -141,7 +150,6 @@ C_tcp_server::cleanup()
 void
 C_tcp_server::thread_handler()
 {
-
     while ( ! abort_ )
     {
         if ( ! got_client_connection() )
@@ -155,13 +163,15 @@ C_tcp_server::thread_handler()
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
             return;
         }
-
+        
         if ( ! echo_characters() )
         {
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
             break;
         }
     }
+    
+    running_ = false;
 }
 
 bool
@@ -176,7 +186,6 @@ C_tcp_server::got_client_connection()
     {
         errfn_ = "accept()";
         errno_ = errno;
-        cleanup();
         return false;
     }
 
@@ -201,18 +210,15 @@ C_tcp_server::echo_characters()
             break;
         }
 
-        if ( input == 0x1b )
+        if ( input == 'x' )
         {
             break;
         }
 
-        if ( isprint( input ) )
+        if ( input == 'q' )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received %c [%02x]", input, input );
-        }
-        else
-        {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Received [%02x]", input );
+            abort_ = true;
+            break;
         }
 
         rc = send( client_, &input, 1, 0 );
@@ -224,8 +230,6 @@ C_tcp_server::echo_characters()
             break;
         }
     }
-
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "End of echo loop" );
 
     int rc2 = close( client_ );
 

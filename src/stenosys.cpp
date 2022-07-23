@@ -102,7 +102,7 @@ C_stenosys::run( int argc, char *argv[] )
 
     int count = 60000;
 
-    while ( count-- )
+    while ( count-- && tcp_server.running() )
     {
         delay( 1 );
     }

@@ -24,6 +24,9 @@ public:
     void
     stop();
 
+    bool
+    running();
+
     bool 
     send_text( const std::string & message );
 
@@ -47,6 +50,7 @@ private:
     int  client_;
     int  port_;
     bool abort_;
+    bool running_;
 
     std::string errfn_;
     int         errno_;
