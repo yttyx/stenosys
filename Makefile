@@ -52,6 +52,7 @@ STENOSYS_SOURCES := \
 	keyboard.cpp \
 	log.cpp \
 	miscellaneous.cpp \
+	papertape.cpp \
 	promicrooutput.cpp \
 	serial.cpp \
 	state.cpp \

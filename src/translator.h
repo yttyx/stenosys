@@ -31,7 +31,10 @@ public:
 
     void 
     translate( const S_geminipr_packet & steno_packet, std::string & output );
-    
+
+    bool
+    paper_tape();
+
 private:
     
     C_translator(){}

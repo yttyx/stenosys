@@ -33,6 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "keyevent.h"
 #include "log.h"
 #include "miscellaneous.h"
+#include "papertape.h"
 #include "promicrooutput.h"
 #include "stenokeyboard.h"
 #include "stenosys.h"
@@ -85,32 +86,32 @@ C_stenosys::run( int argc, char *argv[] )
     log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
 
     //TEMP test
-    C_tcp_server tcp_server;
+    //C_tcp_server tcp_server;
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
+    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
 
-    if ( tcp_server.initialise( 6666 ) )
-    {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
-    }
-    else
-    {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
-    }
+    //if ( tcp_server.initialise( 6666 ) )
+    //{
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
+    //}
+    //else
+    //{
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
+    //}
 
-    tcp_server.start();
+    //tcp_server.start();
 
-    std::string xxx;
-    tcp_server.get_line( xxx );
+    //std::string xxx;
+    //tcp_server.get_line( xxx );
 
-    while ( tcp_server.running() )
-    {
-        delay( 1 );
-    }
+    //while ( tcp_server.running() )
+    //{
+        //delay( 1 );
+    //}
 
-    tcp_server.stop();
+    //tcp_server.stop();
     
-    exit( 0 );
+    //exit( 0 );
     //TEMP end
 
     C_keyboard kbd;
@@ -150,7 +151,7 @@ C_stenosys::run( int argc, char *argv[] )
         //delay( 1000 );
     //}
 
-    outputter->test();
+    //outputter->test();
     //TEMP end
 
     if ( ! worked )
@@ -161,13 +162,16 @@ C_stenosys::run( int argc, char *argv[] )
     C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard
     C_stroke_feed    stroke_feed;
     C_translator     translator( AT_ROMAN );
-    
+    C_paper_tape     paper_tape;
+
     worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
 
     //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
     worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );       //TEST
     worked = worked && steno_keyboard.start();
     worked = worked && translator.initialise( cfg.c().file_dict );
+    worked = worked && paper_tape.initialise( 6666 );
+    worked = worked && paper_tape.start();
 
     if ( worked )
     {
@@ -192,6 +196,11 @@ C_stenosys::run( int argc, char *argv[] )
                 {
                     outputter->send( translation );
                 }
+
+                if ( translator.paper_tape() )
+                {
+                    paper_tape.write( packet );
+                }
             }
 
             // Key event input
@@ -205,9 +214,10 @@ C_stenosys::run( int argc, char *argv[] )
 
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
         
+        paper_tape.stop();
         steno_keyboard.stop();
 
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Devices closed down" );
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed down" );
     }
     else
     {

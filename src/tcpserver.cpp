@@ -41,9 +41,12 @@ C_tcp_server::~C_tcp_server()
 }
 
 bool
-C_tcp_server::initialise( int port )
+C_tcp_server::initialise( int port, const char * banner )
 {
-    port_ = port;
+    port_   = port;
+    banner_ = banner;
+
+    banner_ += "\r\n";
 
     struct sockaddr_in server_sockaddr;
 
@@ -122,13 +125,9 @@ C_tcp_server::running()
 bool
 C_tcp_server::send_text( const std::string & message )
 {
-    int rc = send( client_, message.c_str(), message.length(), 0 );
-
-    if ( rc == -1 )
+    for ( char ch : message )
     {
-        errfn_ = "send()";
-        errno_ = errno;
-        return false;
+        op_buffer_->put( ch );
     }
 
     return true;
@@ -137,25 +136,27 @@ C_tcp_server::send_text( const std::string & message )
 bool
 C_tcp_server::get_line( std::string & line )
 {
-    //TEMP echo character via the ring buffers/thread handler
-    char ch = '\0';
+    //TEMP
+    line = "";
 
-    while ( true )
-    {
-        if ( ip_buffer_->get( ch ) )
-        {
-            if ( ch == 'q' )
-            {
-                // we're done
-                abort_ = true;
-                break;
-            }
+    //char ch = '\0';
 
-            op_buffer_->put( ch );
-        }
+    //while ( true )
+    //{
+        //if ( ip_buffer_->get( ch ) )
+        //{
+            //if ( ch == 'q' )
+            //{
+                //// we're done
+                //abort_ = true;
+                //break;
+            //}
 
-        delay( 1 );
-    }
+            //op_buffer_->put( ch );
+        //}
+
+        //delay( 1 );
+    //}
 
     return false;
 }
@@ -216,7 +217,7 @@ C_tcp_server::thread_handler()
             delay( 1 );
         }
         
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Out of echo loop" );
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Out of thread handler loop" );
     }
 
     // Close client socket (if open) and server socket
@@ -262,7 +263,7 @@ C_tcp_server::got_client_connection()
 bool
 C_tcp_server::send_banner()
 {
-    int rc = send( client_, "stenosys\r\n", 10, 0 );
+    int rc = send( client_, banner_.c_str(), banner_.length(), 0 );
 
     if ( ( rc == -1 ) || ( rc != 10 ) )
     {
@@ -290,7 +291,6 @@ C_tcp_server::cleanup()
     }
 }
 
-
 void
 C_tcp_server::close_client()
 {
@@ -300,6 +300,5 @@ C_tcp_server::close_client()
         client_ = -1;
     }
 }
-
 
 }

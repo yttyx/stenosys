@@ -85,11 +85,12 @@ C_translator::translate( const S_geminipr_packet & steno_packet, std::string & o
             add_stroke( steno, output );
         }
     }
+}
 
-    if ( paper_tape_ )
-    {
-        log_writeln_fmt_raw( C_log::LL_INFO, "%s", C_gemini_pr::to_paper( steno_packet ).c_str() );
-    }
+bool
+C_translator::paper_tape()
+{
+    return paper_tape_;
 }
 
 void

@@ -18,7 +18,7 @@ public:
     ~C_tcp_server();
 
     bool
-    initialise( int port );
+    initialise( int port, const char * banner );
 
     bool
     start();
@@ -67,7 +67,9 @@ private:
 
     std::string errfn_;
     int         errno_;
-    
+   
+    std::string banner_;
+
     std::unique_ptr< C_buffer< char > > ip_buffer_;
     std::unique_ptr< C_buffer< char > > op_buffer_;
 
