@@ -1,5 +1,7 @@
 #include <arpa/inet.h>
+#include <asm-generic/errno.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,6 +19,8 @@
 
 #define LOG_SOURCE "TCPSV"
 
+// Ref: https://www.ibm.com/docs/en/i/7.1?topic=designs-using-poll-instead-select
+
 using namespace  stenosys;
 
 namespace stenosys
@@ -25,11 +29,12 @@ namespace stenosys
 extern C_log log;
 
 C_tcp_server::C_tcp_server()
-    : socket_( -1 )
+    : listener_( -1 )
     , client_( -1 )
     , port_( -1 )
     , abort_( false )
     , running_( false )
+    , fds_count_( 1 )
 {
     ip_buffer_ = std::make_unique< C_buffer< char > >();
     op_buffer_ = std::make_unique< C_buffer< char > >();
@@ -48,56 +53,71 @@ C_tcp_server::initialise( int port, const char * banner )
 
     struct sockaddr_in server_sockaddr;
 
-    socket_ = socket( PF_INET, SOCK_STREAM, 0 );
+    listener_ = socket( PF_INET, SOCK_STREAM, 0 );
    
-    if ( socket_ == -1 )
+    if ( listener_ == -1 )
     {
-        errfn_ = "socket()";
-        errno_ = errno;
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "socket() error %d", errno );
         return false;
     }
 
     socklen_t option_length = 1;
 
-    int rc = setsockopt( socket_, SOL_SOCKET, SO_REUSEADDR, &option_length, sizeof( option_length ) );
+    int rc = setsockopt( listener_, SOL_SOCKET, SO_REUSEADDR, &option_length, sizeof( option_length ) );
     
     if ( rc == -1 )
     {
-        errfn_ = "setsocketopt()";
-        errno_ = errno;
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "setsocketopt() error %d", errno );
         cleanup();
         return false;
     }
-   
-    // initialize the server's sockaddr
+  
+    // Set socket to be nonblocking. All of the sockets for
+    // the incoming connections will also be nonblocking since
+    // they will inherit that state from the listening socket
+    int on = 0;
+
+    rc = ioctl( listener_, FIONBIO, ( char * ) &on );
+
+    if ( rc < 0 )
+    {
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ioctl() error %d", errno );
+        cleanup();
+        return false;
+    }
+
+    // Initialize the server's sockaddr
     memset( &server_sockaddr, 0, sizeof( server_sockaddr ) );
 
     server_sockaddr.sin_family      = AF_INET;
     server_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     server_sockaddr.sin_port        = htons( port_ );
   
-    rc = bind( socket_, ( struct sockaddr * ) &server_sockaddr, sizeof( server_sockaddr ) );
+    rc = bind( listener_, ( struct sockaddr * ) &server_sockaddr, sizeof( server_sockaddr ) );
   
     if ( rc == -1 )
     {
-        errfn_ = "bind()";
-        errno_ = errno;
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bind() error %d", errno );
         cleanup();
         return false;
     }
 
-    rc = listen( socket_, 10 );
+    rc = listen( listener_, 10 );
   
     if ( rc == -1 )
     {
-        errfn_ = "listen()";
-        errno_ = errno;
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "listen() error %d", errno );
         cleanup();
         return false;
     }
-  
+
+    // Set up the listening socket
+    memset( fds_, 0 , sizeof( fds_ ) ); 
+
+    fds_[ 0 ].fd = listener_;
+    fds_[ 0 ].events = POLLIN;
+
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s server listening on port %d", banner_.c_str(), port_ );
-    
     return true;
 }
 
@@ -171,20 +191,102 @@ C_tcp_server::get_line( std::string & line )
 void
 C_tcp_server::thread_handler()
 {
+    int  rc               = -1;
+    bool close_connection = false;
+
     while ( ! abort_ )
     {
-        if ( ! got_client_connection() )
+        // Poll socket/s with a timeout of 200mS
+        rc = poll( fds_, fds_count_, 200 );
+
+        if ( rc == -1 )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "poll() error %d, terminating thread", errno );
             break;
         }
 
-        if ( ! send_banner() )
+        if ( rc == 0 )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
+            // Poll timed out. Check for abort and carry on.
+            continue;
         }
-      
-        int  rc    = -1;
+
+        for ( int fds_idx = 0; fds_idx < fds_count_; fds_idx++ )
+        {
+            if ( fds_[ fds_idx ].revents != POLLIN )
+            {
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "revents value error %d", fds_[ fds_idx ].revents );
+                abort_ = true; 
+                break;
+            }
+     
+            if ( fds_[ fds_idx ].fd == listener_ )
+            {
+                int new_client = -1; 
+
+                do
+                {
+                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "listening socket is readable" );
+                   
+                    new_client = accept( listener_, nullptr, nullptr );
+
+                    if ( new_client < 0 )
+                    {
+                        if ( errno != EWOULDBLOCK )
+                        {
+                            log_writeln( C_log::LL_INFO, LOG_SOURCE, "accept() failed" );
+                            abort_ = true;
+                        }
+
+                        break;
+                    }
+
+                    // Add the incoming connection to the fds_ array
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
+
+                    fds_[ fds_count_ ].fd     = new_client;
+                    fds_[ fds_count_ ].events = POLLIN;
+                    fds_count_++;              
+
+                } while ( new_client != -1 );
+            }
+            else
+            {
+                // Not the listening socket, therefore an existing socket must be readable
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Descriptor %d is readable", fds_[ fds_idx ] );
+              
+                char buffer[ 256 ];
+
+                do
+                {
+                    // Receive data on this connection until the recv() fails with  EWOULDBLOCK. If any
+                    // other failure occurs, close the connection.
+                    
+                    rc = recv( fds_[ fds_idx ].fd, buffer, sizeof( buffer ), 0 );
+
+                    if ( rc < 0 )
+                    {
+                        if ( errno != EWOULDBLOCK )
+                        {
+                            log_writeln( C_log::LL_INFO, LOG_SOURCE, "recv() failed" );
+                            abort_ = true;
+                        }
+
+                        break;
+                    }
+
+                    if ( rc == 0 )
+                    {
+                        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection closed" );
+                        
+                    }
+                } while ();
+            }
+        }
+
+     
+
+
         char ip_ch = '\0';
         char op_ch = '\0';
 
@@ -229,37 +331,27 @@ C_tcp_server::thread_handler()
     running_ = false;
 }
 
-bool
-C_tcp_server::got_client_connection()
-{
-    struct sockaddr_in client_sockaddr;
-    socklen_t          client_sockaddr_size = sizeof( sockaddr_in );
+//bool
+//C_tcp_server::got_client_connection()
+//{
+    //struct sockaddr_in client_sockaddr;
+    //socklen_t          client_sockaddr_size = sizeof( sockaddr_in );
 
-    client_ = accept( socket_, ( struct sockaddr * ) &client_sockaddr, &client_sockaddr_size );
+    //client_ = accept( listener_, ( struct sockaddr * ) &client_sockaddr, &client_sockaddr_size );
   
-    if ( client_ == -1 )
-    {
-        errfn_ = "accept()";
-        errno_ = errno;
-        return false;
-    }
+    //if ( client_ == -1 )
+    //{
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "accept() error %d", errno );
+        //return false;
+    //}
   
-    // Set client socket as non-blocking
-    int rc = fcntl( client_, F_SETFL, O_NONBLOCK );
-   
-    if ( rc == -1 )
-    {
-        errfn_ = "fcntl()";
-        errno_ = errno;
-    }
+    //if ( ( client_ == -1 ) || ( rc == -1 ) )
+    //{
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
+    //}
 
-    if ( ( client_ == -1 ) || ( rc == -1 ) )
-    {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
-    }
-
-    return true;
-}
+    //return true;
+//}
 
 bool
 C_tcp_server::send_banner()
@@ -280,10 +372,10 @@ C_tcp_server::send_banner()
 void
 C_tcp_server::cleanup()
 {
-    if ( socket_ != -1 )
+    if ( listener_ != -1 )
     {
-        close( socket_ );
-        socket_ = -1;
+        close( listener_ );
+        listener_ = -1;
     }
    
     if ( client_ != -1 )

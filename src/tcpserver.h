@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sys/poll.h>
+
 #include <memory>
 #include <string>
 
@@ -58,16 +60,16 @@ private:
 
 private:
 
-    int  socket_;
+    int  listener_;
     int  client_;
     int  port_;
     bool abort_;
     bool running_;
     bool connected__;
+    
+    int           fds_count_;
+    struct pollfd fds_[ 16 ];
 
-    std::string errfn_;
-    int         errno_;
-   
     std::string banner_;
 
     std::unique_ptr< C_buffer< char > > ip_buffer_;
