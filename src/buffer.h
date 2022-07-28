@@ -53,6 +53,33 @@ public:
     }
 
     bool
+    put_block( const T * data, int length )
+    {
+        mutex_.lock();
+
+        for ( int ii = 0; ii < length; ii++ )
+        {
+            if ( count_ < BUFFER_SIZE )
+            {
+                buffer_[ put_index_ ] = data[ ii ];
+
+                if ( ++put_index_ >= BUFFER_SIZE )
+                {
+                    put_index_ = 0;
+                }
+
+                count_++;
+
+                mutex_.unlock();
+                return false;    
+            }
+        }
+
+        mutex_.unlock();
+        return true;
+    }
+
+    bool
     put( const T & data )
     {
         mutex_.lock();
@@ -69,11 +96,11 @@ public:
             count_++;
 
             mutex_.unlock();
-            return false;    
+            return true;    
         }
 
         mutex_.unlock();
-        return true;
+        return false;
     }
 
 private:
