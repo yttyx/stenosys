@@ -50,25 +50,17 @@ private:
     thread_handler();
 
     bool
-    got_client_connection();
-    
-    bool
     send_banner();
-
-    void
-    close_client();
 
 private:
 
-    int  listener_;
-    int  client_;
     int  port_;
     bool abort_;
     bool running_;
-    bool connected__;
-    
+   
+    int           listener_;
     int           fds_count_;
-    struct pollfd fds_[ 16 ];
+    struct pollfd fds_[ 3 ];
 
     std::string banner_;
 

@@ -21,7 +21,7 @@
 
 // Ref: https://www.ibm.com/docs/en/i/7.1?topic=designs-using-poll-instead-select
 
-using namespace  stenosys;
+using namespace stenosys;
 
 namespace stenosys
 {
@@ -29,11 +29,10 @@ namespace stenosys
 extern C_log log;
 
 C_tcp_server::C_tcp_server()
-    : listener_( -1 )
-    , client_( -1 )
-    , port_( -1 )
+    : port_( -1 )
     , abort_( false )
     , running_( false )
+    , listener_( -1 )
     , fds_count_( 1 )
 {
     ip_buffer_ = std::make_unique< C_buffer< char > >();
@@ -114,8 +113,9 @@ C_tcp_server::initialise( int port, const char * banner )
     // Set up the listening socket
     memset( fds_, 0 , sizeof( fds_ ) ); 
 
-    fds_[ 0 ].fd = listener_;
+    fds_[ 0 ].fd     = listener_;
     fds_[ 0 ].events = POLLIN;
+    fds_count_ = 1;
 
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s server listening on port %d", banner_.c_str(), port_ );
     return true;
@@ -142,6 +142,7 @@ C_tcp_server::running()
     return running_;
 }
 
+// TBW Write a block of data out directly - protect shared buffer with a mutex
 bool
 C_tcp_server::send_text( const std::string & message )
 {
@@ -192,7 +193,6 @@ void
 C_tcp_server::thread_handler()
 {
     int  rc               = -1;
-    bool close_connection = false;
 
     while ( ! abort_ )
     {
@@ -241,6 +241,15 @@ C_tcp_server::thread_handler()
                         break;
                     }
 
+                    // If we already have one connection made, reject this new connection
+                    if  ( fds_count_ >= 2 )
+                    {
+                        close( new_client );
+
+                        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
+                        break;
+                    }
+
                     // Add the incoming connection to the fds_ array
                     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
 
@@ -257,7 +266,9 @@ C_tcp_server::thread_handler()
               
                 char buffer[ 256 ];
 
-                do
+                bool close_connection = false;
+
+                while ( true ) 
                 {
                     // Receive data on this connection until the recv() fails with  EWOULDBLOCK. If any
                     // other failure occurs, close the connection.
@@ -269,7 +280,7 @@ C_tcp_server::thread_handler()
                         if ( errno != EWOULDBLOCK )
                         {
                             log_writeln( C_log::LL_INFO, LOG_SOURCE, "recv() failed" );
-                            abort_ = true;
+                            close_connection = true; 
                         }
 
                         break;
@@ -278,93 +289,49 @@ C_tcp_server::thread_handler()
                     if ( rc == 0 )
                     {
                         log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection closed" );
-                        
+                        close_connection = true;
+                        break;
                     }
-                } while ();
-            }
-        }
 
-     
+                    int len = rc;
 
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
 
-        char ip_ch = '\0';
-        char op_ch = '\0';
-
-        while ( ! abort_ )
-        {
-            // Receive one character (non-blocking)
-            rc = recv( client_, &ip_ch, 1, 0 );
-            
-            // ( rc == -1 ) && ( ( errno == EAGAIN ) || ( rc == EWOULDBLOCK ) ) if no data is available
-            if (  rc != -1 )
-            {
-                if ( ip_ch == 0x04 )
-                {
-                    // EOT: terminate client connection
-                    close_client();
-
-                    // Go back and wait for another incoming connection                    
-                    break;
+                    // Put the received data into the ring buffer
+                    for ( int ii = 0; ii < len; ii++ )
+                    {
+                        ip_buffer_->put( buffer[ ii ] );
+                    }
                 }
-                else
+
+                if ( close_connection )
                 {
-                    // A character is ready
-                    ip_buffer_->put( ip_ch );
+                    close( fds_[ fds_idx ].fd );
+                    fds_[ fds_idx ].fd = -1;
+                    fds_count_--;
                 }
             }
-
-            // If any data is available in the output buffer, send it
-            if ( op_buffer_->get( op_ch ) )
-            {
-                rc = send( client_, &op_ch, 1, 0 );
-            }
-
-            delay( 1 );
         }
     }
-
-    // Close client socket (if open) and server socket
-    cleanup();
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Shutting down %s socket server thread", banner_.c_str() );
     
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Shutting down %s socket server thread", banner_.c_str() );
+
     running_ = false;
-}
-
-//bool
-//C_tcp_server::got_client_connection()
-//{
-    //struct sockaddr_in client_sockaddr;
-    //socklen_t          client_sockaddr_size = sizeof( sockaddr_in );
-
-    //client_ = accept( listener_, ( struct sockaddr * ) &client_sockaddr, &client_sockaddr_size );
-  
-    //if ( client_ == -1 )
-    //{
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "accept() error %d", errno );
-        //return false;
-    //}
-  
-    //if ( ( client_ == -1 ) || ( rc == -1 ) )
-    //{
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s error %d", errfn_.c_str(), errno_ );
-    //}
-
-    //return true;
-//}
+}     
 
 bool
 C_tcp_server::send_banner()
 {
-    int rc  = send( client_, banner_.c_str(), banner_.length(), 0 );
-    int rc2 = send( client_, "\r\n", 2, 0 );
+    //TODO
+    //int rc  = send( client_, banner_.c_str(), banner_.length(), 0 );
+    //int rc2 = send( client_, "\r\n", 2, 0 );
 
-    if ( ( rc == -1 ) || ( rc2 == -1 ) )
-    {
-        errfn_ = "banner send()";
-        errno_ = errno;
-        return false;
-    }
+    //if ( ( rc == -1 ) || ( rc2 == -1 ) )
+    //{
+        //errfn_ = "banner send()";
+        //errno_ = errno;
+        //return false;
+    //}
 
     return true;
 }
@@ -372,27 +339,13 @@ C_tcp_server::send_banner()
 void
 C_tcp_server::cleanup()
 {
-    if ( listener_ != -1 )
+    for ( int ii = 0; ii < fds_count_; ii++ )
     {
-        close( listener_ );
-        listener_ = -1;
+        close( fds_[ ii ].fd );
+        fds_[ ii ].fd = -1;
     }
-   
-    if ( client_ != -1 )
-    {
-        close( client_ );
-        client_ = -1;
-    }
-}
-
-void
-C_tcp_server::close_client()
-{
-    if ( client_ != -1 )
-    {
-        close( client_ );
-        client_ = -1;
-    }
+    
+    fds_count_ = 1;
 }
 
 }
