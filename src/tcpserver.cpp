@@ -20,7 +20,8 @@
 
 #define LOG_SOURCE "TCPSV"
 
-// Ref: https://www.ibm.com/docs/en/i/7.1?topic=designs-using-poll-instead-select
+// Ref:  https://www.ibm.com/docs/en/i/7.1?topic=designs-using-poll-instead-select
+//       https://stackoverflow.com/questions/12170037/when-to-use-the-pollout-event-of-the-poll-c-function
 
 using namespace stenosys;
 
@@ -143,17 +144,9 @@ C_tcp_server::running()
 
 // TBW Write a block of data out directly - protect shared buffer with a mutex
 bool
-C_tcp_server::send_text( const std::string & message )
+C_tcp_server::send_line( const std::string & message )
 {
-    for ( char ch : message )
-    {
-        op_buffer_->put( ch );
-    }
-
-    op_buffer_->put( '\r' );
-    op_buffer_->put( '\n' );
-
-    return true;
+    return op_buffer_->put_block( message.c_str(), message.length() );
 }
 
 bool
@@ -199,8 +192,8 @@ C_tcp_server::thread_handler()
 
     while ( ! abort_ )
     {
-        // Poll socket/s with a timeout of 200mS
-        rc = poll( fds_, fds_count_, 200 );
+        // Poll socket/s with a timeout of 100mS
+        rc = poll( fds_, fds_count_, 100 );
 
         //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Return from poll() %d", rc );
         
@@ -216,8 +209,15 @@ C_tcp_server::thread_handler()
             continue;
         }
 
+        // Check for data to send and we have a client connected
+        if ( ( fds_count_ == 2 ) && op_buffer_->got_data() )
+        {
+            // Set event flag so we get notified next time poll() is called
+            fds_[ 1 ].revents |= POLLOUT;
+        }
+
         // fds_count_ may increase if there's an incoming connection, but we must not
-        // include a new entry into the checks until poll() above has been called.
+        // include a new entry into the event checks loop until poll() above has been called.
         int fds_count_curr = fds_count_;
 
         for ( int fds_idx = 0; fds_idx < fds_count_curr; fds_idx++ )
@@ -228,125 +228,150 @@ C_tcp_server::thread_handler()
             {
                 continue;
             }
+            
+            char ch = '\0';
 
-            if ( fds_[ fds_idx ].revents != POLLIN )
+            switch ( fds_[ fds_idx ].revents )
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "unexpected event %d", fds_[ fds_idx ].revents );
-                abort_ = true; 
-                break;
-            }
-     
-            if ( fds_[ fds_idx ].fd == listener_ )
-            {
-                int new_client = -1; 
-
-                do
-                {
-                    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "listening socket is readable" );
-                   
-                    new_client = accept( listener_, nullptr, nullptr );
-
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new_client: %d, errno: %d", new_client, errno );
-                    
-                    if ( new_client < 0 )
+                case POLLIN:
+            
+                    if ( fds_[ fds_idx ].fd == listener_ )
                     {
-                        if ( errno != EWOULDBLOCK )
+                        int new_client = -1; 
+
+                        do
                         {
-                            log_writeln( C_log::LL_INFO, LOG_SOURCE, "accept() failed" );
-                            abort_ = true;
-                        }
+                            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "listening socket is readable" );
+                           
+                            new_client = accept( listener_, nullptr, nullptr );
 
-                        break;
-                    }
+                            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new_client: %d, errno: %d", new_client, errno );
+                            
+                            if ( new_client < 0 )
+                            {
+                                if ( errno != EWOULDBLOCK )
+                                {
+                                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "accept() failed" );
+                                    abort_ = true;
+                                }
 
-                    // If we already have one connection made, reject this new connection
-                    if  ( fds_count_ >= 2 )
-                    {
-                        close( new_client );
+                                break;
+                            }
 
-                        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
-                        break;
-                    }
+                            // If we already have one connection made, reject this new connection
+                            if  ( fds_count_ >= 2 )
+                            {
+                                close( new_client );
 
-                    // Make the clint socket nonblocking
-                    int on = 1;
+                                log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
+                                break;
+                            }
 
-                    rc = ioctl( new_client, FIONBIO, ( char * ) &on );
+                            // Make the client socket nonblocking
+                            int on = 1;
 
-                    if ( rc < 0 )
-                    {
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new client ioctl() error %d", errno );
-                        abort_ = true;
-                        break;
-                    }
+                            rc = ioctl( new_client, FIONBIO, ( char * ) &on );
 
-                    // Add the incoming connection to the fds_ array
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
+                            if ( rc < 0 )
+                            {
+                                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new client ioctl() error %d", errno );
+                                abort_ = true;
+                                break;
+                            }
 
-                    fds_[ fds_count_ ].fd     = new_client;
-                    fds_[ fds_count_ ].events = POLLIN;
-                    fds_count_++;              
+                            // Add the incoming connection to the fds_ array
+                            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
 
-                } while ( new_client != -1 );
-            }
-            else
-            {
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Descriptor %d is readable", fds_[ fds_idx ] );
-              
-                char buffer[ 256 ];
+                            fds_[ fds_count_ ].fd     = new_client;
+                            fds_[ fds_count_ ].events = POLLIN;
+                            fds_count_++;              
 
-                bool close_connection = false;
-
-                while ( true ) 
-                {
-                    // Receive data on this connection until the recv() fails with  EWOULDBLOCK. If any
-                    // other failure occurs, close the connection.
-                    
-                    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "before recv()" );
-                    
-                    rc = recv( fds_[ fds_idx ].fd, buffer, sizeof( buffer ), 0 );
-
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv() returned %d", rc  );
-                    
-                    if ( rc < 0 )
-                    {
-                        if ( errno != EWOULDBLOCK )
-                        {
-                            log_writeln( C_log::LL_INFO, LOG_SOURCE, "recv() failed" );
-                            close_connection = true; 
-                        }
-
-                        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "EWOULDBLOCK" );
-                        break;
-                    
-                    }
-                    else if ( rc == 0 )
-                    {
-                        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection closed" );
-                        close_connection = true;
-                        break;
+                        } while ( new_client != -1 );
                     }
                     else
                     {
-                        int len = rc;
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Descriptor %d is readable", fds_[ fds_idx ] );
+                      
+                        char buffer[ 256 ];
 
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
+                        bool close_connection = false;
 
-                        // Put the received data into the ring buffer
-                        for ( int ii = 0; ii < len; ii++ )
+                        while ( true ) 
                         {
-                            ip_buffer_->put( buffer[ ii ] );
+                            // Receive data on this connection until the recv() fails with  EWOULDBLOCK. If any
+                            // other failure occurs, close the connection.
+                            
+                            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "before recv()" );
+                            
+                            rc = recv( fds_[ fds_idx ].fd, buffer, sizeof( buffer ), 0 );
+
+                            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv() returned %d", rc  );
+                            
+                            if ( rc < 0 )
+                            {
+                                if ( errno != EWOULDBLOCK )
+                                {
+                                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "recv() failed" );
+                                    close_connection = true; 
+                                }
+
+                                //log_writeln( C_log::LL_INFO, LOG_SOURCE, "EWOULDBLOCK" );
+                                break;
+                            
+                            }
+                            else if ( rc == 0 )
+                            {
+                                log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection closed" );
+                                close_connection = true;
+                                break;
+                            }
+                            else
+                            {
+                                int len = rc;
+
+                                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
+
+                                // Put the received data into the ring buffer
+                                for ( int ii = 0; ii < len; ii++ )
+                                {
+                                    ip_buffer_->put( buffer[ ii ] );
+                                }
+                            }
+                        }
+
+                        if ( close_connection )
+                        {
+                            close( fds_[ fds_idx ].fd );
+                            fds_[ fds_idx ].fd = -1;
+                            fds_count_--;
                         }
                     }
-                }
+                    break;
 
-                if ( close_connection )
-                {
-                    close( fds_[ fds_idx ].fd );
-                    fds_[ fds_idx ].fd = -1;
-                    fds_count_--;
-                }
-            }
+                case POLLOUT:
+
+                    char buffer[ 256 ];
+
+                    for ( size_t ii = 0; ii < sizeof( buffer ); ii++ )
+                    {
+                        if ( op_buffer_->get( ch ) )
+                        {
+                            buffer[ ii ] = ch;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    break;
+
+                default:
+
+                  log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "unexpected event %d", fds_[ fds_idx ].revents );
+                  abort_ = true; 
+                  break;
+
+            } // end of switch
         }
     }
     

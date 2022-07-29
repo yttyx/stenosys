@@ -51,6 +51,18 @@ public:
         mutex_.unlock();
         return false;
     }
+    
+    bool
+    got_data()
+    {
+        int count = 0;
+
+        mutex_.lock();
+        count = count_;
+        mutex_.unlock();
+
+        return count > 0;
+    }
 
     bool
     put_block( const T * data, int length )
