@@ -35,7 +35,7 @@ public:
     send_text( const std::string & message );
 
     bool
-    get_line( std::string & line );
+    get_line( std::string & line, int max_length );
 
 // Foreground
 private:

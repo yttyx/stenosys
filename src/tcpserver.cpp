@@ -1,5 +1,6 @@
 #include <arpa/inet.h>
 #include <asm-generic/errno.h>
+#include <cstddef>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <netinet/in.h>
@@ -156,18 +157,35 @@ C_tcp_server::send_text( const std::string & message )
 }
 
 bool
-C_tcp_server::get_line( std::string & line )
+C_tcp_server::get_line( std::string & line, int max_length )
 {
     line = "";
 
     char ch = '\0';
 
-    while ( ip_buffer_->get( ch ) )
+    while ( true )
     {
-        line += ch;
+        if ( ip_buffer_->get( ch ) )
+        {
+            if ( ( ch == '\r' ) || ( ch == '\n' ) )
+            {
+                break;
+            }
+            
+            line += ch;
+            
+            if ( line.length() >= ( size_t ) max_length )
+            {
+                break;
+            }
+        }
+        else 
+        {
+            delay( 1 );
+        }
     }
 
-    return true;
+    return line.length() > 0;
 }
 
 // -----------------------------------------------------------------------------------

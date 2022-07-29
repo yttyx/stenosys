@@ -105,9 +105,7 @@ C_stenosys::run( int argc, char *argv[] )
 
     while ( tcp_server.running() )
     {
-        tcp_server.get_line( line );
-
-        if ( line.length() > 0 )
+        if ( tcp_server.get_line( line, 128 ) )
         {
             fprintf( stdout, "%s", line.c_str() );
             fflush( stdout );
@@ -118,7 +116,7 @@ C_stenosys::run( int argc, char *argv[] )
             break;
         }
 
-        delay( 1 );
+        //delay( 1 );
     }
 
     tcp_server.stop();
