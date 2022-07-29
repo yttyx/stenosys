@@ -101,11 +101,23 @@ C_stenosys::run( int argc, char *argv[] )
 
     tcp_server.start();
 
-    std::string xxx;
-    tcp_server.get_line( xxx );
+    std::string line;
 
     while ( tcp_server.running() )
     {
+        tcp_server.get_line( line );
+
+        if ( line.length() > 0 )
+        {
+            fprintf( stdout, "%s", line.c_str() );
+            fflush( stdout );
+        }
+
+        if ( line.find( 'q' ) != std::string::npos )
+        {
+            break;
+        }
+
         delay( 1 );
     }
 

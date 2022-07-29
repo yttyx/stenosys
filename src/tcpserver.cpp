@@ -71,9 +71,7 @@ C_tcp_server::initialise( int port, const char * banner )
         return false;
     }
   
-    // Set socket to be nonblocking. All of the sockets for
-    // the incoming connections will also be nonblocking since
-    // they will inherit that state from the listening socket
+    // Set socket to be nonblocking
     int on = 1;
 
     rc = ioctl( listener_, FIONBIO, ( char * ) &on );
@@ -160,29 +158,16 @@ C_tcp_server::send_text( const std::string & message )
 bool
 C_tcp_server::get_line( std::string & line )
 {
-    //TEMP
     line = "";
 
-    //char ch = '\0';
+    char ch = '\0';
 
-    //while ( true )
-    //{
-        //if ( ip_buffer_->get( ch ) )
-        //{
-            //if ( ch == 'q' )
-            //{
-                //// we're done
-                //abort_ = true;
-                //break;
-            //}
+    while ( ip_buffer_->get( ch ) )
+    {
+        line += ch;
+    }
 
-            //op_buffer_->put( ch );
-        //}
-
-        //delay( 1 );
-    //}
-
-    return false;
+    return true;
 }
 
 // -----------------------------------------------------------------------------------
@@ -199,7 +184,7 @@ C_tcp_server::thread_handler()
         // Poll socket/s with a timeout of 200mS
         rc = poll( fds_, fds_count_, 200 );
 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Return from poll() %d", rc );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Return from poll() %d", rc );
         
         if ( rc == -1 )
         {
@@ -219,7 +204,7 @@ C_tcp_server::thread_handler()
 
         for ( int fds_idx = 0; fds_idx < fds_count_curr; fds_idx++ )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "fds_idx: %d", fds_idx );
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "fds_idx: %d", fds_idx );
 
             if ( fds_[ fds_idx ].revents == 0 )
             {
@@ -239,11 +224,11 @@ C_tcp_server::thread_handler()
 
                 do
                 {
-                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "listening socket is readable" );
+                    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "listening socket is readable" );
                    
                     new_client = accept( listener_, nullptr, nullptr );
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new_client: %d, errno: %d", new_client, errno );
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new_client: %d, errno: %d", new_client, errno );
                     
                     if ( new_client < 0 )
                     {
@@ -257,13 +242,13 @@ C_tcp_server::thread_handler()
                     }
 
                     // If we already have one connection made, reject this new connection
-                    //if  ( fds_count_ >= 2 )
-                    //{
-                        //close( new_client );
+                    if  ( fds_count_ >= 2 )
+                    {
+                        close( new_client );
 
-                        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
-                        //break;
-                    //}
+                        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
+                        break;
+                    }
 
                     // Make the clint socket nonblocking
                     int on = 1;
@@ -278,7 +263,7 @@ C_tcp_server::thread_handler()
                     }
 
                     // Add the incoming connection to the fds_ array
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
 
                     fds_[ fds_count_ ].fd     = new_client;
                     fds_[ fds_count_ ].events = POLLIN;
@@ -288,8 +273,7 @@ C_tcp_server::thread_handler()
             }
             else
             {
-               
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Descriptor %d is readable", fds_[ fds_idx ] );
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Descriptor %d is readable", fds_[ fds_idx ] );
               
                 char buffer[ 256 ];
 
@@ -300,11 +284,11 @@ C_tcp_server::thread_handler()
                     // Receive data on this connection until the recv() fails with  EWOULDBLOCK. If any
                     // other failure occurs, close the connection.
                     
-                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "before recv()" );
+                    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "before recv()" );
                     
                     rc = recv( fds_[ fds_idx ].fd, buffer, sizeof( buffer ), 0 );
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv() returned %d", rc  );
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv() returned %d", rc  );
                     
                     if ( rc < 0 )
                     {
@@ -314,7 +298,7 @@ C_tcp_server::thread_handler()
                             close_connection = true; 
                         }
 
-                        log_writeln( C_log::LL_INFO, LOG_SOURCE, "EWOULDBLOCK" );
+                        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "EWOULDBLOCK" );
                         break;
                     
                     }
@@ -328,7 +312,7 @@ C_tcp_server::thread_handler()
                     {
                         int len = rc;
 
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
 
                         // Put the received data into the ring buffer
                         for ( int ii = 0; ii < len; ii++ )
