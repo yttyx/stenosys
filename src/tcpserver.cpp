@@ -74,7 +74,7 @@ C_tcp_server::initialise( int port, const char * banner )
     // Set socket to be nonblocking. All of the sockets for
     // the incoming connections will also be nonblocking since
     // they will inherit that state from the listening socket
-    int on = 0;
+    int on = 1;
 
     rc = ioctl( listener_, FIONBIO, ( char * ) &on );
 
@@ -199,6 +199,8 @@ C_tcp_server::thread_handler()
         // Poll socket/s with a timeout of 200mS
         rc = poll( fds_, fds_count_, 200 );
 
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Return from poll() %d", rc );
+        
         if ( rc == -1 )
         {
             log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "poll() error %d, terminating thread", errno );
@@ -211,11 +213,22 @@ C_tcp_server::thread_handler()
             continue;
         }
 
-        for ( int fds_idx = 0; fds_idx < fds_count_; fds_idx++ )
+        // fds_count_ may increase if there's an incoming connection, but we must not
+        // include a new entry into the checks until poll() above has been called.
+        int fds_count_curr = fds_count_;
+
+        for ( int fds_idx = 0; fds_idx < fds_count_curr; fds_idx++ )
         {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "fds_idx: %d", fds_idx );
+
+            if ( fds_[ fds_idx ].revents == 0 )
+            {
+                continue;
+            }
+
             if ( fds_[ fds_idx ].revents != POLLIN )
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "revents value error %d", fds_[ fds_idx ].revents );
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "unexpected event %d", fds_[ fds_idx ].revents );
                 abort_ = true; 
                 break;
             }
@@ -230,6 +243,8 @@ C_tcp_server::thread_handler()
                    
                     new_client = accept( listener_, nullptr, nullptr );
 
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new_client: %d, errno: %d", new_client, errno );
+                    
                     if ( new_client < 0 )
                     {
                         if ( errno != EWOULDBLOCK )
@@ -242,11 +257,23 @@ C_tcp_server::thread_handler()
                     }
 
                     // If we already have one connection made, reject this new connection
-                    if  ( fds_count_ >= 2 )
-                    {
-                        close( new_client );
+                    //if  ( fds_count_ >= 2 )
+                    //{
+                        //close( new_client );
 
-                        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
+                        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
+                        //break;
+                    //}
+
+                    // Make the clint socket nonblocking
+                    int on = 1;
+
+                    rc = ioctl( new_client, FIONBIO, ( char * ) &on );
+
+                    if ( rc < 0 )
+                    {
+                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new client ioctl() error %d", errno );
+                        abort_ = true;
                         break;
                     }
 
@@ -261,7 +288,7 @@ C_tcp_server::thread_handler()
             }
             else
             {
-                // Not the listening socket, therefore an existing socket must be readable
+               
                 log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Descriptor %d is readable", fds_[ fds_idx ] );
               
                 char buffer[ 256 ];
@@ -273,8 +300,12 @@ C_tcp_server::thread_handler()
                     // Receive data on this connection until the recv() fails with  EWOULDBLOCK. If any
                     // other failure occurs, close the connection.
                     
+                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "before recv()" );
+                    
                     rc = recv( fds_[ fds_idx ].fd, buffer, sizeof( buffer ), 0 );
 
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv() returned %d", rc  );
+                    
                     if ( rc < 0 )
                     {
                         if ( errno != EWOULDBLOCK )
@@ -283,24 +314,27 @@ C_tcp_server::thread_handler()
                             close_connection = true; 
                         }
 
+                        log_writeln( C_log::LL_INFO, LOG_SOURCE, "EWOULDBLOCK" );
                         break;
+                    
                     }
-
-                    if ( rc == 0 )
+                    else if ( rc == 0 )
                     {
                         log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection closed" );
                         close_connection = true;
                         break;
                     }
-
-                    int len = rc;
-
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
-
-                    // Put the received data into the ring buffer
-                    for ( int ii = 0; ii < len; ii++ )
+                    else
                     {
-                        ip_buffer_->put( buffer[ ii ] );
+                        int len = rc;
+
+                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
+
+                        // Put the received data into the ring buffer
+                        for ( int ii = 0; ii < len; ii++ )
+                        {
+                            ip_buffer_->put( buffer[ ii ] );
+                        }
                     }
                 }
 
@@ -314,7 +348,7 @@ C_tcp_server::thread_handler()
         }
     }
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Shutting down %s socket server thread", banner_.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Shutting down '%s' socket server thread", banner_.c_str() );
 
     running_ = false;
 }     
@@ -341,8 +375,11 @@ C_tcp_server::cleanup()
 {
     for ( int ii = 0; ii < fds_count_; ii++ )
     {
-        close( fds_[ ii ].fd );
-        fds_[ ii ].fd = -1;
+        if ( fds_[ ii ].fd != -1 )
+        {
+            close( fds_[ ii ].fd );
+            fds_[ ii ].fd = -1;
+        }
     }
     
     fds_count_ = 1;

@@ -86,32 +86,32 @@ C_stenosys::run( int argc, char *argv[] )
     log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
 
     //TEMP test
-    //C_tcp_server tcp_server;
+    C_tcp_server tcp_server;
 
-    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
 
-    //if ( tcp_server.initialise( 6666 ) )
-    //{
-        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
-    //}
-    //else
-    //{
-        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
-    //}
+    if ( tcp_server.initialise( 6666, "Test TCP server" ) )
+    {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
+    }
+    else
+    {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
+    }
 
-    //tcp_server.start();
+    tcp_server.start();
 
-    //std::string xxx;
-    //tcp_server.get_line( xxx );
+    std::string xxx;
+    tcp_server.get_line( xxx );
 
-    //while ( tcp_server.running() )
-    //{
-        //delay( 1 );
-    //}
+    while ( tcp_server.running() )
+    {
+        delay( 1 );
+    }
 
-    //tcp_server.stop();
+    tcp_server.stop();
     
-    //exit( 0 );
+    exit( 0 );
     //TEMP end
 
     C_keyboard kbd;
