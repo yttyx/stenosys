@@ -109,6 +109,8 @@ C_stenosys::run( int argc, char *argv[] )
         {
             fprintf( stdout, "%s", line.c_str() );
             fflush( stdout );
+
+            tcp_server.send_line( "Hello World!" );
         }
 
         if ( line.find( 'q' ) != std::string::npos )

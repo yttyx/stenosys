@@ -212,6 +212,8 @@ C_tcp_server::thread_handler()
         // Check for data to send and we have a client connected
         if ( ( fds_count_ == 2 ) && op_buffer_->got_data() )
         {
+            log_writeln( C_log::LL_INFO, LOG_SOURCE, "got send data" );
+
             // Set event flag so we get notified next time poll() is called
             fds_[ 1 ].revents |= POLLOUT;
         }
@@ -229,149 +231,164 @@ C_tcp_server::thread_handler()
                 continue;
             }
             
-            char ch = '\0';
+            char ch     = '\0';
+            int  send_len = 0;
 
-            switch ( fds_[ fds_idx ].revents )
-            {
-                case POLLIN:
-            
-                    if ( fds_[ fds_idx ].fd == listener_ )
+            if ( fds_[ fds_idx ].revents & POLLIN )
+            { 
+                if ( fds_[ fds_idx ].fd == listener_ )
+                {
+                    int new_client = -1; 
+
+                    do
                     {
-                        int new_client = -1; 
+                        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "listening socket is readable" );
+                       
+                        new_client = accept( listener_, nullptr, nullptr );
 
-                        do
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new_client: %d, errno: %d", new_client, errno );
+                        
+                        if ( new_client < 0 )
                         {
-                            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "listening socket is readable" );
-                           
-                            new_client = accept( listener_, nullptr, nullptr );
-
-                            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new_client: %d, errno: %d", new_client, errno );
-                            
-                            if ( new_client < 0 )
+                            if ( errno != EWOULDBLOCK )
                             {
-                                if ( errno != EWOULDBLOCK )
-                                {
-                                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "accept() failed" );
-                                    abort_ = true;
-                                }
-
-                                break;
-                            }
-
-                            // If we already have one connection made, reject this new connection
-                            if  ( fds_count_ >= 2 )
-                            {
-                                close( new_client );
-
-                                log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
-                                break;
-                            }
-
-                            // Make the client socket nonblocking
-                            int on = 1;
-
-                            rc = ioctl( new_client, FIONBIO, ( char * ) &on );
-
-                            if ( rc < 0 )
-                            {
-                                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new client ioctl() error %d", errno );
+                                log_writeln( C_log::LL_INFO, LOG_SOURCE, "accept() failed" );
                                 abort_ = true;
-                                break;
                             }
 
-                            // Add the incoming connection to the fds_ array
-                            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
-
-                            fds_[ fds_count_ ].fd     = new_client;
-                            fds_[ fds_count_ ].events = POLLIN;
-                            fds_count_++;              
-
-                        } while ( new_client != -1 );
-                    }
-                    else
-                    {
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Descriptor %d is readable", fds_[ fds_idx ] );
-                      
-                        char buffer[ 256 ];
-
-                        bool close_connection = false;
-
-                        while ( true ) 
-                        {
-                            // Receive data on this connection until the recv() fails with  EWOULDBLOCK. If any
-                            // other failure occurs, close the connection.
-                            
-                            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "before recv()" );
-                            
-                            rc = recv( fds_[ fds_idx ].fd, buffer, sizeof( buffer ), 0 );
-
-                            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv() returned %d", rc  );
-                            
-                            if ( rc < 0 )
-                            {
-                                if ( errno != EWOULDBLOCK )
-                                {
-                                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "recv() failed" );
-                                    close_connection = true; 
-                                }
-
-                                //log_writeln( C_log::LL_INFO, LOG_SOURCE, "EWOULDBLOCK" );
-                                break;
-                            
-                            }
-                            else if ( rc == 0 )
-                            {
-                                log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection closed" );
-                                close_connection = true;
-                                break;
-                            }
-                            else
-                            {
-                                int len = rc;
-
-                                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
-
-                                // Put the received data into the ring buffer
-                                for ( int ii = 0; ii < len; ii++ )
-                                {
-                                    ip_buffer_->put( buffer[ ii ] );
-                                }
-                            }
+                            break;
                         }
 
-                        if ( close_connection )
+                        // If we already have one connection made, reject this new connection
+                        if  ( fds_count_ >= 2 )
                         {
-                            close( fds_[ fds_idx ].fd );
-                            fds_[ fds_idx ].fd = -1;
-                            fds_count_--;
+                            close( new_client );
+
+                            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
+                            break;
                         }
-                    }
-                    break;
 
-                case POLLOUT:
+                        // Make the client socket nonblocking
+                        int on = 1;
 
+                        rc = ioctl( new_client, FIONBIO, ( char * ) &on );
+
+                        if ( rc < 0 )
+                        {
+                            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new client ioctl() error %d", errno );
+                            abort_ = true;
+                            break;
+                        }
+
+                        // Add the incoming connection to the fds_ array
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
+
+                        fds_[ fds_count_ ].fd     = new_client;
+                        fds_[ fds_count_ ].events = POLLIN;
+                        fds_count_++;              
+
+                    } while ( new_client != -1 );
+                }
+                else
+                {
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Descriptor %d is readable", fds_[ fds_idx ] );
+                  
                     char buffer[ 256 ];
 
-                    for ( size_t ii = 0; ii < sizeof( buffer ); ii++ )
+                    bool close_connection = false;
+
+                    while ( true ) 
                     {
-                        if ( op_buffer_->get( ch ) )
+                        // Receive data on this connection until the recv() fails with EWOULDBLOCK. If any
+                        // other failure occurs, close the connection.
+                        
+                        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "before recv()" );
+                        
+                        rc = recv( fds_[ fds_idx ].fd, buffer, sizeof( buffer ), 0 );
+
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv() returned %d", rc  );
+                        
+                        if ( rc < 0 )
                         {
-                            buffer[ ii ] = ch;
+                            if ( errno != EWOULDBLOCK )
+                            {
+                                log_writeln( C_log::LL_INFO, LOG_SOURCE, "recv() failed" );
+                                close_connection = true; 
+                            }
+
+                            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "EWOULDBLOCK" );
+                            break;
+                        
+                        }
+                        else if ( rc == 0 )
+                        {
+                            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection closed" );
+                            close_connection = true;
+                            break;
                         }
                         else
                         {
-                            break;
+                            int len = rc;
+
+                            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
+
+                            // Put the received data into the ring buffer
+                            for ( int ii = 0; ii < len; ii++ )
+                            {
+                                ip_buffer_->put( buffer[ ii ] );
+                            }
                         }
                     }
-                    break;
 
-                default:
+                    if ( close_connection )
+                    {
+                        close( fds_[ fds_idx ].fd );
+                        fds_[ fds_idx ].fd = -1;
+                        fds_count_--;
+                    }
+                }
+            }
 
+            if ( fds_[ fds_idx ].revents & POLLOUT )
+            { 
+                char buffer[ 256 ];
+
+                send_len = 0;
+
+                for ( size_t ii = 0; ii < sizeof( buffer ); ii++ )
+                {
+                    if ( op_buffer_->get( ch ) )
+                    {
+                        buffer[ ii ] = ch;
+                        send_len++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "before send(), send_len: %d", send_len );
+
+                rc = send( fds_[ fds_idx ].fd, buffer, send_len, 0 );
+                
+                if ( rc < 0 )
+                {
+                   log_writeln( C_log::LL_INFO, LOG_SOURCE, "send() failed" );
+                }
+        
+                // Clear event flag. NB: this is based on the assumption that all the data
+                // was successfully sent. Review TBD.
+                fds_[ 1 ].revents &= ( ~POLLOUT );
+            }
+            
+            if ( fds_[ fds_idx ].revents & ( ~ ( POLLIN | POLLOUT ) ) )
+            {
                   log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "unexpected event %d", fds_[ fds_idx ].revents );
                   abort_ = true; 
                   break;
 
-            } // end of switch
+            }
         }
     }
     
