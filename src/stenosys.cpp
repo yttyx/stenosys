@@ -88,41 +88,41 @@ C_stenosys::run( int argc, char *argv[] )
     log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
 
     //TEMP C_dictionary_search test
-    C_dictionary_search dictionary_search;
+    //C_dictionary_search dictionary_search;
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
+    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
 
-    if ( dictionary_search.initialise( 6668 ) )
-    {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
-    }
-    else
-    {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
-    }
+    //if ( dictionary_search.initialise( 6668 ) )
+    //{
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
+    //}
+    //else
+    //{
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
+    //}
 
-    dictionary_search.start();
+    //dictionary_search.start();
 
-    std::string line;
+    //std::string line;
 
-    bool done  = false;
-    int  count = 0;
+    //bool done  = false;
+    //int  count = 0;
 
-    // Test: run the dictionary search object for 1 minute. It will run autonomously,
-    // prompting for the search string and outputting matches over TCP.
-    while ( ! done )
-    {
-        if ( count++ >= 60000 )
-        {
-            break;
-        }
+    //// Test: run the dictionary search object for 1 minute. It will run autonomously,
+    //// prompting for the search string and outputting matches over TCP.
+    //while ( ! done )
+    //{
+        //if ( count++ >= 60000 )
+        //{
+            //break;
+        //}
 
-        delay( 1 );
-    }
+        //delay( 1 );
+    //}
 
-    dictionary_search.stop();
+    //dictionary_search.stop();
     
-    exit( 0 );
+    //exit( 0 );
     //TEMP end
 
     C_keyboard kbd;
