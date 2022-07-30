@@ -50,7 +50,10 @@ bool
 C_tcp_server::initialise( int port, const char * banner )
 {
     port_   = port;
-    banner_ = banner;
+
+    banner_ =  "\r\n";
+    banner_ += banner;
+    banner_ += "\r\n";
 
     struct sockaddr_in server_sockaddr;
 
@@ -144,9 +147,9 @@ C_tcp_server::running()
 
 // TBW Write a block of data out directly - protect shared buffer with a mutex
 bool
-C_tcp_server::send_line( const std::string & message )
+C_tcp_server::send_text( const std::string & text )
 {
-    return op_buffer_->put_block( message.c_str(), message.length() );
+    return op_buffer_->put_block( text.c_str(), text.length() );
 }
 
 bool
@@ -288,6 +291,9 @@ C_tcp_server::thread_handler()
                         fds_[ fds_count_ ].fd     = new_client;
                         fds_[ fds_count_ ].events = POLLIN;
                         fds_count_++;              
+    
+                        // Cue up banner message
+                        op_buffer_->put_block( banner_.c_str(), banner_.length() );
 
                     } while ( new_client != -1 );
                 }
@@ -400,23 +406,6 @@ C_tcp_server::thread_handler()
 
     running_ = false;
 }     
-
-bool
-C_tcp_server::send_banner()
-{
-    //TODO
-    //int rc  = send( client_, banner_.c_str(), banner_.length(), 0 );
-    //int rc2 = send( client_, "\r\n", 2, 0 );
-
-    //if ( ( rc == -1 ) || ( rc2 == -1 ) )
-    //{
-        //errfn_ = "banner send()";
-        //errno_ = errno;
-        //return false;
-    //}
-
-    return true;
-}
 
 void
 C_tcp_server::cleanup()

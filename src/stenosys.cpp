@@ -86,47 +86,47 @@ C_stenosys::run( int argc, char *argv[] )
 
     log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
 
-    //TEMP test
-    C_paper_tape paper;
+    //TEMP C_paper_tape test
+    //C_paper_tape paper;
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
+    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
 
-    if ( paper.initialise( 6666 ) )
-    {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
-    }
-    else
-    {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
-    }
+    //if ( paper.initialise( 6666 ) )
+    //{
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
+    //}
+    //else
+    //{
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
+    //}
 
-    paper.start();
+    //paper.start();
 
-    std::string line;
+    //std::string line;
 
-    S_geminipr_packet pkt;
+    //S_geminipr_packet pkt;
 
-    bool done  = false;
-    int  count = 0;
+    //bool done  = false;
+    //int  count = 0;
 
-    while ( ! done )
-    {
-        if ( ( count++ % 1000 ) == 0 )
-        {
-            paper.write( pkt );
-        }
+    //while ( ! done )
+    //{
+        //if ( ( count++ % 1000 ) == 0 )
+        //{
+            //paper.write( pkt );
+        //}
 
-        if ( count >= 20000 )
-        {
-            break;
-        }
+        //if ( count >= 20000 )
+        //{
+            //break;
+        //}
 
-        delay( 1 );
-    }
+        //delay( 1 );
+    //}
 
-    paper.stop();
+    //paper.stop();
     
-    exit( 0 );
+    //exit( 0 );
     //TEMP end
 
     C_keyboard kbd;
@@ -152,27 +152,22 @@ C_stenosys::run( int argc, char *argv[] )
     std::unique_ptr< C_outputter > outputter = std::make_unique< C_x11_output >();
     
     worked = worked && outputter->initialise();
+    
+    if ( ! worked )
+    {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Outputter initialisation failed (is X Window system running?" );
+    }
 #else
 #pragma message( "Building for Pro Micro" )
     std::unique_ptr< C_outputter > outputter = std::make_unique< C_pro_micro_output >();
     
     worked = worked && outputter->initialise( cfg.c().device_output );
-#endif
-
-    //TEMP
-    //for ( int ii = 0; ii < 10; ii++ )
-    //{
-        //outputter->test();
-        //delay( 1000 );
-    //}
-
-    //outputter->test();
-    //TEMP end
-
+    
     if ( ! worked )
     {
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "Outputter initialisation failed" );
     }
+#endif
 
     C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard
     C_stroke_feed    stroke_feed;

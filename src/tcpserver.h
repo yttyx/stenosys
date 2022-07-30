@@ -32,7 +32,7 @@ public:
     running();
 
     bool 
-    send_line( const std::string & message );
+    send_text( const std::string & text );
 
     bool
     get_line( std::string & line, int max_length );

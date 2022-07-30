@@ -46,8 +46,9 @@ C_paper_tape::stop()
 void 
 C_paper_tape::write( const S_geminipr_packet & steno_packet )
 {
-    tcpserver_->send_line( "Hello World!\r\n" );
-    //tcpserver_->send_line( C_gemini_pr::to_paper( steno_packet ) );
+    std::string line = C_gemini_pr::to_paper( steno_packet ) + "\r\n";
+
+    tcpserver_->send_text( line.c_str() );
 }
 
 }
