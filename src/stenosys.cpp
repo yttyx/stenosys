@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "config.h"
 #include "device.h"
+#include "dictsearch.h"
 #include "geminipr.h"
 #include "keyboard.h"
 #include "keyevent.h"
@@ -86,47 +87,42 @@ C_stenosys::run( int argc, char *argv[] )
 
     log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
 
-    //TEMP C_paper_tape test
-    //C_paper_tape paper;
+    //TEMP C_dictionary_search test
+    C_dictionary_search dictionary_search;
 
-    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
 
-    //if ( paper.initialise( 6666 ) )
-    //{
-        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
-    //}
-    //else
-    //{
-        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
-    //}
+    if ( dictionary_search.initialise( 6668 ) )
+    {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
+    }
+    else
+    {
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
+    }
 
-    //paper.start();
+    dictionary_search.start();
 
-    //std::string line;
+    std::string line;
 
-    //S_geminipr_packet pkt;
+    bool done  = false;
+    int  count = 0;
 
-    //bool done  = false;
-    //int  count = 0;
+    // Test: run the dictionary search object for 1 minute. It will run autonomously,
+    // prompting for the search string and outputting matches over TCP.
+    while ( ! done )
+    {
+        if ( count++ >= 60000 )
+        {
+            break;
+        }
 
-    //while ( ! done )
-    //{
-        //if ( ( count++ % 1000 ) == 0 )
-        //{
-            //paper.write( pkt );
-        //}
+        delay( 1 );
+    }
 
-        //if ( count >= 20000 )
-        //{
-            //break;
-        //}
-
-        //delay( 1 );
-    //}
-
-    //paper.stop();
+    dictionary_search.stop();
     
-    //exit( 0 );
+    exit( 0 );
     //TEMP end
 
     C_keyboard kbd;

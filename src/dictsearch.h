@@ -1,18 +1,17 @@
 #pragma once
 
-#include "geminipr.h"
 #include "tcpserver.h"
 
 namespace stenosys
 {
 
-class C_paper_tape
+class C_dictionary_search
 {
 
 public:
     
-    C_paper_tape();
-    ~C_paper_tape() {}
+    C_dictionary_search();
+    ~C_dictionary_search() {}
 
     bool
     initialise( int port );
@@ -24,7 +23,7 @@ public:
     stop();
 
     void
-    write( const S_geminipr_packet & steno_packet );
+    find( const std::string & word );
 
 private:
     

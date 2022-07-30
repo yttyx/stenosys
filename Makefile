@@ -43,6 +43,7 @@ STENOSYS_SOURCES := \
 	cmdparser.cpp \
 	cmdparserstate.cpp \
 	config.cpp \
+	dictsearch.cpp \
 	dictionary_i.cpp \
 	distribution.cpp \
 	formatter.cpp \

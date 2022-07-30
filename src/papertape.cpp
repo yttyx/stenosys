@@ -4,10 +4,9 @@
 #include <stdio.h>
 #include <string>
 
-#include "geminipr.h"
-#include "papertape.h"
 #include "log.h"
 #include "miscellaneous.h"
+#include "papertape.h"
 
 #define LOG_SOURCE "PAPER"
 
