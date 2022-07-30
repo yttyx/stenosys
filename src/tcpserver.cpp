@@ -190,8 +190,19 @@ C_tcp_server::thread_handler()
 {
     int  rc               = -1;
 
+    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Starting TCP server thread" );
+    
     while ( ! abort_ )
     {
+        // Check whether we have a client connected and there is data to send
+        if ( ( fds_count_ == 2 ) && ( op_buffer_->count() > 0 ) )
+        {
+            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "got send data" );
+
+            // Set event flag so we get notified next time poll() is called
+            fds_[ 1 ].events |= POLLOUT;
+        }
+        
         // Poll socket/s with a timeout of 100mS
         rc = poll( fds_, fds_count_, 100 );
 
@@ -207,15 +218,6 @@ C_tcp_server::thread_handler()
         {
             // Poll timed out. Check for abort and carry on.
             continue;
-        }
-
-        // Check for data to send and we have a client connected
-        if ( ( fds_count_ == 2 ) && op_buffer_->got_data() )
-        {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "got send data" );
-
-            // Set event flag so we get notified next time poll() is called
-            fds_[ 1 ].revents |= POLLOUT;
         }
 
         // fds_count_ may increase if there's an incoming connection, but we must not
@@ -281,7 +283,7 @@ C_tcp_server::thread_handler()
                         }
 
                         // Add the incoming connection to the fds_ array
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
+                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
 
                         fds_[ fds_count_ ].fd     = new_client;
                         fds_[ fds_count_ ].events = POLLIN;
@@ -351,6 +353,8 @@ C_tcp_server::thread_handler()
 
             if ( fds_[ fds_idx ].revents & POLLOUT )
             { 
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "op_buffer_->count(): %d", op_buffer_->count() );
+                
                 char buffer[ 256 ];
 
                 send_len = 0;
@@ -368,7 +372,7 @@ C_tcp_server::thread_handler()
                     }
                 }
 
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "before send(), send_len: %d", send_len );
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "before send(), send_len: %d", send_len );
 
                 rc = send( fds_[ fds_idx ].fd, buffer, send_len, 0 );
                 
@@ -379,7 +383,7 @@ C_tcp_server::thread_handler()
         
                 // Clear event flag. NB: this is based on the assumption that all the data
                 // was successfully sent. Review TBD.
-                fds_[ 1 ].revents &= ( ~POLLOUT );
+                fds_[ 1 ].events &= ( ~POLLOUT );
             }
             
             if ( fds_[ fds_idx ].revents & ( ~ ( POLLIN | POLLOUT ) ) )

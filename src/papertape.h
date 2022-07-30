@@ -27,7 +27,7 @@ public:
     stop();
 
     void
-    write( const S_geminipr_packet steno_packet );
+    write( const S_geminipr_packet & steno_packet );
 
 private:
     

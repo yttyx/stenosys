@@ -52,8 +52,8 @@ public:
         return false;
     }
     
-    bool
-    got_data()
+    int 
+    count()
     {
         int count = 0;
 
@@ -61,7 +61,7 @@ public:
         count = count_;
         mutex_.unlock();
 
-        return count > 0;
+        return count;
     }
 
     bool
@@ -81,9 +81,11 @@ public:
                 }
 
                 count_++;
-
+            }
+            else
+            {
                 mutex_.unlock();
-                return false;    
+                return false;
             }
         }
 

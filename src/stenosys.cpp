@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "config.h"
 #include "device.h"
+#include "geminipr.h"
 #include "keyboard.h"
 #include "keyevent.h"
 #include "log.h"
@@ -86,11 +87,11 @@ C_stenosys::run( int argc, char *argv[] )
     log.initialise( ( C_log::eLogLevel ) cfg.c().display_verbosity, cfg.c().display_datetime );
 
     //TEMP test
-    C_tcp_server tcp_server;
+    C_paper_tape paper;
 
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "Before TCP initialise worked" );
 
-    if ( tcp_server.initialise( 6666, "Test TCP server" ) )
+    if ( paper.initialise( 6666 ) )
     {
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise worked" );
     }
@@ -99,29 +100,31 @@ C_stenosys::run( int argc, char *argv[] )
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "TCP initialise failed" );
     }
 
-    tcp_server.start();
+    paper.start();
 
     std::string line;
 
-    while ( tcp_server.running() )
-    {
-        if ( tcp_server.get_line( line, 128 ) )
-        {
-            fprintf( stdout, "%s", line.c_str() );
-            fflush( stdout );
+    S_geminipr_packet pkt;
 
-            tcp_server.send_line( "Hello World!" );
+    bool done  = false;
+    int  count = 0;
+
+    while ( ! done )
+    {
+        if ( ( count++ % 1000 ) == 0 )
+        {
+            paper.write( pkt );
         }
 
-        if ( line.find( 'q' ) != std::string::npos )
+        if ( count >= 20000 )
         {
             break;
         }
 
-        //delay( 1 );
+        delay( 1 );
     }
 
-    tcp_server.stop();
+    paper.stop();
     
     exit( 0 );
     //TEMP end
