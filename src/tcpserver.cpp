@@ -1,5 +1,4 @@
 #include <arpa/inet.h>
-#include <asm-generic/errno.h>
 #include <cstddef>
 #include <fcntl.h>
 #include <sys/ioctl.h>
