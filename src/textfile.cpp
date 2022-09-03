@@ -35,7 +35,7 @@ C_text_file::read( const std::string & path )
 
         if ( file_stream.is_open() )
         {
-            // Read the whole file into text_
+            // Read in the whole file
             text_stream_ << file_stream.rdbuf();
      
             file_stream.close();

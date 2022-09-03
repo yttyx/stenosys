@@ -78,6 +78,9 @@ C_x11_output::toggle_shavian()
 void
 C_x11_output::send( const std::string & str )
 {
+    //TEMP
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::send( const std::string & str )" );
+
     C_utf8 utf8_str( str );
 
     uint32_t code = 0;
@@ -86,6 +89,9 @@ C_x11_output::send( const std::string & str )
     {
         do
         {
+            //TEMP
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "code: %04xh", code );
+        
             if ( ( int ) code <= 0x7f )
             {
                 keysym_entry * entry = &ascii_to_keysym[ ( ( int ) code ) ];
@@ -97,13 +103,19 @@ C_x11_output::send( const std::string & str )
             }
             else
             {
+                //TEMP
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "is_shavian_code: %s", is_shavian_code( code ) ? "is shavian" : "is NOT shavian" );
+                
                 if ( is_shavian_code( code ) )
                 {
-                    if ( code == XK_namingdot )
+                    if ( ( code == XK_namingdot ) && ( code == XK_acroring ) )
                     {
-                        code = to_keysym( code );
-
-                        send_key( to_keysym( code ) , 0 );
+                        KeySym keysym = to_keysym( code );
+        
+                        //TEMP
+                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh, code: %04xh", keysym, code );
+                        
+                        send_key( keysym, 0 );
                     }
                     else
                     {
@@ -141,6 +153,9 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
 
     KeySym keysym = scancode_to_keysym[ scancode ];
 
+    //TEMP
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ACRO: scancode: %04xh, keysym: %04xh", scancode, keysym  );
+
     if ( is_shift( keysym ) )
     {
         shift_ = ( key_event == KEY_EV_DOWN );
@@ -153,11 +168,17 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
 
     if ( shavian_ )
     {
+        //TEMP
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ACRO: %s", is_shavian_key( keysym) ? "Is shavian key" : "NOT shavian key"  );
+
         if ( is_shavian_key( keysym ) )
         {
             unsigned long index = keysym - XK_A;
 
             keysym = to_keysym( shavian_keysym[ index ] );
+        
+            //TEMP
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ACRO: index: %ld, keysym: %04xh", index, keysym  );
         }
     }
 
@@ -266,6 +287,9 @@ C_x11_output::set_up_data()
 void
 C_x11_output::set_shavian_keysyms()
 {
+    //TEMP
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "set_shavian_keysyms()" );
+
     // Check whether a Shavian KeySym has already been set up
     int keycode = XKeysymToKeycode( display_, to_keysym( XK_peep ) );
  
@@ -302,16 +326,19 @@ C_x11_output::set_shavian_keysyms()
 
         const char * keysymstring = XKeysymToString( keysym ); 
 
+        //TEMP
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysymstring: %s", keysymstring );
+        
         if ( keysymstring != nullptr )
         {
             auto result = keysym_replacements_->find( keysymstring );
 
             if ( result != keysym_replacements_->end() )
             {
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "str: %s, ks1: %xh, ks2: %xh"
-                                                           //, keysymstring
-                                                           //, to_keysym( result->second.keysym1 )
-                                                           //, to_keysym( result->second.keysym2 ) );
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "str: %s, ks1: %xh, ks2: %xh"
+                                                           , keysymstring
+                                                           , to_keysym( result->second.keysym1 )
+                                                           , to_keysym( result->second.keysym2 ) );
 
                 // Found an entry we can repurpose for Shavian
                 KeySym keysym_list[] = { to_keysym( result->second.keysym1 )
@@ -684,7 +711,7 @@ C_x11_output::shavian_keysym[] =
 ,   XK_air          // w
 ,   XK_namingdot    // x
 ,   XK_if           // y
-,   XK_namingdot    // z
+,   XK_acroring     // z
 };
 
 const keysym_entry
@@ -715,6 +742,7 @@ C_x11_output::shavian_keysyms[] =
 ,   { XK_air,       XK_urge      }
 ,   { XK_namingdot, XK_namingdot }
 ,   { XK_wool,      XK_ooze      }
+,   { XK_acroring , XK_acroring  }
 };
 
 // Array of symkey strings whose references to keycodes in the keyboard
@@ -746,6 +774,7 @@ const char * C_x11_output::XF86_symstrings[] =
 ,   "XF86Launch8"
 ,   "XF86Launch9"
 ,   "XF86LaunchA"
+,   "XF86LaunchB"
 ,   nullptr
 };
 

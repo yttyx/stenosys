@@ -27,7 +27,8 @@ namespace stenosys
 #define is_shavian_key( x ) ( ( XK_A <= ( x ) ) && ( x <= XK_Z ) )
 
 #define is_shavian_code( x ) ( ( ( XK_peep <= ( x ) ) && ( x <= XK_yew ) ) || \
-                               ( x == XK_namingdot ) )
+                               ( x == XK_namingdot ) || \
+                               ( x == XK_acroring  ) )
 
 // From keysymdef.h:
 // "For any future extension of the keysyms with characters already
