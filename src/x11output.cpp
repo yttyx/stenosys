@@ -79,7 +79,7 @@ void
 C_x11_output::send( const std::string & str )
 {
     //TEMP
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::send( const std::string & str )" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::send() - str: %s", str.c_str() );
 
     C_utf8 utf8_str( str );
 
@@ -108,7 +108,7 @@ C_x11_output::send( const std::string & str )
                 
                 if ( is_shavian_code( code ) )
                 {
-                    if ( ( code == XK_namingdot ) && ( code == XK_acroring ) )
+                    if ( ( code == XK_namingdot ) || ( code == XK_acroring ) )
                     {
                         KeySym keysym = to_keysym( code );
         
