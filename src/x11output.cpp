@@ -135,6 +135,11 @@ C_x11_output::send( const std::string & str )
 void
 C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
+    //TEMP
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::send()- key_event: %04xh, scancode: %04xh"
+                                               , key_event
+                                               , scancode );
+
     // Check for the scancode used for the Roman/Shavian alphabet switch
     if ( scancode == KC_EXECUTE )
     { 
@@ -151,6 +156,7 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
         return;
     }
 
+    // Do a keysym lookup based on the standard (non-shavian) layout
     KeySym keysym = scancode_to_keysym[ scancode ];
 
     //TEMP
@@ -173,6 +179,7 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
 
         if ( is_shavian_key( keysym ) )
         {
+            // We need a second lookup (which will replace the roman layout keysym) to get the shavian keysym
             unsigned long index = keysym - XK_A;
 
             keysym = to_keysym( shavian_keysym[ index ] );
@@ -186,6 +193,9 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     {
         KeyCode keycode = XKeysymToKeycode( display_, keysym );
      
+        //TEMP
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ACRO: keycode: %04xh", keycode );
+        
         if ( keycode != 0 )
         {
             XTestGrabControl( display_, True );
@@ -193,12 +203,12 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             // Generate regular key press and release
             if ( key_event == KEY_EV_DOWN )
             {
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %02xh (key down)", keysym, keycode );
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %04xh (key down)", keysym, keycode );
                 XTestFakeKeyEvent( display_, keycode, True, 0 );
             }
             else if ( key_event == KEY_EV_UP )
             {
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %02xh (key up)", keysym, keycode );
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %04xh (key up)", keysym, keycode );
                 XTestFakeKeyEvent( display_, keycode, False, 0 ); 
             } 
          
@@ -335,7 +345,8 @@ C_x11_output::set_shavian_keysyms()
 
             if ( result != keysym_replacements_->end() )
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "str: %s, ks1: %xh, ks2: %xh"
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keycode: %04xh, str: %s, ks1: %05xh, ks2: %05xh"
+                                                           , keycode
                                                            , keysymstring
                                                            , to_keysym( result->second.keysym1 )
                                                            , to_keysym( result->second.keysym2 ) );
