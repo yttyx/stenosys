@@ -57,6 +57,7 @@ namespace stenosys
 #define XK_yew          0x1047f  // U+1047f yew 
 
 #define XK_namingdot    0x00b7   // U+00b7 naming dot (middle dot) 
-#define XK_acroring     0x2e30   // U+2e30 acronym indicator (ring point)) 
+//#define XK_acroring     0x2e30   // U+2e30 acronym indicator (ring point)) 
+#define XK_acroring     0x00a1   // TEMP upsidedown exclamation
 
 }
