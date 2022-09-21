@@ -45,6 +45,7 @@ C_strokes::initialise()
 
     history_->add( new_stroke );
 
+    //TEMP
     word_check( "being" );
     word_check( "orang" );
     //word_check( "ation" );
@@ -56,7 +57,7 @@ C_strokes::initialise()
 void
 C_strokes::word_check( const std::string & word )
 {
-    //TEMP Test speed of brute-force work lookup
+    //TEMP Test speed of brute-force word lookup
     auto start = std::chrono::steady_clock::now();
     word_lookup( word.c_str() );
     auto end = std::chrono::steady_clock::now();
