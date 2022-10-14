@@ -678,7 +678,7 @@ const char * C_dictionary::cpp_tail[] =
     "        entry++;",
     "", 
     "        // Wrap if required",
-    "        if ( ( entry - base ) >= hash_table_length )",
+    "        if ( ( ( uint32_t ) ( entry - base ) ) >= hash_table_length )",
     "        {",
     "            printf( \"** dictionary_lookup() wrap\\n\" );",
     "            entry = base;",

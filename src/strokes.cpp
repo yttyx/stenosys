@@ -64,7 +64,7 @@ C_strokes::word_check( const std::string & word )
 
     auto duration_ms = std::chrono::duration_cast< std::chrono::milliseconds >( end - start ).count();
 
-    fprintf( stdout, "Elapsed: %lu mS\n", duration_ms );
+    fprintf( stdout, "Elapsed: %lu mS\n", ( long int ) duration_ms );
     fprintf( stdout, "----\n" );
 }
 
