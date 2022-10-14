@@ -16,7 +16,7 @@ DICTBUILD	:= dictbuild
 SRCDIR		:= ./src
 INCDIR		:= ./src
 OBJDIR		:= ./obj
-LOGDIR	    := ./log
+LOGDIR		:= ./log
 EXEDIR		:= ./bin
 DICTDIR		:= ./dictionary
 
