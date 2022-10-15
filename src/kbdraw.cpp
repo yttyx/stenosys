@@ -116,7 +116,30 @@ C_kbd_raw::detect_keyboard( const char * device )
         log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device: %s - use sudo?", device );
         return -1;
     }
+
+    int version = 0;
+
+    // Get device version
+    if ( ioctl( hnd, EVIOCGVERSION, &version ) )
+    {
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device );
+        close( hnd );
+        return -1;
+    }
     
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
+   
+    struct input_id id;
+
+    // Get device information
+    ioctl( hnd, EVIOCGID, &id );
+
+    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  Input device id: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
+                                                , id.bustype
+                                                , id.vendor
+                                                , id.product
+                                                , id.version );
+
     char name[ 256 ];
 
     int rc = -1;
@@ -129,7 +152,15 @@ C_kbd_raw::detect_keyboard( const char * device )
         return -1;
     }
 
+    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  name: %s", name );
+    
     if ( strstr( name, "Planck" ) == nullptr )
+    {
+        close( hnd );
+        return -1;
+    }
+
+    if ( strstr( device,  "event3" ) == nullptr )
     {
         close( hnd );
         return -1;
@@ -147,6 +178,7 @@ C_kbd_raw::detect_keyboard( const char * device )
         return -1;
     }
 
+    //return -1;
     return hnd;
 }
 
