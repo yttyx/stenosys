@@ -37,17 +37,17 @@ public:
     
 private:
 
+    bool 
+    detect_keyboard( std::string & device );
+
     int
-    detect_keyboard( const char * device );
+    open_keyboard( const std::string & device );
 
     void
     thread_handler();
 
     bool
     get_byte( unsigned char & ch );
-
-    //bool
-    //allow_repeat( uint16_t key_code );
 
 private:
     

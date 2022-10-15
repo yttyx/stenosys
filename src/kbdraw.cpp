@@ -27,6 +27,7 @@
 #define LOG_SOURCE "KBRAW"
 #define DEV_DIR    "/dev/input/"
 #define EVENT_DEV  "event"
+#define PLANCK_DEV "Planck"
 
 using namespace stenosys;
 
@@ -68,66 +69,121 @@ C_kbd_raw::initialise( const std::string & device )
 
     if ( device.length() == 0 )
     {
-        // Try to auto-detect
-        struct dirent * dir_entry = nullptr;
+        std::string detected_device;
 
-        DIR * dir = opendir( DEV_DIR );
-        
-        if ( dir != nullptr )
+        if ( detect_keyboard( detected_device ) )
         {
-            while ( ( dir_entry = readdir( dir ) ) != nullptr )
-            {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device: %s", dir_entry->d_name );
-
-                if ( strstr( dir_entry->d_name, EVENT_DEV ) != nullptr )
-                {
-                    std::string dev_path = DEV_DIR;
-
-                    dev_path += dir_entry->d_name;
-
-                    if ( ( handle_ = detect_keyboard( dev_path.c_str() ) ) >= 0 )
-                    {
-                        break;
-                    }
-                }
-            }
-        
-            closedir( dir );
+            handle_ = open_keyboard( detected_device );
         }
     }
     else
     {
-        detect_keyboard( device.c_str() );
+        handle_ = open_keyboard( device );
     }
 
     return handle_ >= 0;
 }
 
-// Returns a file handle or -1 if device not found/error accessing device
-int
-C_kbd_raw::detect_keyboard( const char * device )
+bool
+C_kbd_raw::detect_keyboard( std::string & device )  
 {
-    //int version = 0;
-    int hnd     = -1;
+    int device_event_num = 99999999;
 
-    // Open device
-    if ( ( hnd = ::open( device, O_RDONLY ) ) < 0 )
+    // Try to auto-detect
+    struct dirent * dir_entry = nullptr;
+
+    DIR * dir = opendir( DEV_DIR );
+
+    if ( dir != nullptr )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device: %s - use sudo?", device );
-        return -1;
+        while ( ( dir_entry = readdir( dir ) ) != nullptr )
+        {
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device: %s", dir_entry->d_name );
+
+            if ( strstr( dir_entry->d_name, EVENT_DEV ) != nullptr )
+            {   
+                std::string dev_path = std::string( DEV_DIR ) + dir_entry->d_name;
+
+                int hnd = -1;
+
+                // Open device
+                if ( ( hnd = ::open( dev_path.c_str(), O_RDONLY ) ) < 0 )
+                {
+                    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device: %s", dev_path.c_str() );
+                    continue;
+                }
+
+                char name[ 256 ];
+                
+                int rc = -1;
+                
+                if ( ( rc = ioctl( hnd, EVIOCGNAME( sizeof( name ) ), name ) ) < 0 )
+                {
+                    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl: EVIOCGNAME failed, rc = %d, errno = %d", rc, errno );
+                } 
+
+                close( hnd );
+
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device name: %s", name );
+                
+                if ( strstr( name, PLANCK_DEV ) != nullptr )
+                {
+                    // Found a Planck keyboard entry, but there will be two entries for the one keyboard, and we need
+                    // the lowest numbered one to be able to successfully grab it (TODO: find a better way of deciding
+                    // between the two).
+            
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Got a planck entry on %s", dir_entry->d_name );
+                    
+                    int num = atoi( dir_entry->d_name + strlen( EVENT_DEV ) );
+
+                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "num: %d", num );
+                    
+                    if ( num < device_event_num )
+                    {
+                        device_event_num = num;
+                    }
+                }
+            }
+        }
     }
 
-    int version = 0;
+    closedir( dir );
 
-    // Get device version
-    if ( ioctl( hnd, EVIOCGVERSION, &version ) )
+    if ( device_event_num < 99999999 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device );
-        close( hnd );
-        return -1;
+        device = DEV_DIR + std::string( EVENT_DEV ) + std::to_string( device_event_num );
+                
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Use device entry %s", device.c_str() );
+        
+        return true;
     }
-    
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
+
+    return false;
+}
+
+int
+C_kbd_raw::open_keyboard( const std::string & device )
+{
+int hnd = -1;
+
+// Open device
+if ( ( hnd = ::open( device.c_str(), O_RDONLY ) ) < 0 )
+{
+    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device %s", device.c_str() );
+    return -1;
+}
+
+int version = 0;
+
+// Get device version
+if ( ioctl( hnd, EVIOCGVERSION, &version ) )
+{
+    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device.c_str() );
+    close( hnd );
+    return -1;
+}
+
+log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
    
     struct input_id id;
 
@@ -140,33 +196,7 @@ C_kbd_raw::detect_keyboard( const char * device )
                                                 , id.product
                                                 , id.version );
 
-    char name[ 256 ];
-
     int rc = -1;
-    
-    if ( ( rc = ioctl( hnd, EVIOCGNAME( sizeof( name ) ), name ) ) < 0 )
-    {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl: EVIOCGNAME failed, rc = %d, errno = %d", rc, errno );
-        
-        close( hnd );
-        return -1;
-    }
-
-    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  name: %s", name );
-    
-    if ( strstr( name, "Planck" ) == nullptr )
-    {
-        close( hnd );
-        return -1;
-    }
-
-    if ( strstr( device,  "event3" ) == nullptr )
-    {
-        close( hnd );
-        return -1;
-    }
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Found Planck keyboard at %s", device );
     
     // Try to get device for exclusive use, so only we get the keyboard events, not the
     // linux kernel as well.
@@ -178,7 +208,6 @@ C_kbd_raw::detect_keyboard( const char * device )
         return -1;
     }
 
-    //return -1;
     return hnd;
 }
 
