@@ -190,7 +190,7 @@ C_tcp_server::get_line( std::string & line, int max_length )
 void
 C_tcp_server::thread_handler()
 {
-    int  rc               = -1;
+    int rc = -1;
 
     //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Starting TCP server thread" );
     
@@ -212,7 +212,7 @@ C_tcp_server::thread_handler()
         
         if ( rc == -1 )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "poll() error %d, terminating thread", errno );
+            log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "poll() error %d, terminating thread", errno );
             break;
         }
 
@@ -256,7 +256,7 @@ C_tcp_server::thread_handler()
                         {
                             if ( errno != EWOULDBLOCK )
                             {
-                                log_writeln( C_log::LL_INFO, LOG_SOURCE, "accept() failed" );
+                                log_writeln( C_log::LL_ERROR, LOG_SOURCE, "accept() failed" );
                                 abort_ = true;
                             }
 
@@ -268,7 +268,7 @@ C_tcp_server::thread_handler()
                         {
                             close( new_client );
 
-                            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Aleady have one connection; rejected new client" );
+                            log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Aleady have one connection; rejected new client" );
                             break;
                         }
 
@@ -279,7 +279,7 @@ C_tcp_server::thread_handler()
 
                         if ( rc < 0 )
                         {
-                            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new client ioctl() error %d", errno );
+                            log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "new client ioctl() error %d", errno );
                             abort_ = true;
                             break;
                         }
@@ -319,7 +319,7 @@ C_tcp_server::thread_handler()
                         {
                             if ( errno != EWOULDBLOCK )
                             {
-                                log_writeln( C_log::LL_INFO, LOG_SOURCE, "recv() failed" );
+                                log_writeln( C_log::LL_ERROR, LOG_SOURCE, "recv() failed" );
                                 close_connection = true; 
                             }
 
@@ -383,7 +383,7 @@ C_tcp_server::thread_handler()
                 
                 if ( rc < 0 )
                 {
-                   log_writeln( C_log::LL_INFO, LOG_SOURCE, "send() failed" );
+                   log_writeln( C_log::LL_ERROR, LOG_SOURCE, "send() failed" );
                 }
         
                 // Clear event flag. NB: this is based on the assumption that all the data
@@ -393,10 +393,9 @@ C_tcp_server::thread_handler()
             
             if ( fds_[ fds_idx ].revents & ( ~ ( POLLIN | POLLOUT ) ) )
             {
-                  log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "unexpected event %d", fds_[ fds_idx ].revents );
+                  log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "unexpected event %d", fds_[ fds_idx ].revents );
                   abort_ = true; 
                   break;
-
             }
         }
     }
