@@ -24,10 +24,9 @@
 #include "log.h"
 #include "miscellaneous.h"
 
-#define BITS_PER_LONG (sizeof(long) * 8)
-#define NBITS( x )    ( ( ( ( x ) - 1 ) / BITS_PER_LONG ) + 1 )
-
 #define LOG_SOURCE "KBRAW"
+#define DEV_DIR    "/dev/input/"
+#define EVENT_DEV  "event"
 
 using namespace stenosys;
 
@@ -72,7 +71,7 @@ C_kbd_raw::initialise( const std::string & device )
         // Try to auto-detect
         struct dirent * dir_entry = nullptr;
 
-        DIR * dir = opendir( "/dev/input" );
+        DIR * dir = opendir( DEV_DIR );
         
         if ( dir != nullptr )
         {
@@ -80,15 +79,13 @@ C_kbd_raw::initialise( const std::string & device )
             {
                 log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device: %s", dir_entry->d_name );
 
-                if ( strstr( dir_entry->d_name, "event" ) != nullptr )
+                if ( strstr( dir_entry->d_name, EVENT_DEV ) != nullptr )
                 {
-                    std::string dev_path = "/dev/input/";
+                    std::string dev_path = DEV_DIR;
 
                     dev_path += dir_entry->d_name;
 
-                    handle_ = detect_keyboard( dev_path.c_str() );
-
-                    if ( handle_ >= 0 )
+                    if ( ( handle_ = detect_keyboard( dev_path.c_str() ) ) >= 0 )
                     {
                         break;
                     }
@@ -110,11 +107,8 @@ C_kbd_raw::initialise( const std::string & device )
 int
 C_kbd_raw::detect_keyboard( const char * device )
 {
-    int version = 0;
+    //int version = 0;
     int hnd     = -1;
-
-    //unsigned short id[ 4 ];
-    unsigned long  bit[ EV_MAX ][ NBITS( KEY_MAX ) ];
 
     // Open device
     if ( ( hnd = ::open( device, O_RDONLY ) ) < 0 )
@@ -126,36 +120,35 @@ C_kbd_raw::detect_keyboard( const char * device )
     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Opened raw keyboard device %s", device );
 
     // Get device version
-    if ( ioctl( hnd, EVIOCGVERSION, &version ) )
-    {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device );
-        close( hnd );
-        return -1;
-    }
+    //if ( ioctl( hnd, EVIOCGVERSION, &version ) )
+    //{
+        //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device );
+        //close( hnd );
+        //return -1;
+    //}
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
    
-    struct input_id id;
+    //struct input_id id;
 
-    // Get device information
-    ioctl( hnd, EVIOCGID, id );
+    //// Get device information
+    //ioctl( hnd, EVIOCGID, id );
 
-    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  Input device id: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
-                                                , id.bustype
-                                                , id.vendor
-                                                , id.product
-                                                , id.version );
-    int rc = -1;
-
+    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  Input device id: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
+                                                //, id.bustype
+                                                //, id.vendor
+                                                //, id.product
+                                                //, id.version );
     char name[ 256 ];
 
-    if ( ( rc = ioctl( hnd, EVIOCGNAME( sizeof( name ) ), name ) ) > 0 )
-    {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  Device name: %s", name );
-    }
-    else 
+    int rc = -1;
+    
+    if ( ( rc = ioctl( hnd, EVIOCGNAME( sizeof( name ) ), name ) ) < 0 )
     {
         log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl: EVIOCGNAME failed, rc = %d, errno = %d", rc, errno );
+        
+        close( hnd );
+        return -1;
     }
 
     if ( strstr( name, "Planck" ) == nullptr )
@@ -164,11 +157,8 @@ C_kbd_raw::detect_keyboard( const char * device )
         return -1;
     }
 
-    log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Found Planck keyboard" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Found Planck keyboard at %s", device );
     
-    memset( bit, 0, sizeof( bit ) );
-    ioctl( handle_, EVIOCGBIT( 0, EV_MAX ), bit[ 0 ] );
-
     // Try to get device for exclusive use, so only we get the keyboard events, not the
     // linux kernel as well.
     if ( ( rc = ioctl( hnd, EVIOCGRAB, ( void * ) 1 ) ) < 0 )
