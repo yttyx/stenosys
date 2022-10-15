@@ -90,7 +90,7 @@ C_x11_output::send( const std::string & str )
         do
         {
             //TEMP
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "code: %04xh", code );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  code: %04xh", code );
         
             if ( ( int ) code <= 0x7f )
             {

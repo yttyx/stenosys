@@ -212,6 +212,8 @@ C_stenosys::run( int argc, char *argv[] )
             // Key event input
             if ( steno_keyboard.read( key_event, scancode ) )
             {
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: scancode: 0x%02x", scancode );
+
                 outputter->send( key_event, scancode );
             }
 
