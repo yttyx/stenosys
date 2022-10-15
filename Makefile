@@ -31,10 +31,10 @@ DICTHASHED	:= $(SRCDIR)/dictionary_i.cpp
 # -Wall		All warnings
 
 ifeq ($(strip $(OUTPUT)),)
-	CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe
+	CFLAGS		:= -O0 -g -Wall $(INCLUDE) -pipe
 	LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lm
 else
-	CFLAGS		:= -O0 -Wall $(INCLUDE) -pipe -D X11
+	CFLAGS		:= -O0 -g -Wall $(INCLUDE) -pipe -D X11
 	LDLIBS  	:= -L/usr/lib -L/usr/local/lib -lpthread -lm -lX11 -lXtst
 endif
 

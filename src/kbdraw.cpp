@@ -10,12 +10,13 @@
 #include <linux/input.h>
 #include <linux/input-event-codes.h>
 #include <memory>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "buffer.h"
 #include "kbdraw.h"
@@ -58,55 +59,117 @@ C_kbd_raw::~C_kbd_raw()
 // Foreground thread code
 // -----------------------------------------------------------------------------------
 
+// Input: device: path of keyboard device e.g. "/dev/input/event3"
+//                or "" for auto-detection
+
 bool
 C_kbd_raw::initialise( const std::string & device )
 {
-    unsigned short id[ 4 ];
+    handle_ = -1;
+
+    if ( device.length() == 0 )
+    {
+        // Try to auto-detect
+        struct dirent * dir_entry = nullptr;
+
+        DIR * dir = opendir( "/dev/input" );
+        
+        if ( dir != nullptr )
+        {
+            while ( ( dir_entry = readdir( dir ) ) != nullptr )
+            {
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device: %s", dir_entry->d_name );
+
+                if ( strstr( dir_entry->d_name, "event" ) != nullptr )
+                {
+                    std::string dev_path = "/dev/input/";
+
+                    dev_path += dir_entry->d_name;
+
+                    handle_ = detect_keyboard( dev_path.c_str() );
+
+                    if ( handle_ >= 0 )
+                    {
+                        break;
+                    }
+                }
+            }
+        
+            closedir( dir );
+        }
+    }
+    else
+    {
+        detect_keyboard( device.c_str() );
+    }
+
+    return handle_ >= 0;
+}
+
+// returns a file handle or -1 if device not found
+int
+C_kbd_raw::detect_keyboard( const char * device )
+{
+    int version = 0;
+    int hnd     = -1;
+
+    //unsigned short id[ 4 ];
     unsigned long  bit[ EV_MAX ][ NBITS( KEY_MAX ) ];
 
-    int version = 0;
-
     // Open device
-    if ( ( handle_ = ::open( device.c_str(), O_RDONLY ) ) < 0 )
+    if ( ( hnd = ::open( device, O_RDONLY ) ) < 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device: %s - use sudo?", device.c_str() );
-        return false;
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device: %s - use sudo?", device );
+        return -1;
     }
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Opened raw keyboard device %s", device.c_str() );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Opened raw keyboard device %s", device );
 
     // Get device version
-    if ( ioctl( handle_, EVIOCGVERSION, &version ) )
+    if ( ioctl( hnd, EVIOCGVERSION, &version ) )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device.c_str() );
-        close( handle_ );
-        handle_ = -1;
-        return false;
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device );
+        close( hnd );
+        return -1;
     }
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Input driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
-    
-    // Get device information
-    ioctl( handle_, EVIOCGID, id );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
+   
+    struct input_id id;
 
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Input device ID: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
-                                               //, id[ ID_BUS ]
-                                               //, id[ ID_VENDOR ]
-                                               //, id[ ID_PRODUCT ]
-                                               //, id[ ID_VERSION ] );
+    // Get device information
+    ioctl( hnd, EVIOCGID, id );
+
+    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  Input device id: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
+                                                , id.bustype
+                                                , id.vendor
+                                                , id.product
+                                                , id.version );
+
+    int rc = -1;
+
+    char name[ 256 ];
+
+    if ( ( rc = ioctl( hnd, EVIOCGNAME( sizeof( name ) ), name ) ) > 0 )
+    {
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  Device name: %s", name );
+    }
+    else 
+    {
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl: EVIOCGNAME failed, rc = %d, errno = %d", rc, errno );
+    }
 
     memset( bit, 0, sizeof( bit ) );
     ioctl( handle_, EVIOCGBIT( 0, EV_MAX ), bit[ 0 ] );
 
-    // Try to grab device for exclusive use
-    int rc = ioctl( handle_, EVIOCGRAB, ( void * ) 1 );
-    
-    if ( rc < 0 )
-    {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl: EVIOCGRAB failed, rc = %d, errno = %d", rc, errno );
-    }
+    // Try to get device for exclusive use, so only we get the keyboard events, not the
+    // linux kernel as well.
+    //if ( ( rc = ioctl( handle_, EVIOCGRAB, ( void * ) 1 ) ) < 0 )
+    //{
+        //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  ioctl: EVIOCGRAB failed, rc = %d, errno = %d", rc, errno );
+    //}
 
-    return rc >= 0;
+    return -1; //TEMP rc >= 0;
 }
 
 bool

@@ -37,6 +37,9 @@ public:
     
 private:
 
+    int
+    detect_keyboard( const char * device );
+
     void
     thread_handler();
 

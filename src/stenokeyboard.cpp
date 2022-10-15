@@ -47,8 +47,7 @@ C_steno_keyboard::~C_steno_keyboard()
 bool
 C_steno_keyboard::initialise( const std::string & device_raw, const std::string & device_steno )
 {
-    return raw_->initialise( device_raw) &&
-           steno_->initialise( device_steno );
+    return raw_->initialise( device_raw) && steno_->initialise( device_steno );
 }
 
 bool
