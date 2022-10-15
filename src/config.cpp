@@ -157,7 +157,7 @@ C_config::create_default_config( const std::string & config_path )
         fprintf( output_stream, OPT_DISPLAY_DATETIME  "=%s\n", DEF_DISPLAY_DATETIME  );
         fprintf( output_stream, OPT_FILE_STENOFILE    "=%s\n", DEF_FILE_STENOFILE    );
         fprintf( output_stream, OPT_DICTIONARY        "=%s\n", DEF_DICTIONARY        );
-        fprintf( output_stream, OPT_RAW_DEVICE        "=%s\n", DEF_RAW_DEVICE        );
+        fprintf( output_stream, OPT_RAW_DEVICE        "=%s\n", "" );
         fprintf( output_stream, OPT_STENO_DEVICE      "=%s\n", DEF_STENO_DEVICE      );
         fprintf( output_stream, OPT_SERIAL_OUTPUT     "=%s\n", DEF_SERIAL_OUTPUT     );
 

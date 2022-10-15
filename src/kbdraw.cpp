@@ -145,7 +145,6 @@ C_kbd_raw::detect_keyboard( const char * device )
                                                 , id.vendor
                                                 , id.product
                                                 , id.version );
-
     int rc = -1;
 
     char name[ 256 ];
@@ -159,17 +158,28 @@ C_kbd_raw::detect_keyboard( const char * device )
         log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl: EVIOCGNAME failed, rc = %d, errno = %d", rc, errno );
     }
 
+    if ( strstr( name, "Planck" ) == nullptr )
+    {
+        close( hnd );
+        return -1;
+    }
+
+    log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Found Planck keyboard" );
+    
     memset( bit, 0, sizeof( bit ) );
     ioctl( handle_, EVIOCGBIT( 0, EV_MAX ), bit[ 0 ] );
 
     // Try to get device for exclusive use, so only we get the keyboard events, not the
     // linux kernel as well.
-    //if ( ( rc = ioctl( handle_, EVIOCGRAB, ( void * ) 1 ) ) < 0 )
-    //{
-        //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  ioctl: EVIOCGRAB failed, rc = %d, errno = %d", rc, errno );
-    //}
+    if ( ( rc = ioctl( hnd, EVIOCGRAB, ( void * ) 1 ) ) < 0 )
+    {
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  ioctl: EVIOCGRAB failed, rc = %d, errno = %d", rc, errno );
+        
+        close( hnd );
+        return -1;
+    }
 
-    return -1; //TEMP rc >= 0;
+    return hnd;
 }
 
 bool
