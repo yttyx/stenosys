@@ -165,19 +165,24 @@ C_stenosys::run( int argc, char *argv[] )
     }
 #endif
 
-    C_steno_keyboard steno_keyboard;        // Steno/raw input from the steno keyboard
-    C_stroke_feed    stroke_feed;
-    C_translator     translator( AT_ROMAN );
-    C_paper_tape     paper_tape;
+    C_steno_keyboard    steno_keyboard;        // Steno/raw input from the steno keyboard
+    C_stroke_feed       stroke_feed;
+    C_translator        translator( AT_ROMAN );
+    C_paper_tape        paper_tape;
+    C_dictionary_search dictionary_search;
 
     worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
 
     //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
     worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );       //TEST
     worked = worked && steno_keyboard.start();
-    worked = worked && translator.initialise( cfg.c().file_dict );
+    worked = worked && translator.initialise();
+
     worked = worked && paper_tape.initialise( 6666 );
     worked = worked && paper_tape.start();
+
+    worked = worked && dictionary_search.initialise( 6668 );
+    worked = worked && dictionary_search.start();
 
     if ( worked )
     {

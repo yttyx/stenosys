@@ -40,7 +40,7 @@ C_translator::~C_translator()
 }
 
 bool
-C_translator::initialise( const std::string & dictionary_path )
+C_translator::initialise()
 {
     formatter_->space_mode( space_mode_ );
 

@@ -46,12 +46,6 @@ C_dictionary_search::stop()
     thread_await_exit();
 }
 
-void
-C_dictionary_search::find( const std::string & word )
-{
-    //TBW
-}
-
 // -----------------------------------------------------------------------------------
 // Background thread code
 // -----------------------------------------------------------------------------------
@@ -116,6 +110,7 @@ C_dictionary_search::thread_handler()
 void
 C_dictionary_search::dict_search( const std::string & search_string_ )
 {
+   tcpserver_->put_text( std::string( "Searching dictionary (TBW)" ) );
 }
 
 }

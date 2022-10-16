@@ -27,7 +27,7 @@ public:
     ~C_translator();
 
     bool
-    initialise( const std::string & dictionary_path );
+    initialise();
 
     void 
     translate( const S_geminipr_packet & steno_packet, std::string & output );

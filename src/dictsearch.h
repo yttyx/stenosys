@@ -28,9 +28,6 @@ public:
     void
     stop();
 
-    void
-    find( const std::string & word );
-
 private:
     
     void

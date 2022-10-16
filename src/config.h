@@ -23,7 +23,6 @@ namespace stenosys
 #define DEF_DISPLAY_VERBOSITY "3"
 #define DEF_DISPLAY_DATETIME  "true"
 #define DEF_FILE_STENOFILE    "TBD"
-#define DEF_DICTIONARY        "./dictionary/yttyx-dict.tsv"
 #define DEF_RAW_DEVICE        "/dev/input/event3"
 #define DEF_STENO_DEVICE      "/dev/ttyACM0"
 #define DEF_SERIAL_OUTPUT     "/dev/ttyAMA0"
