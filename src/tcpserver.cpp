@@ -146,9 +146,15 @@ C_tcp_server::running()
 
 // TBW Write a block of data out directly - protect shared buffer with a mutex
 bool
-C_tcp_server::send_text( const std::string & text )
+C_tcp_server::put_text( const std::string & text )
 {
     return op_buffer_->put_block( text.c_str(), text.length() );
+}
+
+bool
+C_tcp_server::put_char( char ch )
+{
+    return op_buffer_->put(ch );
 }
 
 bool
@@ -181,6 +187,12 @@ C_tcp_server::get_line( std::string & line, int max_length )
     }
 
     return line.length() > 0;
+}
+
+bool
+C_tcp_server::get_char( char & ch )
+{
+    return ip_buffer_->get( ch );
 }
 
 // -----------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-// geminipr.cpp
+// dictsearch.cpp
 
 #include <memory>
 #include <stdio.h>
@@ -47,7 +47,7 @@ C_dictionary_search::stop()
 }
 
 void
-C_dictionary_search::find ( const std::string & word )
+C_dictionary_search::find( const std::string & word )
 {
     //TBW
 }
@@ -61,7 +61,61 @@ C_dictionary_search::thread_handler()
 {
     while ( ! abort_ )
     {
+        char ch = '\0';
+
+        if ( tcpserver_->get_char( ch ) )
+        {
+            switch ( ch )
+            {
+                case '\r':
+                case '\n':
+                    // Line terminator
+                    if ( search_string_.length() > 0 )
+                    {
+                        tcpserver_->put_text( std::string( "\r\n" ) );
+                        dict_search( search_string_ );
+                        search_string_.clear();
+                    }
+                    break;
+
+                case '\b':
+                    // Backspace
+                    if ( search_string_.length() > 0 )
+                    {
+                        search_string_.pop_back();
+                        tcpserver_->put_text( std::string( "\b" ) );
+                    }                    
+                    break;
+                
+                case 0x04:
+                    // Ctrl-D: terminate session
+                    abort_ = true;
+                    break;
+                
+                default:
+                    // Check for alphanumeric character. If not alphanumeric, or the limit
+                    // of the search string length has been reached, then ignore it.
+                    if ( isalnum( ch ) )
+                    {
+                        if ( search_string_.length() < SEARCH_STRING_MAX )
+                        {
+                            search_string_ += ch;
+                            tcpserver_->put_char( ch );
+                        }
+                    }
+                    break;
+            }
+        }
+        else
+        {
+            delay( 1 );
+        }
     }
+}
+
+void
+C_dictionary_search::dict_search( const std::string & search_string_ )
+{
 }
 
 }

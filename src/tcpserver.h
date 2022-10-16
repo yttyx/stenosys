@@ -32,10 +32,16 @@ public:
     running();
 
     bool 
-    send_text( const std::string & text );
+    put_text( const std::string & text );
+    
+    bool 
+    put_char( char ch );
 
     bool
     get_line( std::string & line, int max_length );
+
+    bool
+    get_char( char & ch );
 
 // Foreground
 private:

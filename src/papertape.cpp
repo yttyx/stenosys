@@ -1,4 +1,4 @@
-// geminipr.cpp
+// papertape.cpp
 
 #include <memory>
 #include <stdio.h>
@@ -47,7 +47,7 @@ C_paper_tape::write( const S_geminipr_packet & steno_packet )
 {
     std::string line = C_gemini_pr::to_paper( steno_packet ) + "\r\n";
 
-    tcpserver_->send_text( line.c_str() );
+    tcpserver_->put_text( line.c_str() );
 }
 
 }
