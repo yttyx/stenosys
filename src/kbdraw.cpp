@@ -37,9 +37,9 @@ namespace stenosys
 extern C_log log;
 
 C_kbd_raw::C_kbd_raw()
+    : abort_( false )
+    , handle_( -1 )
 {
-    handle_ = -1;
-    abort_  = false;
     buffer_ = std::make_unique< C_buffer< uint16_t > >();
 }
 

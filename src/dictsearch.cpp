@@ -18,7 +18,8 @@ namespace stenosys
 extern C_log log;
 
 C_dictionary_search::C_dictionary_search()
-    : port_( -1 )
+    : abort_( false)
+    , port_( -1 )
 {
 }
 
@@ -33,19 +34,34 @@ C_dictionary_search::initialise( int port )
 bool
 C_dictionary_search::start()
 {
-    return tcpserver_->start();
+    return tcpserver_->start() && thread_start();
 }
 
 void
 C_dictionary_search::stop()
 {
-   tcpserver_->stop();
+    tcpserver_->stop();
+
+    abort_ = true;
+    thread_await_exit();
 }
 
 void
 C_dictionary_search::find ( const std::string & word )
 {
     //TBW
+}
+
+// -----------------------------------------------------------------------------------
+// Background thread code
+// -----------------------------------------------------------------------------------
+
+void
+C_dictionary_search::thread_handler()
+{
+    while ( ! abort_ )
+    {
+    }
 }
 
 }

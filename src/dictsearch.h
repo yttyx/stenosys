@@ -1,11 +1,13 @@
 #pragma once
 
+#include "mutex.h"
+#include "thread.h"
 #include "tcpserver.h"
 
 namespace stenosys
 {
 
-class C_dictionary_search
+class C_dictionary_search : C_thread
 {
 
 public:
@@ -27,9 +29,12 @@ public:
 
 private:
     
+    void
+    thread_handler();
 
 private:
 
+    bool abort_;
     bool port_;
 
     std::unique_ptr< C_tcp_server > tcpserver_;
