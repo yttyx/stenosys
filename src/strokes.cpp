@@ -58,8 +58,17 @@ void
 C_strokes::word_check( const std::string & word )
 {
     //TEMP Test speed of brute-force word lookup
+    std::list< std::string > word_list;
+
     auto start = std::chrono::steady_clock::now();
-    word_lookup( word.c_str() );
+
+    word_lookup( word, word_list );
+
+    for ( std::string entry : word_list )
+    {
+        fprintf( stdout, "  %s\n", entry.c_str() );
+    }
+
     auto end = std::chrono::steady_clock::now();
 
     auto duration_ms = std::chrono::duration_cast< std::chrono::milliseconds >( end - start ).count();
