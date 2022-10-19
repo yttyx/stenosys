@@ -9,7 +9,8 @@
 #include "log.h"
 #include "miscellaneous.h"
 
-#define LOG_SOURCE "SERCH"
+#define LOG_SOURCE    "SERCH"
+#define SEARCH_PROMPT "Find: "
 
 using namespace stenosys;
 
@@ -56,6 +57,8 @@ C_dictionary_search::thread_handler()
 {
     std::list< std::string > search_results;
 
+    tcpserver_->put_text( SEARCH_PROMPT );
+
     while ( ! abort_ )
     {
         char ch = '\0';
@@ -69,7 +72,7 @@ C_dictionary_search::thread_handler()
                     // Line terminator
                     if ( search_string_.length() > 0 )
                     {
-                        tcpserver_->put_text( search_string_ + "\r\n" );
+                        tcpserver_->put_text( "\r\n" );
 
                         search_results.clear();
                         word_lookup( search_string_, 20, search_results );
@@ -78,6 +81,8 @@ C_dictionary_search::thread_handler()
                         report( search_results );
                         
                         search_string_.clear();
+                                
+                        tcpserver_->put_text( SEARCH_PROMPT );
                     }
                     break;
 
