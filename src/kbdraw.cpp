@@ -98,7 +98,8 @@ C_kbd_raw::detect_keyboard( std::string & device )
     {
         while ( ( dir_entry = readdir( dir ) ) != nullptr )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device: %s", dir_entry->d_name );
+            //TEMP
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device: %s", dir_entry->d_name );
 
             if ( strstr( dir_entry->d_name, EVENT_DEV ) != nullptr )
             {   
@@ -124,6 +125,7 @@ C_kbd_raw::detect_keyboard( std::string & device )
 
                 close( hnd );
 
+                //TEMP
                 //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device name: %s", name );
                 
                 if ( strstr( name, PLANCK_DEV ) != nullptr )
@@ -132,11 +134,13 @@ C_kbd_raw::detect_keyboard( std::string & device )
                     // the lowest numbered one to be able to successfully grab it (TODO: find a better way of deciding
                     // between the two).
             
+                    //TEMP
                     //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Got a planck entry on %s", dir_entry->d_name );
                     
                     int num = atoi( dir_entry->d_name + strlen( EVENT_DEV ) );
 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "num: %d", num );
+                    //TEMP
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "num: %d", num );
                     
                     if ( num < device_event_num )
                     {
@@ -164,26 +168,26 @@ C_kbd_raw::detect_keyboard( std::string & device )
 int
 C_kbd_raw::open_keyboard( const std::string & device )
 {
-int hnd = -1;
+    int hnd = -1;
 
-// Open device
-if ( ( hnd = ::open( device.c_str(), O_RDONLY ) ) < 0 )
-{
-    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device %s", device.c_str() );
-    return -1;
-}
+    // Open device
+    if ( ( hnd = ::open( device.c_str(), O_RDONLY ) ) < 0 )
+    {
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device %s", device.c_str() );
+        return -1;
+    }
 
-int version = 0;
+    int version = 0;
 
-// Get device version
-if ( ioctl( hnd, EVIOCGVERSION, &version ) )
-{
-    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device.c_str() );
-    close( hnd );
-    return -1;
-}
+    // Get device version
+    if ( ioctl( hnd, EVIOCGVERSION, &version ) )
+    {
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device.c_str() );
+        close( hnd );
+        return -1;
+    }
 
-log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
    
     struct input_id id;
 
@@ -195,7 +199,6 @@ log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", ver
                                                 , id.vendor
                                                 , id.product
                                                 , id.version );
-
     int rc = -1;
     
     // Try to get device for exclusive use, so only we get the keyboard events, not the

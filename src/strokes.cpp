@@ -48,7 +48,7 @@ C_strokes::initialise()
     //TEMP
     word_check( "being" );
     word_check( "orang" );
-    //word_check( "ation" );
+    word_check( "abn" );
 
     return true;
 }
@@ -62,7 +62,7 @@ C_strokes::word_check( const std::string & word )
 
     auto start = std::chrono::steady_clock::now();
 
-    word_lookup( word, word_list );
+    word_lookup( word, 20, word_list );
 
     for ( std::string entry : word_list )
     {
