@@ -224,18 +224,19 @@ C_stenosys::run( int argc, char *argv[] )
 
             delay( 1 );
         }
-
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
-        
-        paper_tape.stop();
-        steno_keyboard.stop();
-
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed down" );
     }
     else
     {
         log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Initialisation error" );
     }
+
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
+
+    dictionary_search.stop();
+    paper_tape.stop();
+    steno_keyboard.stop();
+
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed down" );
 }
 
 }
