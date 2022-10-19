@@ -349,11 +349,12 @@ C_x11_output::set_shavian_keysyms()
 
             if ( result != keysym_replacements_->end() )
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keycode: %04xh, str: %s, ks1: %05xh, ks2: %05xh"
-                                                           , keycode
-                                                           , keysymstring
-                                                           , to_keysym( result->second.keysym1 )
-                                                           , to_keysym( result->second.keysym2 ) );
+                //TEMP
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keycode: %04xh, str: %s, ks1: %05xh, ks2: %05xh"
+                                                           //, keycode
+                                                           //, keysymstring
+                                                           //, to_keysym( result->second.keysym1 )
+                                                           //, to_keysym( result->second.keysym2 ) );
 
                 // Found an entry we can repurpose for Shavian
                 KeySym keysym_list[] = { to_keysym( result->second.keysym1 )

@@ -39,7 +39,7 @@ C_kbd_steno::C_kbd_steno()
 {
     handle_ = -1;
     abort_  = false;
-    buffer_ = std::make_unique< C_buffer< S_geminipr_packet > >();
+    buffer_ = std::make_unique< C_buffer< S_geminipr_packet, 16 > >();
 }
 
 C_kbd_steno::~C_kbd_steno()

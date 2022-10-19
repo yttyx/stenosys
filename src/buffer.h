@@ -8,12 +8,12 @@
 #include "mutex.h"
 #include "thread.h"
 
-#define BUFFER_SIZE 256
+//#define BUFFER_SIZE 256
 
 namespace stenosys
 {
 
-template < class T > 
+template < class T, int L > 
 class C_buffer
 {
 
@@ -24,9 +24,15 @@ public:
         put_index_ = 0;
         get_index_ = 0;
         count_     = 0;
+
+        buffer_    = new T[ L ];
     }
 
-    ~C_buffer(){}
+    ~C_buffer()
+    {
+        delete [] buffer_;
+        buffer_ = nullptr;
+    }
     
     bool
     get( T & data )
@@ -37,7 +43,7 @@ public:
         {
             data = buffer_[ get_index_ ];
 
-            if ( ++get_index_ >= BUFFER_SIZE )
+            if ( ++get_index_ >= L )
             {
                 get_index_ = 0;
             }
@@ -71,11 +77,11 @@ public:
 
         for ( int ii = 0; ii < length; ii++ )
         {
-            if ( count_ < BUFFER_SIZE )
+            if ( count_ < L )
             {
                 buffer_[ put_index_ ] = data[ ii ];
 
-                if ( ++put_index_ >= BUFFER_SIZE )
+                if ( ++put_index_ >= L )
                 {
                     put_index_ = 0;
                 }
@@ -98,11 +104,11 @@ public:
     {
         mutex_.lock();
 
-        if ( count_ < BUFFER_SIZE )
+        if ( count_ < L )
         {
             buffer_[ put_index_ ] = data;
 
-            if ( ++put_index_ >= BUFFER_SIZE )
+            if ( ++put_index_ >= L )
             {
                 put_index_ = 0;
             }
@@ -119,7 +125,7 @@ public:
 
 private:
     
-    T buffer_[ BUFFER_SIZE ];
+    T * buffer_;
 
     int  put_index_;
     int  get_index_;

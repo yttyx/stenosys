@@ -36,8 +36,8 @@ C_tcp_server::C_tcp_server()
     , listener_( -1 )
     , fds_count_( 1 )
 {
-    ip_buffer_ = std::make_unique< C_buffer< char > >();
-    op_buffer_ = std::make_unique< C_buffer< char > >();
+    ip_buffer_ = std::make_unique< C_buffer< char, 2048 > >();
+    op_buffer_ = std::make_unique< C_buffer< char, 2048 > >();
 }
 
 C_tcp_server::~C_tcp_server()

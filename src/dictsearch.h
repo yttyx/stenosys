@@ -4,6 +4,7 @@
 #include "thread.h"
 #include "tcpserver.h"
 
+#include <list>
 #include <string>
 
 #define SEARCH_STRING_MAX  16
@@ -34,7 +35,7 @@ private:
     thread_handler();
 
     void
-    dict_search( const std::string & search_string_ );
+    report( std::list< std::string> results );
 
 private:
 

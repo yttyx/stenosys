@@ -70,8 +70,8 @@ private:
 
     std::string banner_;
 
-    std::unique_ptr< C_buffer< char > > ip_buffer_;
-    std::unique_ptr< C_buffer< char > > op_buffer_;
+    std::unique_ptr< C_buffer< char, 2048 > > ip_buffer_;
+    std::unique_ptr< C_buffer< char, 2048 > > op_buffer_;
 
 };
 

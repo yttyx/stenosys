@@ -51,7 +51,7 @@ private:
     int  handle_;
     bool abort_;
 
-    std::unique_ptr< C_buffer< S_geminipr_packet > > buffer_;
+    std::unique_ptr< C_buffer< S_geminipr_packet, 16 > > buffer_;
 };
 
 }

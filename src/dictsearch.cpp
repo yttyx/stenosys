@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string>
 
+#include "dictionary_i.h"
 #include "dictsearch.h"
 #include "log.h"
 #include "miscellaneous.h"
@@ -53,6 +54,8 @@ C_dictionary_search::stop()
 void
 C_dictionary_search::thread_handler()
 {
+    std::list< std::string > search_results;
+
     while ( ! abort_ )
     {
         char ch = '\0';
@@ -66,8 +69,14 @@ C_dictionary_search::thread_handler()
                     // Line terminator
                     if ( search_string_.length() > 0 )
                     {
-                        tcpserver_->put_text( std::string( "\r\n" ) );
-                        dict_search( search_string_ );
+                        tcpserver_->put_text( search_string_ + "\r\n" );
+
+                        search_results.clear();
+                        word_lookup( search_string_, 20, search_results );
+
+                        search_results.sort();
+                        report( search_results );
+                        
                         search_string_.clear();
                     }
                     break;
@@ -77,14 +86,14 @@ C_dictionary_search::thread_handler()
                     if ( search_string_.length() > 0 )
                     {
                         search_string_.pop_back();
-                        tcpserver_->put_text( std::string( "\b" ) );
+                        tcpserver_->put_text( std::string( "^h" ) );
                     }                    
                     break;
                 
-                case 0x04:
-                    // Ctrl-D: terminate session
-                    abort_ = true;
-                    break;
+                //case 0x04:
+                    //// Ctrl-D: terminate session
+                    //abort_ = true;
+                    //break;
                 
                 default:
                     // Check for alphanumeric character. If not alphanumeric, or the limit
@@ -108,9 +117,12 @@ C_dictionary_search::thread_handler()
 }
 
 void
-C_dictionary_search::dict_search( const std::string & search_string_ )
+C_dictionary_search::report( std::list< std::string> results )
 {
-   tcpserver_->put_text( std::string( "Searching dictionary (TBW)" ) );
+    for ( std::string entry : results )
+    {
+        tcpserver_->put_text( entry + "\r\n" );
+    }
 }
 
 }

@@ -54,7 +54,7 @@ private:
     bool abort_;
     int  handle_;
 
-    std::unique_ptr< C_buffer< uint16_t > > buffer_;
+    std::unique_ptr< C_buffer< uint16_t, 256 > > buffer_;
 };
 
 }

@@ -46,36 +46,36 @@ C_strokes::initialise()
     history_->add( new_stroke );
 
     //TEMP
-    word_check( "being" );
-    word_check( "orang" );
-    word_check( "abn" );
+    //word_check( "being" );
+    //word_check( "orang" );
+    //word_check( "abn" );
 
     return true;
 }
 
 //TEMP
-void
-C_strokes::word_check( const std::string & word )
-{
-    //TEMP Test speed of brute-force word lookup
-    std::list< std::string > word_list;
+//void
+//C_strokes::word_check( const std::string & word )
+//{
+    ////TEMP Test speed of brute-force word lookup
+    //std::list< std::string > word_list;
 
-    auto start = std::chrono::steady_clock::now();
+    //auto start = std::chrono::steady_clock::now();
 
-    word_lookup( word, 20, word_list );
+    //word_lookup( word, 20, word_list );
 
-    for ( std::string entry : word_list )
-    {
-        fprintf( stdout, "  %s\n", entry.c_str() );
-    }
+    //for ( std::string entry : word_list )
+    //{
+        //fprintf( stdout, "  %s\n", entry.c_str() );
+    //}
 
-    auto end = std::chrono::steady_clock::now();
+    //auto end = std::chrono::steady_clock::now();
 
-    auto duration_ms = std::chrono::duration_cast< std::chrono::milliseconds >( end - start ).count();
+    //auto duration_ms = std::chrono::duration_cast< std::chrono::milliseconds >( end - start ).count();
 
-    fprintf( stdout, "Elapsed: %lu mS\n", ( long int ) duration_ms );
-    fprintf( stdout, "----\n" );
-}
+    //fprintf( stdout, "Elapsed: %lu mS\n", ( long int ) duration_ms );
+    //fprintf( stdout, "----\n" );
+//}
 
 // Add a steno stroke and look back through the stroke history
 // to find the best dictionary match.

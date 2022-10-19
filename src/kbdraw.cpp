@@ -40,7 +40,7 @@ C_kbd_raw::C_kbd_raw()
     : abort_( false )
     , handle_( -1 )
 {
-    buffer_ = std::make_unique< C_buffer< uint16_t > >();
+    buffer_ = std::make_unique< C_buffer< uint16_t, 256 > >();
 }
 
 C_kbd_raw::~C_kbd_raw()

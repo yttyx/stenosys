@@ -86,8 +86,8 @@ private:
 
 
     //TEMP
-    void
-    word_check( const std::string & word );
+    //void
+    //word_check( const std::string & word );
 
 private:
 
