@@ -274,8 +274,8 @@ C_dictionary::hash_map_report()
     
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "" );
 
-    //std::string report = distribution_->report();
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", report.c_str() );
+    std::string report = distribution_->report();
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", report.c_str() );
 
     return true;
 }
