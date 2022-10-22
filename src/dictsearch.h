@@ -8,6 +8,8 @@
 #include <string>
 
 #define SEARCH_STRING_MAX  16
+#define VALID_SEARCH_CHAR( x ) ( isalnum( x ) || ispunct( x ) )
+
 
 namespace stenosys
 {
@@ -41,6 +43,7 @@ private:
 
     bool abort_;
     bool port_;
+    bool sent_prompt_;
 
     std::string search_string_;
 

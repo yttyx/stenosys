@@ -22,6 +22,7 @@ extern C_log log;
 C_dictionary_search::C_dictionary_search()
     : abort_( false)
     , port_( -1 )
+    , sent_prompt_( false )
 {
 }
 
@@ -61,10 +62,19 @@ C_dictionary_search::thread_handler()
 
     while ( ! abort_ )
     {
+        if ( ! sent_prompt_ )
+        {
+            tcpserver_->put_text( SEARCH_PROMPT );
+            sent_prompt_ = true;
+        }
+
         char ch = '\0';
 
         if ( tcpserver_->get_char( ch ) )
         {
+            //TEMP
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv: [%02x]", ch );
+
             switch ( ch )
             {
                 case '\r':
@@ -81,29 +91,23 @@ C_dictionary_search::thread_handler()
                         report( search_results );
                         
                         search_string_.clear();
-                                
-                        tcpserver_->put_text( SEARCH_PROMPT );
+                        sent_prompt_ = false;
                     }
                     break;
 
-                case '\b':
+                case '\x7f':
                     // Backspace
                     if ( search_string_.length() > 0 )
                     {
                         search_string_.pop_back();
-                        tcpserver_->put_text( std::string( "^h" ) );
+                        tcpserver_->put_text( std::string( "\x7f" ) );
                     }                    
                     break;
                 
-                //case 0x04:
-                    //// Ctrl-D: terminate session
-                    //abort_ = true;
-                    //break;
-                
                 default:
-                    // Check for alphanumeric character. If not alphanumeric, or the limit
-                    // of the search string length has been reached, then ignore it.
-                    if ( isalnum( ch ) )
+                    // Check for valid search string character. If the limit
+                    // of the search string length has been reached then ignore it.
+                    if ( VALID_SEARCH_CHAR( ch ) )
                     {
                         if ( search_string_.length() < SEARCH_STRING_MAX )
                         {
