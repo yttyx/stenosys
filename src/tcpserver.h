@@ -30,6 +30,9 @@ public:
 
     bool
     running();
+    
+    bool
+    new_connection();
 
     bool 
     put_text( const std::string & text );
@@ -63,6 +66,7 @@ private:
     int  port_;
     bool abort_;
     bool running_;
+    bool new_connection_;
    
     int           listener_;
     int           fds_count_;

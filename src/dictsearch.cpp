@@ -22,7 +22,8 @@ extern C_log log;
 C_dictionary_search::C_dictionary_search()
     : abort_( false)
     , port_( -1 )
-    , sent_prompt_( false )
+    // Let the check for a new connection cause the prompt to be sent first time in (see below)
+    , sent_prompt_( true )
 {
 }
 
@@ -58,11 +59,9 @@ C_dictionary_search::thread_handler()
 {
     std::list< std::string > search_results;
 
-    tcpserver_->put_text( SEARCH_PROMPT );
-
     while ( ! abort_ )
     {
-        if ( ! sent_prompt_ )
+        if ( ( ! sent_prompt_ ) || tcpserver_->new_connection() )
         {
             tcpserver_->put_text( SEARCH_PROMPT );
             sent_prompt_ = true;

@@ -33,6 +33,7 @@ C_tcp_server::C_tcp_server()
     : port_( -1 )
     , abort_( false )
     , running_( false )
+    , new_connection_( false )
     , listener_( -1 )
     , fds_count_( 1 )
 {
@@ -144,7 +145,17 @@ C_tcp_server::running()
     return running_;
 }
 
-// TBW Write a block of data out directly - protect shared buffer with a mutex
+// So the caller can know a new connection has come in
+bool
+C_tcp_server::new_connection()
+{
+    bool result = new_connection_;
+
+    new_connection_ = false;
+
+    return result;
+}
+
 bool
 C_tcp_server::put_text( const std::string & text )
 {
@@ -302,9 +313,8 @@ C_tcp_server::thread_handler()
                         fds_[ fds_count_ ].fd     = new_client;
                         fds_[ fds_count_ ].events = POLLIN;
                         fds_count_++;              
-    
-                        // Cue up banner message
-                        op_buffer_->put_block( banner_.c_str(), banner_.length() );
+
+                        new_connection_ = true;
 
                     } while ( new_client != -1 );
                 }
