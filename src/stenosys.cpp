@@ -56,7 +56,7 @@ namespace stenosys
 extern C_config   cfg;
 extern C_log      log;
 
-const char * VERSION = "0.10";
+const char * VERSION = "0.90";
 
 C_stenosys::C_stenosys()
 {
