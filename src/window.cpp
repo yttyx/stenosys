@@ -2,16 +2,14 @@
   
 #include <errno.h>
 //#include <stdio.h>
-//#include <string.h>
+#include <string.h>
 //#include <stdlib.h>
 
 #include "log.h"
 #include "window.h"
 
 
-using namespace std;
-
-namespace aksaramustika
+namespace stenosys
 {
 
 extern C_log log;
@@ -36,11 +34,11 @@ C_ncurses::~C_ncurses()
 
 unsigned int C_ncurses::instance_count = 0;
 
-C_window::C_window( const char *title
-                  , int        top
-                  , int        left
-                  , int        height
-                  , int        width )
+C_window::C_window( const char * title
+                  , int          top
+                  , int          left
+                  , int          height
+                  , int          width )
 {
     top_main_    = top;
     left_main_   = left;
@@ -58,7 +56,7 @@ C_window::C_window( const char *title
     wnd_main_    = newwin( height_main_, width_main_, top_main_, left_main_ );
     wnd_         = newwin( height_, width_, top_, left_ );
 	
-	box( wnd_main_, 0 , 0 );                // 0, 0 gives default characters for the vertical and horizontal lines
+	box( wnd_main_, 0 , 0 );    // 0, 0 gives default characters for the vertical and horizontal lines
 
     if ( strlen( title ) > 0 )
     {
@@ -96,7 +94,7 @@ C_window::~C_window()
 }
 
 void
-C_window::write( const string & message )
+C_window::write( const std::string & message )
 {
     wmove( wnd_, row_curr_, col_curr_ );
     wclrtoeol( wnd_ );

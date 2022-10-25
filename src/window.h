@@ -1,14 +1,12 @@
 // window.h
+#pragma once
 
-#ifndef    window_I
-#define    window_I
+#include <string>
 
-#include <string.h>
 #include <ncurses.h>
 
-using namespace std;
 
-namespace aksaramustika
+namespace stenosys
 {
 
 class C_ncurses
@@ -40,7 +38,7 @@ public:
     virtual ~C_window();
 
     virtual void
-    write( const string & message );
+    write( const std::string & message );
 
     virtual void
     clear();
@@ -72,5 +70,3 @@ private:
 };
 
 }
-
-#endif    // window_I

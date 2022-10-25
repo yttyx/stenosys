@@ -9,9 +9,7 @@
 #include "window_scroll.h"
 
 
-using namespace std;
-
-namespace aksaramustika
+namespace stenosys
 {
 
 extern C_log log;
@@ -37,7 +35,7 @@ C_window_scroll::~C_window_scroll()
 }
 
 void
-C_window_scroll::write( const string & message )
+C_window_scroll::write( const std::string & message )
 {
     // Move to next row, or stay on bottom row and scroll
     if ( row_curr_ >= ( height_ ) )
@@ -51,7 +49,7 @@ C_window_scroll::write( const string & message )
     }
     wrefresh( wnd_ );
 
-    row_curr_ = min( row_curr_ + 1, height_ );
+    row_curr_ = std::min( row_curr_ + 1, height_ );
 }
 
 }

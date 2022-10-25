@@ -1,15 +1,13 @@
 // window_scroll.h
-
-#ifndef    window_scroll_I
-#define    window_scroll_I
+#pragma once
 
 #include <ncurses.h>
+#include <string>
 
 #include "window.h"
 
-using namespace std;
 
-namespace aksaramustika
+namespace stenosys
 {
 
 class C_window_scroll : public C_window
@@ -26,7 +24,7 @@ public:
     virtual ~C_window_scroll();
 
     virtual void
-    write( const string & message );
+    write( const std::string & message );
 
 protected:
 
@@ -36,5 +34,3 @@ private:
 };
 
 }
-
-#endif    // window_scroll_I

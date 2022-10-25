@@ -1,16 +1,13 @@
 // window_output.h
-
-#ifndef    window_output_I
-#define    window_output_I
+#pragma once
 
 #include <ncurses.h>
 #include <string>
 
 #include "window.h"
 
-using namespace std;
 
-namespace aksaramustika
+namespace stenosys
 {
 
 class C_window_output : public C_window
@@ -27,17 +24,15 @@ public:
     virtual ~C_window_output();
 
     virtual void
-    write( const string & message );
+    write( const std::string & message );
 
 protected:
 
 
 private:
 
-    string      window_text_;
+    std::string window_text_;
 
 };
 
 }
-
-#endif    // window_output_I

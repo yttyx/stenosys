@@ -1,6 +1,5 @@
 // window_layout.h
-#ifndef window_layout_H
-#define window_layout_H
+#pragma once
 
 const int WIN_OUTPUT_TOP        = 0;
 const int WIN_OUTPUT_LEFT       = 0;
@@ -21,5 +20,3 @@ const int WIN_LOG_TOP           = WIN_OUTPUT_HEIGHT;
 const int WIN_LOG_LEFT          = WIN_STENO_WIDTH + WIN_TRANSLATOR_WIDTH;
 const int WIN_LOG_HEIGHT        = WIN_STENO_HEIGHT;
 const int WIN_LOG_WIDTH         = WIN_OUTPUT_WIDTH - ( WIN_STENO_WIDTH + WIN_TRANSLATOR_WIDTH );
-
-#endif // window_layout_H

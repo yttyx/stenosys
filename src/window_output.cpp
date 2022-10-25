@@ -9,9 +9,7 @@
 #include "window_output.h"
 
 
-using namespace std;
-
-namespace aksaramustika
+namespace stenosys 
 {
 
 extern C_log log;
@@ -37,7 +35,7 @@ C_window_output::~C_window_output()
 }
 
 void
-C_window_output::write( const string & message )
+C_window_output::write( const std::string & message )
 {
     // Just keep concatenating text
     window_text_ += message;    
