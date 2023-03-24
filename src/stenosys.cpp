@@ -125,7 +125,7 @@ C_stenosys::run( int argc, char *argv[] )
 #endif
 
     C_steno_keyboard    steno_keyboard;        // Steno/raw input from the steno keyboard
-    C_stroke_feed       stroke_feed;
+    //C_stroke_feed       stroke_feed;
     C_translator        translator( AT_ROMAN );
     C_paper_tape        paper_tape;
     C_dictionary_search dictionary_search;
@@ -133,7 +133,7 @@ C_stenosys::run( int argc, char *argv[] )
     worked = worked && steno_keyboard.initialise( cfg.c().device_raw, cfg.c().device_steno );
 
     //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
-    worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );       //TEST
+    //worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );     //TEST
     worked = worked && steno_keyboard.start();
     worked = worked && translator.initialise();
 
@@ -160,6 +160,8 @@ C_stenosys::run( int argc, char *argv[] )
             // Stenographic chord input
             if ( steno_keyboard.read( packet ) )
             {
+                //log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Got steno chord" );
+                
                 translator.translate( packet, translation );
 
                 if ( translation.length() > 0 )
@@ -176,7 +178,6 @@ C_stenosys::run( int argc, char *argv[] )
             // Key event input
             if ( steno_keyboard.read( key_event, scancode ) )
             {
-                //TEMP
                 //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: scancode: 0x%02x", scancode );
 
                 outputter->send( key_event, scancode );

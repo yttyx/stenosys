@@ -98,7 +98,6 @@ C_kbd_raw::detect_keyboard( std::string & device )
     {
         while ( ( dir_entry = readdir( dir ) ) != nullptr )
         {
-            //TEMP
             //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device: %s", dir_entry->d_name );
 
             if ( strstr( dir_entry->d_name, EVENT_DEV ) != nullptr )
@@ -125,8 +124,7 @@ C_kbd_raw::detect_keyboard( std::string & device )
 
                 close( hnd );
 
-                //TEMP
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device name: %s", name );
+                //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "device name: %s", name );
                 
                 if ( strstr( name, PLANCK_DEV ) != nullptr )
                 {
@@ -134,13 +132,11 @@ C_kbd_raw::detect_keyboard( std::string & device )
                     // the lowest numbered one to be able to successfully grab it (TODO: find a better way of deciding
                     // between the two).
             
-                    //TEMP
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Got a planck entry on %s", dir_entry->d_name );
+                    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Got a planck entry on %s", dir_entry->d_name );
                     
                     int num = atoi( dir_entry->d_name + strlen( EVENT_DEV ) );
 
-                    //TEMP
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "num: %d", num );
+                    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "num: %d", num );
                     
                     if ( num < device_event_num )
                     {
