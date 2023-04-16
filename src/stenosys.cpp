@@ -163,7 +163,10 @@ C_stenosys::run( int argc, char *argv[] )
                 //log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Got steno chord" );
                 
                 translator.translate( packet, translation );
-
+                
+                //TEMP
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation: %s", translation.c_str() );
+                
                 if ( translation.length() > 0 )
                 {
                     outputter->send( translation );

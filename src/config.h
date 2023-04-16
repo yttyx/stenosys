@@ -9,8 +9,8 @@
 namespace stenosys
 {
 
-#define CONFIG_DIR            ".stenosys"
-#define CONFIG_FILE           "config"
+#define CONFIG_DIR            ".config/stenosys"
+#define CONFIG_FILE           "stenosys.conf"
 
 #define OPT_DISPLAY_VERBOSITY "verbosity"
 #define OPT_DISPLAY_DATETIME  "datetime"

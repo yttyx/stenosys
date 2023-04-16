@@ -136,9 +136,7 @@ void
 C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
     //TEMP
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::send()- key_event: %04xh, scancode: %04xh"
-                                               //, key_event
-                                               //, scancode );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "X11 send(): key_event: %04xh, scancode: %04xh", key_event, scancode );
 
     // Check for the scancode used for the Roman/Shavian alphabet switch
     if ( scancode == KC_EXECUTE )
@@ -160,7 +158,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     KeySym keysym = scancode_to_keysym[ scancode ];
 
     //TEMP
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ACRO: scancode: %04xh, keysym: %04xh", scancode, keysym  );
+    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "  After scancode_to_keysym lookup" );
+    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    scancode(dec): %d, keysym: %04xh", scancode, keysym );
 
     if ( is_shift( keysym ) )
     {
@@ -175,7 +174,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     if ( shavian_ )
     {
         //TEMP
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ACRO: %s", is_shavian_key( keysym) ? "Is shavian key" : "NOT shavian key"  );
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "  **shavian mode**" );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    %s", is_shavian_key( keysym) ? "Is shavian key" : "NOT shavian key" );
 
         if ( is_shavian_key( keysym ) )
         {
@@ -185,7 +185,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             keysym = to_keysym( shavian_keysym[ index ] );
         
             //TEMP
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ACRO: index: %ld, keysym: %04xh", index, keysym  );
+            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "  After to_keysym()" );
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    Shavian: index: %ld, keysym: %04xh", index, keysym  );
         }
     }
 
@@ -194,7 +195,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
         KeyCode keycode = XKeysymToKeycode( display_, keysym );
      
         //TEMP
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ACRO: keycode: %04xh", keycode );
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "  After XKeysymToKeycode()" );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    keycode: %04xh", keycode );
         
         if ( keycode != 0 )
         {
@@ -423,7 +425,7 @@ C_x11_output::scancode_to_keysym[] =
 ,   XK_apostrophe               // KEY_APOSTROPHE            40
 ,   XK_grave                    // KEY_GRAVE                 41
 ,   XK_Shift_L                  // KEY_LEFTSHIFT             42
-,   XK_backslash                // KEY_BACKSLASH             43
+,   XK_numbersign               // KEY_BACKSLASH             43
 ,   XK_Z                        // KEY_Z                     44
 ,   XK_X                        // KEY_X                     45
 ,   XK_C                        // KEY_C                     46
