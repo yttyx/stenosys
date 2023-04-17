@@ -108,6 +108,9 @@ C_x11_output::send( const std::string & str )
                 
                 if ( is_shavian_code( code ) )
                 {
+                    //TEMP
+                    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "is_shavian_code" );
+                
                     if ( ( code == XK_namingdot ) || ( code == XK_acroring ) )
                     {
                         KeySym keysym = to_keysym( code );
@@ -185,8 +188,9 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             keysym = to_keysym( shavian_keysym[ index ] );
         
             //TEMP
+            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "send() key event: Shavian layer key" );
             //log_writeln( C_log::LL_INFO, LOG_SOURCE, "  After to_keysym()" );
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    Shavian: index: %ld, keysym: %04xh", index, keysym  );
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    Shavian: index: %ld, keysym: %06xh", index, keysym  );
         }
     }
 
