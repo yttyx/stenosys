@@ -38,7 +38,9 @@ namespace stenosys
 //  0x01000100 to 0x0110ffff are reserved to represent Unicode"
 //
 // 0x10450 is the base value of the Shavian code block
-#define to_keysym( x ) ( ( ( x ) >= XK_peep ) ? ( ( x ) + 0x1000000 ) : x )
+//#define to_keysym( x ) ( ( ( x ) >= XK_peep ) ? ( ( x ) + 0x1000000 ) : x )
+//TEMP
+#define to_keysym( x ) ( ( ( ( x ) >= XK_peep ) || ( ( x ) == XK_acroring ) ) ? ( ( x ) + 0x1000000 ) : x )
 
 struct keysym_entry
 {
