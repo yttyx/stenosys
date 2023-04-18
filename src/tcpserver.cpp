@@ -19,8 +19,10 @@
 
 #define LOG_SOURCE "TCPSV"
 
-// Ref:  https://www.ibm.com/docs/en/i/7.1?topic=designs-using-poll-instead-select
+// Ref:  https://www.ibm.com/docs/en/i/7.1?topic=designs-example-generic-client
+//       https://www.ibm.com/docs/en/i/7.1?topic=designs-using-poll-instead-select
 //       https://stackoverflow.com/questions/12170037/when-to-use-the-pollout-event-of-the-poll-c-function
+//       https://pymotw.com/2/socket/tcp.html
 
 using namespace stenosys;
 
