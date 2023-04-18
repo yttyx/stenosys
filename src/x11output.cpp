@@ -94,7 +94,7 @@ C_x11_output::send( const std::string & str )
         
             if ( ( int ) code <= 0x7f )
             {
-                keysym_entry * entry = &ascii_to_keysym[ ( ( int ) code ) ];
+                keysym_entry * entry = &ascii_to_keysym[ ( int ) code ];
 
                 if ( entry->keysym1 != 0 )
                 {
@@ -109,17 +109,17 @@ C_x11_output::send( const std::string & str )
                 if ( is_shavian_code( code ) )
                 {
                     //TEMP
-                    log_writeln( C_log::LL_INFO, LOG_SOURCE, "is_shavian_code" );
+                    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "is_shavian_code" );
                 
                     if ( ( code == XK_namingdot ) || ( code == XK_acroring ) )
                     {
                         //TEMP
-                        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Naming dot or acroring" );
+                        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Naming dot or acroring" );
                         
                         KeySym keysym = to_keysym( code );
         
                         //TEMP
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh, code: %04xh", keysym, code );
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh, code: %04xh", keysym, code );
                         
                         send_key( keysym, 0 );
                     }
@@ -130,7 +130,7 @@ C_x11_output::send( const std::string & str )
                         keysym_entry * entry = &shavian_to_keysym[ index ];
                         
                         //TEMP
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "entry->keysym1: %04xh, entry->keysym2: %04xh", entry->keysym1 , entry->keysym2 );
+                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "entry->keysym1: %04xh, entry->keysym2: %04xh", entry->keysym1 , entry->keysym2 );
  
                         send_key( to_keysym( entry->keysym1 ), entry->keysym2 );
                     }
@@ -183,8 +183,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     if ( shavian_ )
     {
         //TEMP
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "  **shavian mode**" );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    %s", is_shavian_key( keysym) ? "Is shavian key" : "NOT shavian key" );
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "  **shavian mode**" );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    %s", is_shavian_key( keysym) ? "Is shavian key" : "NOT shavian key" );
 
         if ( is_shavian_key( keysym ) )
         {
@@ -194,9 +194,9 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             keysym = to_keysym( shavian_keysym[ index ] );
         
             //TEMP
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "send() key event: Shavian layer key" );
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "  After to_keysym()" );
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    Shavian: index: %ld, keysym: %06xh", index, keysym  );
+            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "send() key event: Shavian layer key" );
+            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "  After to_keysym()" );
+            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    Shavian: index: %ld, keysym: %06xh", index, keysym  );
         }
     }
 
@@ -205,8 +205,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
         KeyCode keycode = XKeysymToKeycode( display_, keysym );
      
         //TEMP
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "  After XKeysymToKeycode()" );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    keycode: %04xh", keycode );
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "  After XKeysymToKeycode()" );
+        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "    keycode: %04xh", keycode );
         
         if ( keycode != 0 )
         {
@@ -216,14 +216,14 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             if ( key_event == KEY_EV_DOWN )
             {
                 //TEMP
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %04xh (key down)", keysym, keycode );
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %04xh (key down)", keysym, keycode );
 
                 XTestFakeKeyEvent( display_, keycode, True, 0 );
             }
             else if ( key_event == KEY_EV_UP )
             {
                 //TEMP
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %04xh (key up)", keysym, keycode );
+                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysym: %04xh keycode: %04xh (key up)", keysym, keycode );
                 
                 XTestFakeKeyEvent( display_, keycode, False, 0 ); 
             } 
@@ -235,7 +235,7 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     else
     {
         //TEMP
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "  keysym is 0" );
+        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "  keysym is 0" );
     }
 }
 
