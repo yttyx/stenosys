@@ -733,7 +733,7 @@ C_x11_output::shavian_keysym[] =
 ,   XK_loll         // l
 ,   XK_mime         // m
 ,   XK_thigh        // n
-,   XK_on           // o 
+,   XK_if           // o
 ,   XK_peep         // p
 ,   XK_yea          // q
 ,   XK_out          // r
@@ -743,7 +743,7 @@ C_x11_output::shavian_keysym[] =
 ,   XK_sure         // v 
 ,   XK_air          // w
 ,   XK_namingdot    // x
-,   XK_if           // y
+,   XK_on           // y 
 ,   XK_acroring     // z
 };
 
@@ -751,7 +751,7 @@ const keysym_entry
 C_x11_output::shavian_keysyms[] =
 {
     { XK_ash,       XK_ice       }
-,   { XK_ian,       XK_yew       }
+,   { XK_yew,       XK_ian       }
 ,   { XK_kick,      XK_gag       }
 ,   { XK_are,       XK_or        }
 ,   { XK_egg,       XK_age       }
@@ -766,12 +766,12 @@ C_x11_output::shavian_keysyms[] =
 ,   { XK_thigh,     XK_they      }
 ,   { XK_on,        XK_oak       }
 ,   { XK_peep,      XK_bib       }
-,   { XK_yea,       XK_woe       }
+,   { XK_woe,       XK_yea       }
 ,   { XK_out,       XK_oil       }
 ,   { XK_sure,      XK_measure   }
 ,   { XK_tot,       XK_dead      }
 ,   { XK_ado,       XK_up        }
-,   { XK_hung,      XK_haha      }
+,   { XK_haha,      XK_hung      }
 ,   { XK_air,       XK_urge      }
 ,   { XK_namingdot, XK_namingdot }
 ,   { XK_wool,      XK_ooze      }
