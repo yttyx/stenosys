@@ -123,15 +123,6 @@ C_kbd_steno::set_interface_attributes( int fd, int speed )
 // Background thread code
 // -----------------------------------------------------------------------------------
 
-enum eThreadState
-{
-    tsAwaitingOpen
-,   tsAwaitingPacketHeader
-,   tsPacketBody
-,   tsReadError
-,   tsWaitBeforeReopenAttempt
-};
-
 void
 C_kbd_steno::thread_handler()
 {
@@ -158,7 +149,7 @@ C_kbd_steno::thread_handler()
                     if ( b & 0x80 )
                     {
                         packet[ packet_count++ ]= b;
-                        packet_state = psPacketBody;
+                        thread_state = tsPacketBody;
                     }
                 }
                 break;
@@ -171,7 +162,7 @@ C_kbd_steno::thread_handler()
                     if ( b & 0x80 )
                     {
                         packet_count = 0;
-                        packet_state = psAwaitingPacketHeader;
+                        thread_state = tsAwaitingPacketHeader;
                         log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Invalid steno packet" );
                     }
                     else
@@ -184,7 +175,7 @@ C_kbd_steno::thread_handler()
                             buffer_->put( packet );
 
                             packet_count = 0;
-                            packet_state = psAwaitingPacketHeader;
+                            thread_state = tsAwaitingPacketHeader;
                         }
                     }
                 }
@@ -203,7 +194,7 @@ C_kbd_steno::thread_handler()
             
             case tsWaitBeforeReopenAttempt:
         
-                if ( timer_.elapsed() )
+                if ( timer_.expired() )
                 {
                     thread_state = tsAwaitingOpen;
                 }
@@ -234,7 +225,7 @@ C_kbd_steno::open( void )
     {
         if ( set_interface_attributes( handle_, B19200 ) > -1 )
         {
-            log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Steno device %s opened", device_.c_str() );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Steno device %s opened", device_.c_str() );
             return true;
         }
     }
@@ -247,7 +238,7 @@ C_kbd_steno::open( void )
 //          0 if no character available
 //         -1 if read error
 bool
-C_kbd_steno::get_byte( thread_state & state, unsigned char & ch )
+C_kbd_steno::get_byte( eThreadState & state, unsigned char & ch )
 {
     unsigned char buf[ 2 ];
 
@@ -266,7 +257,7 @@ C_kbd_steno::get_byte( thread_state & state, unsigned char & ch )
     else
     {
         log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Steno read error on serial device %s: %s"
-                       , device.c_str()  
+                       , device_.c_str()  
                        , strerror( errno ) );
 
         state = tsReadError;

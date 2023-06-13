@@ -15,6 +15,16 @@
 namespace stenosys
 {
 
+enum eThreadState
+{
+    tsAwaitingOpen
+,   tsAwaitingPacketHeader
+,   tsPacketBody
+,   tsReadError
+,   tsWaitBeforeReopenAttempt
+};
+
+
 class C_kbd_steno : public C_thread
 {
 
@@ -48,7 +58,7 @@ private:
     open( void );
 
     bool 
-    get_byte( thread_state & state, unsigned char & ch );
+    get_byte( eThreadState & state, unsigned char & ch );
 
 private:
     
