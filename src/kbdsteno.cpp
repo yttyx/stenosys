@@ -184,8 +184,11 @@ C_kbd_steno::thread_handler()
             case tsReadError:
 
                 // Read error: close file and wait 10 seconds before attempting to re-open it
-                close( handle_ );
-                handle_ = -1;
+                if ( handle_ >= 0 )
+                {
+                    close( handle_ );
+                    handle_ = -1;
+                }
         
                 timer_.start( 10000 );
                 
@@ -204,11 +207,6 @@ C_kbd_steno::thread_handler()
                 }
                 break;     
         }
-
-        if ( packet_count > BYTES_PER_STROKE )
-        {
-            log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Steno packet too long" );
-        }
     }
 }
 
@@ -225,7 +223,7 @@ C_kbd_steno::open( void )
     {
         if ( set_interface_attributes( handle_, B19200 ) > -1 )
         {
-            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Steno device %s opened", device_.c_str() );
+            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device %s opened", device_.c_str() );
             return true;
         }
     }
