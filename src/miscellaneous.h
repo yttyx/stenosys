@@ -1,4 +1,4 @@
-// misc.h
+// miscellaneous.h
 #pragma once
 
 #include <string>

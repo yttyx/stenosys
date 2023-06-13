@@ -8,7 +8,7 @@
 # make OUTPUT=X11 - a to build with X11 support
 # make            - build with Pro Micro output support ('steno-in-the-middle')
 
-CC	    	:= g++
+CC	    	   := g++
 
 STENOSYS       := stenosys
 STENOSYSCLIENT := stenosysclient
@@ -65,6 +65,7 @@ STENOSYS_SOURCES := \
 	strokes.cpp \
 	symbols.cpp \
 	tcpserver.cpp \
+	timer.cpp \
 	textfile.cpp \
 	translator.cpp \
 	utf8.cpp \

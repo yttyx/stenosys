@@ -10,6 +10,7 @@
 #include "geminipr.h"
 #include "mutex.h"
 #include "thread.h"
+#include "timer.h"
 
 namespace stenosys
 {
@@ -50,6 +51,8 @@ private:
     
     int  handle_;
     bool abort_;
+
+    C_timer timer_;
 
     std::unique_ptr< C_buffer< S_geminipr_packet, 16 > > buffer_;
 };
