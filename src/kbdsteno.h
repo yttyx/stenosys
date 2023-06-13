@@ -43,16 +43,21 @@ private:
 
     void
     thread_handler();
-
+    
     bool
-    get_byte( unsigned char & ch );
+    open( void );
+
+    bool 
+    get_byte( thread_state & state, unsigned char & ch );
 
 private:
     
-    int  handle_;
-    bool abort_;
+    int         handle_;
+    bool        abort_;
 
-    C_timer timer_;
+    std::string device_;
+
+    C_timer     timer_;
 
     std::unique_ptr< C_buffer< S_geminipr_packet, 16 > > buffer_;
 };

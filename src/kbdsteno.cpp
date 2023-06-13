@@ -12,7 +12,6 @@
 #include <memory.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -59,24 +58,9 @@ C_kbd_steno::~C_kbd_steno()
 bool
 C_kbd_steno::initialise( const std::string & device )
 {
-    bool worked = false;
-    
-    handle_ = ::open( device.c_str(), O_RDONLY | O_NONBLOCK );
+    device_ = device;
 
-    if ( handle_ < 0 )
-    {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error opening steno device %s: %s - use sudo?", device.c_str(), strerror( errno ) );
-    }
-    else
-    {
-        if ( set_interface_attributes( handle_, B19200 ) > -1 )
-        {
-            log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Steno device opened" );
-            worked = true;
-        }
-    }
-
-    return worked;
+    return true;
 }
 
 bool
@@ -139,10 +123,13 @@ C_kbd_steno::set_interface_attributes( int fd, int speed )
 // Background thread code
 // -----------------------------------------------------------------------------------
 
-enum ePacketState
+enum eThreadState
 {
-    psAwaitingPacketHeader
-,   psPacketBody
+    tsAwaitingOpen
+,   tsAwaitingPacketHeader
+,   tsPacketBody
+,   tsReadError
+,   tsWaitBeforeReopenAttempt
 };
 
 void
@@ -150,28 +137,36 @@ C_kbd_steno::thread_handler()
 {
     unsigned int  packet_count = 0;
     unsigned char b            = 0;
-    ePacketState  packet_state = psAwaitingPacketHeader;
+    eThreadState  thread_state = tsAwaitingOpen;
 
     S_geminipr_packet packet;
 
     while ( ! abort_ )
     {
-        if ( get_byte( b ) )
+        switch ( thread_state )
         {
-            switch ( packet_state )
-            {
-                case psAwaitingPacketHeader:
+            case tsAwaitingOpen:
 
+                thread_state = open() ? tsAwaitingPacketHeader : tsReadError;
+                break;
+
+            case tsAwaitingPacketHeader:
+
+                if ( get_byte( thread_state, b ) )
+                {
                     // Packet header has top bit set
                     if ( b & 0x80 )
                     {
                         packet[ packet_count++ ]= b;
                         packet_state = psPacketBody;
                     }
-                    break;
-                
-                case psPacketBody:
-                
+                }
+                break;
+            
+            case tsPacketBody:
+            
+                if ( get_byte( thread_state, b ) )
+                {
                     // Rest of packet bytes must have the top bit as zero
                     if ( b & 0x80 )
                     {
@@ -192,25 +187,67 @@ C_kbd_steno::thread_handler()
                             packet_state = psAwaitingPacketHeader;
                         }
                     }
-                    break;
-            }
+                }
+                break;
 
-            if ( packet_count > BYTES_PER_STROKE )
-            {
-                log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Steno packet too long" );
-            }
+            case tsReadError:
+
+                // Read error: close file and wait 10 seconds before attempting to re-open it
+                close( handle_ );
+                handle_ = -1;
+        
+                timer_.start( 10000 );
+                
+                thread_state = tsWaitBeforeReopenAttempt;
+                break;
+            
+            case tsWaitBeforeReopenAttempt:
+        
+                if ( timer_.elapsed() )
+                {
+                    thread_state = tsAwaitingOpen;
+                }
+                else
+                {
+                    delay( 10 );
+                }
+                break;     
         }
-        else
+
+        if ( packet_count > BYTES_PER_STROKE )
         {
-            delay( 10 );
+            log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Steno packet too long" );
         }
     }
 }
-    
-// Fetch a block of data in GeminiPR format
 
 bool
-C_kbd_steno::get_byte( unsigned char & ch )
+C_kbd_steno::open( void )
+{
+    handle_ = ::open( device_.c_str(), O_RDONLY | O_NONBLOCK );
+
+    if ( handle_ < 0 )
+    {               
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error opening steno device %s: %s", device_.c_str(), strerror( errno ) );
+    }
+    else
+    {
+        if ( set_interface_attributes( handle_, B19200 ) > -1 )
+        {
+            log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Steno device %s opened", device_.c_str() );
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// Fetch a block of data in GeminiPR format
+// returns: 1 if character was read, and ch is set to character
+//          0 if no character available
+//         -1 if read error
+bool
+C_kbd_steno::get_byte( thread_state & state, unsigned char & ch )
 {
     unsigned char buf[ 2 ];
 
@@ -223,12 +260,16 @@ C_kbd_steno::get_byte( unsigned char & ch )
     }
     else if ( ( res < 0 ) &&  ( errno == EAGAIN ) )
     {
-        // No data available
-        return false;
+        // No data available: short sleep so we don't consume excessive CPU in a tight loop
+        delay( 10 );
     }
     else
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Steno read error %s", strerror( errno ) );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Steno read error on serial device %s: %s"
+                       , device.c_str()  
+                       , strerror( errno ) );
+
+        state = tsReadError;
     }
 
     return false;
