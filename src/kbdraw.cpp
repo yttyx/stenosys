@@ -2,8 +2,7 @@
 // Class for inputting keypresses from a keyboard, typically running the QMK firmware
 // This class supports:
 // - Keypresses direct from the keyboard (normal typing, USB HID)
-// - Steno packets in GeminiPR format (steno layer enabled on the keyboard, serial over USB)
-//
+
 #include <iostream>
 
 #include <istream>
@@ -36,11 +35,16 @@ namespace stenosys
 
 extern C_log log;
 
-C_kbd_raw::C_kbd_raw()
+// Input: device: path of keyboard device e.g. "/dev/input/event3"
+//                or "" for auto-detection
+C_kbd_raw::C_kbd_raw( const std::string & device )
+    : device_( device )
     : abort_( false )
     , handle_( -1 )
 {
     buffer_ = std::make_unique< C_buffer< uint16_t, 256 > >();
+    
+    timer_.stop();
 }
 
 C_kbd_raw::~C_kbd_raw()
@@ -59,15 +63,99 @@ C_kbd_raw::~C_kbd_raw()
 // Foreground thread code
 // -----------------------------------------------------------------------------------
 
-// Input: device: path of keyboard device e.g. "/dev/input/event3"
-//                or "" for auto-detection
-
 bool
-C_kbd_raw::initialise( const std::string & device )
+C_kbd_raw::initialise()
 {
     handle_ = -1;
 
-    if ( device.length() == 0 )
+    return true;
+}
+
+bool
+C_kbd_raw::start()
+{
+    return thread_start();
+}
+
+void
+C_kbd_raw::stop()
+{
+    abort_ = true;
+    thread_await_exit();
+}
+
+bool
+C_kbd_raw::read( key_event_t & key_event, uint8_t & scancode )
+{
+    uint16_t key_entry = 0;
+
+    if ( buffer_->get( key_entry ) )
+    {
+        key_event = ( key_event_t ) ( key_entry >> 8 );
+        scancode  = key_entry & 0xff;
+
+        return true;
+    }
+
+    return false;
+}
+
+// -----------------------------------------------------------------------------------
+// Background thread code
+// -----------------------------------------------------------------------------------
+
+enum eThreadState
+{
+    tsAwaitingOpen
+,   tsReading
+,   tsReadError
+,   tsWaitBeforeReopenAttempt
+};
+
+void
+C_kbd_raw::thread_handler()
+{
+    eThreadState thread_state = tsAwaitingOpen;
+
+    struct input_event kbd_event[ 64 ];
+    
+    while ( ! abort_ )
+    {
+        switch ( thread_state )
+        {
+            case tsAwaitingOpen:
+                
+                thread_state = open() ? tsReading : tsWaitBeforeReopenAttempt;
+                break;
+
+            case tsReading:
+
+                thread_state = read() ? tsReading : tsReadError;
+                break;
+        
+            case tsReadError:
+
+                timer_.start( 5000 );
+                thread_state = tsWaitBeforeReopenAttempt;
+                break;
+        
+            case tsWaitBeforeReopenAttempt:
+                
+                if ( timer.elapsed() )
+                {
+                    thread_state = tsAwaitingOpen;
+                }
+                break;
+        }
+    }
+
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shutting down raw keyboard thread" );
+}
+    
+bool
+C_kbd_raw::open( void )
+{
+    if ( device_.length() == 0 )
     {
         std::string detected_device;
 
@@ -78,10 +166,64 @@ C_kbd_raw::initialise( const std::string & device )
     }
     else
     {
-        handle_ = open_keyboard( device );
+        handle_ = open_keyboard( device_ );
     }
 
     return handle_ >= 0;
+}
+
+
+bool
+C_kbd_raw::read( void )
+{
+    int bytes_read = ::read( handle_, kbd_event, sizeof( struct input_event ) * 64 );
+
+    // log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "thread_handler, bytes_read: %d", bytes_read );
+
+    if ( bytes_read >= ( int ) sizeof( struct input_event ) )
+    {
+        for ( int ii = 0; ii < (int) ( bytes_read / sizeof( struct input_event ) ); ii++ )
+        {
+            // We have:
+            //   kbd_event[ii].time        timeval: 16 bytes (8 bytes for seconds, 8 bytes for microseconds)
+            //   kbd_event[ii].type        See input-event-codes.h
+            //   kbd_event[ii].code        See input-event-codes.h
+            //   kbd_event[ii].value       01 for keypress, 00 for release, 02 for autorepeat
+    
+            if ( kbd_event[ ii ].type == EV_KEY )
+            {
+                if ( kbd_event[ ii ].value == 2 )
+                {
+                    // TODO? Suppress auto-repeat for keys such as Shift, Ctrl and Meta
+                    // Key auto-repeat
+                    buffer_->put( ( KEY_EV_AUTO << 8 ) + kbd_event[ ii ].code );
+
+                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key auto kbd_event[ii].code: %u", kbd_event[ii].code );
+                }
+                else if ( kbd_event[ ii ].value == 1 )
+                {
+                    // Key down
+                    buffer_->put( ( KEY_EV_DOWN << 8 ) + kbd_event[ ii ].code );
+                }
+                else if ( kbd_event[ ii ].value == 0 )
+                {
+                    // Key up
+                    buffer_->put( ( KEY_EV_UP << 8 ) + kbd_event[ ii ].code );
+                }
+                
+                return true;
+            }
+        }
+    }
+    else if ( bytes_read < 0 )
+    {
+        // Read error, most likely because device has become inaccessible
+        // (for example, when using a KVM switch to switch from one PC to 
+        // another)
+        return false;
+    } 
+
+    return true;
 }
 
 bool
@@ -210,87 +352,6 @@ C_kbd_raw::open_keyboard( const std::string & device )
     return hnd;
 }
 
-bool
-C_kbd_raw::start()
-{
-    return thread_start();
-}
-
-void
-C_kbd_raw::stop()
-{
-    abort_ = true;
-    thread_await_exit();
-}
-
-bool
-C_kbd_raw::read( key_event_t & key_event, uint8_t & scancode )
-{
-    uint16_t key_entry = 0;
-
-    if ( buffer_->get( key_entry ) )
-    {
-        key_event = ( key_event_t ) ( key_entry >> 8 );
-        scancode  = key_entry & 0xff;
-
-        return true;
-    }
-
-    return false;
-}
-
-// -----------------------------------------------------------------------------------
-// Background thread code
-// -----------------------------------------------------------------------------------
-
-void
-C_kbd_raw::thread_handler()
-{
-    struct input_event kbd_event[ 64 ];
-    
-    while ( ! abort_ )
-    {
-        int bytes_read = ::read( handle_, kbd_event, sizeof( struct input_event ) * 64 );
-    
-//        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "thread_handler, bytes_read: %d", bytes_read );
-
-        if ( bytes_read >= ( int ) sizeof( struct input_event ) )
-        {
-            for ( int ii = 0; ii < (int) ( bytes_read / sizeof( struct input_event ) ); ii++ )
-            {
-                // We have:
-                //   kbd_event[ii].time        timeval: 16 bytes (8 bytes for seconds, 8 bytes for microseconds)
-                //   kbd_event[ii].type        See input-event-codes.h
-                //   kbd_event[ii].code        See input-event-codes.h
-                //   kbd_event[ii].value       01 for keypress, 00 for release, 02 for autorepeat
-        
-                if ( kbd_event[ ii ].type == EV_KEY )
-                {
-                    if ( kbd_event[ ii ].value == 2 )
-                    {
-                        // TODO? Suppress auto-repeat for keys such as Shift, Ctrl and Meta
-                        // Key auto-repeat
-                        buffer_->put( ( KEY_EV_AUTO << 8 ) + kbd_event[ ii ].code );
-
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key auto kbd_event[ii].code: %u", kbd_event[ii].code );
-                    }
-                    else if ( kbd_event[ ii ].value == 1 )
-                    {
-                        // Key down
-                        buffer_->put( ( KEY_EV_DOWN << 8 ) + kbd_event[ ii ].code );
-                    }
-                    else if ( kbd_event[ ii ].value == 0 )
-                    {
-                        // Key up
-                        buffer_->put( ( KEY_EV_UP << 8 ) + kbd_event[ ii ].code );
-                    }
-                }
-            }
-        }
-    }
-
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shutting down raw keyboard thread" );
-}
 
 //bool
 //C_kbd_raw::allow_repeat( __u16 key_code )

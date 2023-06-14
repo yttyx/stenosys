@@ -11,6 +11,7 @@
 #include "keyevent.h"
 #include "mutex.h"
 #include "thread.h"
+#include "timer.h"
 
 namespace stenosys
 {
@@ -47,12 +48,19 @@ private:
     thread_handler();
 
     bool
-    get_byte( unsigned char & ch );
+    open();
+
+    bool
+    read();
 
 private:
     
-    bool abort_;
-    int  handle_;
+    bool        abort_;
+    int         handle_;
+
+    std::string device_;
+
+    C_timer     timer_;
 
     std::unique_ptr< C_buffer< uint16_t, 256 > > buffer_;
 };
