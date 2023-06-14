@@ -37,8 +37,7 @@ extern C_log log;
 
 // Input: device: path of keyboard device e.g. "/dev/input/event3"
 //                or "" for auto-detection
-C_kbd_raw::C_kbd_raw( const std::string & device )
-    : device_( device )
+C_kbd_raw::C_kbd_raw()
     : abort_( false )
     , handle_( -1 )
 {
@@ -64,8 +63,9 @@ C_kbd_raw::~C_kbd_raw()
 // -----------------------------------------------------------------------------------
 
 bool
-C_kbd_raw::initialise()
+C_kbd_raw::initialise( const std::string & device )
 {
+    device_ = device;
     handle_ = -1;
 
     return true;
@@ -116,8 +116,6 @@ void
 C_kbd_raw::thread_handler()
 {
     eThreadState thread_state = tsAwaitingOpen;
-
-    struct input_event kbd_event[ 64 ];
     
     while ( ! abort_ )
     {
@@ -141,7 +139,7 @@ C_kbd_raw::thread_handler()
         
             case tsWaitBeforeReopenAttempt:
                 
-                if ( timer.elapsed() )
+                if ( timer_.expired() )
                 {
                     thread_state = tsAwaitingOpen;
                 }
@@ -175,7 +173,9 @@ C_kbd_raw::open( void )
 
 bool
 C_kbd_raw::read( void )
-{
+{ 
+    struct input_event kbd_event[ 64 ];
+
     int bytes_read = ::read( handle_, kbd_event, sizeof( struct input_event ) * 64 );
 
     // log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "thread_handler, bytes_read: %d", bytes_read );
@@ -219,7 +219,10 @@ C_kbd_raw::read( void )
     {
         // Read error, most likely because device has become inaccessible
         // (for example, when using a KVM switch to switch from one PC to 
-        // another)
+        // another). We will close the device and trust that the caller
+        // will attempt to reopen it. 
+        ::close( handle_ );
+        handle_ = -1;
         return false;
     } 
 
