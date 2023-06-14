@@ -53,7 +53,7 @@ C_kbd_raw::~C_kbd_raw()
         // Release grab
         ioctl( handle_, EVIOCGRAB, ( void * ) 0 );
         
-        close( handle_ );
+        ::close( handle_ );
         log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed raw keyboard device" );
     }
 }
@@ -143,6 +143,10 @@ C_kbd_raw::thread_handler()
                 {
                     thread_state = tsAwaitingOpen;
                 }
+                else
+                {
+                    delay( 10 );
+                }
                 break;
         }
     }
@@ -178,7 +182,7 @@ C_kbd_raw::read( void )
 
     int bytes_read = ::read( handle_, kbd_event, sizeof( struct input_event ) * 64 );
 
-    // log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "thread_handler, bytes_read: %d", bytes_read );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "thread_handler, bytes_read: %d", bytes_read );
 
     if ( bytes_read >= ( int ) sizeof( struct input_event ) )
     {
@@ -221,6 +225,9 @@ C_kbd_raw::read( void )
         // (for example, when using a KVM switch to switch from one PC to 
         // another). We will close the device and trust that the caller
         // will attempt to reopen it. 
+        // Release grab
+        ioctl( handle_, EVIOCGRAB, ( void * ) 0 );
+        
         ::close( handle_ );
         handle_ = -1;
         return false;
