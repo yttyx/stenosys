@@ -36,8 +36,8 @@ C_x11_output::C_x11_output()
     : shavian_( false )
     , shift_( false )
     , shift_prev_( false )
-    , display_( nullptr )
-    , origkeysyms_( nullptr )
+    , display_( NULL )
+    , origkeysyms_( NULL )
     , keysyms_per_keycode_( 0 )
     , keycode_low_( 0 )
     , keycode_high_( 0 )
@@ -47,16 +47,18 @@ C_x11_output::C_x11_output()
 
 C_x11_output::~C_x11_output()
 {
-    if ( origkeysyms_ != nullptr )
+    restore_keysyms();
+
+    if ( origkeysyms_ != NULL )
     {
         XFree( origkeysyms_ );
-        origkeysyms_ = nullptr;
+        origkeysyms_ = NULL;
     }
 
-    if ( display_ != nullptr )
+    if ( display_ != NULL )
     {
         XCloseDisplay( display_ );
-        display_ = nullptr;
+        display_ = NULL;
     }
 }
 
@@ -369,7 +371,7 @@ C_x11_output::set_shavian_keysyms()
         //TEMP
         //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysymstring: %s", keysymstring );
         
-        if ( keysymstring != nullptr )
+        if ( keysymstring != NULL )
         {
             auto result = keysym_replacements_->find( keysymstring );
 
@@ -405,8 +407,15 @@ C_x11_output::set_shavian_keysyms()
 void
 C_x11_output::restore_keysyms()
 {
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::restore_keysyms()" );
+    
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keycode_low_: %d", keycode_low_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keycode_high_: %d", keycode_high_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keysyms_per_keycode_: %d", keysyms_per_keycode_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  origkeysyms_: %p", origkeysyms_ );
+
     // Restore from our backup copy of the original keysyms
-    if ( origkeysyms_ != nullptr )
+    if ( origkeysyms_ != NULL )
     {
         XChangeKeyboardMapping( display_, keycode_low_, keysyms_per_keycode_, origkeysyms_, keycode_high_ - keycode_low_ );
         XFlush( display_ );
