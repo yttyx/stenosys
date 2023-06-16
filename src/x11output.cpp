@@ -47,6 +47,8 @@ C_x11_output::C_x11_output()
 
 C_x11_output::~C_x11_output()
 {
+    log_writeln( C_log::LL_INFO, LOG_SOURCE, "~C_x11_output() destructor" );
+    
     restore_keysyms();
 
     if ( origkeysyms_ != NULL )
@@ -351,8 +353,16 @@ C_x11_output::set_shavian_keysyms()
     // copy.
     origkeysyms_ = XGetKeyboardMapping( display_, keycode_low_, keycode_high_ - keycode_low_, &keysyms_per_keycode_ );
 
-    KeySym * keysyms = XGetKeyboardMapping( display_, keycode_low_, keycode_high_ - keycode_low_, &keysyms_per_keycode_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keysyms_per_keycode_: %d", keysyms_per_keycode_ );
     
+    KeySym * keysyms = XGetKeyboardMapping( display_, keycode_low_, keycode_high_ - keycode_low_, &keysyms_per_keycode_ );
+   
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keysyms_per_keycode_: %d", keysyms_per_keycode_ );
+    
+    //TEMP
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  origkeysyms_: %p", origkeysyms_ );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keysyms     : %p", keysyms );
+
     // Loop through the keycodes and look for keysyms associated with each keycode
     // that can be set to use Shavian keysyms instead.
     // XF86_symstrings contains a list of keysym strings which seem like good candidates
@@ -368,7 +378,6 @@ C_x11_output::set_shavian_keysyms()
 
         const char * keysymstring = XKeysymToString( keysym ); 
 
-        //TEMP
         //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysymstring: %s", keysymstring );
         
         if ( keysymstring != NULL )
@@ -417,7 +426,11 @@ C_x11_output::restore_keysyms()
     // Restore from our backup copy of the original keysyms
     if ( origkeysyms_ != NULL )
     {
-        XChangeKeyboardMapping( display_, keycode_low_, keysyms_per_keycode_, origkeysyms_, keycode_high_ - keycode_low_ );
+        int res = XChangeKeyboardMapping( display_, keycode_low_, keysyms_per_keycode_, origkeysyms_, keycode_high_ - keycode_low_ );
+        
+        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "XChangeKeyboardMapping returned: %d", res );
+
+
         XFlush( display_ );
     }
 }

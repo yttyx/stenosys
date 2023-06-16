@@ -70,14 +70,15 @@ C_log::write_line( eLogLevel    level
         {
             if ( fileline_ )
             {
-                str = format_string( "%s %d", file, line );
+                str = format_string( "%-20.20s line %04d: ", file, line );
             }
         
-            if ( source_ )
-            {
-                str += source;
-                str += " ";
-            }
+            //if ( source_ )
+            //{
+                //str += " ";
+                //str += source;
+                //str += " ";
+            //}
         }
 
         va_list arg_ptr;
