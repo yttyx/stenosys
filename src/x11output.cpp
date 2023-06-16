@@ -85,6 +85,13 @@ C_x11_output::initialise( const std::string & output_device )
 }
 
 void
+C_x11_output::set_keymapping()
+{
+    restore_keysyms();
+    set_shavian_keysyms();
+}
+
+void
 C_x11_output::toggle_shavian()
 {
     shavian_ = ! shavian_;

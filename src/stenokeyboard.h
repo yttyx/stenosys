@@ -37,6 +37,9 @@ public:
     
     bool
     read( S_geminipr_packet & packet );
+    
+    bool
+    acquired();
 
 private:
     

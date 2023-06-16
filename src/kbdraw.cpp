@@ -40,6 +40,7 @@ extern C_log log;
 C_kbd_raw::C_kbd_raw()
     : abort_( false )
     , handle_( -1 )
+    , acquired_( false )
 {
     buffer_ = std::make_unique< C_buffer< uint16_t, 256 > >();
     
@@ -100,6 +101,21 @@ C_kbd_raw::read( key_event_t & key_event, uint8_t & scancode )
     return false;
 }
 
+// Returns true if device has been successfully opened either at program run
+// time, or when access to the device has been lost and re-aquired.
+bool
+C_kbd_raw::acquired()
+{
+    bool result = acquired_;
+
+    if ( acquired_ )
+    {
+        acquired_ = false;
+    }
+
+    return result;
+}
+
 // -----------------------------------------------------------------------------------
 // Background thread code
 // -----------------------------------------------------------------------------------
@@ -107,6 +123,7 @@ C_kbd_raw::read( key_event_t & key_event, uint8_t & scancode )
 enum eThreadState
 {
     tsAwaitingOpen
+,   tsOpenSuccessful
 ,   tsReading
 ,   tsReadError
 ,   tsWaitBeforeReopenAttempt
@@ -123,7 +140,13 @@ C_kbd_raw::thread_handler()
         {
             case tsAwaitingOpen:
                 
-                thread_state = open() ? tsReading : tsWaitBeforeReopenAttempt;
+                thread_state = open() ? tsOpenSuccessful : tsWaitBeforeReopenAttempt;
+                break;
+
+            case tsOpenSuccessful:
+
+                acquired_ = true;
+                thread_state = tsReading;
                 break;
 
             case tsReading:
@@ -361,26 +384,5 @@ C_kbd_raw::open_keyboard( const std::string & device )
 
     return hnd;
 }
-
-
-//bool
-//C_kbd_raw::allow_repeat( __u16 key_code )
-//{
-    //switch ( key_code )
-    //{
-        //case ARDUINO_KEY_LEFT_SHIFT:
-        //case ARDUINO_KEY_RIGHT_SHIFT:
-        //case ARDUINO_KEY_LEFT_CTRL:
-        //case ARDUINO_KEY_RIGHT_CTRL:
-        //case ARDUINO_KEY_LEFT_ALT:
-        //case ARDUINO_KEY_RIGHT_ALT:
-        //case ARDUINO_KEY_LEFT_GUI:
-        //case ARDUINO_KEY_CAPS_LOCK:
-        //case ARDUINO_KEY_INSERT:
-            //return false;
-    //}
-
-    //return true;
-//}
 
 }

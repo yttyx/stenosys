@@ -178,6 +178,11 @@ C_stenosys::run( int argc, char *argv[] )
                 }
             }
 
+            if ( steno_keyboard.acquired() )
+            {
+                outputter->set_keymapping(); 
+            }
+
             // Key event input
             if ( steno_keyboard.read( key_event, scancode ) )
             {

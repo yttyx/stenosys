@@ -30,7 +30,10 @@ public:
     
     virtual void
     toggle_shavian() = 0;
-    
+
+    virtual void
+    set_keymapping() = 0;
+
     virtual void
     test() = 0;
 

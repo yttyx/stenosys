@@ -36,6 +36,9 @@ public:
     bool
     read( key_event_t & key_event, uint8_t & scan_code );
     
+    bool
+    acquired();
+    
 private:
 
     bool 
@@ -57,6 +60,8 @@ private:
     
     bool        abort_;
     int         handle_;
+
+    bool        acquired_;
 
     std::string device_;
 

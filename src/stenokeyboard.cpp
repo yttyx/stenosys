@@ -75,4 +75,10 @@ C_steno_keyboard::read( S_geminipr_packet & packet  )
     return steno_->read( packet );
 }
 
+bool
+C_steno_keyboard::acquired()
+{
+    return raw_->acquired();
+}
+
 }

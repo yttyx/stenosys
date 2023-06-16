@@ -86,7 +86,10 @@ public:
     virtual void
     stop();
 
-private:
+    void
+    set_keymapping();
+
+    private:
 
     void
     set_up_data();
