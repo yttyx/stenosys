@@ -94,9 +94,9 @@ private:
     void
     set_shavian_keysyms();
 
-    //virtual std::string
-    //format( const std::string & text );
-    
+    void
+    restore_keysyms();
+
     void 
     send_key( KeySym keysym, KeySym modsym );
 
@@ -127,10 +127,16 @@ private:
     bool shift_prev_;   // used in typed Shavian mode
 
     Display * display_;
+    KeySym *  origkeysyms_;
+    
+    int keysyms_per_keycode_;
+    int keycode_low_;
+    int keycode_high_;
 
     std::unique_ptr< std::unordered_map< std::string, keysym_entry > > keysym_replacements_;
     
     std::vector< std::string > symstrings_;
+    
 
     static keysym_entry ascii_to_keysym[];
     static keysym_entry shavian_to_keysym[];
@@ -141,6 +147,7 @@ private:
 
     static const KeySym       shavian_keysym[];
     static const keysym_entry shavian_keysyms[];
+
 };
 
 }

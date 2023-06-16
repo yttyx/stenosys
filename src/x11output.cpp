@@ -37,15 +37,26 @@ C_x11_output::C_x11_output()
     , shift_( false )
     , shift_prev_( false )
     , display_( nullptr )
+    , origkeysyms_( nullptr )
+    , keysyms_per_keycode_( 0 )
+    , keycode_low_( 0 )
+    , keycode_high_( 0 )
 {
     keysym_replacements_= std::make_unique< std::unordered_map< std::string, keysym_entry > >();
 }
 
 C_x11_output::~C_x11_output()
 {
-    if ( display_ != NULL )
+    if ( origkeysyms_ != nullptr )
+    {
+        XFree( origkeysyms_ );
+        origkeysyms_ = nullptr;
+    }
+
+    if ( display_ != nullptr )
     {
         XCloseDisplay( display_ );
+        display_ = nullptr;
     }
 }
 
@@ -326,22 +337,20 @@ C_x11_output::set_shavian_keysyms()
  
     if ( keycode != 0 )
     {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shavian codes already set" );
+        log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Shavian codes already set" );
         return;
     }
-
-    int keysyms_per_keycode = 0;
-    int keycode_low         = 0;
-    int keycode_high        = 0;
-    
-    KeySym * keysyms = NULL;
     
     // Get the range of keycodes (it's usually the range 8 - 255)
-    XDisplayKeycodes( display_, &keycode_low, &keycode_high );
+    XDisplayKeycodes( display_, &keycode_low_, &keycode_high_ );
 
-    // Get all of the available mapped keysyms
-    keysyms = XGetKeyboardMapping( display_, keycode_low, keycode_high - keycode_low, &keysyms_per_keycode);
+    // Get all of the available mapped keysyms. Do this twice: once for a backup copy
+    // from which we can restore the original keysyms as required; once for a working
+    // copy.
+    origkeysyms_ = XGetKeyboardMapping( display_, keycode_low_, keycode_high_ - keycode_low_, &keysyms_per_keycode_ );
 
+    KeySym * keysyms = XGetKeyboardMapping( display_, keycode_low_, keycode_high_ - keycode_low_, &keysyms_per_keycode_ );
+    
     // Loop through the keycodes and look for keysyms associated with each keycode
     // that can be set to use Shavian keysyms instead.
     // XF86_symstrings contains a list of keysym strings which seem like good candidates
@@ -349,9 +358,9 @@ C_x11_output::set_shavian_keysyms()
 
     bool done = false;
 
-    for ( int keycode = keycode_low; ( keycode <= keycode_high ) && ( ! done ); keycode++ )
+    for ( int keycode = keycode_low_; ( keycode <= keycode_high_ ) && ( ! done ); keycode++ )
     {
-        int sym_index = ( ( keycode - keycode_low ) * keysyms_per_keycode );
+        int sym_index = ( ( keycode - keycode_low_ ) * keysyms_per_keycode_ );
 
         KeySym keysym = keysyms[ sym_index ];
 
@@ -382,8 +391,7 @@ C_x11_output::set_shavian_keysyms()
                                        , NoSymbol
                                        , NoSymbol };
 
-                //TODO Save original keymap so we can restore it on program exit
-                XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode, keysym_list, 1 );
+                XChangeKeyboardMapping( display_, keycode, keysyms_per_keycode_, keysym_list, 1 );
             }
         }
     }
@@ -392,6 +400,17 @@ C_x11_output::set_shavian_keysyms()
     XFlush( display_ );
     
     log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shavian codes set" );
+}
+
+void
+C_x11_output::restore_keysyms()
+{
+    // Restore from our backup copy of the original keysyms
+    if ( origkeysyms_ != nullptr )
+    {
+        XChangeKeyboardMapping( display_, keycode_low_, keysyms_per_keycode_, origkeysyms_, keycode_high_ - keycode_low_ );
+        XFlush( display_ );
+    }
 }
 
 KeySym
