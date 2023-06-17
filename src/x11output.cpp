@@ -733,7 +733,7 @@ C_x11_output::shavian_to_keysym[] =
 ,   { XK_church,       0          }
 ,   { XK_yea,          XK_Shift_L }
 ,   { XK_hung,         0          }
-,   { XK_bib,          0          }
+,   { XK_bib,          XK_Shift_L }
 ,   { XK_dead,         XK_Shift_L }
 ,   { XK_gag,          XK_Shift_L }
 ,   { XK_vow,          XK_Shift_L }
