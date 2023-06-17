@@ -138,9 +138,15 @@ C_kbd_steno::thread_handler()
         {
             case tsAwaitingOpen:
 
-                thread_state = open() ? tsAwaitingPacketHeader : tsReadError;
+                thread_state = open() ? tsOpenSuccessful : tsReadError;
                 break;
 
+            case tsOpenSuccessful:
+
+                log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Using steno serial device %s", device_.c_str() );
+                thread_state = tsAwaitingPacketHeader;
+                break;
+            
             case tsAwaitingPacketHeader:
 
                 if ( get_byte( thread_state, b ) )
@@ -183,6 +189,8 @@ C_kbd_steno::thread_handler()
 
             case tsReadError:
 
+                log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Lost access to steno serial device %s", device_.c_str() );
+                
                 // Read error: close file and wait 10 seconds before attempting to re-open it
                 if ( handle_ >= 0 )
                 {

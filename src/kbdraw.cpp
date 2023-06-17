@@ -147,6 +147,8 @@ C_kbd_raw::thread_handler()
 
                 acquired_ = true;
                 thread_state = tsReading;
+
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Using raw keyboard device %s", device_in_use_.c_str() );
                 break;
 
             case tsReading:
@@ -158,6 +160,7 @@ C_kbd_raw::thread_handler()
 
                 timer_.start( 5000 );
                 thread_state = tsWaitBeforeReopenAttempt;
+                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Lost access to raw keyboard device %s", device_in_use_.c_str() );
                 break;
         
             case tsWaitBeforeReopenAttempt:
@@ -186,7 +189,9 @@ C_kbd_raw::open( void )
 
         if ( detect_keyboard( detected_device ) )
         {
-            handle_ = open_keyboard( detected_device );
+            device_in_use_ = detected_device;
+
+            handle_ = open_keyboard( device_in_use_ );
         }
     }
     else
@@ -284,7 +289,6 @@ C_kbd_raw::detect_keyboard( std::string & device )
                 // Open device
                 if ( ( hnd = ::open( dev_path.c_str(), O_RDONLY ) ) < 0 )
                 {
-                    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device: %s", dev_path.c_str() );
                     continue;
                 }
 
@@ -328,8 +332,6 @@ C_kbd_raw::detect_keyboard( std::string & device )
     {
         device = DEV_DIR + std::string( EVENT_DEV ) + std::to_string( device_event_num );
                 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Using device entry %s", device.c_str() );
-        
         return true;
     }
 

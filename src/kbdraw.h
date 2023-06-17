@@ -64,6 +64,7 @@ private:
     bool        acquired_;
 
     std::string device_;
+    std::string device_in_use_;
 
     C_timer     timer_;
 

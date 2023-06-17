@@ -18,6 +18,7 @@ namespace stenosys
 enum eThreadState
 {
     tsAwaitingOpen
+,   tsOpenSuccessful
 ,   tsAwaitingPacketHeader
 ,   tsPacketBody
 ,   tsReadError
