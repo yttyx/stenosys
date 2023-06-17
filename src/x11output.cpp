@@ -37,24 +37,27 @@ C_x11_output::C_x11_output()
     , shift_( false )
     , shift_prev_( false )
     , display_( NULL )
-    , origkeysyms_( NULL )
+    , orig_keysyms_( NULL )
     , keysyms_per_keycode_( 0 )
     , keycode_low_( 0 )
     , keycode_high_( 0 )
+    , orig_keysyms_per_keycode_( 0 )
+    , orig_keycode_low_( 0 )
+    , orig_keycode_high_( 0 )
 {
     keysym_replacements_= std::make_unique< std::unordered_map< std::string, keysym_entry > >();
 }
 
 C_x11_output::~C_x11_output()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "~C_x11_output() destructor" );
+    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "~C_x11_output() destructor" );
     
     restore_keysyms();
 
-    if ( origkeysyms_ != NULL )
+    if ( orig_keysyms_ != NULL )
     {
-        XFree( origkeysyms_ );
-        origkeysyms_ = NULL;
+        XFree( orig_keysyms_ );
+        orig_keysyms_ = NULL;
     }
 
     if ( display_ != NULL )
@@ -72,7 +75,7 @@ C_x11_output::initialise()
     if ( display_ != NULL )
     {
         set_up_data();
-        set_shavian_keysyms();
+        backup_keysyms();
     }
 
     return display_ != NULL;
@@ -345,34 +348,28 @@ void
 C_x11_output::set_shavian_keysyms()
 {
     //TEMP
-    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "set_shavian_keysyms()" );
+    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "set_shavian_keysyms()" );
 
     // Check whether a Shavian KeySym has already been set up
     int keycode = XKeysymToKeycode( display_, to_keysym( XK_peep ) );
  
     if ( keycode != 0 )
     {
-        log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Shavian codes already set" );
+        log_writeln( C_log::LL_ERROR, LOG_SOURCE, "**Shavian codes already set" );
         return;
     }
     
     // Get the range of keycodes (it's usually the range 8 - 255)
     XDisplayKeycodes( display_, &keycode_low_, &keycode_high_ );
 
-    // Get all of the available mapped keysyms. Do this twice: once for a backup copy
-    // from which we can restore the original keysyms as required; once for a working
-    // copy.
-    origkeysyms_ = XGetKeyboardMapping( display_, keycode_low_, keycode_high_ - keycode_low_, &keysyms_per_keycode_ );
-
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keysyms_per_keycode_: %d", keysyms_per_keycode_ );
-    
+    // Get all of the available mapped keysyms. 
     KeySym * keysyms = XGetKeyboardMapping( display_, keycode_low_, keycode_high_ - keycode_low_, &keysyms_per_keycode_ );
    
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keysyms_per_keycode_: %d", keysyms_per_keycode_ );
-    
     //TEMP
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  origkeysyms_: %p", origkeysyms_ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keysyms     : %p", keysyms );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keycode_low_        : %d", keycode_low_ );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keycode_high_       : %d", keycode_high_ );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keysyms_per_keycode_: %d", keysyms_per_keycode_ );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keysyms             : %p", keysyms );
 
     // Loop through the keycodes and look for keysyms associated with each keycode
     // that can be set to use Shavian keysyms instead.
@@ -425,22 +422,34 @@ C_x11_output::set_shavian_keysyms()
 }
 
 void
+C_x11_output::backup_keysyms()
+{
+    // Make a copy of the original keysyms so we can restore them on program exit
+    if ( orig_keysyms_ == NULL )
+    {
+        // Get the range of keycodes (it's usually the range 8 - 255)
+        XDisplayKeycodes( display_, &orig_keycode_low_, &orig_keycode_high_ );
+        
+        orig_keysyms_ = XGetKeyboardMapping( display_, orig_keycode_low_, orig_keycode_high_ - orig_keycode_low_, &orig_keysyms_per_keycode_ );
+    }
+}
+
+void
 C_x11_output::restore_keysyms()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::restore_keysyms()" );
-    
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keycode_low_: %d", keycode_low_ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keycode_high_: %d", keycode_high_ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  keysyms_per_keycode_: %d", keysyms_per_keycode_ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  origkeysyms_: %p", origkeysyms_ );
+    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "C_x11_output::restore_keysyms()" );
 
     // Restore from our backup copy of the original keysyms
-    if ( origkeysyms_ != NULL )
+    if ( orig_keysyms_ != NULL )
     {
-        int res = XChangeKeyboardMapping( display_, keycode_low_, keysyms_per_keycode_, origkeysyms_, keycode_high_ - keycode_low_ );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  orig_keycode_low_        : %d", orig_keycode_low_ );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  orig_keycode_high_       : %d", orig_keycode_high_ );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  orig_keysyms_per_keycode_: %d", orig_keysyms_per_keycode_ );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  orig_keysyms_            : %p", orig_keysyms_ );
         
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "XChangeKeyboardMapping returned: %d", res );
-
+        int res = XChangeKeyboardMapping( display_, orig_keycode_low_, orig_keysyms_per_keycode_, orig_keysyms_, orig_keycode_high_ - orig_keycode_low_ );
+        
+        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "XChangeKeyboardMapping returned: %d", res );
 
         XFlush( display_ );
     }

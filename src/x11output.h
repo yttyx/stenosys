@@ -89,13 +89,16 @@ public:
     void
     set_keymapping();
 
-    private:
+private:
 
     void
     set_up_data();
     
     void
     set_shavian_keysyms();
+    
+    void
+    backup_keysyms();
 
     void
     restore_keysyms();
@@ -130,12 +133,16 @@ private:
     bool shift_prev_;   // used in typed Shavian mode
 
     Display * display_;
-    KeySym *  origkeysyms_;
+    KeySym *  orig_keysyms_;
     
     int keysyms_per_keycode_;
     int keycode_low_;
     int keycode_high_;
 
+    int orig_keysyms_per_keycode_;
+    int orig_keycode_low_;
+    int orig_keycode_high_;
+    
     std::unique_ptr< std::unordered_map< std::string, keysym_entry > > keysym_replacements_;
     
     std::vector< std::string > symstrings_;
