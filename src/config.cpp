@@ -102,7 +102,8 @@ C_config::read_config( const std::string & config_path )
             std::string param = match1.str();
             std::string value = match2.str();
         
-            //log_writeln_fmt( C_log::LL_INFO, "param: %s, value: %s", param.c_str(), value.c_str() );
+            //TEMP
+            //log_writeln_fmt( C_log::LL_VERBOSE_1, "param: %s, value: %s", param.c_str(), value.c_str() );
 
             std::transform( param.begin(), param.end(), param.begin(), ::tolower );
         
@@ -132,10 +133,6 @@ C_config::read_config( const std::string & config_path )
             {
                 config_.device_steno = value;
             }
-            else if ( param == OPT_SERIAL_OUTPUT )
-            {
-                config_.device_output = value;
-            }
             else
             {
                 log_writeln_fmt( C_log::LL_INFO, "Invalid parameter %s", param.c_str() );
@@ -159,8 +156,6 @@ C_config::create_default_config( const std::string & config_path )
         fprintf( output_stream, OPT_FILE_STENOFILE    "=%s\n", DEF_FILE_STENOFILE    );
         fprintf( output_stream, OPT_RAW_DEVICE        "=%s\n", "" );
         fprintf( output_stream, OPT_STENO_DEVICE      "=%s\n", DEF_STENO_DEVICE      );
-        fprintf( output_stream, OPT_SERIAL_OUTPUT     "=%s\n", DEF_SERIAL_OUTPUT     );
-
         fclose( output_stream );
         
         log_writeln_fmt( C_log::LL_ERROR, "Created default configuration file %s", config_path.c_str() );

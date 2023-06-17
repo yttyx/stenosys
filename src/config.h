@@ -18,12 +18,11 @@ namespace stenosys
 #define OPT_DICTIONARY        "dictionary"
 #define OPT_RAW_DEVICE        "rawdevice"
 #define OPT_STENO_DEVICE      "stenodevice"
-#define OPT_SERIAL_OUTPUT     "serialoutput"
 
 #define DEF_DISPLAY_VERBOSITY "3"
 #define DEF_DISPLAY_DATETIME  "true"
 #define DEF_FILE_STENOFILE    "TBD"
-#define DEF_RAW_DEVICE        "/dev/input/event3"
+#define DEF_RAW_DEVICE        "/dev/input/event8"
 #define DEF_STENO_DEVICE      "/dev/ttyACM0"
 #define DEF_SERIAL_OUTPUT     "/dev/ttyAMA0"
 
@@ -37,7 +36,6 @@ struct S_config
 
     std::string device_raw;
     std::string device_steno;
-    std::string device_output;
 };
 
 
@@ -66,9 +64,9 @@ protected:
 
 private:
 
-    S_config    config_;
+    S_config  config_;
 
-    bool        got_config_file_;
+    bool      got_config_file_;
 
 };
 
