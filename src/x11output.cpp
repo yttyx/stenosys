@@ -101,7 +101,7 @@ void
 C_x11_output::send( const std::string & str )
 {
     //TEMP
-    //log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "C_x11_output::send() - str: %s", str.c_str() );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "C_x11_output::send() - str: %s", str.c_str() );
 
     C_utf8 utf8_str( str );
 
@@ -112,7 +112,7 @@ C_x11_output::send( const std::string & str )
         do
         {
             //TEMP
-            //log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  code: %04xh", code );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  code: %04xh", code );
         
             if ( ( int ) code <= 0x7f )
             {
@@ -126,22 +126,22 @@ C_x11_output::send( const std::string & str )
             else
             {
                 //TEMP
-                //log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "is_shavian_code: %s", is_shavian_code( code ) ? "is shavian" : "is NOT shavian" );
+                log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "is_shavian_code: %s", is_shavian_code( code ) ? "is shavian" : "is NOT shavian" );
                 
                 if ( is_shavian_code( code ) )
                 {
                     //TEMP
-                    //log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "is_shavian_code" );
+                    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "is_shavian_code" );
                 
                     if ( ( code == XK_namingdot ) || ( code == XK_acroring ) )
                     {
                         //TEMP
-                        //log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Naming dot or acroring" );
+                        log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Naming dot or acroring" );
                         
                         KeySym keysym = to_keysym( code );
         
                         //TEMP
-                        //log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "keysym: %04xh, code: %04xh", keysym, code );
+                        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keysym: %04xh, code: %04xh", keysym, code );
                         
                         send_key( keysym, 0 );
                     }
@@ -152,7 +152,7 @@ C_x11_output::send( const std::string & str )
                         keysym_entry * entry = &shavian_to_keysym[ index ];
                         
                         //TEMP
-                        //log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "entry->keysym1: %04xh, entry->keysym2: %04xh", entry->keysym1 , entry->keysym2 );
+                        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "entry->keysym1: %04xh, entry->keysym2: %04xh", entry->keysym1 , entry->keysym2 );
  
                         send_key( to_keysym( entry->keysym1 ), entry->keysym2 );
                     }
@@ -273,7 +273,11 @@ C_x11_output::send_key( KeySym keysym, KeySym modsym )
     KeyCode modcode = 0;
 
     keycode = XKeysymToKeycode( display_, keysym );
- 
+
+
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "send_key()  keycode: %d", keycode );
+
+
     if ( keycode == 0 )
     {
         return;
@@ -718,7 +722,7 @@ C_x11_output::shavian_to_keysym[] =
 ,   { XK_so,           0          }
 ,   { XK_sure,         0          }
 ,   { XK_church,       0          }
-,   { XK_yea,          0          }
+,   { XK_yea,          XK_Shift_L }
 ,   { XK_hung,         0          }
 ,   { XK_bib,          0          }
 ,   { XK_dead,         XK_Shift_L }
@@ -729,7 +733,7 @@ C_x11_output::shavian_to_keysym[] =
 
 ,   { XK_measure,      XK_Shift_L }
 ,   { XK_judge,        XK_Shift_L }
-,   { XK_woe,          XK_Shift_L }
+,   { XK_woe,          0          }
 ,   { XK_haha,         XK_Shift_L }
 ,   { XK_loll,         0          }
 ,   { XK_mime,         0          }
