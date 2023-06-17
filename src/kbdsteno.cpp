@@ -138,7 +138,7 @@ C_kbd_steno::thread_handler()
         {
             case tsAwaitingOpen:
 
-                thread_state = open() ? tsOpenSuccessful : tsReadError;
+                thread_state = open() ? tsOpenSuccessful : tsWaitBeforeReopenAttempt;
                 break;
 
             case tsOpenSuccessful:
@@ -225,13 +225,13 @@ C_kbd_steno::open( void )
 
     if ( handle_ < 0 )
     {               
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error opening steno device %s: %s", device_.c_str(), strerror( errno ) );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "**Error opening steno device %s: %s", device_.c_str(), strerror( errno ) );
     }
     else
     {
         if ( set_interface_attributes( handle_, B19200 ) > -1 )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device %s opened", device_.c_str() );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Steno device %s opened", device_.c_str() );
             return true;
         }
     }
@@ -262,7 +262,7 @@ C_kbd_steno::get_byte( eThreadState & state, unsigned char & ch )
     }
     else
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Steno read error on serial device %s: %s"
+        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "**Steno read error on serial device %s: %s"
                        , device_.c_str()  
                        , strerror( errno ) );
 

@@ -135,6 +135,8 @@ C_stenosys::run( int argc, char *argv[] )
     //worked = worked && stroke_feed.initialise( "./stenotext/alice.steno" );    //TEST
     //worked = worked && stroke_feed.initialise( "./stenotext/test.steno" );     //TEST
     worked = worked && steno_keyboard.start();
+    delay( 2000 );
+
     worked = worked && translator.initialise();
 
     worked = worked && paper_tape.initialise( 6666 );
@@ -142,11 +144,10 @@ C_stenosys::run( int argc, char *argv[] )
 
     worked = worked && dictionary_search.initialise( 6668 );
     worked = worked && dictionary_search.start();
-
+    delay( 2000 );
+    
     if ( worked )
     {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ready" );
-            
         std::string       stroke;
         std::string       steno;
         std::string       translation;
@@ -181,6 +182,8 @@ C_stenosys::run( int argc, char *argv[] )
             if ( steno_keyboard.acquired() )
             {
                 outputter->set_keymapping(); 
+                
+                log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ready" );
             }
 
             // Key event input

@@ -360,14 +360,14 @@ C_kbd_raw::open_keyboard( const std::string & device )
         return -1;
     }
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
    
     struct input_id id;
 
     // Get device information
     ioctl( hnd, EVIOCGID, &id );
 
-    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  Input device id: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
+    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  Input device id: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
                                                 , id.bustype
                                                 , id.vendor
                                                 , id.product
