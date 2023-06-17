@@ -24,7 +24,6 @@ C_log::C_log()
     level_    = LL_INFO;
     datetime_ = false;
     fileline_ = false;
-    source_   = false;
 }
 
 C_log::~C_log()
@@ -37,14 +36,9 @@ C_log::initialise( eLogLevel level, bool datetime )
     level_    = level;
     datetime_ = datetime;
 
-    if ( level_ > LL_VERBOSE_1 )
+    if ( level_ >= LL_VERBOSE_1 )
     {
         fileline_ = true;
-    }
-    
-    if ( level_ > LL_INFO )
-    {
-        source_ = true;
     }
 }
 
@@ -72,13 +66,6 @@ C_log::write_line( eLogLevel    level
             {
                 str = format_string( "%-20.20s line %04d: ", file, line );
             }
-        
-            //if ( source_ )
-            //{
-                //str += " ";
-                //str += source;
-                //str += " ";
-            //}
         }
 
         va_list arg_ptr;

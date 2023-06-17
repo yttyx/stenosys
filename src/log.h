@@ -9,12 +9,12 @@
 namespace stenosys
 {
 
-#define log_write( level, source, line )                log.write_line( level, true, false, __FILE__, __LINE__, source, line )
-#define log_write_fmt_raw( level, format, ... )         log.write_line( level, false, false, __FILE__, __LINE__, "", format, __VA_ARGS__ )
-#define log_writeln_fmt_raw( level, format, ... )       log.write_line( level, false, true, __FILE__, __LINE__, "", format, __VA_ARGS__ )
-#define log_write_fmt( level, source, format, ...)      log.write_line( level, true, false, __FILE__, __LINE__, source, format, __VA_ARGS__ )
-#define log_writeln( level, source, line )              log.write_line( level, true, true, __FILE__, __LINE__, source, line )
-#define log_writeln_fmt( level, source, format, ...)    log.write_line( level, true, true,__FILE__, __LINE__, source, format, __VA_ARGS__ )
+#define log_write( level, line )                    log.write_line( level, true,  false, __FILE__, __LINE__, line )
+#define log_write_fmt_raw( level, format, ... )     log.write_line( level, false, false, __FILE__, __LINE__, "", format, __VA_ARGS__ )
+#define log_writeln_fmt_raw( level, format, ... )   log.write_line( level, false, true,  __FILE__, __LINE__, "", format, __VA_ARGS__ )
+#define log_write_fmt( level, format, ...)          log.write_line( level, true,  false, __FILE__, __LINE__, format, __VA_ARGS__ )
+#define log_writeln( level, line )                  log.write_line( level, true,  true,  __FILE__, __LINE__, line )
+#define log_writeln_fmt( level, format, ...)        log.write_line( level, true,  true,  __FILE__, __LINE__, format, __VA_ARGS__ )
 
 class C_log
 {
@@ -47,7 +47,6 @@ private:
 
     bool              datetime_;
     bool              fileline_;
-    bool              source_;
     eLogLevel         level_;
                      
     C_mutex           log_lock_;
