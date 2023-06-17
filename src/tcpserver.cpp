@@ -60,7 +60,7 @@ C_tcp_server::initialise( int port, const char * banner )
    
     if ( listener_ == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "socket() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "socket() error %d", errno );
         return false;
     }
 
@@ -70,7 +70,7 @@ C_tcp_server::initialise( int port, const char * banner )
     
     if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "setsocketopt() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "setsocketopt() error %d", errno );
         cleanup();
         return false;
     }
@@ -82,7 +82,7 @@ C_tcp_server::initialise( int port, const char * banner )
 
     if ( rc < 0 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "ioctl() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl() error %d", errno );
         cleanup();
         return false;
     }
@@ -98,7 +98,7 @@ C_tcp_server::initialise( int port, const char * banner )
   
     if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "bind() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "bind() error %d", errno );
         cleanup();
         return false;
     }
@@ -107,7 +107,7 @@ C_tcp_server::initialise( int port, const char * banner )
   
     if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "listen() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "listen() error %d", errno );
         cleanup();
         return false;
     }

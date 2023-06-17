@@ -72,7 +72,7 @@ C_dictionary_search::thread_handler()
         if ( tcpserver_->get_char( ch ) )
         {
             //TEMP
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv: [%02x]", ch );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "recv: [%02x]", ch );
 
             switch ( ch )
             {
