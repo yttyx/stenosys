@@ -169,7 +169,7 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     //TEMP
     log_writeln_fmt( C_log::LL_VERBOSE_1, "X11 send(): key_event: %04xh, scancode: %04xh", key_event, scancode );
 
-    // Check for the scancode used for the Roman/Shavian alphabet switch
+    // Check for the scancode used for the Latin/Shavian alphabet switch
     if ( scancode == KC_EXECUTE )
     { 
         if ( key_event == KEY_EV_DOWN )
@@ -210,7 +210,7 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
 
         if ( is_shavian_key( keysym ) )
         {
-            // We need a second lookup (which will replace the roman layout keysym) to get the shavian keysym
+            // We need a second lookup (which will replace the latin layout keysym) to get the shavian keysym
             unsigned long index = keysym - XK_A;
 
             keysym = to_keysym( shavian_keysym[ index ] );

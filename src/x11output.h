@@ -125,7 +125,7 @@ private:
     
     bool shavian_;      // mode for typed output:   
                         //   true : Shavian alphabet
-                        //   false: Roman alphabet
+                        //   false: Latin alphabet
     bool shift_;        // used in typed Shavian mode
     bool shift_prev_;   // used in typed Shavian mode
 
