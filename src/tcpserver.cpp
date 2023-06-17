@@ -52,10 +52,7 @@ bool
 C_tcp_server::initialise( int port, const char * banner )
 {
     port_   = port;
-
-    banner_ =  "\r\n";
-    banner_ += banner;
-    banner_ += "\r\n";
+    banner_ = banner;
 
     struct sockaddr_in server_sockaddr;
 
