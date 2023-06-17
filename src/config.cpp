@@ -77,7 +77,7 @@ C_config::read( int argc, char *argv[] )
 bool
 C_config::read_config( const std::string & config_path )
 {
-    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Using configuration file %s", config_path.c_str() );
+    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Config file     : %s", config_path.c_str() );
 
     // Read in whole file
     if ( ! C_text_file::read( config_path ) )

@@ -86,10 +86,13 @@ C_stenosys::run( int argc, char *argv[] )
 
     C_keyboard kbd;
 
+    const char * device_raw = cfg.c().device_raw.c_str();
+    const char * dict_path = cfg.c().file_dict.c_str();
+
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys version: %s", VERSION );
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys date   : %s", __DATE__ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Dictionary path : %s", cfg.c().file_dict.c_str() );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", cfg.c().device_raw.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Dictionary path : %s", strlen( dict_path ) > 0  ? dict_path  : "<none>" );
+    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", strlen( device_raw ) > 0 ? device_raw : "auto-detect" ); 
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
 #ifndef X11
     log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Output device   : %s", cfg.c().device_output.c_str() );
@@ -110,7 +113,7 @@ C_stenosys::run( int argc, char *argv[] )
     
     if ( ! worked )
     {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Outputter initialisation failed (is X Window system running?" );
+        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Outputter initialisation failed (is X Window system running?)" );
     }
 #else
 #pragma message( "Building for Pro Micro" )
