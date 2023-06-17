@@ -9,7 +9,6 @@
 #include "log.h"
 #include "miscellaneous.h"
 
-#define LOG_SOURCE    "SERCH"
 #define SEARCH_PROMPT "Find: "
 
 using namespace stenosys;
@@ -72,7 +71,7 @@ C_dictionary_search::thread_handler()
         if ( tcpserver_->get_char( ch ) )
         {
             //TEMP
-            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "recv: [%02x]", ch );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, "recv: [%02x]", ch );
 
             switch ( ch )
             {

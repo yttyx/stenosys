@@ -8,7 +8,6 @@
 #include "miscellaneous.h"
 #include "papertape.h"
 
-#define LOG_SOURCE "PAPER"
 
 using namespace stenosys;
 

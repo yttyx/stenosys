@@ -15,7 +15,6 @@
 #include "log.h"
 #include "miscellaneous.h"
 
-#define LOG_SOURCE "CONFG"
 
 using namespace  stenosys;
 
@@ -55,7 +54,7 @@ C_config::read( int argc, char *argv[] )
     {
         if ( ! create_directory( config_dir_path ) )
         {
-            log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Error creating directory %s", config_dir_path.c_str() );
+            log_writeln_fmt( C_log::LL_ERROR, "Error creating directory %s", config_dir_path.c_str() );
         }
     }
 
@@ -77,12 +76,12 @@ C_config::read( int argc, char *argv[] )
 bool
 C_config::read_config( const std::string & config_path )
 {
-    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Config file     : %s", config_path.c_str() );
+    log_writeln_fmt( C_log::LL_ERROR, "Config file     : %s", config_path.c_str() );
 
     // Read in whole file
     if ( ! C_text_file::read( config_path ) )
     {
-        log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Error loading configuration file" );
+        log_writeln( C_log::LL_ERROR, "Error loading configuration file" );
         return false;
     }
 
@@ -103,7 +102,7 @@ C_config::read_config( const std::string & config_path )
             std::string param = match1.str();
             std::string value = match2.str();
         
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "param: %s, value: %s", param.c_str(), value.c_str() );
+            //log_writeln_fmt( C_log::LL_INFO, "param: %s, value: %s", param.c_str(), value.c_str() );
 
             std::transform( param.begin(), param.end(), param.begin(), ::tolower );
         
@@ -139,7 +138,7 @@ C_config::read_config( const std::string & config_path )
             }
             else
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid parameter %s", param.c_str() );
+                log_writeln_fmt( C_log::LL_INFO, "Invalid parameter %s", param.c_str() );
                 return false;
             }
         }
@@ -164,11 +163,11 @@ C_config::create_default_config( const std::string & config_path )
 
         fclose( output_stream );
         
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Created default configuration file %s", config_path.c_str() );
+        log_writeln_fmt( C_log::LL_ERROR, "Created default configuration file %s", config_path.c_str() );
     }
     else
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Error accessing %s", config_path.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, "Error accessing %s", config_path.c_str() );
     }
 }
 
@@ -178,8 +177,8 @@ C_config::check_params( int argc, char *argv[], std::string & cfg_path )
     if ( argc > 1 )
     {
         // Program takes no parameters; show usage if any are supplied
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "stenosys - stenographic utility" );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Configuration path is: %s", cfg_path.c_str() );
+        log_writeln( C_log::LL_INFO, "stenosys - stenographic utility" );
+        log_writeln_fmt( C_log::LL_INFO, "  Configuration path is: %s", cfg_path.c_str() );
 
         return false;
     }

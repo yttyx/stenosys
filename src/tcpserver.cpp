@@ -17,7 +17,6 @@
 #include "miscellaneous.h"
 #include "tcpserver.h"
 
-#define LOG_SOURCE "TCPSV"
 
 // Ref:  https://www.ibm.com/docs/en/i/7.1?topic=designs-example-generic-client
 //       https://www.ibm.com/docs/en/i/7.1?topic=designs-using-poll-instead-select
@@ -60,7 +59,7 @@ C_tcp_server::initialise( int port, const char * banner )
    
     if ( listener_ == -1 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "socket() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, "socket() error %d", errno );
         return false;
     }
 
@@ -70,7 +69,7 @@ C_tcp_server::initialise( int port, const char * banner )
     
     if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "setsocketopt() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, "setsocketopt() error %d", errno );
         cleanup();
         return false;
     }
@@ -82,7 +81,7 @@ C_tcp_server::initialise( int port, const char * banner )
 
     if ( rc < 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, "ioctl() error %d", errno );
         cleanup();
         return false;
     }
@@ -98,7 +97,7 @@ C_tcp_server::initialise( int port, const char * banner )
   
     if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "bind() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, "bind() error %d", errno );
         cleanup();
         return false;
     }
@@ -107,7 +106,7 @@ C_tcp_server::initialise( int port, const char * banner )
   
     if ( rc == -1 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "listen() error %d", errno );
+        log_writeln_fmt( C_log::LL_ERROR, "listen() error %d", errno );
         cleanup();
         return false;
     }
@@ -119,7 +118,7 @@ C_tcp_server::initialise( int port, const char * banner )
     fds_[ 0 ].events = POLLIN;
     fds_count_ = 1;
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s server listening on port %d", banner_.c_str(), port_ );
+    log_writeln_fmt( C_log::LL_INFO, "%s server listening on port %d", banner_.c_str(), port_ );
     return true;
 }
 
@@ -214,14 +213,14 @@ C_tcp_server::thread_handler()
 {
     int rc = -1;
 
-    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "Starting TCP server thread" );
+    //log_writeln( C_log::LL_INFO, "Starting TCP server thread" );
     
     while ( ! abort_ )
     {
         // Check whether we have a client connected and there is data to send
         if ( ( fds_count_ == 2 ) && ( op_buffer_->count() > 0 ) )
         {
-            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "got send data" );
+            //log_writeln( C_log::LL_INFO, "got send data" );
 
             // Set event flag so we get notified next time poll() is called
             fds_[ 1 ].events |= POLLOUT;
@@ -230,11 +229,11 @@ C_tcp_server::thread_handler()
         // Poll socket/s with a timeout of 100mS
         rc = poll( fds_, fds_count_, 100 );
 
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Return from poll() %d", rc );
+        //log_writeln_fmt( C_log::LL_INFO, "Return from poll() %d", rc );
         
         if ( rc == -1 )
         {
-            log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "poll() error %d, terminating thread", errno );
+            log_writeln_fmt( C_log::LL_ERROR, "poll() error %d, terminating thread", errno );
             break;
         }
 
@@ -250,7 +249,7 @@ C_tcp_server::thread_handler()
 
         for ( int fds_idx = 0; fds_idx < fds_count_curr; fds_idx++ )
         {
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "fds_idx: %d", fds_idx );
+            //log_writeln_fmt( C_log::LL_INFO, "fds_idx: %d", fds_idx );
 
             if ( fds_[ fds_idx ].revents == 0 )
             {
@@ -268,17 +267,17 @@ C_tcp_server::thread_handler()
 
                     do
                     {
-                        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "listening socket is readable" );
+                        //log_writeln( C_log::LL_INFO, "listening socket is readable" );
                        
                         new_client = accept( listener_, nullptr, nullptr );
 
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "new_client: %d, errno: %d", new_client, errno );
+                        //log_writeln_fmt( C_log::LL_INFO, "new_client: %d, errno: %d", new_client, errno );
                         
                         if ( new_client < 0 )
                         {
                             if ( errno != EWOULDBLOCK )
                             {
-                                log_writeln( C_log::LL_ERROR, LOG_SOURCE, "accept() failed" );
+                                log_writeln( C_log::LL_ERROR, "accept() failed" );
                                 abort_ = true;
                             }
 
@@ -290,7 +289,7 @@ C_tcp_server::thread_handler()
                         {
                             close( new_client );
 
-                            log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Aleady have one connection; rejected new client" );
+                            log_writeln( C_log::LL_ERROR, "Aleady have one connection; rejected new client" );
                             break;
                         }
 
@@ -301,13 +300,13 @@ C_tcp_server::thread_handler()
 
                         if ( rc < 0 )
                         {
-                            log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "new client ioctl() error %d", errno );
+                            log_writeln_fmt( C_log::LL_ERROR, "new client ioctl() error %d", errno );
                             abort_ = true;
                             break;
                         }
 
                         // Add the incoming connection to the fds_ array
-                        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "New incoming connection %d", new_client );
+                        log_writeln_fmt( C_log::LL_INFO, "New incoming connection %d", new_client );
 
                         fds_[ fds_count_ ].fd     = new_client;
                         fds_[ fds_count_ ].events = POLLIN;
@@ -319,7 +318,7 @@ C_tcp_server::thread_handler()
                 }
                 else
                 {
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Descriptor %d is readable", fds_[ fds_idx ] );
+                    //log_writeln_fmt( C_log::LL_INFO, "Descriptor %d is readable", fds_[ fds_idx ] );
                   
                     char buffer[ 256 ];
 
@@ -330,27 +329,27 @@ C_tcp_server::thread_handler()
                         // Receive data on this connection until the recv() fails with EWOULDBLOCK. If any
                         // other failure occurs, close the connection.
                         
-                        //log_writeln( C_log::LL_INFO, LOG_SOURCE, "before recv()" );
+                        //log_writeln( C_log::LL_INFO, "before recv()" );
                         
                         rc = recv( fds_[ fds_idx ].fd, buffer, sizeof( buffer ), 0 );
 
-                        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "recv() returned %d", rc  );
+                        //log_writeln_fmt( C_log::LL_INFO, "recv() returned %d", rc  );
                         
                         if ( rc < 0 )
                         {
                             if ( errno != EWOULDBLOCK )
                             {
-                                log_writeln( C_log::LL_ERROR, LOG_SOURCE, "recv() failed" );
+                                log_writeln( C_log::LL_ERROR, "recv() failed" );
                                 close_connection = true; 
                             }
 
-                            //log_writeln( C_log::LL_INFO, LOG_SOURCE, "EWOULDBLOCK" );
+                            //log_writeln( C_log::LL_INFO, "EWOULDBLOCK" );
                             break;
                         
                         }
                         else if ( rc == 0 )
                         {
-                            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Connection closed" );
+                            log_writeln( C_log::LL_INFO, "Connection closed" );
                             close_connection = true;
                             break;
                         }
@@ -358,7 +357,7 @@ C_tcp_server::thread_handler()
                         {
                             int len = rc;
 
-                            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Data received: %d bytes", len  );
+                            //log_writeln_fmt( C_log::LL_INFO, "Data received: %d bytes", len  );
 
                             // Put the received data into the ring buffer
                             for ( int ii = 0; ii < len; ii++ )
@@ -379,7 +378,7 @@ C_tcp_server::thread_handler()
 
             if ( fds_[ fds_idx ].revents & POLLOUT )
             { 
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "op_buffer_->count(): %d", op_buffer_->count() );
+                //log_writeln_fmt( C_log::LL_INFO, "op_buffer_->count(): %d", op_buffer_->count() );
                 
                 char buffer[ 256 ];
 
@@ -398,13 +397,13 @@ C_tcp_server::thread_handler()
                     }
                 }
 
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "before send(), send_len: %d", send_len );
+                //log_writeln_fmt( C_log::LL_INFO, "before send(), send_len: %d", send_len );
 
                 rc = send( fds_[ fds_idx ].fd, buffer, send_len, 0 );
                 
                 if ( rc < 0 )
                 {
-                   log_writeln( C_log::LL_ERROR, LOG_SOURCE, "send() failed" );
+                   log_writeln( C_log::LL_ERROR, "send() failed" );
                 }
         
                 // Clear event flag. NB: this is based on the assumption that all the data
@@ -414,14 +413,14 @@ C_tcp_server::thread_handler()
             
             if ( fds_[ fds_idx ].revents & ( ~ ( POLLIN | POLLOUT ) ) )
             {
-                  log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "unexpected event %d", fds_[ fds_idx ].revents );
+                  log_writeln_fmt( C_log::LL_ERROR, "unexpected event %d", fds_[ fds_idx ].revents );
                   abort_ = true; 
                   break;
             }
         }
     }
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Shutting down '%s' socket server thread", banner_.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, "Shutting down '%s' socket server thread", banner_.c_str() );
 
     running_ = false;
 }     

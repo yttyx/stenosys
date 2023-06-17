@@ -5,7 +5,6 @@
 #include "keyboard.h"
 #include "log.h"
 
-#define LOG_SOURCE "KEYB "
 
 namespace stenosys
 {

@@ -23,10 +23,10 @@
 #include "log.h"
 #include "miscellaneous.h"
 
-#define LOG_SOURCE "KBRAW"
 #define DEV_DIR    "/dev/input/"
 #define EVENT_DEV  "event"
 #define PLANCK_DEV "Planck"
+
 
 using namespace stenosys;
 
@@ -55,7 +55,7 @@ C_kbd_raw::~C_kbd_raw()
         ioctl( handle_, EVIOCGRAB, ( void * ) 0 );
         
         ::close( handle_ );
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed raw keyboard device" );
+        log_writeln( C_log::LL_INFO, "Closed raw keyboard device" );
     }
 }
 
@@ -148,7 +148,7 @@ C_kbd_raw::thread_handler()
                 acquired_ = true;
                 thread_state = tsReading;
 
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Using raw keyboard device %s", device_in_use_.c_str() );
+                log_writeln_fmt( C_log::LL_INFO, "Using raw keyboard device %s", device_in_use_.c_str() );
                 break;
 
             case tsReading:
@@ -160,7 +160,7 @@ C_kbd_raw::thread_handler()
 
                 timer_.start( 5000 );
                 thread_state = tsWaitBeforeReopenAttempt;
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Lost access to raw keyboard device %s", device_in_use_.c_str() );
+                log_writeln_fmt( C_log::LL_INFO, "Lost access to raw keyboard device %s", device_in_use_.c_str() );
                 break;
         
             case tsWaitBeforeReopenAttempt:
@@ -177,7 +177,7 @@ C_kbd_raw::thread_handler()
         }
     }
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shutting down raw keyboard thread" );
+    log_writeln( C_log::LL_INFO, "Shutting down raw keyboard thread" );
 }
     
 bool
@@ -210,7 +210,7 @@ C_kbd_raw::read( void )
 
     int bytes_read = ::read( handle_, kbd_event, sizeof( struct input_event ) * 64 );
 
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "thread_handler, bytes_read: %d", bytes_read );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "thread_handler, bytes_read: %d", bytes_read );
 
     if ( bytes_read >= ( int ) sizeof( struct input_event ) )
     {
@@ -230,7 +230,7 @@ C_kbd_raw::read( void )
                     // Key auto-repeat
                     buffer_->put( ( KEY_EV_AUTO << 8 ) + kbd_event[ ii ].code );
 
-                    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key auto kbd_event[ii].code: %u", kbd_event[ii].code );
+                    //log_writeln_fmt( C_log::LL_INFO, "key auto kbd_event[ii].code: %u", kbd_event[ii].code );
                 }
                 else if ( kbd_event[ ii ].value == 1 )
                 {
@@ -278,7 +278,7 @@ C_kbd_raw::detect_keyboard( std::string & device )
     {
         while ( ( dir_entry = readdir( dir ) ) != nullptr )
         {
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "device: %s", dir_entry->d_name );
+            //log_writeln_fmt( C_log::LL_INFO, "device: %s", dir_entry->d_name );
 
             if ( strstr( dir_entry->d_name, EVENT_DEV ) != nullptr )
             {   
@@ -298,12 +298,12 @@ C_kbd_raw::detect_keyboard( std::string & device )
                 
                 if ( ( rc = ioctl( hnd, EVIOCGNAME( sizeof( name ) ), name ) ) < 0 )
                 {
-                    log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "ioctl: EVIOCGNAME failed, rc = %d, errno = %d", rc, errno );
+                    log_writeln_fmt( C_log::LL_ERROR, "ioctl: EVIOCGNAME failed, rc = %d, errno = %d", rc, errno );
                 } 
 
                 close( hnd );
 
-                //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "device name: %s", name );
+                //log_writeln_fmt( C_log::LL_ERROR, "device name: %s", name );
                 
                 if ( strstr( name, PLANCK_DEV ) != nullptr )
                 {
@@ -311,11 +311,11 @@ C_kbd_raw::detect_keyboard( std::string & device )
                     // the lowest numbered one to be able to successfully grab it (TODO: find a better way of deciding
                     // between the two).
             
-                    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Got a planck entry on %s", dir_entry->d_name );
+                    //log_writeln_fmt( C_log::LL_ERROR, "Got a planck entry on %s", dir_entry->d_name );
                     
                     int num = atoi( dir_entry->d_name + strlen( EVENT_DEV ) );
 
-                    //log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "num: %d", num );
+                    //log_writeln_fmt( C_log::LL_ERROR, "num: %d", num );
                     
                     if ( num < device_event_num )
                     {
@@ -346,7 +346,7 @@ C_kbd_raw::open_keyboard( const std::string & device )
     // Open device
     if ( ( hnd = ::open( device.c_str(), O_RDONLY ) ) < 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to open raw keyboard device %s", device.c_str() );
+        log_writeln_fmt( C_log::LL_ERROR, "Failed to open raw keyboard device %s", device.c_str() );
         return -1;
     }
 
@@ -355,19 +355,19 @@ C_kbd_raw::open_keyboard( const std::string & device )
     // Get device version
     if ( ioctl( hnd, EVIOCGVERSION, &version ) )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Failed to get device version: %s", device.c_str() );
+        log_writeln_fmt( C_log::LL_ERROR, "Failed to get device version: %s", device.c_str() );
         close( hnd );
         return -1;
     }
 
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "  Driver version is %d.%d.%d", version >> 16, ( version >> 8 ) & 0xff, version & 0xff );
    
     struct input_id id;
 
     // Get device information
     ioctl( hnd, EVIOCGID, &id );
 
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  Input device id: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "  Input device id: bus 0x%x vendor 0x%x product 0x%x version 0x%x"
                                                 , id.bustype
                                                 , id.vendor
                                                 , id.product
@@ -378,7 +378,7 @@ C_kbd_raw::open_keyboard( const std::string & device )
     // linux kernel as well.
     if ( ( rc = ioctl( hnd, EVIOCGRAB, ( void * ) 1 ) ) < 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "  ioctl: EVIOCGRAB failed, rc = %d, errno = %d", rc, errno );
+        log_writeln_fmt( C_log::LL_ERROR, "  ioctl: EVIOCGRAB failed, rc = %d, errno = %d", rc, errno );
         
         close( hnd );
         return -1;

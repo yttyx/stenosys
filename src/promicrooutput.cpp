@@ -7,7 +7,6 @@
 #include "promicrooutput.h"
 #include "utf8.h"
 
-#define LOG_SOURCE "PROMO"
 
 using namespace stenosys;
 
@@ -46,17 +45,17 @@ C_pro_micro_output::send( const std::string & str )
     uint32_t code = 0;
 
     //TEMP
-    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_pro_micro_output::send()" );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  str              : %s", str.c_str() );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  utf8_str.c_str() : %s", utf8_str.c_str() );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  utf8_str.length(): %d", utf8_str.length() );
+    //log_writeln( C_log::LL_INFO, "C_pro_micro_output::send()" );
+    //log_writeln_fmt( C_log::LL_INFO, "  str              : %s", str.c_str() );
+    //log_writeln_fmt( C_log::LL_INFO, "  utf8_str.c_str() : %s", utf8_str.c_str() );
+    //log_writeln_fmt( C_log::LL_INFO, "  utf8_str.length(): %d", utf8_str.length() );
 
     if ( utf8_str.get_first( code ) )
     {
         do
         {
             //TEMP
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  code: %04xh", code );
+            //log_writeln_fmt( C_log::LL_INFO, "  code: %04xh", code );
 
             // Only ASCII characters are supported when sending to the remote Pro Micro
            
@@ -83,7 +82,7 @@ C_pro_micro_output::send( const std::string & str )
             }
 
             //TEMP
-            //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  ch: %c (%02xh)", ch, ch );
+            //log_writeln_fmt( C_log::LL_INFO, "  ch: %c (%02xh)", ch, ch );
 
             serial_.send( EV_KEY_DOWN );
             serial_.send( ch );
@@ -99,12 +98,12 @@ void
 C_pro_micro_output::send( key_event_t key_event, uint8_t scancode )
 {
     ////TEMP
-    //log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_pro_micro_output::send() - KEY EVENT" );
+    //log_writeln( C_log::LL_INFO, "C_pro_micro_output::send() - KEY EVENT" );
     
     ////TEMP
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, " key_event     : %d",    key_event );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, " scancode      : %02xh", scancode );
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, " keytable entry: %02xh", keytable[ scancode & 0x7f ] );
+    //log_writeln_fmt( C_log::LL_INFO, " key_event     : %d",    key_event );
+    //log_writeln_fmt( C_log::LL_INFO, " scancode      : %02xh", scancode );
+    //log_writeln_fmt( C_log::LL_INFO, " keytable entry: %02xh", keytable[ scancode & 0x7f ] );
 
     if ( key_event == KEY_EV_DOWN )
     {
@@ -132,7 +131,7 @@ C_pro_micro_output::test()
 void
 C_pro_micro_output::stop()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_pro_micro_output::stop()" );
+    log_writeln( C_log::LL_INFO, "C_pro_micro_output::stop()" );
     
     serial_.send( EV_KEY_RELEASE_ALL );
     serial_.send( EV_KEY_NOOP );

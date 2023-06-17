@@ -46,7 +46,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "x11output.h"
 #endif
 
-#define LOG_SOURCE "STSYS"
 
 using namespace stenosys;
 
@@ -89,13 +88,13 @@ C_stenosys::run( int argc, char *argv[] )
     const char * device_raw = cfg.c().device_raw.c_str();
     const char * dict_path = cfg.c().file_dict.c_str();
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys version: %s", VERSION );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stenosys date   : %s", __DATE__ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Dictionary path : %s", strlen( dict_path ) > 0  ? dict_path  : "<none>" );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Raw device      : %s", strlen( device_raw ) > 0 ? device_raw : "auto-detect" ); 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno device    : %s", cfg.c().device_steno.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, "Stenosys version: %s", VERSION );
+    log_writeln_fmt( C_log::LL_INFO, "Stenosys date   : %s", __DATE__ );
+    log_writeln_fmt( C_log::LL_INFO, "Dictionary path : %s", strlen( dict_path ) > 0  ? dict_path  : "<none>" );
+    log_writeln_fmt( C_log::LL_INFO, "Raw device      : %s", strlen( device_raw ) > 0 ? device_raw : "auto-detect" ); 
+    log_writeln_fmt( C_log::LL_INFO, "Steno device    : %s", cfg.c().device_steno.c_str() );
 #ifndef X11
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Output device   : %s", cfg.c().device_output.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, "Output device   : %s", cfg.c().device_output.c_str() );
 #endif
 
     // Allow time for the key up event to occur when enter was pressed to execute this program
@@ -113,7 +112,7 @@ C_stenosys::run( int argc, char *argv[] )
     
     if ( ! worked )
     {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Outputter initialisation failed (is X Window system running?)" );
+        log_writeln( C_log::LL_INFO, "Outputter initialisation failed (is X Window system running?)" );
     }
 #else
 #pragma message( "Building for Pro Micro" )
@@ -123,7 +122,7 @@ C_stenosys::run( int argc, char *argv[] )
     
     if ( ! worked )
     {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Outputter initialisation failed" );
+        log_writeln( C_log::LL_INFO, "Outputter initialisation failed" );
     }
 #endif
 
@@ -164,12 +163,12 @@ C_stenosys::run( int argc, char *argv[] )
             // Stenographic chord input
             if ( steno_keyboard.read( packet ) )
             {
-                //log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Got steno chord" );
+                //log_writeln( C_log::LL_ERROR, "Got steno chord" );
                 
                 translator.translate( packet, translation );
                 
                 //TEMP
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "translation: %s", translation.c_str() );
+                //log_writeln_fmt( C_log::LL_INFO, "translation: %s", translation.c_str() );
                 
                 if ( translation.length() > 0 )
                 {
@@ -186,13 +185,13 @@ C_stenosys::run( int argc, char *argv[] )
             {
                 outputter->set_keymapping(); 
                 
-                log_writeln( C_log::LL_INFO, LOG_SOURCE, "Ready" );
+                log_writeln( C_log::LL_INFO, "Ready" );
             }
 
             // Key event input
             if ( steno_keyboard.read( key_event, scancode ) )
             {
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "key event: scancode: 0x%02x", scancode );
+                //log_writeln_fmt( C_log::LL_INFO, "key event: scancode: 0x%02x", scancode );
 
                 outputter->send( key_event, scancode );
             }
@@ -202,16 +201,16 @@ C_stenosys::run( int argc, char *argv[] )
     }
     else
     {
-        log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Initialisation error" );
+        log_writeln( C_log::LL_ERROR, "Initialisation error" );
     }
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closing down" );
+    log_writeln( C_log::LL_INFO, "Closing down" );
 
     dictionary_search.stop();
     paper_tape.stop();
     steno_keyboard.stop();
 
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Closed down" );
+    log_writeln( C_log::LL_INFO, "Closed down" );
 }
 
 }

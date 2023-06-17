@@ -15,8 +15,6 @@
 #include "symbols.h"
 #include "translator.h"
 
-#define LOG_SOURCE "TRANS"
-
 
 using namespace stenosys;
 

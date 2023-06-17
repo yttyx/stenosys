@@ -7,7 +7,6 @@
 #include "log.h"
 #include "textfile.h"
 
-#define LOG_SOURCE "READF"
 
 using namespace stenosys;
 
@@ -44,12 +43,12 @@ C_text_file::read( const std::string & path )
         }
         else
         {
-            log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error reading file %s", path.c_str() );
+            log_writeln_fmt( C_log::LL_ERROR, "**Error reading file %s", path.c_str() );
         }
     }
     catch ( std::exception & ex )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**File read exception: %s", ex.what() );
+        log_writeln_fmt( C_log::LL_ERROR, "**File read exception: %s", ex.what() );
     }
     catch( ... )
     {

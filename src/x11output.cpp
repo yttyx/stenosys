@@ -22,7 +22,6 @@
 #include "utf8.h"
 #include "x11output.h"
 
-#define  LOG_SOURCE "X11OP"
 
 using namespace stenosys;
 
@@ -50,7 +49,7 @@ C_x11_output::C_x11_output()
 
 C_x11_output::~C_x11_output()
 {
-    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "~C_x11_output() destructor" );
+    log_writeln( C_log::LL_VERBOSE_1, "~C_x11_output() destructor" );
     
     restore_keysyms();
 
@@ -104,7 +103,7 @@ void
 C_x11_output::send( const std::string & str )
 {
     //TEMP
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "C_x11_output::send() - str: %s", str.c_str() );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "C_x11_output::send() - str: %s", str.c_str() );
 
     C_utf8 utf8_str( str );
 
@@ -115,7 +114,7 @@ C_x11_output::send( const std::string & str )
         do
         {
             //TEMP
-            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  code: %04xh", code );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, "  code: %04xh", code );
         
             if ( ( int ) code <= 0x7f )
             {
@@ -129,22 +128,22 @@ C_x11_output::send( const std::string & str )
             else
             {
                 //TEMP
-                log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "is_shavian_code: %s", is_shavian_code( code ) ? "is shavian" : "is NOT shavian" );
+                log_writeln_fmt( C_log::LL_VERBOSE_1, "is_shavian_code: %s", is_shavian_code( code ) ? "is shavian" : "is NOT shavian" );
                 
                 if ( is_shavian_code( code ) )
                 {
                     //TEMP
-                    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "is_shavian_code" );
+                    log_writeln( C_log::LL_VERBOSE_1, "is_shavian_code" );
                 
                     if ( ( code == XK_namingdot ) || ( code == XK_acroring ) )
                     {
                         //TEMP
-                        log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Naming dot or acroring" );
+                        log_writeln( C_log::LL_VERBOSE_1, "Naming dot or acroring" );
                         
                         KeySym keysym = to_keysym( code );
         
                         //TEMP
-                        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keysym: %04xh, code: %04xh", keysym, code );
+                        log_writeln_fmt( C_log::LL_VERBOSE_1, "  keysym: %04xh, code: %04xh", keysym, code );
                         
                         send_key( keysym, 0 );
                     }
@@ -155,7 +154,7 @@ C_x11_output::send( const std::string & str )
                         keysym_entry * entry = &shavian_to_keysym[ index ];
                         
                         //TEMP
-                        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "entry->keysym1: %04xh, entry->keysym2: %04xh", entry->keysym1 , entry->keysym2 );
+                        log_writeln_fmt( C_log::LL_VERBOSE_1, "entry->keysym1: %04xh, entry->keysym2: %04xh", entry->keysym1 , entry->keysym2 );
  
                         send_key( to_keysym( entry->keysym1 ), entry->keysym2 );
                     }
@@ -170,7 +169,7 @@ void
 C_x11_output::send( key_event_t key_event, uint8_t scancode )
 {
     //TEMP
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "X11 send(): key_event: %04xh, scancode: %04xh", key_event, scancode );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "X11 send(): key_event: %04xh, scancode: %04xh", key_event, scancode );
 
     // Check for the scancode used for the Roman/Shavian alphabet switch
     if ( scancode == KC_EXECUTE )
@@ -192,8 +191,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     KeySym keysym = scancode_to_keysym[ scancode ];
 
     //TEMP
-    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "  After scancode_to_keysym lookup" );
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "    scancode(dec): %d, keysym: %04xh", scancode, keysym );
+    log_writeln( C_log::LL_VERBOSE_1, "  After scancode_to_keysym lookup" );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "    scancode(dec): %d, keysym: %04xh", scancode, keysym );
 
     if ( is_shift( keysym ) )
     {
@@ -208,8 +207,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     if ( shavian_ )
     {
         //TEMP
-        log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "  **shavian mode**" );
-        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "    %s", is_shavian_key( keysym) ? "Is shavian key" : "NOT shavian key" );
+        log_writeln( C_log::LL_VERBOSE_1, "  **shavian mode**" );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, "    %s", is_shavian_key( keysym) ? "Is shavian key" : "NOT shavian key" );
 
         if ( is_shavian_key( keysym ) )
         {
@@ -219,9 +218,9 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             keysym = to_keysym( shavian_keysym[ index ] );
         
             //TEMP
-            //log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "send() key event: Shavian layer key" );
-            //log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "  After to_keysym()" );
-            //log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "    Shavian: index: %ld, keysym: %06xh", index, keysym  );
+            //log_writeln( C_log::LL_VERBOSE_1, "send() key event: Shavian layer key" );
+            //log_writeln( C_log::LL_VERBOSE_1, "  After to_keysym()" );
+            //log_writeln_fmt( C_log::LL_VERBOSE_1, "    Shavian: index: %ld, keysym: %06xh", index, keysym  );
         }
     }
 
@@ -230,8 +229,8 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
         KeyCode keycode = XKeysymToKeycode( display_, keysym );
      
         //TEMP
-        log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "  After XKeysymToKeycode()" );
-        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "    keycode: %04xh", keycode );
+        log_writeln( C_log::LL_VERBOSE_1, "  After XKeysymToKeycode()" );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, "    keycode: %04xh", keycode );
         
         if ( keycode != 0 )
         {
@@ -241,14 +240,14 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
             if ( key_event == KEY_EV_DOWN )
             {
                 //TEMP
-                log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Before XTestFakeKeyEvent - keysym: %04xh keycode: %04xh (key down)", keysym, keycode );
+                log_writeln_fmt( C_log::LL_VERBOSE_1, "Before XTestFakeKeyEvent - keysym: %04xh keycode: %04xh (key down)", keysym, keycode );
 
                 XTestFakeKeyEvent( display_, keycode, True, 0 );
             }
             else if ( key_event == KEY_EV_UP )
             {
                 //TEMP
-                log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Before XTestFakeKeyEvent - keysym: %04xh keycode: %04xh (key up)", keysym, keycode );
+                log_writeln_fmt( C_log::LL_VERBOSE_1, "Before XTestFakeKeyEvent - keysym: %04xh keycode: %04xh (key up)", keysym, keycode );
                 
                 XTestFakeKeyEvent( display_, keycode, False, 0 ); 
             } 
@@ -260,7 +259,7 @@ C_x11_output::send( key_event_t key_event, uint8_t scancode )
     else
     {
         //TEMP
-        //log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keysym is 0" );
+        //log_writeln( C_log::LL_VERBOSE_1, "  keysym is 0" );
     }
 }
 
@@ -278,7 +277,7 @@ C_x11_output::send_key( KeySym keysym, KeySym modsym )
     keycode = XKeysymToKeycode( display_, keysym );
 
 
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "send_key()  keycode: %d", keycode );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "send_key()  keycode: %d", keycode );
 
 
     if ( keycode == 0 )
@@ -348,14 +347,14 @@ void
 C_x11_output::set_shavian_keysyms()
 {
     //TEMP
-    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "set_shavian_keysyms()" );
+    log_writeln( C_log::LL_VERBOSE_1, "set_shavian_keysyms()" );
 
     // Check whether a Shavian KeySym has already been set up
     int keycode = XKeysymToKeycode( display_, to_keysym( XK_peep ) );
  
     if ( keycode != 0 )
     {
-        log_writeln( C_log::LL_ERROR, LOG_SOURCE, "**Shavian codes already set" );
+        log_writeln( C_log::LL_ERROR, "**Shavian codes already set" );
         return;
     }
     
@@ -366,10 +365,10 @@ C_x11_output::set_shavian_keysyms()
     KeySym * keysyms = XGetKeyboardMapping( display_, keycode_low_, keycode_high_ - keycode_low_, &keysyms_per_keycode_ );
    
     //TEMP
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keycode_low_        : %d", keycode_low_ );
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keycode_high_       : %d", keycode_high_ );
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keysyms_per_keycode_: %d", keysyms_per_keycode_ );
-    log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  keysyms             : %p", keysyms );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "  keycode_low_        : %d", keycode_low_ );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "  keycode_high_       : %d", keycode_high_ );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "  keysyms_per_keycode_: %d", keysyms_per_keycode_ );
+    log_writeln_fmt( C_log::LL_VERBOSE_1, "  keysyms             : %p", keysyms );
 
     // Loop through the keycodes and look for keysyms associated with each keycode
     // that can be set to use Shavian keysyms instead.
@@ -386,7 +385,7 @@ C_x11_output::set_shavian_keysyms()
 
         const char * keysymstring = XKeysymToString( keysym ); 
 
-        //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keysymstring: %s", keysymstring );
+        //log_writeln_fmt( C_log::LL_INFO, "keysymstring: %s", keysymstring );
         
         if ( keysymstring != NULL )
         {
@@ -395,7 +394,7 @@ C_x11_output::set_shavian_keysyms()
             if ( result != keysym_replacements_->end() )
             {
                 //TEMP
-                //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "keycode: %04xh, str: %s, ks1: %05xh, ks2: %05xh"
+                //log_writeln_fmt( C_log::LL_INFO, "keycode: %04xh, str: %s, ks1: %05xh, ks2: %05xh"
                                                            //, keycode
                                                            //, keysymstring
                                                            //, to_keysym( result->second.keysym1 )
@@ -418,7 +417,7 @@ C_x11_output::set_shavian_keysyms()
     XFree( keysyms );
     XFlush( display_ );
     
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Shavian codes set" );
+    log_writeln( C_log::LL_INFO, "Shavian codes set" );
 }
 
 void
@@ -437,19 +436,19 @@ C_x11_output::backup_keysyms()
 void
 C_x11_output::restore_keysyms()
 {
-    log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "C_x11_output::restore_keysyms()" );
+    log_writeln( C_log::LL_VERBOSE_1, "C_x11_output::restore_keysyms()" );
 
     // Restore from our backup copy of the original keysyms
     if ( orig_keysyms_ != NULL )
     {
-        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  orig_keycode_low_        : %d", orig_keycode_low_ );
-        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  orig_keycode_high_       : %d", orig_keycode_high_ );
-        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  orig_keysyms_per_keycode_: %d", orig_keysyms_per_keycode_ );
-        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "  orig_keysyms_            : %p", orig_keysyms_ );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, "  orig_keycode_low_        : %d", orig_keycode_low_ );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, "  orig_keycode_high_       : %d", orig_keycode_high_ );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, "  orig_keysyms_per_keycode_: %d", orig_keysyms_per_keycode_ );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, "  orig_keysyms_            : %p", orig_keysyms_ );
         
         int res = XChangeKeyboardMapping( display_, orig_keycode_low_, orig_keysyms_per_keycode_, orig_keysyms_, orig_keycode_high_ - orig_keycode_low_ );
         
-        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "XChangeKeyboardMapping returned: %d", res );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, "XChangeKeyboardMapping returned: %d", res );
 
         XFlush( display_ );
     }
@@ -875,7 +874,7 @@ const char * C_x11_output::XF86_symstrings[] =
 void
 C_x11_output::test()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_x11_output::test" );
+    log_writeln( C_log::LL_INFO, "C_x11_output::test" );
 
     unsigned long len;
     char *        window_name;
@@ -900,9 +899,9 @@ C_x11_output::test()
 
     //XGetInputFocus( display_, &focused, &revert_to );
 
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "focused: %08lx", focused );
+    //log_writeln_fmt( C_log::LL_INFO, "focused: %08lx", focused );
 
-    //log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", find_window_handle( focused )
+    //log_writeln_fmt( C_log::LL_INFO, "%s", find_window_handle( focused )
                                                      //? "WE HAVE FOCUS!"
                                                      //: "we don't have focus" );
 
@@ -959,7 +958,7 @@ C_x11_output::test()
 bool
 C_x11_output::find_window_handle( Window search_wnd )
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "find_window_handle" );
+    log_writeln( C_log::LL_INFO, "find_window_handle" );
 
     bool res = find_window_handle_2( XDefaultRootWindow( display_ ), search_wnd );
 
@@ -975,7 +974,7 @@ C_x11_output::find_window_handle_2( Window current_wnd, Window search_wnd )
  
     unsigned children_count = 0;
   
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "current_wnd: %08lx, search_wnd: %08lx", current_wnd, search_wnd );
+    log_writeln_fmt( C_log::LL_INFO, "current_wnd: %08lx, search_wnd: %08lx", current_wnd, search_wnd );
 
     // Check if window handle matches
     if ( current_wnd == search_wnd )

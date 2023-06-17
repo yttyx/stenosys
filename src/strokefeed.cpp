@@ -12,7 +12,6 @@
 #include "miscellaneous.h"
 #include "strokefeed.h"
 
-#define LOG_SOURCE "SFEED"
 
 using namespace stenosys;
 
@@ -36,7 +35,7 @@ C_stroke_feed::C_stroke_feed()
 
 C_stroke_feed::~C_stroke_feed()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_stroke_feed destructor" );
+    log_writeln( C_log::LL_INFO, "C_stroke_feed destructor" );
 }
 
 bool
@@ -61,13 +60,13 @@ C_stroke_feed::initialise( const std::string & filepath )
                 }
                 else
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Non-steno text in stroke file: %s ", line.c_str() );
+                    log_writeln_fmt( C_log::LL_INFO, "Non-steno text in stroke file: %s ", line.c_str() );
                     worked = false;
                 }
             }
             else
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Failed to parse line: %s ", line.c_str() );
+                log_writeln_fmt( C_log::LL_INFO, "Failed to parse line: %s ", line.c_str() );
                 worked = false;
             }
         }
@@ -117,7 +116,7 @@ C_stroke_feed::parse_line( const std::string & line, const char * regex, std::st
     }
     catch ( std::exception & ex )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Stroke feed: exception parsing line %s: %s ", line.c_str(), ex.what() );
+        log_writeln_fmt( C_log::LL_INFO, "Stroke feed: exception parsing line %s: %s ", line.c_str(), ex.what() );
     }    
 
     return false;

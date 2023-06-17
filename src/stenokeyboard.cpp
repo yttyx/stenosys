@@ -20,7 +20,6 @@
 //#include "promicro.h"
 #include "stenokeyboard.h"
 
-#define LOG_SOURCE "STKBD"
 
 using namespace stenosys;
 
@@ -37,7 +36,7 @@ C_steno_keyboard::C_steno_keyboard()
 
 C_steno_keyboard::~C_steno_keyboard()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_steno_keyboard destructor" );
+    log_writeln( C_log::LL_INFO, "C_steno_keyboard destructor" );
 }
 
 // -----------------------------------------------------------------------------------

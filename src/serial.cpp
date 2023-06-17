@@ -11,7 +11,6 @@
 #include "miscellaneous.h"
 #include "serial.h"
 
-#define LOG_SOURCE "SERIAL"
 
 using namespace stenosys;
 
@@ -31,7 +30,7 @@ C_serial::~C_serial()
     if ( handle_ >= 0 )
     {    
         close( handle_ );
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Closed device %s", device_.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, "Closed device %s", device_.c_str() );
     }
 }
 
@@ -49,7 +48,7 @@ C_serial::initialise( const std::string & device )
     }
     else
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "**Error opening device %s: %s", device_.c_str(), strerror( errno ) );
+        log_writeln_fmt( C_log::LL_ERROR, "**Error opening device %s: %s", device_.c_str(), strerror( errno ) );
     }
 
     return false;
@@ -68,7 +67,7 @@ C_serial::set_interface_attributes( int handle, int baudrate )
 
     if ( tcgetattr( handle, &tty) < 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Device %s tcgetattr error: %s", device_.c_str(), strerror( errno ) );
+        log_writeln_fmt( C_log::LL_ERROR, "Device %s tcgetattr error: %s", device_.c_str(), strerror( errno ) );
         return false;
     }
 
@@ -93,7 +92,7 @@ C_serial::set_interface_attributes( int handle, int baudrate )
 
     if ( tcsetattr( handle, TCSANOW, &tty ) != 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Device %s tcsetattr error: %s", device_.c_str(), strerror( errno ) );
+        log_writeln_fmt( C_log::LL_ERROR, "Device %s tcsetattr error: %s", device_.c_str(), strerror( errno ) );
         return false;
     }
     

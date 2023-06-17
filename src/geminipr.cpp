@@ -10,7 +10,6 @@
 #include "log.h"
 #include "miscellaneous.h"
 
-#define LOG_SOURCE "GEMPR"
 
 using namespace stenosys;
 
@@ -49,7 +48,7 @@ C_gemini_pr::encode( const std::string & stroke )
 std::string
 C_gemini_pr::decode( const S_geminipr_packet & packet )
 {
-    //log_writeln_fmt( C_log::LL_VERBOSE_3, LOG_SOURCE, "Stroke (binary): %02x %02x %02x %02x %02x %02x",
+    //log_writeln_fmt( C_log::LL_VERBOSE_3, "Stroke (binary): %02x %02x %02x %02x %02x %02x",
     //                                      packet[ 0 ], packet[ 1 ], packet[ 2 ], packet[ 3 ], packet[ 4 ], packet[ 5 ] );
 
     // Build up keystrokes from the bits set in the received data

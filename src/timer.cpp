@@ -25,7 +25,6 @@
 #include "miscellaneous.h"
 #include "timer.h"
 
-#define LOG_SOURCE "TIMER"
 
 using namespace stenosys;
 

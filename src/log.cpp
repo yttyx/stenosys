@@ -48,7 +48,6 @@ C_log::write_line( eLogLevel    level
                  , bool         newline
                  , const char * file
                  , int          line
-                 , const char * source
                  , const char * format
                  , ... )
 {

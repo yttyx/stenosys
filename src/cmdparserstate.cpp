@@ -8,7 +8,6 @@
 #include "stenoflags.h"
 #include "utf8.h"
 
-#define LOG_SOURCE "CPARS"
 
 using namespace  stenosys;
 
@@ -102,7 +101,7 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
                 // End of command
                 p->parsed_ok_ = false;
                 
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Empty command: %s", p->input_.c_str() );
+                log_writeln_fmt( C_log::LL_INFO, "Empty command: %s", p->input_.c_str() );
                 break;
         
             case '^':
@@ -160,7 +159,7 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
                 {
                     p->parsed_ok_ = false;
                 
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Missing character from glue command: %s", p->input_.c_str() );
+                    log_writeln_fmt( C_log::LL_INFO, "Missing character from glue command: %s", p->input_.c_str() );
                 }
                 break;
 
@@ -172,7 +171,7 @@ STATE_DEFINITION( C_st_got_command, C_cmd_parser )
             default:
                 p->parsed_ok_ = false;
                 
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid command: %s", p->input_.c_str() );
+                log_writeln_fmt( C_log::LL_INFO, "Invalid command: %s", p->input_.c_str() );
                 break;
         }
         
@@ -218,7 +217,7 @@ STATE_DEFINITION( C_st_got_command_2, C_cmd_parser )
             default:
                 p->parsed_ok_ = false;
                 
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid command: %s", p->input_.c_str() );
+                log_writeln_fmt( C_log::LL_INFO, "Invalid command: %s", p->input_.c_str() );
                 set_state( p, C_st_end::s.instance(), "C_st_end" );
                 break;
         }
@@ -227,7 +226,7 @@ STATE_DEFINITION( C_st_got_command_2, C_cmd_parser )
     {
         p->parsed_ok_ = false;
 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Incomplete command: %s", p->input_.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, "Incomplete command: %s", p->input_.c_str() );
         set_state( p, C_st_end::s.instance(), "C_st_end" );
     }
 }
@@ -268,14 +267,14 @@ STATE_DEFINITION( C_st_escaped_char, C_cmd_parser )
         }
         else
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid escape sequence: %s", p->input_.c_str() );
+            log_writeln_fmt( C_log::LL_INFO, "Invalid escape sequence: %s", p->input_.c_str() );
             set_state( p, C_st_end::s.instance(), "C_st_end" );
         }
     }
     else
     {
         p->parsed_ok_ = false;
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Missing character in escape sequence: %s", p->input_.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, "Missing character in escape sequence: %s", p->input_.c_str() );
         set_state( p, C_st_end::s.instance(), "C_st_end" );
     }
 }
@@ -301,13 +300,13 @@ STATE_DEFINITION( C_st_get_command_end, C_cmd_parser )
         {
             p->parsed_ok_ = false;
 
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Bad command format: %s", p->input_.c_str() );
+            log_writeln_fmt( C_log::LL_INFO, "Bad command format: %s", p->input_.c_str() );
             set_state( p, C_st_end::s.instance(), "C_st_end" );
         }
     }
     else
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Incomplete command: %s", p->input_.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, "Incomplete command: %s", p->input_.c_str() );
         set_state( p, C_st_end::s.instance(), "C_st_end" );
     }
 }

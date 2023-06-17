@@ -17,7 +17,6 @@
 #include "textfile.h"
 #include "utf8.h"
 
-#define LOG_SOURCE "DICT "
 
 using namespace stenosys;
 
@@ -71,7 +70,7 @@ C_dictionary::build( const std::string & dictionary_path )
 bool
 C_dictionary::hash_map_build()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Building hash map" );
+    log_writeln( C_log::LL_INFO, "Building hash map" );
     
     hash_map_initialise( dictionary_->size() );
 
@@ -89,7 +88,7 @@ C_dictionary::hash_map_build()
             }
             else
             {
-                log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Key '%s' insertion failure", entry.steno.c_str() );
+                log_writeln_fmt( C_log::LL_INFO, "Key '%s' insertion failure", entry.steno.c_str() );
                 return false;
             }
         }
@@ -216,10 +215,10 @@ C_dictionary::hash_map_test()
 
     bool passed = ( key_not_found == 0 ) && ( dictionary_lookup_failed == 0 )  && ( value_mismatch == 0 );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Keys not found            : %u", key_not_found );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Dictionary lookup failures: %u", dictionary_lookup_failed );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Value mismatches          : %u", value_mismatch );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  Hash index test           : %s ", ( passed ? "passed" : "FAILED" ) );
+    log_writeln_fmt( C_log::LL_INFO, "  Keys not found            : %u", key_not_found );
+    log_writeln_fmt( C_log::LL_INFO, "  Dictionary lookup failures: %u", dictionary_lookup_failed );
+    log_writeln_fmt( C_log::LL_INFO, "  Value mismatches          : %u", value_mismatch );
+    log_writeln_fmt( C_log::LL_INFO, "  Hash index test           : %s ", ( passed ? "passed" : "FAILED" ) );
 
     return passed;
 }
@@ -262,20 +261,20 @@ C_dictionary::hash_find( const std::string & key, std::string & value )
 bool
 C_dictionary::hash_map_report()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "" );
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Hash map report" );
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "---------------" );
+    log_writeln( C_log::LL_INFO, "" );
+    log_writeln( C_log::LL_INFO, "Hash map report" );
+    log_writeln( C_log::LL_INFO, "---------------" );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  hash_capacity_     : %6u", hash_capacity_ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  duplicate_count_   : %6u", hash_duplicate_count_ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  hash_entry_count_  : %6u", hash_entry_count_ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  hit_capacity_count_: %6u", hash_hit_capacity_count_ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  wrap_count_        : %6u", hash_wrap_count_ );
+    log_writeln_fmt( C_log::LL_INFO, "  hash_capacity_     : %6u", hash_capacity_ );
+    log_writeln_fmt( C_log::LL_INFO, "  duplicate_count_   : %6u", hash_duplicate_count_ );
+    log_writeln_fmt( C_log::LL_INFO, "  hash_entry_count_  : %6u", hash_entry_count_ );
+    log_writeln_fmt( C_log::LL_INFO, "  hit_capacity_count_: %6u", hash_hit_capacity_count_ );
+    log_writeln_fmt( C_log::LL_INFO, "  wrap_count_        : %6u", hash_wrap_count_ );
     
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "" );
+    log_writeln( C_log::LL_INFO, "" );
 
     std::string report = distribution_->report();
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", report.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, "%s", report.c_str() );
 
     return true;
 }
@@ -361,7 +360,7 @@ C_dictionary::write_h()
 void
 C_dictionary::write_cpp_top( FILE * output_stream )
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "write_cpp_top()" );
+    log_writeln( C_log::LL_INFO, "write_cpp_top()" );
     
     for ( uint32_t ii = 0;  cpp_top[ ii ]; ii++ ) 
     {
@@ -375,7 +374,7 @@ C_dictionary::write_cpp_top( FILE * output_stream )
 void
 C_dictionary::write_hash_table( FILE * output_stream )
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "write_hash_table()" );
+    log_writeln( C_log::LL_INFO, "write_hash_table()" );
     
     // Write the dictionary out in hash table order. This means that the dictionary is
     // effectively its own index and no separate hash table is required.
@@ -415,7 +414,7 @@ C_dictionary::write_hash_table( FILE * output_stream )
                 }
                 else
                 {
-                    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Invalid command in %s entry", entry.steno.c_str() );
+                    log_writeln_fmt( C_log::LL_INFO, "Invalid command in %s entry", entry.steno.c_str() );
                     //TEMP
                     break;
                 }
@@ -430,13 +429,13 @@ C_dictionary::write_hash_table( FILE * output_stream )
     fprintf( output_stream, "};\n\n" );
     fflush( output_stream );
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u entries written",  hash_capacity_ );
+    log_writeln_fmt( C_log::LL_INFO, "%u entries written",  hash_capacity_ );
 }
 
 void
 C_dictionary::write_cpp_tail( FILE * output_stream )
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "write_cpp_tail()" );
+    log_writeln( C_log::LL_INFO, "write_cpp_tail()" );
     
     for ( uint32_t ii = 0;  cpp_tail[ ii ]; ii++ ) 
     {
@@ -468,7 +467,7 @@ C_dictionary::read( const std::string & path )
             uint32_t entry_count    = 0;
             uint32_t bad_entry_count = 0;
             
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "Reading dictionary" );
+            log_writeln( C_log::LL_INFO, "Reading dictionary" );
             
             std::string line;
     
@@ -497,21 +496,21 @@ C_dictionary::read( const std::string & path )
                 }
             }
 
-            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "%u entries loaded", entry_count );
-            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "%u non-data", bad_entry_count );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, "%u entries loaded", entry_count );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, "%u non-data", bad_entry_count );
 
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%u dictionary entries", dictionary_->size() );
+            log_writeln_fmt( C_log::LL_INFO, "%u dictionary entries", dictionary_->size() );
         }
 
         return true;
     }
     catch ( std::exception & ex )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Dictionary read exception: %s", ex.what() );
+        log_writeln_fmt( C_log::LL_INFO, "Dictionary read exception: %s", ex.what() );
     }
     catch( ... )
     {
-        log_writeln( C_log::LL_INFO, LOG_SOURCE, "Dictionary read exception" );
+        log_writeln( C_log::LL_INFO, "Dictionary read exception" );
     }
 
     return false;
@@ -545,7 +544,7 @@ C_dictionary::parse_line( const std::string & line
     }
     catch ( std::exception & ex )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Exception, dictionary line: %s: %s", line.c_str(), ex.what() );
+        log_writeln_fmt( C_log::LL_INFO, "Exception, dictionary line: %s: %s", line.c_str(), ex.what() );
     }
 
     return false;

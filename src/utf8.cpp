@@ -9,7 +9,6 @@
 #include "miscellaneous.h"
 #include "utf8.h"
 
-#define LOG_SOURCE "STRK "
 
 using namespace stenosys;
 
@@ -335,7 +334,7 @@ C_utf8::unpack( const char * data )
 void
 C_utf8::dump()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "C_utf8::dump()" );
+    log_writeln( C_log::LL_INFO, "C_utf8::dump()" );
 
     //TODO byte dump of string (ctrl_to_text was modified to make it friendlier
     //     for doing the strokes dump (see C_strokes) but this isn't what we want
@@ -345,11 +344,11 @@ C_utf8::dump()
 
     ctrl_to_text( str_, formatted );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  str_    : %s", formatted.c_str() );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  index_  : %d", index_ );
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  length_ : %d", length_ );
+    log_writeln_fmt( C_log::LL_INFO, "  str_    : %s", formatted.c_str() );
+    log_writeln_fmt( C_log::LL_INFO, "  index_  : %d", index_ );
+    log_writeln_fmt( C_log::LL_INFO, "  length_ : %d", length_ );
     
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "sizeof( char): %d", sizeof( char ) );
+    log_writeln_fmt( C_log::LL_INFO, "sizeof( char): %d", sizeof( char ) );
 }
 
 void
@@ -361,7 +360,7 @@ C_utf8::test()
     C_utf8 U0024 ( "\x24" );
     assert( U0024.get_first( code ) );
 
-    log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "C_utf8::test(): code %u", code );
+    log_writeln_fmt( C_log::LL_INFO, "C_utf8::test(): code %u", code );
 
     assert( code == 0x00000024 );
     assert( U0024.length() == 1 );

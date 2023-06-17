@@ -30,7 +30,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "log.h"
 #include "dictionary.h"
 
-#define LOG_SOURCE "DICTB"
 
 const char * VERSION = "0.666";
 
@@ -56,7 +55,7 @@ int main( int argc, char *argv[] )
     {
         log.initialise( C_log::LL_INFO, true );
 
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "dictbuild version: %s", VERSION );
+        log_writeln_fmt( C_log::LL_INFO, "dictbuild version: %s", VERSION );
 
         C_dictionary dictionary;
 

@@ -9,7 +9,6 @@
 #include "symbols.h"
 #include "utf8.h"
 
-#define LOG_SOURCE "SYMBO"
 
 // This class implements a subset of Emily's symbols
 //  Ref: https://github.com/EPLHREU/emily-symbols
@@ -101,7 +100,7 @@ C_symbols::lookup( const std::string & steno, std::string & text, uint16_t & fla
 void
 C_symbols::tests()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "Running symbols tests" );
+    log_writeln( C_log::LL_INFO, "Running symbols tests" );
 
     for ( S_test_entry * entry = &test_entries[ 0 ]; strlen( entry->steno ) > 0; entry++ )
     {
@@ -124,23 +123,23 @@ C_symbols::test( const std::string & steno
 
     if ( ( ! worked ) || ( ! text_match ) || ( ! flags_match ) )
     {
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "Steno: %s", steno.c_str() );
+        log_writeln_fmt( C_log::LL_INFO, "Steno: %s", steno.c_str() );
        
         if ( ! worked )
         {
-            log_writeln( C_log::LL_INFO, LOG_SOURCE, "  lookup failed - invalid steno leader?" );
+            log_writeln( C_log::LL_INFO, "  lookup failed - invalid steno leader?" );
         }
 
         if ( ! text_match )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  expected %s, got %s"
-                                                         , expected_text.c_str()
-                                                         , text.c_str() );
+            log_writeln_fmt( C_log::LL_INFO, "  expected %s, got %s"
+                                           , expected_text.c_str()
+                                           , text.c_str() );
         }
 
         if ( ! flags_match )
         {
-            log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "  expected %04xh, got %04xh"
+            log_writeln_fmt( C_log::LL_INFO, "  expected %04xh, got %04xh"
                                                          , expected_flags
                                                          , flags );
         }

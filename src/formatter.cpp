@@ -11,7 +11,6 @@
 #include "stenoflags.h"
 #include "utf8.h"
 
-#define LOG_SOURCE "FRMTR"
 
 using namespace stenosys;
 

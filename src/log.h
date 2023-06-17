@@ -38,7 +38,7 @@ public:
     initialise( eLogLevel level, bool datetime );
 
     void
-    write_line( eLogLevel level, bool prefix_text, bool newline, const char * file, int line, const char * source,  const char * format, ... );
+    write_line( eLogLevel level, bool prefix_text, bool newline, const char * file, int line, const char * format, ... );
 
     eLogLevel
     log_level() { return level_; }

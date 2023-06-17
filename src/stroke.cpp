@@ -11,7 +11,6 @@
 #include "stenoflags.h"
 #include "stroke.h"
 
-#define LOG_SOURCE "STRK "
 
 using namespace stenosys;
 

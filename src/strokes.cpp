@@ -16,7 +16,6 @@
 #include "strokes.h"
 #include "symbols.h"
 
-#define LOG_SOURCE "STRKS"
 
 using namespace stenosys;
 
@@ -243,8 +242,8 @@ C_strokes::extends()
 void
 C_strokes::dump()
 {
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "steno         translation                     flag  sn" );
-    log_writeln( C_log::LL_INFO, LOG_SOURCE, "------------  ------------------------------  ----  --" );
+    log_writeln( C_log::LL_INFO, "steno         translation                     flag  sn" );
+    log_writeln( C_log::LL_INFO, "------------  ------------------------------  ----  --" );
 
     history_->reset_lookback();
 
@@ -272,7 +271,7 @@ C_strokes::dump()
                                       , stroke->flags()
                                       , stroke->seqnum() );
    
-        log_writeln_fmt( C_log::LL_INFO, LOG_SOURCE, "%s", line );
+        log_writeln_fmt( C_log::LL_INFO, "%s", line );
     
     } while ( history_->go_back( stroke ) );
 }

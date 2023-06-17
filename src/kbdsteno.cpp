@@ -25,7 +25,6 @@
 #define BITS_PER_LONG (sizeof(long) * 8)
 #define NBITS( x )    ( ( ( ( x ) - 1 ) / BITS_PER_LONG ) + 1 )
 
-#define LOG_SOURCE "STKBD"
 
 using namespace stenosys;
 
@@ -47,7 +46,7 @@ C_kbd_steno::~C_kbd_steno()
     if ( handle_ >= 0 )
     {
         close( handle_ );
-        log_writeln( C_log::LL_VERBOSE_1, LOG_SOURCE, "Closed steno keyboard device" );
+        log_writeln( C_log::LL_VERBOSE_1, "Closed steno keyboard device" );
     }
 }
 
@@ -92,7 +91,7 @@ C_kbd_steno::set_interface_attributes( int fd, int speed )
 
     if ( tcgetattr( fd, &tty ) < 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "tcgetattr() error: %s\n", strerror( errno ) );
+        log_writeln_fmt( C_log::LL_ERROR, "tcgetattr() error: %s\n", strerror( errno ) );
         return -1;
     }
 
@@ -113,7 +112,7 @@ C_kbd_steno::set_interface_attributes( int fd, int speed )
 
     if ( tcsetattr( fd, TCSANOW, &tty ) != 0 )
     {
-        log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "tcgetattr() error: %s\n", strerror( errno ) );
+        log_writeln_fmt( C_log::LL_ERROR, "tcgetattr() error: %s\n", strerror( errno ) );
         return -1;
     }
     return 0;
@@ -143,7 +142,7 @@ C_kbd_steno::thread_handler()
 
             case tsOpenSuccessful:
 
-                log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Using steno serial device %s", device_.c_str() );
+                log_writeln_fmt( C_log::LL_ERROR, "Using steno serial device %s", device_.c_str() );
                 thread_state = tsAwaitingPacketHeader;
                 break;
             
@@ -169,7 +168,7 @@ C_kbd_steno::thread_handler()
                     {
                         packet_count = 0;
                         thread_state = tsAwaitingPacketHeader;
-                        log_writeln( C_log::LL_ERROR, LOG_SOURCE, "Invalid steno packet" );
+                        log_writeln( C_log::LL_ERROR, "Invalid steno packet" );
                     }
                     else
                     {
@@ -189,7 +188,7 @@ C_kbd_steno::thread_handler()
 
             case tsReadError:
 
-                log_writeln_fmt( C_log::LL_ERROR, LOG_SOURCE, "Lost access to steno serial device %s", device_.c_str() );
+                log_writeln_fmt( C_log::LL_ERROR, "Lost access to steno serial device %s", device_.c_str() );
                 
                 // Read error: close file and wait 10 seconds before attempting to re-open it
                 if ( handle_ >= 0 )
@@ -225,13 +224,13 @@ C_kbd_steno::open( void )
 
     if ( handle_ < 0 )
     {               
-        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "**Error opening steno device %s: %s", device_.c_str(), strerror( errno ) );
+        log_writeln_fmt( C_log::LL_VERBOSE_1, "**Error opening steno device %s: %s", device_.c_str(), strerror( errno ) );
     }
     else
     {
         if ( set_interface_attributes( handle_, B19200 ) > -1 )
         {
-            log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "Steno device %s opened", device_.c_str() );
+            log_writeln_fmt( C_log::LL_VERBOSE_1, "Steno device %s opened", device_.c_str() );
             return true;
         }
     }
@@ -262,7 +261,7 @@ C_kbd_steno::get_byte( eThreadState & state, unsigned char & ch )
     }
     else
     {
-        log_writeln_fmt( C_log::LL_VERBOSE_1, LOG_SOURCE, "**Steno read error on serial device %s: %s"
+        log_writeln_fmt( C_log::LL_VERBOSE_1, "**Steno read error on serial device %s: %s"
                        , device_.c_str()  
                        , strerror( errno ) );
 
