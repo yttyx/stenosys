@@ -36,15 +36,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "log.h"
 #include "miscellaneous.h"
 #include "papertape.h"
-#include "promicrooutput.h"
 #include "stenokeyboard.h"
 #include "stenosys.h"
 #include "strokefeed.h"
 #include "translator.h"
-
-#ifdef X11
 #include "x11output.h"
-#endif
 
 
 using namespace stenosys;
@@ -93,20 +89,13 @@ C_stenosys::run( int argc, char *argv[] )
     log_writeln_fmt( C_log::LL_INFO, "Dictionary path : %s", strlen( dict_path ) > 0  ? dict_path  : "<none>" );
     log_writeln_fmt( C_log::LL_INFO, "Raw device      : %s", strlen( device_raw ) > 0 ? device_raw : "auto-detect" ); 
     log_writeln_fmt( C_log::LL_INFO, "Steno device    : %s", cfg.c().device_steno.c_str() );
-#ifndef X11
-    log_writeln_fmt( C_log::LL_INFO, "Output device   : %s", cfg.c().device_output.c_str() );
-#endif
 
     // Allow time for the key up event to occur when enter was pressed to execute this program
     delay( 1000 );
     
     bool worked = true;
     
-    // If X11 is specified, use the x11 output mode; otherwise send key event data via a serial
-    // port to an externally-connected Pro Micro.
-#ifdef X11
-#pragma message( "Building for X11" )
-    std::unique_ptr< C_outputter > outputter = std::make_unique< C_x11_output >();
+    std::unique_ptr< C_x11_output> outputter = std::make_unique< C_x11_output >();
     
     worked = worked && outputter->initialise();
     
@@ -114,17 +103,6 @@ C_stenosys::run( int argc, char *argv[] )
     {
         log_writeln( C_log::LL_INFO, "Outputter initialisation failed (is X Window system running?)" );
     }
-#else
-#pragma message( "Building for Pro Micro" )
-    std::unique_ptr< C_outputter > outputter = std::make_unique< C_pro_micro_output >();
-    
-    worked = worked && outputter->initialise( cfg.c().device_output );
-    
-    if ( ! worked )
-    {
-        log_writeln( C_log::LL_INFO, "Outputter initialisation failed" );
-    }
-#endif
 
     C_steno_keyboard    steno_keyboard;        // Steno/raw input from the steno keyboard
     //C_stroke_feed       stroke_feed;
@@ -168,7 +146,7 @@ C_stenosys::run( int argc, char *argv[] )
                 translator.translate( packet, translation );
                 
                 //TEMP
-                //log_writeln_fmt( C_log::LL_INFO, "translation: %s", translation.c_str() );
+                log_writeln_fmt( C_log::LL_VERBOSE_1, "translation: %s", translation.c_str() );
                 
                 if ( translation.length() > 0 )
                 {
@@ -191,7 +169,8 @@ C_stenosys::run( int argc, char *argv[] )
             // Key event input
             if ( steno_keyboard.read( key_event, scancode ) )
             {
-                //log_writeln_fmt( C_log::LL_INFO, "key event: scancode: 0x%02x", scancode );
+                //TEMP
+                log_writeln_fmt( C_log::LL_VERBOSE_1, "key event: scancode: 0x%02x", scancode );
 
                 outputter->send( key_event, scancode );
             }

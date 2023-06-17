@@ -1,8 +1,6 @@
 // x11output.h
 #pragma once
 
-#ifdef X11
-
 #include "stdarg.h"
 #include <cstdint>
 #include <memory>
@@ -16,7 +14,6 @@
 #include <unistd.h>
 #include <vector>
 
-#include "outputter.h"
 #include "keyevent.h"
 
 namespace stenosys
@@ -60,7 +57,7 @@ struct keysym_entry
     KeySym keysym2;
 };
 
-class C_x11_output : public C_outputter
+class C_x11_output
 {
 
 public:
@@ -161,5 +158,3 @@ private:
 };
 
 }
-
-#endif // X11

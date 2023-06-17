@@ -1,7 +1,5 @@
 // x11output.cpp
 
-#ifdef X11
-
 #include <algorithm>
 #include <assert.h>
 
@@ -1044,5 +1042,3 @@ C_x11_output::name( Display * disp, Window win )
 }
 
 }
-
-#endif // X11
