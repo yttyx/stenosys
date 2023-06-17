@@ -145,9 +145,10 @@ C_translator::undo_stroke( std::string & output )
 void
 C_translator::toggle_alphabet_mode()
 {
-    alphabet_= ( alphabet_== AT_ROMAN ) ? AT_SHAVIAN : AT_ROMAN;
+    alphabet_= ( alphabet_ == AT_LATIN ) ? AT_SHAVIAN : AT_LATIN;
 
-    log_writeln_fmt_raw( C_log::LL_INFO, "%s", ( alphabet_== AT_ROMAN ) ? "Roman" : "Shavian" );
+    //TEMP
+    log_writeln_fmt_raw( C_log::LL_VERBOSE_1, "%s", ( alphabet_== AT_LATIN ) ? "Latin" : "Shavian" );
 }
 
 void

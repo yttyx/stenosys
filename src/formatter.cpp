@@ -48,7 +48,7 @@ C_formatter::format( alphabet_type     alphabet_mode
             space_before = " ";
         }
 
-        if ( alphabet_mode == AT_ROMAN )
+        if ( alphabet_mode == AT_LATIN )
         {
             if ( flags_prev & CAPITALISE_NEXT )
             {

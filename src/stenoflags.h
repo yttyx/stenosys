@@ -20,6 +20,6 @@ const uint16_t GLUE                 = 0x0400;
 const uint16_t NAMING_DOT           = 0x0800;   // Shavian only
 
 enum space_type    { SP_NONE, SP_BEFORE, SP_AFTER };
-enum alphabet_type { AT_ROMAN, AT_SHAVIAN };
+enum alphabet_type { AT_LATIN, AT_SHAVIAN };
 
 }
