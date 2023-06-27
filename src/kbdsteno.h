@@ -22,6 +22,7 @@ enum eThreadState
 ,   tsAwaitingPacketHeader
 ,   tsPacketBody
 ,   tsReadError
+,   tsStartTimer
 ,   tsWaitBeforeReopenAttempt
 };
 

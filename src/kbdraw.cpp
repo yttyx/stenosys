@@ -126,6 +126,7 @@ enum eThreadState
 ,   tsOpenSuccessful
 ,   tsReading
 ,   tsReadError
+,   tsStartTimer
 ,   tsWaitBeforeReopenAttempt
 };
 
@@ -140,7 +141,7 @@ C_kbd_raw::thread_handler()
         {
             case tsAwaitingOpen:
                 
-                thread_state = open() ? tsOpenSuccessful : tsWaitBeforeReopenAttempt;
+                thread_state = open() ? tsOpenSuccessful : tsStartTimer;
                 break;
 
             case tsOpenSuccessful:
@@ -158,11 +159,16 @@ C_kbd_raw::thread_handler()
         
             case tsReadError:
 
-                timer_.start( 5000 );
-                thread_state = tsWaitBeforeReopenAttempt;
+                thread_state = tsStartTimer;
                 log_writeln_fmt( C_log::LL_INFO, "Lost access to raw keyboard device %s", device_in_use_.c_str() );
                 break;
-        
+
+            case tsStartTimer:
+
+                timer_.start( 5000 );
+                thread_state = tsWaitBeforeReopenAttempt;
+                break;
+
             case tsWaitBeforeReopenAttempt:
                 
                 if ( timer_.expired() )

@@ -137,7 +137,7 @@ C_kbd_steno::thread_handler()
         {
             case tsAwaitingOpen:
 
-                thread_state = open() ? tsOpenSuccessful : tsWaitBeforeReopenAttempt;
+                thread_state = open() ? tsOpenSuccessful : tsStartTimer;
                 break;
 
             case tsOpenSuccessful:
@@ -198,7 +198,12 @@ C_kbd_steno::thread_handler()
                 }
         
                 timer_.start( 10000 );
-                
+                thread_state = tsStartTimer;
+                break;
+            
+            case tsStartTimer:
+
+                timer_.start( 5000 );
                 thread_state = tsWaitBeforeReopenAttempt;
                 break;
             

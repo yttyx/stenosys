@@ -434,7 +434,7 @@ C_x11_output::backup_keysyms()
 void
 C_x11_output::restore_keysyms()
 {
-    log_writeln( C_log::LL_VERBOSE_1, "C_x11_output::restore_keysyms()" );
+    log_writeln( C_log::LL_INFO, "Restore keysyms" );
 
     // Restore from our backup copy of the original keysyms
     if ( orig_keysyms_ != NULL )
@@ -446,7 +446,7 @@ C_x11_output::restore_keysyms()
         
         int res = XChangeKeyboardMapping( display_, orig_keycode_low_, orig_keysyms_per_keycode_, orig_keysyms_, orig_keycode_high_ - orig_keycode_low_ );
         
-        log_writeln_fmt( C_log::LL_VERBOSE_1, "XChangeKeyboardMapping returned: %d", res );
+        log_writeln_fmt( C_log::LL_INFO, "  XChangeKeyboardMapping returned: %d", res );
 
         XFlush( display_ );
     }
